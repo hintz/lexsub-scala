@@ -1,16 +1,17 @@
 package de.tudarmstadt.langtech.lexsub_scala
 
 import java.io.RandomAccessFile
-import de.tudarmstadt.langtech.lexsub_scala.utility.io
 import scala.collection.mutable.HashMap
+import java.io.File
 
 class PrefixIndexedFile(val path: String) {
   
   type T = Char
+  
   case class SplitTree(val c: T, val begin: Long,
       val smaller: Either[SplitTree, Long], 
       val bigger: Either[SplitTree, Long],
-      val next: Option[SplitTree])
+      val next: Option[SplitTree]) extends Serializable
   {
     def end: Long = bigger match {
         case Left(tree) => tree.begin
@@ -19,14 +20,15 @@ class PrefixIndexedFile(val path: String) {
     
     def search(prefix: Seq[T]): (Long, Long) = prefix match {
       case Seq() => throw new IllegalStateException
+      
       case Seq(`c`) => (begin, end)
       
-      case x :: xs if x < c => smaller match {
+      case Seq(x, xs@_*) if x < c => smaller match {
         case Left(tree) => tree.search(prefix)
         case Right(leftmost) => (leftmost, begin)
       }
       
-      case x :: xs if x > c => bigger match {
+      case Seq(x, xs@_*) if x > c => bigger match {
         case Left(tree) => tree.search(prefix)
         case Right(rightmost) => (begin, rightmost)
       }
@@ -42,10 +44,11 @@ class PrefixIndexedFile(val path: String) {
   val file = new RandomAccessFile(path, "r")
   val index: SplitTree = {
     val indexpath = path + ".index"
-    if (!io.exists(indexpath)) {
+    if (!new File(indexpath).exists) {
       System.err.println("Index file " + indexpath + " does not exist. Creating index..")
       val index = generateIndex(Seq(10, 10))
-      new java.io.ObjectOutputStream(new java.io.FileOutputStream(indexpath)).writeObject(index)
+      //new java.io.ObjectOutputStream(new java.io.FileOutputStream(indexpath)).writeObject(index)
+      println(index)
       index
     }
     else {
@@ -57,8 +60,11 @@ class PrefixIndexedFile(val path: String) {
   def search(prefix: String) = index.search(prefix)
  
   private def generateIndex(levels: Seq[Int]): SplitTree = {
+    
+    val fileLength = file.length
     val maxPrefixLen = levels.length
     val fullPrefexIndex = new HashMap[Seq[T], Long] // charSeqence -> beginning
+    val children = new HashMap[Seq[T], SplitTree]
     
     for(line <- Iterator.continually(file.readLine).takeWhile(_ != null)) {
       levels.indices.map { i => 
@@ -70,54 +76,31 @@ class PrefixIndexedFile(val path: String) {
         fullPrefexIndex.collect { case (seq, v) if seq.length == i + 1 => (v, seq) }.toSeq.sortBy(_._1)
     }
     
-    println(fullPrefexIndex)
-    
-    def build(level: Seq[(Long, Seq[T])], children: Map[Seq[T], SplitTree]): SplitTree = level match {
-      
-      case Seq() => throw new IllegalStateException
-      
-      // only a single element
-      case Seq((beginPos, prefix)) =>
-        val parent = prefix.init
-        val c = prefix.last
-        SplitTree(c, beginPos, Right(0), Right(0), children.get(prefix))
-        
-      case _ => 
-        val (left, middleRight) = level.splitAt(level.length / 2)
-        val (middle, right) = middleRight.splitAt(1)
-        val beginPos = middle.head._1
-        val prefix = middle.head._2
-        val parent = prefix.init
-        val c = prefix.last
-        
-        ///SplitTree(c, beginPos, build(left, children), build(right, children), children.get(prefix))
-
-
-      ???
-    }
-    
-    for((level, i) <- byLevel.zipWithIndex){
-      println(i)
-      println(level)
-      
+    def build(level: Seq[(Long, Seq[T])]): SplitTree = {
+      // should never be called on empty list
+      if(level.isEmpty) throw new IllegalStateException
       val (left, middleRight) = level.splitAt(level.length / 2)
       val (middle, right) = middleRight.splitAt(1)
+      val beginPos = middle.head._1
+      val prefix = middle.head._2
+      val parent = prefix.init
+      val c = prefix.last
       
-      println(left, middle, right)
-      
+      val leftTree = if(left.nonEmpty) Left(build(left)) else Right(0l)
+      val rightTree = if(right.nonEmpty) Left(build(right)) else Right(fileLength)
+      val result = SplitTree(c, beginPos, leftTree, rightTree, children.get(prefix))
+      children(parent) = result
+      result
     }
     
-    def getLineBeginning(pos: Long): String = {
-      file.seek(pos)
-      file.readLine()
-      file.getFilePointer().toString()
+    for((level, i) <- byLevel.zipWithIndex.reverse){
+      build(level)
     }
     
-    val maxlen = file.length
-    var split = maxlen / 2
+    val result = children(Seq.empty[T])
+
     
-    println(getLineBeginning(split))
-    ???
+    result
   }
   
   
@@ -125,6 +108,7 @@ class PrefixIndexedFile(val path: String) {
 
 
 object Test extends App {
-  new PrefixIndexedFile("/Volumes/AIPHES_HDD/AIPHES_Data/coocs/deu_news_10M/germeval_coocs.txt")
+  val file = new PrefixIndexedFile("/Volumes/AIPHES_HDD/AIPHES_Data/coocs/deu_news_10M/germeval_coocs.txt")
   //new PrefixIndexedFile("/Volumes/AIPHES_HDD/AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub")
+  println(file.search("hel"))
 }
