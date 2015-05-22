@@ -54,9 +54,7 @@ class PrefixIndexedFile(val path: String) {
     }
   }
   
-  
   def search(prefix: String) = index.search(prefix)
-  
  
   private def generateIndex(levels: Seq[Int]): SplitTree = {
     val maxPrefixLen = levels.length
@@ -74,9 +72,39 @@ class PrefixIndexedFile(val path: String) {
     
     println(fullPrefexIndex)
     
+    def build(level: Seq[(Long, Seq[T])], children: Map[Seq[T], SplitTree]): SplitTree = level match {
+      
+      case Seq() => throw new IllegalStateException
+      
+      // only a single element
+      case Seq((beginPos, prefix)) =>
+        val parent = prefix.init
+        val c = prefix.last
+        SplitTree(c, beginPos, Right(0), Right(0), children.get(prefix))
+        
+      case _ => 
+        val (left, middleRight) = level.splitAt(level.length / 2)
+        val (middle, right) = middleRight.splitAt(1)
+        val beginPos = middle.head._1
+        val prefix = middle.head._2
+        val parent = prefix.init
+        val c = prefix.last
+        
+        ///SplitTree(c, beginPos, build(left, children), build(right, children), children.get(prefix))
+
+
+      ???
+    }
+    
     for((level, i) <- byLevel.zipWithIndex){
       println(i)
       println(level)
+      
+      val (left, middleRight) = level.splitAt(level.length / 2)
+      val (middle, right) = middleRight.splitAt(1)
+      
+      println(left, middle, right)
+      
     }
     
     def getLineBeginning(pos: Long): String = {
