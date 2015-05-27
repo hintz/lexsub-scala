@@ -12,7 +12,6 @@ import java.nio.charset.Charset
  * Lojban utilities are in lojbanlib.data.Lojbanutil
  */
 package object utility {
-
   object io {
     
     val FileEncoding = "UTF-8"

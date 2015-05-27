@@ -15,5 +15,5 @@ object LexSub extends App {
   val gehen = gn.getSynsets("gehen")
   println(gehen)
   
-  //val gn = new GermaNetResource("/Volumes/AIPHES_HDD/AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
+  //val gnr = new GermaNetResource("/Volumes/AIPHES_HDD/AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
 }
