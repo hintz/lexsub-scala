@@ -14,6 +14,31 @@ object InspectRelations extends App {
   //val sample = ss.head
   //println(sample)
   
+  def getSematicRelationPath(orthFormStart: String, orthFormTarget: String, maxDepth: Int = 15): Seq[String] = {
+    // Perfrom BFS search through all relations
+    val synsetStart = gn.getSynsets(orthFormStart).asScala
+    val synsetTarget = gn.getSynsets(orthFormTarget).asScala
+    
+    val visited = new collection.mutable.HashMap[Synset, List[String]]
+    var frontier = Set(synsetStart.map(x => (x, List.empty[String])) :_*)
+
+    for (depth <- 0 to maxDepth) {
+      val next =
+        for (
+          (synset, path) <- frontier;
+          rel <- ConRel.values;
+          related <- synset.getRelatedSynsets(rel).asScala if !visited.contains(related);
+          val step = synset.getId + "_" + rel.toString) 
+            yield (related, step :: path)
+      visited ++= next
+      frontier = next
+      
+      if(synsetTarget.exists(visited.contains)) 
+        return synsetTarget.collectFirst { case s if visited contains s => visited(s) }.get
+    }
+    Seq.empty
+  }
+
   def getSemanticRelations(orthForm: String): Map[String, Seq[String]] = {
     val synsets = gn.getSynsets(orthForm).asScala
     
@@ -47,9 +72,10 @@ object InspectRelations extends App {
     for(substitute <- item.substitutionWords){
       val nSubstituteSynsets = gn.getSynsets(substitute).size
       val rel = relations.get(substitute).map(x => x.mkString(", ")).getOrElse("-")
-      val row = Seq(item.id, target, substitute, nTargetSynsets, nSubstituteSynsets, rel)
+      val path = getSematicRelationPath(target, substitute)
+      val pathLength = path.length
+      val row = Seq(item.id, target, substitute, nTargetSynsets, nSubstituteSynsets, rel, path.mkString("->"))
       println(row.mkString("\t"))
     }
   }
-  
 }
