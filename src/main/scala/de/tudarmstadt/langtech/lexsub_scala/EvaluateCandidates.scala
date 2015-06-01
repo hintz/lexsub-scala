@@ -16,18 +16,17 @@ case class PRResult(val tp: Int, val fp: Int, val fn: Int, val tn: Option[Int]) 
   override def toString = "R=%.2f P=%.2f F1=%.2f".format(recall, precision, fmeasure)
 }
 
+case class EvalResults(pr: PRResult)
+
 object EvaluateCandidates extends App {
-  
   
   def evaluate(gold: List[GoldItem], candidates: String => Seq[Candidate]) = {
         val subresults = for(item <- gold) yield {
           val gold = item.substitutionWords
           val retrieved = candidates(item.target.word).map(_.replacement)
-          
           val tp = retrieved.count(r => gold.contains(r))
           val fp = retrieved.count(r => !gold.contains(r))
           val fn = gold.count(g => !retrieved.contains(g))
-          
           PRResult(tp, fp, fn, None)
         }
         subresults.reduce(_ + _)
