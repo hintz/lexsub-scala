@@ -73,8 +73,8 @@ object InspectRelations extends App {
       val nSubstituteSynsets = gn.getSynsets(substitute).size
       val rel = relations.get(substitute).map(x => x.mkString(", ")).getOrElse("-")
       val path = getSematicRelationPath(target, substitute)
-      val pathLength = path.length
-      val row = Seq(item.id, target, substitute, nTargetSynsets, nSubstituteSynsets, rel, path.mkString("->"))
+      val pathLength = if(path.nonEmpty) path.length else -1
+      val row = Seq(item.id, target, substitute, nTargetSynsets, nSubstituteSynsets, rel, pathLength, path.mkString("->"))
       println(row.mkString("\t"))
     }
   }
