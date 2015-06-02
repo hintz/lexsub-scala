@@ -10,6 +10,7 @@ case class LexItem(val word: String, val pos: String)
 case class GoldItem(val id: String, target: LexItem, val substitutions: List[(String, Int)]) {
   def targetWord = target.word
   def substitutionWords = substitutions.map(_._1)
+  def substitutionWordsWithoutMultiwords = substitutionWords.filter(!_.contains(" "))
 }
 
 class GermEvalGold(goldfile: String) {
