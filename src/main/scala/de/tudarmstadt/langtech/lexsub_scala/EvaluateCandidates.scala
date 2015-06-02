@@ -4,6 +4,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.SimpleCandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GoldItem
 import de.tudarmstadt.langtech.lexsub_scala.candidates.Candidate
+import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 
 
 case class PRResult(val tp: Int, val fp: Int, val fn: Int, val tn: Option[Int]) {
@@ -27,6 +28,7 @@ object EvaluateCandidates extends App {
           val tp = retrieved.count(r => gold.contains(r))
           val fp = retrieved.count(r => !gold.contains(r))
           val fn = gold.count(g => !retrieved.contains(g))
+          assert(tp + fn == gold.length)
           PRResult(tp, fp, fn, None)
         }
         subresults.reduce(_ + _)
@@ -37,11 +39,26 @@ object EvaluateCandidates extends App {
     "AIPHES_Data/LexSub/candidates/germanet_candidates",
     "AIPHES_Data/LexSub/candidates/germanet_candidates-hy",
     "AIPHES_Data/LexSub/candidates/germanet_candidates-hy-ho",
-    "AIPHES_Data/LexSub/candidates/germeval_duden.de.txt")
+    "AIPHES_Data/LexSub/candidates/germeval_duden.de.txt",
+    "AIPHES_Data/LexSub/candidates/germeval_woxikon.de.txt"
+  )
+  
+  val Joined = List(
+      new JoinedCandidates(
+        new SimpleCandidateFile("AIPHES_Data/LexSub/candidates/germeval_duden.de.txt"),
+        new SimpleCandidateFile("AIPHES_Data/LexSub/candidates/germeval_woxikon.de.txt"))
+   )
 
   for (candidateList <- CandidateLists) {
     println(candidateList)
     val c = new SimpleCandidateFile(candidateList)
     println(evaluate(gold.items, c.get))
   }
+  
+  for (candidateList <- Joined) {
+    println(candidateList)
+    println(evaluate(gold.items, candidateList.get))
+  }
+  
+  
 }

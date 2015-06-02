@@ -29,7 +29,7 @@ class SimpleCandidateFile(val filename: String) extends CandidateReader {
   lazy val items: Map[String, Seq[Candidate]] = {
     val parsed = io.lines(filename).map(_.trim.split('\t').toList)
     val candidates = parsed.map { case a :: b :: c :: rest => SimpleCandidate(a, b, c); case _ => throw new Exception }
-    candidates.toSeq.groupBy(_.word)
+    candidates.toSeq.distinct.groupBy(_.word)
   }
 }
 
