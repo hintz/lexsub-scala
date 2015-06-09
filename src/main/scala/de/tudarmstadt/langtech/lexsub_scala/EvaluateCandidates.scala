@@ -56,6 +56,11 @@ object EvaluateCandidates extends App {
 		  new JoinedCandidates(duden, woxikon, wortschatzSyn),
       new JoinedCandidates(duden, woxikon, wortschatzSyn, germanetCandidatesHyHo)
    )
+   
+  for (c <- CandidateLists) {
+    println(c) 
+    c.get("glaubhaft").map(_.replacement) foreach println
+  }
 
   for (candidateList <- CandidateLists) {
     println(candidateList)

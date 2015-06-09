@@ -1,8 +1,10 @@
-package de.tudarmstadt.langtech.lexsub_scala
+package de.tudarmstadt.langtech.index_file
 
 import java.io.RandomAccessFile
 import scala.collection.mutable.HashMap
 import java.io.File
+import scala.Left
+import scala.Right
 
 class PrefixIndexedFile(val path: String) {
   
