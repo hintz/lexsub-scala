@@ -7,7 +7,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.Candidate
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
-
+import de.tudarmstadt.langtech.lexsub_scala.utility.io
 
 case class PRResult(val tp: Int, val fp: Int, val fn: Int, val tn: Option[Int]) {
   def retrieved = tp + fp
@@ -45,30 +45,44 @@ object EvaluateCandidates extends App {
   val germanetCandidatesHyHo = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates-hy-ho")
   val germanetGermevalAll = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_germanet.tsv", true)
 
-  val duden = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_duden.de.txt")
-  val woxikon = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_woxikon.de.txt")
-  val wortschatzSyn = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_wortschatz_syn")
+  val duden = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_duden.tsv", true)
+  val woxikon = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_woxikon.tsv", true)
+  val wortschatzSyn = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_wortschatz.tsv", true)
 
   val CandidateLists = List(
     germanetCandidates, germanetCandidatesHy, germanetCandidatesHyHo, germanetGermevalAll,
     duden, woxikon, wortschatzSyn
   )
   
+  val masterlist = new JoinedCandidates(duden, woxikon, wortschatzSyn, germanetGermevalAll)
+  //masterlist.save("germeval_masterlist.tsv")
+  
+  /*
+  // Writes outcomes.csv for Machine Learning eval
+  val goldmap = gold.items.groupBy(_.targetWord).mapValues(_.flatMap(_.substitutionWords).toSet)
+  def outcome(target: String, replacement: String): String = if(goldmap.getOrElse(target, Set.empty).contains(replacement)) "GOOD" else "BAD"
+  val lines = masterlist.formatLines.map { line =>
+    val (target :: pos :: replacement :: relations :: Nil) = line.split("\t").toList.asInstanceOf[List[String]]
+    relations + "\t" + outcome(target, replacement)
+  }
+  io.write("outcomes.csv", lines.mkString("\n"))
+  */
+  
   val Joined = List(
 		  new JoinedCandidates(duden, woxikon, wortschatzSyn),
-      new JoinedCandidates(duden, woxikon, wortschatzSyn, germanetGermevalAll)
+      masterlist
    )
    
-  val Filtered = germanetGermevalAll.filteredByAllRelations
+  val Filtered = duden.filteredByAllRelations ++ woxikon.filteredByAllRelations ++ wortschatzSyn.filteredByAllRelations
    
-   
-  val Evaluate: Seq[CandidateList] = CandidateLists ++ Joined //++ Filtered
+  val Evaluate: Seq[CandidateList] = CandidateLists ++ Joined ++ Filtered.sortBy(_.toString)
   for (candidateList <- Evaluate) {
     println(candidateList)
     println(evaluate(gold.items, candidateList.get))
   }
   
   /*
+  // writes sample word
   for (c <- CandidateLists) {
     println(c) 
     c.get("glaubhaft").map(_.replacement) foreach println
