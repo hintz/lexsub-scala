@@ -17,10 +17,15 @@ import ExecutionContext.Implicits.global
 
 class GermaNetUtils(val gn: GermaNet) {
   
-  val posMap = new HashMap[WordCategory, String]
-  def simplifyPos(pos: WordCategory): String = {
-    posMap.getOrElseUpdate(pos, pos.toString.substring(0, 1).toLowerCase)
-  }
+  // defines mapping between WordCategory and String representation
+  val posMapper = (wc: WordCategory) => wc.toString.substring(0, 1).toLowerCase
+  val posTranslation = WordCategory.values.zip(WordCategory.values.map(posMapper))
+  val posMap = posTranslation.toMap
+  val posBackmap = posTranslation.map(_.swap).toMap
+
+  /** Translates POS back-and-forth between LexSub's string representation and internal GermaNet representation */
+  def translatePos(s: String): Option[WordCategory] = posBackmap.get(s)
+  def translatePos(pos: WordCategory): String = posMap(pos)
   
   /* TODO: port?
   def getTransRelated(syn: Synset, rel: ConRel): Future[Seq[Synset]] = {
@@ -38,7 +43,6 @@ class GermaNetUtils(val gn: GermaNet) {
  def runWithTimeout[T](timeoutMs: Long)(f: => T) : Option[T] = {
     actors.Futures.awaitAll(timeoutMs, actors.Futures.future(f)).head.asInstanceOf[Option[T]]
   }
-
   
   // entries in GermaNet which seem to cause problems!
   // val Blacklist = Set("Acklins Island", "Amerika", "Andros Island")
@@ -52,7 +56,7 @@ class GermaNetUtils(val gn: GermaNet) {
     val synonymous = for (
       synset <- synsets;
       lexUnit <- synset.getLexUnits.asScala if !lexUnit.isArtificial;
-      word <- lexUnit.getOrthForms.asScala
+      word <- lexUnit.getOrthForms.asScala if word != orthForm
     ) yield (word, "synonym")
 
     val related = for (

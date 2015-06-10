@@ -42,25 +42,27 @@ object EvaluateCandidates extends App {
   val germanetCandidates = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates")
   val germanetCandidatesHy = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates-hy")
   val germanetCandidatesHyHo = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates-hy-ho")
+  val germanetGermevalAll = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_germanet.tsv")
 
   val duden = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_duden.de.txt")
   val woxikon = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_woxikon.de.txt")
   val wortschatzSyn = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_wortschatz_syn")
 
   val CandidateLists = List(
-    germanetCandidates, germanetCandidatesHy, germanetCandidatesHyHo, 
+    germanetCandidates, germanetCandidatesHy, germanetCandidatesHyHo, germanetGermevalAll,
     duden, woxikon, wortschatzSyn
   )
   
   val Joined = List(
 		  new JoinedCandidates(duden, woxikon, wortschatzSyn),
-      new JoinedCandidates(duden, woxikon, wortschatzSyn, germanetCandidatesHyHo)
+      new JoinedCandidates(duden, woxikon, wortschatzSyn, germanetGermevalAll)
    )
    
+   /*
   for (c <- CandidateLists) {
     println(c) 
     c.get("glaubhaft").map(_.replacement) foreach println
-  }
+  }*/
 
   for (candidateList <- CandidateLists) {
     println(candidateList)
