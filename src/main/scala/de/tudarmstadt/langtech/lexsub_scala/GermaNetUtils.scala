@@ -62,8 +62,8 @@ class GermaNetUtils(val gn: GermaNet) {
     val related = for (
       synset <- synsets;
       rel <- ConRel.values;
-      transrelated <- getTransRelated(synset, rel);
-      (related, idx) <- transrelated.zipWithIndex;
+      (transrelated, idx) <- getTransRelated(synset, rel).zipWithIndex;
+      related <- transrelated;
       relatedLex <- related.getLexUnits.asScala if !relatedLex.isArtificial;
       relatedOrthForm <- relatedLex.getOrthForms.asScala if relatedOrthForm != orthForm
     ) yield (relatedOrthForm, rel.toString.dropWhile(_ != '_').tail + "_" + idx)

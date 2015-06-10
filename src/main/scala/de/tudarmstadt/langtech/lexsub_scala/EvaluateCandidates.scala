@@ -6,6 +6,7 @@ import de.tudarmstadt.langtech.lexsub_scala.germeval.GoldItem
 import de.tudarmstadt.langtech.lexsub_scala.candidates.Candidate
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
+import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 
 
 case class PRResult(val tp: Int, val fp: Int, val fn: Int, val tn: Option[Int]) {
@@ -42,7 +43,7 @@ object EvaluateCandidates extends App {
   val germanetCandidates = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates")
   val germanetCandidatesHy = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates-hy")
   val germanetCandidatesHyHo = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates-hy-ho")
-  val germanetGermevalAll = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_germanet.tsv")
+  val germanetGermevalAll = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_germanet.tsv", true)
 
   val duden = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_duden.de.txt")
   val woxikon = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_woxikon.de.txt")
@@ -58,19 +59,19 @@ object EvaluateCandidates extends App {
       new JoinedCandidates(duden, woxikon, wortschatzSyn, germanetGermevalAll)
    )
    
-   /*
-  for (c <- CandidateLists) {
-    println(c) 
-    c.get("glaubhaft").map(_.replacement) foreach println
-  }*/
-
-  for (candidateList <- CandidateLists) {
+  val Filtered = germanetGermevalAll.filteredByAllRelations
+   
+   
+  val Evaluate: Seq[CandidateList] = CandidateLists ++ Joined //++ Filtered
+  for (candidateList <- Evaluate) {
     println(candidateList)
     println(evaluate(gold.items, candidateList.get))
   }
   
-  for (candidateList <- Joined) {
-    println(candidateList)
-    println(evaluate(gold.items, candidateList.get))
-  }
+  /*
+  for (c <- CandidateLists) {
+    println(c) 
+    c.get("glaubhaft").map(_.replacement) foreach println
+  }*/
+  
 }

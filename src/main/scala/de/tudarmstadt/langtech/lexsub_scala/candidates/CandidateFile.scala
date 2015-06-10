@@ -15,13 +15,18 @@ case class Candidate(
   def identity = (word, pos, replacement)
 }
 
-trait Candidates {
-  val get: Function[String, Seq[Candidate]]
-}
 
-trait CandidateList extends Candidates {
+trait CandidateList {
   val items: Map[String, Seq[Candidate]]
   val get: Function[String, Seq[Candidate]] = items.getOrElse(_, Seq.empty)
+  
+  /** filters this candidate list down to one relation */
+  def filterByRelation(relation: String): CandidateList = new FilteredCandidateList(this, relation)
+  
+  def filteredByAllRelations: Seq[CandidateList] = {
+    val relations = for(i <- items.values; c <- i; r <- c.relations) yield r
+    relations.toSet.toSeq.map(filterByRelation)
+  }
   
   /** outputs the candidate list in the correct format */
   def formatLines: List[String] = items.toList.sortBy(_._1).flatMap { case (target, candidates) => 
@@ -34,6 +39,24 @@ trait CandidateList extends Candidates {
   def save(filename: String) = io.write(filename, formatLines.mkString("\n"))
 }
 
+class FilteredCandidateList(val original: CandidateList, relation: String) extends CandidateList {
+  lazy val items = {
+    val mapped = original.items.mapValues { candidates => candidates.filter { c => c.relations.contains(relation) } }
+    val subset = mapped.filter(_._2.nonEmpty)
+    subset
+  }
+  
+  override def toString = getClass.getSimpleName + "(" + original + ", relation=" + relation + ")"
+}
+
+/*
+/** A fixed (in-memory) candidate list. Currently not needed. */
+class FixedCandidateList(override val items: Map[String, Seq[Candidate]], name: String = "") extends CandidateList {
+  override def toString = getClass.getSimpleName + "(" + name + ")"
+}
+*/
+
+/** Used to join multiple candidate set. Works lazy (creation is lightweight) */
 class JoinedCandidates(union: CandidateList*) extends CandidateList {
  
   // aggregate all sources
@@ -51,7 +74,6 @@ class JoinedCandidates(union: CandidateList*) extends CandidateList {
  override lazy val items = {
    val keySetList = union.map(_.items.keySet).reduce(_ union _).toList // ordered list of keyset
    val results = keySetList.map { key => 
-     
    }
    
    keySetList.zip(keySetList.map(get)).toMap
@@ -79,7 +101,8 @@ class CandidateFile(val filename: String, val semanticRelationColumn: Boolean = 
 object TestCandidateFileReader extends App {
 	val c = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_wortschatz_all.tsv", semanticRelationColumn = true)
   val d = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_wortschatz_all.tsv", semanticRelationColumn = true)
-  
   val joined = new JoinedCandidates(c, d)
-  joined.formatLines foreach println
+  val subset = d.filterByRelation("Wortschatz_is_synonym_of")
+  subset.formatLines foreach println
+  
 }
