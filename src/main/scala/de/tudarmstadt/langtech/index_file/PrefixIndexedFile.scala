@@ -6,6 +6,7 @@ import java.io.File
 import scala.Left
 import scala.Right
 import de.tudarmstadt.langtech.lexsub_scala.utility.io
+import java.nio.ByteBuffer
 
 trait Index extends java.io.Serializable {
   def search(prefix: String): (Long, Long)
@@ -47,7 +48,6 @@ trait Index extends java.io.Serializable {
   }
   */
 
-
 case class FixedSizePrefixIndex(index: Map[String, Long], end: Long) extends Index with Serializable {
   val byLength = index.keys.groupBy(_.length).mapValues(_.toVector.sorted).map(identity)
   val maxLength = byLength.keySet.max
@@ -69,6 +69,64 @@ class PrefixIndexedFile(val path: String) {
 
   val file = new RandomAccessFile(path, "r")
 
+  /** Fixes behaviour of RandomAccessFile::readLine */
+  def readline: String = {
+    var readData = false
+    val bytes = Iterator.continually(file.read).takeWhile(_ match {
+      case -1   => false
+      case '\n' => readData = true; false
+      case '\r' =>
+        readData = true;
+        val cur = file.getFilePointer
+        if (file.read != '\n') file.seek(cur)
+        false
+      case byte => 
+        readData = true; 
+        true
+    })
+    val byteArray = bytes.map(_.toByte).toArray
+    return if(readData) new String(byteArray) else null
+  }
+
+//  def readlineWorking: String = {
+//    val bytes = collection.mutable.Buffer[Byte]()
+//    var c = -1;
+//    var eol = false;
+//    while (!eol) {
+//      c = file.read
+//      c match {
+//        case -1 => eol = true;
+//        case '\n' => eol = true;
+//        case '\r' =>
+//            val cur = file.getFilePointer
+//            val next = file.read
+//            if (next != '\n') {
+//                file.seek(cur)
+//            }
+//            eol = true
+//        case _ =>
+//          bytes.append(c.toByte)
+//        }
+//    }
+//
+//    if ((c == -1) && (bytes.size == 0)) {
+//        return null;
+//    }
+//    new String(bytes.toArray)
+//  }
+
+//  def safe_readline: String = {
+//    val before = file.getFilePointer
+//    val wrongLine = file.readLine
+//    val after = file.getFilePointer
+//    val nBytes = after - before
+//    val buffer = new Array[Byte](nBytes.toInt)
+//    file.seek(before)
+//    file.readFully(buffer)
+//    val fixed = new String(buffer)
+//    fixed
+//  }
+
   val index: Index = {
     val indexpath = path + ".index"
     if (!new File(indexpath).exists) {
@@ -85,7 +143,7 @@ class PrefixIndexedFile(val path: String) {
   def search(prefix: String): Iterator[String] = {
     val (begin, end) = index.search(prefix)
     file.seek(begin)
-    val lines = for (line <- Iterator.continually(file.readLine).takeWhile(line => file.getFilePointer <= end))
+    val lines = for (line <- Iterator.continually(readline).takeWhile(line => file.getFilePointer <= end))
       yield line
     val cleaned = lines.dropWhile(!_.startsWith(prefix)).takeWhile(_.startsWith(prefix))
     cleaned
@@ -96,7 +154,7 @@ class PrefixIndexedFile(val path: String) {
     val fileLength = file.length
     val fullPrefexIndex = new HashMap[String, Long] // prefix -> beginning
     file.seek(0) // go to beginning
-    for (line <- Iterator.continually(file.readLine).takeWhile(_ != null)) {
+    for (line <- Iterator.continually(readline).takeWhile(_ != null)) {
       for (i <- 0 to prefixLength) {
         fullPrefexIndex.getOrElseUpdate(line.take(i + 1), file.getFilePointer - line.length - 1)
       }
@@ -159,5 +217,5 @@ class PrefixIndexedFile(val path: String) {
 object Test extends App {
   val file = new PrefixIndexedFile("F:/AIPHES_Data/LexSub/coocs/germeval_coocs_truecase.txt")
   //new PrefixIndexedFile("/Volumes/AIPHES_HDD/AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub")
-  file.search("wo") foreach println
+  file.search("w") foreach println
 }
