@@ -23,6 +23,9 @@ case class SubstitutionItem(
     val lexSubInstance: LexSubInstance,
     val substitution: String)
 {
+  def target: Token = lexSubInstance.head
+  def targetLemma: String = target.lemma
+  
   lazy val goldCounts: Option[(Int, Int)] = lexSubInstance.gold.map { gold => 
     val substitutions = gold.gold.substitutions
     val total = substitutions.map(_._2).sum

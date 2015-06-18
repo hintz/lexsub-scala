@@ -11,6 +11,10 @@ import opennlp.tools.postag.POSModel
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.training.TrainingDataCreation
+import de.tudarmstadt.langtech.lexsub_scala.features.FeatureAnnotator
+import de.tudarmstadt.langtech.lexsub_scala.features.ThresholdedDTOverlap
+import de.tudarmstadt.langtech.lexsub_scala.distributional.DTFile
+import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
 
 object LexSub extends App {
 
@@ -37,7 +41,20 @@ object LexSub extends App {
   val processed = data.map(Preprocess.apply)
   
   val trainingData = TrainingDataCreation.apply(processed, candidates, false)
-  trainingData.map(_.isGood) foreach println
+  
+  val dtfile = "../lexsub-gpl/AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub"
+
+  val dt = new DTLookup("de70M_mate_lemma", new DTFile(dtfile, identity), token => token.lemma.toLowerCase)
+  
+  val annotator = new FeatureAnnotator(
+      new ThresholdedDTOverlap(dt, Seq(10, 20, 100), false),
+      new ThresholdedDTOverlap(dt, Seq(10, 20, 100), true)
+  )
+  
+  val features = annotator.annotate(trainingData)
+  
+  
+  features foreach println
   
   
   //val model = new TokenizerModel(is)
