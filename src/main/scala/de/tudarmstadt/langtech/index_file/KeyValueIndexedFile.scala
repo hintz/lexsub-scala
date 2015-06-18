@@ -20,14 +20,15 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.io
  * 
  * @author gerold
  */
-class IndexedFile(val path: String, val separator: String = "\t") {
+class KeyValueIndexedFile(val path: String, val separator: String = "\t") {
 
   val file = new RandomAccessFile(path, "r")
+  
   val index = {
-    val indexpath = IndexedFile.getIndexPath(path)
+    val indexpath = KeyValueIndexedFile.getIndexPath(path)
     if (!io.exists(indexpath)) {
       System.err.println("Index file " + indexpath + " does not exist. Creating index..")
-      val lines = IndexedFile.generateIndex(path)
+      val lines = KeyValueIndexedFile.generateIndex(path)
       io.write(indexpath, lines.mkString("\n"))
     }
     io.lines(indexpath).map(_.split(separator, 1).toSeq).collect {
@@ -56,7 +57,7 @@ class IndexedFile(val path: String, val separator: String = "\t") {
 
 }
 
-object IndexedFile {
+object KeyValueIndexedFile {
 
   def getIndexPath(path: String) = path + ".index"
   def generateIndex(path: String, separator: Char = '\t'): List[String] = {
