@@ -15,7 +15,6 @@ case class Candidate(
   def identity = (word, pos, replacement)
 }
 
-
 trait CandidateList {
   val items: Map[String, Seq[Candidate]]
   val get: Function[String, Seq[Candidate]] = items.getOrElse(_, Seq.empty)
@@ -99,8 +98,8 @@ class CandidateFile(val filename: String, val semanticRelationColumn: Boolean = 
 }
 
 object TestCandidateFileReader extends App {
-	val c = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_wortschatz_all.tsv", semanticRelationColumn = true)
-  val d = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_wortschatz_all.tsv", semanticRelationColumn = true)
+	val c = new CandidateFile("../lexsub-gpl/AIPHES_Data/LexSub/candidates/germeval_duden.tsv", semanticRelationColumn = true)
+  val d = new CandidateFile("../lexsub-gpl/AIPHES_Data/LexSub/candidates/germeval_wortschatz.tsv", semanticRelationColumn = true)
   val joined = new JoinedCandidates(c, d)
   val subset = d.filterByRelation("Wortschatz_is_synonym_of")
   subset.formatLines foreach println

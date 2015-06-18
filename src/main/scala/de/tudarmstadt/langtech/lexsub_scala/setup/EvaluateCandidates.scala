@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala
+package de.tudarmstadt.langtech.lexsub_scala.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
@@ -7,6 +7,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.Candidate
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
+import de.tudarmstadt.langtech.lexsub_scala.utility
 import de.tudarmstadt.langtech.lexsub_scala.utility.io
 
 case class PRResult(val tp: Int, val fp: Int, val fn: Int, val tn: Option[Int]) {

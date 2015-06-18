@@ -61,6 +61,6 @@ class GermEvalReader(folder: String, filename: String) {
 }
 
 object TestGermEvalReader extends App {
-  val reader = new GermEvalReader("AIPHES_Data/GermEval2015", "train-dataset")
+  val reader = new GermEvalReader("../lexsub-gpl/AIPHES_Data/GermEval2015", "train-dataset")
   reader.items foreach println
 }

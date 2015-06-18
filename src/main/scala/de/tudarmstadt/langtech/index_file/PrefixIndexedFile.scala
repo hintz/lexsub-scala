@@ -40,6 +40,7 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
     if (!new File(indexpath).exists) {
       System.err.println("Index file " + indexpath + " does not exist. Creating index..")
       val index: PrefixFileIndex = generatedFixedPrefixIndex
+      System.err.println("Writing index " + indexpath)
       new java.io.ObjectOutputStream(new java.io.FileOutputStream(indexpath)).writeObject(index)
       index
     } else {
@@ -62,17 +63,23 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
     val fullPrefexIndex = new HashMap[String, Long] // prefix -> beginning
     file.seek(0) // go to beginning
     
+    // reporting
     var lastLine = -1l
-    val reportEachPercent = 0.1
-    var lastPercentage = Float.MinValue
+    val ReportEachMillis = 5000
+    var lastReport = System.currentTimeMillis
+    
     for (line <- Iterator.continually(readline).takeWhile(_ != null)) {
       val lineBegin = file.getFilePointer - line.length - 1
       assert(lineBegin > lastLine)
-      val percentage = lineBegin.toFloat * 100 / fileLength
-      if(percentage - lastPercentage >= reportEachPercent){
+      
+      // reporting
+      val now = System.currentTimeMillis()
+      if(now - lastReport >= ReportEachMillis){
+        val percentage = lineBegin.toFloat * 100 / fileLength
         System.err.println("Indexing %.1f%%".format(percentage))
-        lastPercentage = percentage
+        lastReport = now
       }
+
       for (i <- 0 to prefixLength) {
         fullPrefexIndex.getOrElseUpdate(line.take(i + 1), lineBegin)
       }
@@ -85,5 +92,7 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
 object Test extends App {
   //val file = new PrefixIndexedFile("F:/AIPHES_Data/LexSub/coocs/germeval_coocs_truecase.txt")
   val file = new PrefixIndexedFile("../lexsub-gpl/AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub")
+  file.search("würgen") foreach println
   file.search("wüten") foreach println
+  file.search("wissend") foreach println
 }

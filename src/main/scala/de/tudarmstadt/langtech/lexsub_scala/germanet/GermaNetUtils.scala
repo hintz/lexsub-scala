@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala
+package de.tudarmstadt.langtech.lexsub_scala.germanet
 
 import de.tuebingen.uni.sfs.germanet.api.GermaNet
 import scala.collection.JavaConverters._
@@ -6,14 +6,8 @@ import de.tuebingen.uni.sfs.germanet.api.GermaNet
 import de.tuebingen.uni.sfs.germanet.api.ConRel
 import de.tuebingen.uni.sfs.germanet.api.Synset
 import de.tuebingen.uni.sfs.germanet.api.WordCategory
-import scala.collection.mutable.HashMap
+import de.tuebingen.uni.sfs.germanet.api._
 
-/*
-import scala.concurrent.Future._
-import scala.concurrent._
-import scala.concurrent.duration._
-import ExecutionContext.Implicits.global
-*/
 
 class GermaNetUtils(val gn: GermaNet) {
   

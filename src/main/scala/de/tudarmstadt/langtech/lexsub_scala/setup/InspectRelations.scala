@@ -1,10 +1,9 @@
-package de.tudarmstadt.langtech.lexsub_scala
+package de.tudarmstadt.langtech.lexsub_scala.setup
 
 import scala.collection.JavaConverters._
 import de.tuebingen.uni.sfs.germanet.api.GermaNet
-import de.tuebingen.uni.sfs.germanet.api.ConRel
-import de.tuebingen.uni.sfs.germanet.api.Synset
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalGold
+import de.tudarmstadt.langtech.lexsub_scala.germanet.GermaNetUtils
 
 object InspectRelations extends App {
 	val gn = new GermaNet("/Volumes/AIPHES_HDD/AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")

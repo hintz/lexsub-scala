@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala
+package de.tudarmstadt.langtech.lexsub_scala.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.utility._
 import de.tuebingen.uni.sfs.germanet.api.GermaNet
@@ -8,6 +8,7 @@ import de.tuebingen.uni.sfs.germanet.api.ConRel
 import de.tuebingen.uni.sfs.germanet.api.Synset
 import de.tuebingen.uni.sfs.germanet.api.WordCategory
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
+import de.tudarmstadt.langtech.lexsub_scala.germanet.GermaNetUtils
 
 
 object CreateGermaNetCandidates extends App {
