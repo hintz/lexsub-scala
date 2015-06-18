@@ -8,7 +8,6 @@ import de.tuebingen.uni.sfs.germanet.api.Synset
 import de.tuebingen.uni.sfs.germanet.api.WordCategory
 import de.tuebingen.uni.sfs.germanet.api._
 
-
 class GermaNetUtils(val gn: GermaNet) {
   
   // defines mapping between WordCategory and String representation

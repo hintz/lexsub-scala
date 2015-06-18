@@ -56,7 +56,7 @@ package object utility {
   object strings {
 
     def splitAssign(splitter: Char)(string: String): (String, String) = {
-      val splitPos = string.indexOf(splitter)
+      val splitPos = string.lastIndexOf(splitter)
       if (splitPos < 0)
         throw new IllegalArgumentException("Given string %s can not be split at char '%c'".format(string, splitter))
       val (before, after) = string.splitAt(splitPos)
