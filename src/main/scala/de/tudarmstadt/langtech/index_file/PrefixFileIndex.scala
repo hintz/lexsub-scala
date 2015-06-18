@@ -4,7 +4,8 @@ package de.tudarmstadt.langtech.index_file
 /**
  * A byte offset index for a given search string / prefix
  */
-trait Index extends java.io.Serializable {
+@SerialVersionUID(1000L)
+trait PrefixFileIndex extends java.io.Serializable {
   def search(prefix: String): (Long, Long)
 }
 
@@ -44,7 +45,8 @@ trait Index extends java.io.Serializable {
   }
   */
 
-case class FixedSizePrefixIndex(index: Map[String, Long], end: Long) extends Index with Serializable {
+@SerialVersionUID(1000L)
+case class FixedSizePrefixIndex(index: Map[String, Long], end: Long) extends PrefixFileIndex with Serializable {
   val byLength = index.keys.groupBy(_.length).mapValues(_.toVector.sorted).map(identity)
   val maxLength = byLength.keySet.max
   def search(prefix: String): (Long, Long) = {

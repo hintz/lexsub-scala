@@ -35,16 +35,16 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
     return if(readData) new String(byteArray) else null
   }
 
-  val index: Index = {
+  val index: PrefixFileIndex = {
     val indexpath = path + ".index"
     if (!new File(indexpath).exists) {
       System.err.println("Index file " + indexpath + " does not exist. Creating index..")
-      val index: Index = generatedFixedPrefixIndex
+      val index: PrefixFileIndex = generatedFixedPrefixIndex
       new java.io.ObjectOutputStream(new java.io.FileOutputStream(indexpath)).writeObject(index)
       index
     } else {
       val s = new java.io.ObjectInputStream(new java.io.FileInputStream(indexpath))
-      s.readObject.asInstanceOf[Index]
+      s.readObject.asInstanceOf[PrefixFileIndex]
     }
   }
 
@@ -61,10 +61,22 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
     val fileLength = file.length
     val fullPrefexIndex = new HashMap[String, Long] // prefix -> beginning
     file.seek(0) // go to beginning
+    
+    var lastLine = -1l
+    val reportEachPercent = 0.1
+    var lastPercentage = Float.MinValue
     for (line <- Iterator.continually(readline).takeWhile(_ != null)) {
-      for (i <- 0 to prefixLength) {
-        fullPrefexIndex.getOrElseUpdate(line.take(i + 1), file.getFilePointer - line.length - 1)
+      val lineBegin = file.getFilePointer - line.length - 1
+      assert(lineBegin > lastLine)
+      val percentage = lineBegin.toFloat * 100 / fileLength
+      if(percentage - lastPercentage >= reportEachPercent){
+        System.err.println("Indexing %.1f%%".format(percentage))
+        lastPercentage = percentage
       }
+      for (i <- 0 to prefixLength) {
+        fullPrefexIndex.getOrElseUpdate(line.take(i + 1), lineBegin)
+      }
+      lastLine = lineBegin
     }
     new FixedSizePrefixIndex(fullPrefexIndex.toMap, fileLength)
   }
