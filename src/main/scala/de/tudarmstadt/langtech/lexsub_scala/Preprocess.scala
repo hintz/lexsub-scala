@@ -38,7 +38,7 @@ case class Preprocessing(
     val postags = posTagger(tokens)
     val headIndex = tokens.indexWhere(_ == targetWord)
     if (headIndex < 0)
-      throw new IllegalStateException("Could not find target word '%s' in sentence '%s'" format (targetWord, plaintext))
+      throw new IllegalStateException("Could not find target word '%s' in tokenized sentence '%s'" format (targetWord, tokens))
     
     val lemmas = tokens.map(lemmatizer).toVector
       .updated(headIndex, goldItem.sentence.target.lemma) // override with gold lemma
