@@ -49,13 +49,13 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
     }
   }
 
-  def search(prefix: String): Iterator[String] = {
+  def search(prefix: String): List[String] = {
     val (begin, end) = index.search(prefix)
     file.seek(begin)
     val lines = for (line <- Iterator.continually(readline).takeWhile(line => file.getFilePointer <= end))
       yield line
     val cleaned = lines.dropWhile(!_.startsWith(prefix)).takeWhile(_.startsWith(prefix))
-    cleaned
+    cleaned.toList
   }
 
   private def generatedFixedPrefixIndex: FixedSizePrefixIndex = {
