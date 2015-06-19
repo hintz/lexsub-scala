@@ -28,7 +28,6 @@ class FeatureAnnotator(extractors: FeatureExtractor*) {
   def annotate(item: SubstitutionItem) = extractors.flatMap(_.extract(item))
 
   def apply(item: SubstitutionItem): Instance[String] = {
-    println("annotating " + item)
     val result = new Instance[String]
     val features = annotate(item)
     val outcome = if(item.isGood.get) "GOOD" else "BAD"
