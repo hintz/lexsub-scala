@@ -31,6 +31,8 @@ import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import de.tudarmstadt.langtech.lexsub_scala.utility.io
+import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalResultOutcomeWriter
 
 
 case class ClassifierScorer(val trainingDiretory: File) {
@@ -80,7 +82,7 @@ case class LexSubExpander(
 object LexSub extends App {
   val TrainingDir = new File("training")
   
-  val preprocessing = Preprocessing(
+  lazy val preprocessing = Preprocessing(
       tokenizer = new Preprocessing.Tokenizer {
         val model = new TokenizerME(new TokenizerModel(new File("resources/models/opennlp/de-token.bin")))
         def apply(sent: String) = model.tokenize(sent)
@@ -112,9 +114,14 @@ object LexSub extends App {
    //val gnr = new GermaNetResource("/Volumes/AIPHES_HDD/AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
   
   val candidates = new CandidateFile("../lexsub-gpl/AIPHES_Data/LexSub/candidates/germeval_masterlist.tsv", semanticRelationColumn = true)
-  val data = new GermEvalReader("../lexsub-gpl/AIPHES_Data/GermEval2015", "train-dataset").items.take(30)
   
-  val processed = data.map(preprocessing.apply)
+  val data = new GermEvalReader("../lexsub-gpl/AIPHES_Data/GermEval2015", "train-dataset").items
+  
+  val processed = data.flatMap(preprocessing.tryApply)
+    
+  /* Preprocessed data can be trivially serialized */
+  //io.deserialize[LexSubInstance]("data.ser")
+  //io.serialize("data.ser", processed)
   
   val embeddingFile = "../lexsub-gpl/AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted"
   val dtfile = "../lexsub-gpl/AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub"
@@ -124,7 +131,7 @@ object LexSub extends App {
   
   // setup features
   val features = new FeatureAnnotator(
-      new ThresholdedDTOverlap(dt, Seq(10, 20, 100), false),
+      //new ThresholdedDTOverlap(dt, Seq(10, 20, 100), false),
       eigentwortCossim
   )
   
@@ -132,8 +139,8 @@ object LexSub extends App {
   Training.train(processed, candidates, features, TrainingDir)
   
   val lexsub = LexSubExpander(candidates, features, ClassifierScorer(TrainingDir))
+  val outcomes = processed.map(lexsub.apply)
   
-  val firstItem = lexsub.apply(processed.head)
-  firstItem foreach println
-  
+  val outWriter = new GermEvalResultOutcomeWriter(processed.map(_.gold.get).zip(outcomes))
+  outWriter.save("instances.out")
 }

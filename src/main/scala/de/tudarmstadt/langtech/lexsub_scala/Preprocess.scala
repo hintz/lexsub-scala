@@ -11,6 +11,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.lexsub_scala.types.Sentence
 import java.util.IllegalFormatException
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
+import scala.util.Try
 
 object Preprocessing {
   type Tokenizer = Function[String, Iterable[String]]
@@ -22,6 +23,12 @@ case class Preprocessing(
   tokenizer: Preprocessing.Tokenizer,
   posTagger: Preprocessing.PosTagger,
   lemmatizer: Preprocessing.Lemmatizer) {
+  
+  def tryApply(goldItem: GermEvalItem): Option[LexSubInstance] = {
+    val tried = Try(apply(goldItem))
+    tried.recover { case e => System.err.println(e)}.toOption
+    tried.toOption
+  }
 
   def apply(goldItem: GermEvalItem): LexSubInstance = {
     val plaintext = goldItem.sentence.sentence
@@ -30,16 +37,16 @@ case class Preprocessing(
     val tokens = tokenizer(plaintext).toVector
     val postags = posTagger(tokens)
     val headIndex = tokens.indexWhere(_ == targetWord)
-
+    if (headIndex < 0)
+      throw new IllegalStateException("Could not find target word '%s' in sentence '%s'" format (targetWord, plaintext))
+    
     val lemmas = tokens.map(lemmatizer).toVector
       .updated(headIndex, goldItem.sentence.target.lemma) // override with gold lemma
 
     val sentenceTokens = (tokens, postags, lemmas).zipped.map { case (token, pos, lemma) => Token(token, pos, lemma) }
     val sentence = Sentence(sentenceTokens.toVector)
 
-    if (headIndex < 0)
-      throw new IllegalStateException("Could not find target word %s in sentence '%s'" format (targetWord, plaintext))
+
     LexSubInstance(sentence, headIndex, Some(goldItem))
   }
 }
-

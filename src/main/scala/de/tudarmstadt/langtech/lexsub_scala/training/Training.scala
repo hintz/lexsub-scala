@@ -52,7 +52,6 @@ object Training {
             .getOrElse(List.empty)
           listReplacements.union(goldReplacements.toSet)
         }
-      
       replacements.map { subst =>
         SubstitutionItem(instance, subst)
       }
