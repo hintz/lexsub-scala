@@ -19,6 +19,9 @@ trait CandidateList {
   val items: Map[String, Seq[Candidate]]
   val get: Function[String, Seq[Candidate]] = items.getOrElse(_, Seq.empty)
   
+  /** Convenience function to get candidate lemmas */
+  def apply(lemma: String) = get(lemma).map(_.replacement)
+  
   /** filters this candidate list down to one relation */
   def filterByRelation(relation: String): CandidateList = new FilteredCandidateList(this, relation)
   

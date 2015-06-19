@@ -5,7 +5,6 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.lexsub_scala.utility.strings
 import scalaz.Memo
 
-
 trait DT[Elem]{
   type Result = Seq[(Elem, Double)]
   def similar(s: String): Result

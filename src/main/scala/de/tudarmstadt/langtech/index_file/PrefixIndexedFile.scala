@@ -16,7 +16,8 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
 
   val file = new RandomAccessFile(path, "r")
 
-  /** Fixes behaviour of RandomAccessFile::readLine */
+  /** Fixes behavior of RandomAccessFile::readLine (proper UTF-8 reading!)
+   *  Leaves the filepointer at the beginning of the next line! */
   def readline: String = {
     var readData = false
     val bytes = Iterator.continually(file.read).takeWhile(_ match {
@@ -24,6 +25,7 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
       case '\n' => readData = true; false
       case '\r' =>
         readData = true;
+        // swallow another character, if its \n
         val cur = file.getFilePointer
         if (file.read != '\n') file.seek(cur)
         false
@@ -32,7 +34,8 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
         true
     })
     val byteArray = bytes.map(_.toByte).toArray
-    return if(readData) new String(byteArray) else null
+    val string = if(readData) new String(byteArray) else null
+    string
   }
 
   val index: PrefixFileIndex = {
@@ -48,20 +51,27 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
       s.readObject.asInstanceOf[PrefixFileIndex]
     }
   }
+  
 
   def search(prefix: String): List[String] = {
-    val (begin, end) = index.search(prefix)
-    file.seek(begin)
-    val lines = for (line <- Iterator.continually(readline).takeWhile(line => file.getFilePointer <= end))
-      yield line
-    val cleaned = lines.dropWhile(!_.startsWith(prefix)).takeWhile(_.startsWith(prefix))
-    cleaned.toList
+    //val file = if(lazyRead) new RandomAccessFile(path, "r") else this.file
+    file synchronized {
+      val (begin, end) = index.search(prefix)
+      file.seek(begin)
+      val lines = for (line <- Iterator.continually(readline).takeWhile(line => file.getFilePointer <= end))
+        yield line
+      val cleaned = lines.dropWhile(!_.startsWith(prefix)).takeWhile(_.startsWith(prefix))
+      cleaned.toList
+    }
   }
 
   private def generatedFixedPrefixIndex: FixedSizePrefixIndex = {
     val fileLength = file.length
     val fullPrefexIndex = new HashMap[String, Long] // prefix -> beginning
-    file.seek(0) // go to beginning
+    
+    // go to beginning
+    var lineBegin = 0l
+    file.seek(lineBegin) 
     
     // reporting
     var lastLine = -1l
@@ -69,7 +79,7 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
     var lastReport = System.currentTimeMillis
     
     for (line <- Iterator.continually(readline).takeWhile(_ != null)) {
-      val lineBegin = file.getFilePointer - line.length - 1
+      
       assert(lineBegin > lastLine)
       
       // reporting
@@ -83,7 +93,9 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
       for (i <- 0 to prefixLength) {
         fullPrefexIndex.getOrElseUpdate(line.take(i + 1), lineBegin)
       }
+      
       lastLine = lineBegin
+      lineBegin = file.getFilePointer
     }
     new FixedSizePrefixIndex(fullPrefexIndex.toMap, fileLength)
   }
