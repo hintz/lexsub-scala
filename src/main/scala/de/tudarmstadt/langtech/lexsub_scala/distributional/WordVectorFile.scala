@@ -4,12 +4,6 @@ import de.tudarmstadt.langtech.index_file.PrefixIndexedFile
 import scalaz.Memo
 import breeze.linalg.{Vector => Vector}
 import breeze.linalg.DenseVector
-import breeze.generic.UFunc
-import breeze.linalg._
-import breeze.math._
-import breeze.numerics._
-import breeze.linalg.functions._
-
 class WordVectorFile(val embedding_file: String)  {
   
   val file = new PrefixIndexedFile(embedding_file)
