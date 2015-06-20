@@ -2,17 +2,24 @@ package de.tudarmstadt.langtech.lexsub_scala.distributional
 
 import de.tudarmstadt.langtech.index_file.PrefixIndexedFile
 import scalaz.Memo
+import breeze.linalg.{Vector => Vector}
+import breeze.linalg.DenseVector
+import breeze.generic.UFunc
+import breeze.linalg._
+import breeze.math._
+import breeze.numerics._
+import breeze.linalg.functions._
 
 class WordVectorFile(val embedding_file: String)  {
   
   val file = new PrefixIndexedFile(embedding_file)
   
-  def cossim(w1: String, w2: String): Option[Double] = {
-    def dot(v1: Vector[Double], v2: Vector[Double]) = (v1, v2).zipped.map(_ * _).sum
-    def norm(v: Vector[Double]): Double = math.sqrt(dot(v, v))
+  def cossim(w1: String, w2: String) = similarity(breeze.linalg.functions.cosineDistance(_, _))(w1, w2)
+  def similarity(f: (Vector[Double], Vector[Double]) => Double)(w1: String, w2: String): Option[Double] = {
     (vector(w1), vector(w2)) match {
       case (Some(v1), Some(v2)) => 
-        Some(dot(v1, v2) / (norm(v1) * norm(v2)))
+        val result = f(v1, v2)
+        Some(result)
       case _ => None
     }
   }
@@ -21,9 +28,10 @@ class WordVectorFile(val embedding_file: String)  {
   def vector(word: String): Option[Vector[Double]] = repr(word)
   val repr: String => Option[Vector[Double]] = Memo.mutableHashMapMemo { word =>
     val lines = file.search(word)
-    lines.map(_.split(" ").toList).collectFirst {
-      case `word` :: vector => vector.map(_.toDouble).toVector
+    val v = lines.map(_.split(" ").toList).collectFirst {
+      case `word` :: vector => vector.map(_.toDouble).toArray
     }
+    v.map(DenseVector.apply)
   }
 }
 
