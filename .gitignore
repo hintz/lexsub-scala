@@ -7,6 +7,8 @@ syntax: glob
 #*.off
 *.old
 
+
+
 # eclipse conf file
 .settings
 .classpath
@@ -37,6 +39,7 @@ build.log
 build.log
 
 # other stuff
+/AIPHES_Data
 /resources
 /training
 

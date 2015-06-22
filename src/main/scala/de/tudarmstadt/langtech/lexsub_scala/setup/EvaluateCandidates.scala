@@ -3,12 +3,12 @@ package de.tudarmstadt.langtech.lexsub_scala.setup
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GoldItem
-import de.tudarmstadt.langtech.lexsub_scala.candidates.Candidate
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.utility
 import de.tudarmstadt.langtech.lexsub_scala.utility.io
+import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
 
 case class PRResult(val tp: Int, val fp: Int, val fn: Int, val tn: Option[Int]) {
   def retrieved = tp + fp
@@ -76,7 +76,7 @@ object EvaluateCandidates extends App {
    
   val Filtered = duden.filteredByAllRelations ++ woxikon.filteredByAllRelations ++ wortschatzSyn.filteredByAllRelations
    
-  val Evaluate: Seq[CandidateList] = CandidateLists ++ Joined ++ Filtered.sortBy(_.toString)
+  val Evaluate: Seq[CandidateList] = CandidateLists ++ Joined //++ Filtered.sortBy(_.toString)
   for (candidateList <- Evaluate) {
     println(candidateList)
     println(evaluate(gold.items, candidateList.get))

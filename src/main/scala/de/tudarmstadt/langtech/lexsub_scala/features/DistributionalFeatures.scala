@@ -22,7 +22,7 @@ extends NumericOptionalValueFeatureExtractor("Sim_" + dt.dtName) {
   def extractOptValue(item: SubstitutionItem): Option[Double] =  dt.similarity(item.target, item.substitution)
 }
 
-case class ThresholdedDTOverlap[E](dt: DTLookup, thresholds: Seq[Int], useLMIScores: Boolean) extends FeatureExtractor {
+case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores: Boolean) extends FeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature] = {
     val substituteLemma = item.substitution
     val orig = dt.similar(item.target)
@@ -42,8 +42,8 @@ case class ThresholdedDTOverlap[E](dt: DTLookup, thresholds: Seq[Int], useLMISco
       else {
         overlap.size.toDouble / total
       }
-      new Feature(name, value)
+      if(!value.isNaN) Some(new Feature(name, value)) else None
     }
-    features
+    features.flatten
   }
 }

@@ -1,10 +1,11 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
-import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import org.cleartk.classifier.Feature
 import org.cleartk.classifier.Instance
 import scala.collection.JavaConversions._
+import de.tudarmstadt.langtech.lexsub_scala.types._
 import de.tudarmstadt.langtech.lexsub_scala.utility.ReportingIterable._
+import de.tudarmstadt.langtech.lexsub_scala.BatchProcessing
 
 trait FeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature]
@@ -34,7 +35,7 @@ abstract class NumericValueFeatureExtractor(override val featureName: String) ex
   def extractOptValue(item: SubstitutionItem): Option[Double] = Some(extractValue(item))
 }
 
-class FeatureAnnotator(extractors: FeatureExtractor*) {
+class FeatureAnnotator(extractors: FeatureExtractor*) extends BatchProcessing[SubstitutionItem, Instance[String]]{
   def annotate(item: SubstitutionItem) = extractors.flatMap(_.extract(item))
 
   def apply(item: SubstitutionItem): Instance[String] = {
@@ -47,10 +48,4 @@ class FeatureAnnotator(extractors: FeatureExtractor*) {
   }
   
   def annotate(items: Iterable[SubstitutionItem]): Iterable[Seq[Feature]] = items.map(annotate)
-  def apply(items: Iterable[SubstitutionItem]): Iterable[Instance[String]] = items.reporting(report, 5000).map(apply)
-    
-    
-  def report(i: Int, n: Int, passed: Double, remaining: Double){
-    println("%d / %d items (%.2f%%) %.0fs passed, %.0fs remaining".format(i, n, i * 100f / n, passed, remaining))
-  }
 }

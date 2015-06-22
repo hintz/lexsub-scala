@@ -1,26 +1,12 @@
 package de.tudarmstadt.langtech.lexsub_scala.candidates
 import de.tudarmstadt.langtech.lexsub_scala.utility
 import de.tudarmstadt.langtech.lexsub_scala.utility.io
+import de.tudarmstadt.langtech.lexsub_scala.types.{Candidate, CandidateFunction}
 import java.util.IllegalFormatException
 
-case class Candidate(
-    /** the lexical item to be replaced */
-    val word: String, 
-    /** Part-of-Speech */
-    val pos: String, 
-    /** the replacement word */
-    val replacement: String, 
-    /** optional set of semantic relation labels extracted from one or more semantic resources */
-    val relations: Set[String] = Set.empty) {
-  def identity = (word, pos, replacement)
-}
-
-trait CandidateList {
+trait CandidateList extends CandidateFunction {
   val items: Map[String, Seq[Candidate]]
-  val get: Function[String, Seq[Candidate]] = items.getOrElse(_, Seq.empty)
-  
-  /** Convenience function to get candidate lemmas */
-  def apply(lemma: String) = get(lemma).map(_.replacement)
+  def get(lemma: String) = items.getOrElse(lemma, Seq.empty)
   
   /** filters this candidate list down to one relation */
   def filterByRelation(relation: String): CandidateList = new FilteredCandidateList(this, relation)
@@ -62,7 +48,7 @@ class FixedCandidateList(override val items: Map[String, Seq[Candidate]], name: 
 class JoinedCandidates(union: CandidateList*) extends CandidateList {
  
   // aggregate all sources
-  override val get: Function[String, Seq[Candidate]] =  (c: String) => 
+  override def get(c: String) =
    union.flatMap(_.get(c)).groupBy(_.identity)
    .mapValues(_.map(_.relations).reduce(_ union _))
    .map { 

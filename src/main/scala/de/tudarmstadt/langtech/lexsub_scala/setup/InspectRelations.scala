@@ -14,7 +14,6 @@ object InspectRelations extends App {
   //val ss: Seq[Synset] = gn.getSynsets("Erleichterung").asScala
   //val sample = ss.head
   //println(sample)
- 
   
   getSemanticRelations("essen")
   getSemanticRelations("Ackerwalze")
