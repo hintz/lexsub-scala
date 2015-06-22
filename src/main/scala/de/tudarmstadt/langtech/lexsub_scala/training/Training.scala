@@ -7,15 +7,19 @@ import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter
 import de.tudarmstadt.langtech.lexsub_scala.features.FeatureAnnotator
 import org.cleartk.classifier.feature.transform.InstanceDataWriter
 import org.cleartk.classifier.jar.JarClassifierBuilder
+import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
 
 object Training {
   
+  val IncludeGoldNotInList = false
+  
+  /** Trains a classifier with the given training data in the directory given in trainingDir */
   def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator, trainingDir: File){
     
     println("Starting training on " + data.size + " instances")
     
     // create training data
-    val trainingData = createTrainingData(data, candidates, false)
+    val trainingData = createTrainingData(data, candidates)
     println("Using " + candidates + " created " + trainingData.size + " training examples")
     
     
@@ -35,17 +39,14 @@ object Training {
     JarClassifierBuilder.trainAndPackage(trainingDir, "MaxEnt")
   }
   
-  
-  def createTrainingData(
-      data: Iterable[LexSubInstance],
-      candidates: CandidateList,
-      includeGoldNotInList: Boolean = true): Iterable[SubstitutionItem] = 
+  /** Pairs each LexSubInstance with a number of possible substitutes, based on a candidate list */
+  def createTrainingData(data: Iterable[LexSubInstance], candidates: CandidateList): Iterable[SubstitutionItem] = 
   {
     data.flatMap { instance =>
       val headLemma = instance.head.lemma
       val listReplacements = candidates.get(headLemma).map(_.replacement).toSet
       val replacements =
-        if (!includeGoldNotInList)
+        if (!IncludeGoldNotInList)
           listReplacements
         else {
           val goldReplacements = instance.gold.map(g => g.gold.substitutionWords)
@@ -57,4 +58,8 @@ object Training {
       }
     }
   }
+  
+  def collectOutcomes(items: Iterable[LexSubInstance], outcomes: Iterable[Seq[(String, Double)]]) = 
+    items.zip(outcomes).map(Outcome.tupled)
+
 }

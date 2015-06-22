@@ -9,9 +9,18 @@ trait FeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature]
 }
 
-abstract class NominalValueFeatureExtract(val featureName: String) extends FeatureExtractor {
-  def extractValue(item: SubstitutionItem): String
-  def extract(item: SubstitutionItem): Seq[Feature] = Seq(new Feature(featureName + "_" + extractValue(item), 1f))
+class FeatureExtractorCollection(features: FeatureExtractor*) extends FeatureExtractor {
+  def extract(item: SubstitutionItem): Seq[Feature] = features.flatMap(_.extract(item))
+}
+
+abstract class NominalOptionalValueFeatureExtract(val featureName: String) extends FeatureExtractor {
+  def extractOptValue(item: SubstitutionItem): Option[Any]
+  def extract(item: SubstitutionItem): Seq[Feature] = extractOptValue(item).toSeq.map(v => new Feature(featureName, v)) // new Feature(featureName + "_" + v, 1f)
+}
+
+abstract class NominalValueFeatureExtract(override val featureName: String) extends NominalOptionalValueFeatureExtract(featureName) {
+  def extractValue(item: SubstitutionItem): Any
+  override def extractOptValue(item: SubstitutionItem): Option[Any] = Some(extractValue(item))
 }
 
 abstract class NumericOptionalValueFeatureExtractor(val featureName: String) extends FeatureExtractor {

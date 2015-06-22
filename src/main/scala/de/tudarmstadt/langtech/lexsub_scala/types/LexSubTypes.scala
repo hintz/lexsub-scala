@@ -35,3 +35,7 @@ case class SubstitutionItem(
   def isGood = goldCounts.map(_._1 > 0)
   def score = goldCounts.map { case (a, b) => a.toDouble / b }
 }
+
+case class Outcome(val lexSubInstance: LexSubInstance, substitutes: Seq[(String, Double)]){
+  def toSubstituteItems: Seq[SubstitutionItem] = substitutes.map(ws => SubstitutionItem(lexSubInstance, ws._1))
+}

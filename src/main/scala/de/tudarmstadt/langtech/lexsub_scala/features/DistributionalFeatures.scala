@@ -10,7 +10,7 @@ class DTLookup[Elem](val dtName: String, val dt: DTFile[Elem], lookupFunction: T
   def similar(token: Token) = (lookupFunction andThen dt.sim)(token)
 }
 
-class ThresholdedDTOverlap[E](dt: DTLookup[E], thresholds: Seq[Int], useLMIScores: Boolean) extends FeatureExtractor {
+case class ThresholdedDTOverlap[E](dt: DTLookup[E], thresholds: Seq[Int], useLMIScores: Boolean) extends FeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature] = {
     val substituteLemma = item.substitution
     val orig = dt.similar(item.target)

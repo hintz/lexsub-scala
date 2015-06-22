@@ -68,6 +68,9 @@ package object utility {
         .digest(text.getBytes()).map(0xFF & _)
         .map { "%02x".format(_) }.foldLeft("") { _ + _ }
     }
+    
+    
+    def timestring: String = new SimpleDateFormat("YYYY-MM-dd_kk-mm-ss").format(Calendar.getInstance.getTime)
   }
 
   def to2Tuple[A](list: List[A]): (A, A) = list match {
@@ -225,7 +228,11 @@ package object utility {
     val total = list.map(_._2).scan(0d)(_ + _)
     list.zip(total).takeWhile(_._2 < max).map(_._1)
   }
-
-  def timestring: String = new SimpleDateFormat("YYYY-MM-dd_kk-mm-ss").format(Calendar.getInstance.getTime)
   
+
+  /** Extracts a fixed-size context window from collection */
+  def context[A](left: Int, right: Int)(items: IndexedSeq[A], index: Int): IndexedSeq[Option[A]] = {
+    val indices = index - left to index + right
+    indices.map(items.lift)
+  }
 }
