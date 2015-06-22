@@ -1,9 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala
 
 import java.io.File
-
 import com.googlecode.jweb1t.JWeb1TSearcher
-
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.distributional.WordSimilarityFile
 import de.tudarmstadt.langtech.lexsub_scala.distributional.WordVectorFile

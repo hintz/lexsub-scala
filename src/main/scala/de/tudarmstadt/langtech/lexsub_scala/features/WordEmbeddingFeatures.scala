@@ -12,7 +12,7 @@ import org.cleartk.classifier.feature.transform.extractor.CosineSimilarity
 
 case class WordEmbeddingSimilarity(val embedding: WordVectorFile) 
 extends NumericOptionalValueFeatureExtractor("EmbeddingCosSim") {
-  def extractOptValue(item: SubstitutionItem): Option[AnyVal] = 
+  def extractOptValue(item: SubstitutionItem): Option[Double] = 
     embedding.cossim(item.targetLemma, item.substitution)
 }
 
@@ -23,7 +23,7 @@ extends NumericOptionalValueFeatureExtractor("EmbeddingDist") {
   private def distance(v1: Vector[Double], v2: Vector[Double]) = 
     breeze.linalg.norm[Vector[Double], Double](v1 - v2)
     
-  def extractOptValue(item: SubstitutionItem): Option[AnyVal] = 
+  def extractOptValue(item: SubstitutionItem): Option[Double] = 
     embedding.similarity(distance)(item.targetLemma, item.substitution)
 }
 
@@ -33,7 +33,7 @@ case class WordEmbeddingDistanceVectors(embedding: WordVectorFile, leftContext: 
   
   val slicer = utility.context[String](leftContext, rightContext) _
   
-  def extractOptValue(item: SubstitutionItem): Option[AnyVal] = {
+  def extractOptValue(item: SubstitutionItem): Option[Double] = {
      val sentence = item.lexSubInstance.sentence
      val tokens = sentence.tokens.map(_.word) // use word forms, not lemmas!
      
