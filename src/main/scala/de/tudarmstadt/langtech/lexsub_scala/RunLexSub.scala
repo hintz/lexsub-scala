@@ -8,11 +8,13 @@ import de.tudarmstadt.langtech.lexsub_scala.training.Training
 import de.tudarmstadt.langtech.lexsub_scala.distributional._
 import de.tudarmstadt.langtech.lexsub_scala.germeval._
 import de.tudarmstadt.langtech.lexsub_scala.features._
+import de.tudarmstadt.langtech.lexsub_scala.features.{DTLookup, PosContextWindows, Web1TFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity}
 import opennlp.tools.postag.POSModel
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.tokenize.TokenizerME
 import opennlp.tools.tokenize.TokenizerModel
 import org.cleartk.classifier.jar.JarClassifierBuilder
+
 
 /** Lexsub playground to train / run / evaluate / etc. */
 object RunLexSub extends App {
@@ -59,15 +61,15 @@ object RunLexSub extends App {
   
   // setup features
   val features = new FeatureAnnotator(
-      WordSimilarity(dt),
+      //WordSimilarity(dt),
       WordSimilarity(cooc),
-      ThresholdedDTOverlap(dt, Seq(10, 20, 100), false),
+      ThresholdedDTOverlap(dt, Seq(20, 50, 100), false),
       PosContextWindows(0 to 2, 0 to 2),
       Web1TFreqRatios(web1t, 0 to 2, 0 to 2),
       LexSemRelation(masterlist),
-      WordEmbeddingDistanceVectors(embedding, 2, 2),
-      WordEmbeddingSimilarity(embedding),
-      WordEmbeddingDistance(embedding)
+      WordEmbeddingDistanceVectors(embedding, 2, 2)
+      //WordEmbeddingSimilarity(embedding),
+      //WordEmbeddingDistance(embedding)
   )
   
   // train
@@ -75,10 +77,11 @@ object RunLexSub extends App {
   //JarClassifierBuilder.trainAndPackage(TrainingDir, "MaxEnt")
   
   val lexsub = LexSubExpander(candidates, features, ClassifierScorer(TrainingDir))
-  val outcomes = data.map(lexsub.apply)
+  val outcomes = lexsub(data)
   
   val results = Training.collectOutcomes(data, outcomes)
   
   val outWriter = new GermEvalResultOutcomeWriter(results)
   outWriter.save("instances.out")
+  println("Done.")
 }

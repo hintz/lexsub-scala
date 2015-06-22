@@ -42,7 +42,7 @@ case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores
       else {
         overlap.size.toDouble / total
       }
-      if(!value.isNaN) Some(new Feature(name, value)) else None
+      if(!value.isNaN && value > 0) Some(new Feature(name, value)) else None
     }
     features.flatten
   }
