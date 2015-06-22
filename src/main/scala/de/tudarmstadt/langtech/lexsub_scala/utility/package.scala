@@ -32,15 +32,31 @@ package object utility {
 
     /** More or less a hack. Take raw bytes and try to encode them in default encoding (=UTF-8) */
     def reencode(string: String): String = new String(string.getBytes, FileEncoding)
+    
+    
+    /** Serialize an object in file*/
+    def serialize(o: Any, file: String) {
+      val s = new java.io.ObjectOutputStream(new java.io.FileOutputStream(file))
+      s.writeObject(o)
+      s.close
+    }
+    
+    /** Load object of type T from file */
+    def deserialize[T](file: String): T = {
+      val s = new java.io.ObjectInputStream(new java.io.FileInputStream(file))
+      val result = s.readObject.asInstanceOf[T]
+      s.close
+      result
+    }
 
     /** Serialize a sequence of items of type T */
-    def serialize[T](file: String, seq: Iterable[T]) {
+    def serializeSeq[T](file: String, seq: Iterable[T]) {
       val s = new java.io.ObjectOutputStream(new java.io.FileOutputStream(file))
       for (o <- seq) s.writeObject(o)
       s.close
     }
 
-    def deserialize[T](file: String, max: Int = -1): List[T] = {
+    def deserializeSeq[T](file: String, max: Int = -1): List[T] = {
       val result = new ListBuffer[T]
 
       val s = new java.io.ObjectInputStream(new java.io.FileInputStream(file))
@@ -50,6 +66,16 @@ package object utility {
       } catch { case x: java.io.EOFException => }
       s.close
       result.toList
+    }
+    
+    /** Lazily serialize an object in a file */
+    def lazySerialized[T](filecache: String)(creator: => T): T = {
+        if(!new File(filecache).exists){
+          val data = creator // fixed point
+          serialize(data, filecache)
+          data
+        }
+        else deserialize(filecache)
     }
   }
 

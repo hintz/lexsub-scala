@@ -5,12 +5,11 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.lexsub_scala.utility.strings
 import scalaz.Memo
 
-trait DT[Elem]{
-  type Result = Seq[(Elem, Double)]
-  def similar(s: String): Result
-}
 
-class DTFile[Elem](val dt_filename: String, extractor: (String => Elem), sorted: Boolean = true) extends DT[Elem] {
+
+class WordSimilarityFile[Elem](val dt_filename: String, extractor: (String => Elem), sorted: Boolean = true) {
+  
+  type Result = Seq[(Elem, Double)]
 	
   // splitter splitting word / otherWord / score
   val Splitter = "\t"
@@ -42,7 +41,7 @@ object HashtagSeparatedPos extends Function[String, Token] {
 }
 
 object Test extends App {
-  val dt = new DTFile("../lexsub-gpl/AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub", 
+  val dt = new WordSimilarityFile("../lexsub-gpl/AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub", 
       HashtagSeparatedPos)
   
   dt.similar("erleichterung") foreach println

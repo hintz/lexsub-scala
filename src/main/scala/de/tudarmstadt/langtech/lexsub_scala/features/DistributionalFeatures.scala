@@ -2,15 +2,27 @@ package de.tudarmstadt.langtech.lexsub_scala.features
 
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import org.cleartk.classifier.Feature
-import de.tudarmstadt.langtech.lexsub_scala.distributional.DTFile
+import de.tudarmstadt.langtech.lexsub_scala.distributional.WordSimilarityFile
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 
 
-class DTLookup[Elem](val dtName: String, val dt: DTFile[Elem], lookupFunction: Token => String) {
+case class DTLookup(val dtName: String, val dt: WordSimilarityFile[String], 
+    lookupFunction: Token => String,  // determines how to map token to lookup string
+    equivalenceFunction: (String, String) => Boolean = // determines equivalence between candidate and similar item
+      (substitute, other) => substitute == other) {
   def similar(token: Token) = (lookupFunction andThen dt.sim)(token)
+  def similarity(token: Token, substitute: String) = {
+    similar(token).collectFirst { case (other, score) if equivalenceFunction(substitute, other) => score }
+  }
 }
 
-case class ThresholdedDTOverlap[E](dt: DTLookup[E], thresholds: Seq[Int], useLMIScores: Boolean) extends FeatureExtractor {
+/** Looks up word similarity between target and substitute in a DTLookup */
+case class WordSimilarity(dt: DTLookup) 
+extends NumericOptionalValueFeatureExtractor("Sim_" + dt.dtName) {
+  def extractOptValue(item: SubstitutionItem): Option[Double] =  dt.similarity(item.target, item.substitution)
+}
+
+case class ThresholdedDTOverlap[E](dt: DTLookup, thresholds: Seq[Int], useLMIScores: Boolean) extends FeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature] = {
     val substituteLemma = item.substitution
     val orig = dt.similar(item.target)

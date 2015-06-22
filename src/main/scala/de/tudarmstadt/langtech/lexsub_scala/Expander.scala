@@ -40,7 +40,7 @@ case class LexSubExpander(
   
   /** Expands and ranks */
   def apply(instance: LexSubInstance): Seq[(String, Double)] = {
-    val candidates = candidateList(instance.head.lemma)
+    val candidates = candidateList(instance.head.lemma).filter(_ != instance.head.lemma)
     apply(instance, candidates)
   }
   

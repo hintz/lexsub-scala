@@ -30,3 +30,6 @@ case class Web1TFreqRatio(web1t: JWeb1TSearcher, left: Int, right: Int) extends 
      Some(ratio)
    }
  }
+
+case class Web1TFreqRatios(web1t: JWeb1TSearcher, leftRange: Range, rightRange: Range) 
+extends FeatureExtractorCollection((for(l <- leftRange; r <- rightRange) yield Web1TFreqRatio(web1t, l, r)) :_*)

@@ -44,7 +44,9 @@ object Training {
   {
     data.flatMap { instance =>
       val headLemma = instance.head.lemma
-      val listReplacements = candidates.get(headLemma).map(_.replacement).toSet
+      val listReplacements = candidates.get(headLemma)
+        .collect { case c if c.replacement != headLemma => c.replacement} // exclude headLemma from candidates!
+        .toSet
       val replacements =
         if (!IncludeGoldNotInList)
           listReplacements
