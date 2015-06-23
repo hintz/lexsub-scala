@@ -73,11 +73,15 @@ class ARFFWriter(val out: PrintStream) {
   def toFeature(obj: Any): ARFFFeature = ARFFWriter.toFeature(obj)
 }
 
-
 object ARFFWriter {
   
   val NominalThreshold: Int = 1000
   
+  /** Utility function converting a mallet file to ARFF */
+  def translateMallet(infile: String, outfile: String){
+     val writer = new ARFFWriter(new PrintStream(new java.io.FileOutputStream(outfile)))
+     writer.translateMalletFile(infile)
+  }
   
   /** Convenience method returning a string */
   def string(relName: String, colNames: Seq[String], columns: Vector[Any]*): String = {

@@ -12,7 +12,7 @@ import java.nio.ByteBuffer
  * A reader for a *SORTED* textfile encoded in UTF-8.
  * Retrieves subset of lines for a given prefix
  */
-class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
+class PrefixIndexedFile(val path: String, val prefixLength: Int = 5) {
 
   val file = new RandomAccessFile(path, "r")
 
@@ -60,6 +60,18 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 4) {
       file.seek(begin)
       val lines = for (line <- Iterator.continually(readline).takeWhile(line => file.getFilePointer <= end))
         yield line
+      
+      // profiling..
+      /*
+      val foo = lines.toList
+      println("Searching with prefix '%s', resulting in %d lines".format(prefix, foo.length))
+      val dropped = foo.dropWhile(!_.startsWith(prefix))
+      println(".. dropped left %d lines".format(foo.length - dropped.length))
+      val taken = dropped.takeWhile(_.startsWith(prefix))
+      println(".. dropped right %d lines".format(dropped.length - taken.length))
+      return taken
+      */
+        
       val cleaned = lines.dropWhile(!_.startsWith(prefix)).takeWhile(_.startsWith(prefix))
       cleaned.toList
     }

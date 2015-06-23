@@ -6,7 +6,7 @@ import breeze.linalg.{Vector => Vector}
 import breeze.linalg.DenseVector
 class WordVectorFile(val embedding_file: String)  {
   
-  val file = new PrefixIndexedFile(embedding_file)
+  val file = new PrefixIndexedFile(embedding_file, 10)
   
   def cossim(w1: String, w2: String) = similarity(breeze.linalg.functions.cosineDistance(_, _))(w1, w2)
   def similarity(f: (Vector[Double], Vector[Double]) => Double)(w1: String, w2: String): Option[Double] = {
