@@ -15,9 +15,9 @@ import opennlp.tools.tokenize.TokenizerME
 import opennlp.tools.tokenize.TokenizerModel
 import org.cleartk.classifier.jar.JarClassifierBuilder
 
-
 /** Lexsub playground to train / run / evaluate / etc. */
 object RunLexSub extends App {
+  
 
   lazy val preprocessing = Preprocessing(
       tokenizer = new Preprocessing.Tokenizer {
@@ -33,6 +33,7 @@ object RunLexSub extends App {
    
   /* Preprocessed data can be trivially serialized */
   val data = utility.io.lazySerialized("germeval_cache.ser"){
+    System.err.println("Cache does not exist, leading GermEval data..")
     val plainData = new GermEvalReader("../lexsub-gpl/AIPHES_Data/GermEval2015", "train-dataset").items
     val processed = plainData.flatMap(preprocessing.tryApply)
     processed
@@ -73,7 +74,7 @@ object RunLexSub extends App {
   )
   
   // train
-  Training.train(data, candidates, features, TrainingDir)
+  //Training.train(data, candidates, features, TrainingDir)
   //JarClassifierBuilder.trainAndPackage(TrainingDir, "MaxEnt")
   
   val lexsub = LexSubExpander(candidates, features, ClassifierScorer(TrainingDir))

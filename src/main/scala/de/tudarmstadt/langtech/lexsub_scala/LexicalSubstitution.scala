@@ -14,8 +14,14 @@ import de.tudarmstadt.langtech.lexsub_scala.features.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.types._
 import de.tudarmstadt.langtech.lexsub_scala.utility.ReportingIterable._
 
+/** Utility trait to run apply operation on sequential input in parallel */
+trait Parallelizable[In, Out] {
+  def apply(input: In): Out
+  def parallelApply(input: Seq[In]): Seq[Out] = input.par.map(apply).seq
+}
+
 /** Utility trait to run processing step on a collection of input */
-trait BatchProcessing[In, Out] { 
+trait BatchProcessing[In, Out] extends Parallelizable[In, Out] { 
 	def apply(input: In): Out
   
   def report(i: Int, n: Int, passed: Double, remaining: Double){
