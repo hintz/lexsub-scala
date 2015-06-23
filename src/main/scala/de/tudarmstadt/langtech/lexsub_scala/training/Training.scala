@@ -22,7 +22,6 @@ object Training {
     val trainingData = createTrainingData(data, candidates)
     println("Using " + candidates + " created " + trainingData.size + " training examples")
     
-    
     // extract features
     val instances = features(trainingData).flatten
     

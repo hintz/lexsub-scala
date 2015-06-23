@@ -9,43 +9,47 @@ import breeze.numerics._
 import breeze.linalg.functions.cosineDistance
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import org.cleartk.classifier.feature.transform.extractor.CosineSimilarity
+import org.cleartk.classifier.Feature
+import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 
-case class WordEmbeddingSimilarity(val embedding: WordVectorFile) 
-  extends NumericOptionalValueFeatureExtractor[Null]("EmbeddingCosSim")
-  with PureLocal {
-  def extractOptValue(item: SubstitutionItem, global: Null): Option[Double] = 
+case class WordEmbeddingSimilarity(val embedding: WordVectorFile)
+extends LocalFeatureExtractor with OptionalNumericFeature {
+  val name = "EmbeddingCosSim"
+  def extract(item: SubstitutionItem): Seq[Feature] = 
     embedding.cossim(item.targetLemma, item.substitution)
 }
 
 
-case class WordEmbeddingDistance(val embedding: WordVectorFile) 
-  extends NumericOptionalValueFeatureExtractor[Null]("EmbeddingDist")
-  with PureLocal {
-  
+case class WordEmbeddingDistance(val embedding: WordVectorFile)
+extends LocalFeatureExtractor with OptionalNumericFeature {
+  val name = "EmbeddingDist"
   private def distance(v1: Vector[Double], v2: Vector[Double]) = 
     breeze.linalg.norm[Vector[Double], Double](v1 - v2)
     
-  def extractOptValue(item: SubstitutionItem, global: Null): Option[Double] = 
+  def extract(item: SubstitutionItem): Seq[Feature] = 
     embedding.similarity(distance)(item.targetLemma, item.substitution)
 }
 
-
+case class WordEmbeddingGlobalCache(originalHeadVector: Option[Vector[Double]], vectors: Seq[Option[Vector[Double]]])
 case class WordEmbeddingDistanceVectors(embedding: WordVectorFile, leftContext: Int, rightContext: Int) 
-    extends NumericOptionalValueFeatureExtractor[Null]("EmbeddingDist_" + leftContext + "_" + rightContext)
-    with PureLocal { 
-  
+extends SmartFeature[WordEmbeddingGlobalCache] with OptionalNumericFeature {
+
+  val name = "EmbeddingDist_" + leftContext + "_" + rightContext
   val slicer = utility.context[String](leftContext, rightContext) _
   
-  def extractOptValue(item: SubstitutionItem, global: Null): Option[Double] = {
-     val sentence = item.lexSubInstance.sentence
+  def global(item: LexSubInstance): WordEmbeddingGlobalCache = {
+    val sentence = item.sentence
      val tokens = sentence.tokens.map(_.word) // use word forms, not lemmas!
-     
-     (embedding.vector(item.targetLemma), embedding.vector(item.substitution)) match {
-       case (Some(originalHeadVector), Some(substituteHeadVector)) =>
-         
-         val slice = slicer(tokens, item.lexSubInstance.headIndex)
-         val vectors = slice.flatMap(t => t.map(embedding.vector))
-     
+     val originalHeadVector = embedding.vector(item.head.lemma) // use lemma, because we compare with lemmas
+     val slice = slicer(tokens, item.headIndex)
+     val vectors = slice.flatMap(t => t.map(embedding.vector))
+     WordEmbeddingGlobalCache(originalHeadVector, vectors)
+  }
+  
+  def extract(item: SubstitutionItem, global: WordEmbeddingGlobalCache): Seq[Feature] =  {
+
+     (global, embedding.vector(item.substitution)) match {
+       case (WordEmbeddingGlobalCache(Some(originalHeadVector), vectors), Some(substituteHeadVector)) =>
          val origDeltas = vectors.map { v => v.map(_ - originalHeadVector) }
          val newDeltas = vectors.map  { v => v.map(_ - substituteHeadVector) }
          

@@ -7,9 +7,19 @@ import de.tudarmstadt.langtech.lexsub_scala.types._
 import de.tudarmstadt.langtech.lexsub_scala.utility.ReportingIterable._
 import de.tudarmstadt.langtech.lexsub_scala.utility.BatchProcessing
 
+/** Abstract feature extraction for lexical substitution */
 abstract class FeatureExtractor {
   /** Yield a vector of feature vectors for each substitute */
   def extract(item: Substitutions): Vector[Seq[Feature]]
+}
+
+/** Features working only on lexical substitution instances */
+abstract class GlobalFeatureExtractor extends FeatureExtractor {
+  def extract(item: Substitutions): Vector[Seq[Feature]] = {
+    val feats = extract(item.lexSubInstance)
+    Vector.fill(item.candidates.length)(feats)
+  }
+  def extract(item: LexSubInstance): Seq[Feature]
 }
 
 /** Features working only on SubstitutionItems */
@@ -22,51 +32,46 @@ abstract class LocalFeatureExtractor extends FeatureExtractor {
 abstract class SmartFeature[A] extends FeatureExtractor {
   def global(item: LexSubInstance): A
   def extract(item: SubstitutionItem, global: A): Seq[Feature]
-  
   def extract(item: Substitutions): Vector[Seq[Feature]] = {
     val g = global(item.lexSubInstance)
     item.asItems.map(extract(_, g))
   }
 }
 
-trait PureLocal extends SmartFeature[Null]{
-  override def global(item: LexSubInstance) = null
+trait SimpleNominalFeature[A] {
+  val name: String
+  implicit def toFeatures(a: A): Seq[Feature] = Seq(new Feature(name, a))
 }
+
+trait OptionalNominalFeature[A] {
+  val name: String
+  implicit def toFeatures(a: Option[A]): Seq[Feature] = a.toList.map(new Feature(name, _))
+}
+
+trait SimpleNumericFeature {
+  val name: String
+  implicit def toFeatures(v: Double): Seq[Feature] = Seq(new Feature(name, v))
+}
+
+trait OptionalNumericFeature {
+  val name: String
+  implicit def toFeatures(v: Option[Double]): Seq[Feature] = v.toList.map(new Feature(name, _))
+}
+
 
 /** Applies a collection of features */
 class Features(features: FeatureExtractor*) extends FeatureExtractor {
   def extract(item: Substitutions): Vector[Seq[Feature]] = {
     def combine(a: Vector[Seq[Feature]], b: Vector[Seq[Feature]]): Vector[Seq[Feature]] = {
-      val comb: (Seq[Feature], Seq[Feature]) => Seq[Feature] = _ ++ _
-      a.zip(b).map(comb.tupled)
+      //val comb: (Seq[Feature], Seq[Feature]) => Seq[Feature] = _ ++ _
+      //a.zip(b).map(comb.tupled)
+      (a, b).zipped.map(_ ++ _) // every now and then, this refuses to compile
     }
-    features.map(_.extract(item)).reduce(combine)
+    val extracted = features.map(_.extract(item))
+    val combined = extracted.reduce(combine)
+    combined
   }
 }
-
-
-
-abstract class NominalOptionalValueFeatureExtract[T](val featureName: String) extends SmartFeature[T] {
-  def extractOptValue(item: SubstitutionItem, global: T): Option[Any]
-  def extract(item: SubstitutionItem, global: T): Seq[Feature] =
-    extractOptValue(item, global).toSeq.map(v => new Feature(featureName, v))
-}
-
-abstract class NominalValueFeatureExtract[T](override val featureName: String) extends NominalOptionalValueFeatureExtract[T](featureName) {
-  def extractValue(item: SubstitutionItem, global: T): Any
-  override def extractOptValue(item: SubstitutionItem, global: T): Option[Any] = Some(extractValue(item, global))
-}
-
-abstract class NumericOptionalValueFeatureExtractor[T](val featureName: String) extends SmartFeature[T] {
-  def extractOptValue(item: SubstitutionItem, global: T): Option[Double]
-  def extract(item: SubstitutionItem, global: T): Seq[Feature] = extractOptValue(item, global).filter(!_.isNaN).toSeq.map(d => new Feature(featureName,d))
-}
-
-abstract class NumericValueFeatureExtractor[T](override val featureName: String) extends NumericOptionalValueFeatureExtractor[T](featureName) {
-  def extractValue(item: SubstitutionItem): Double
-  def extractOptValue(item: SubstitutionItem, global: T): Option[Double] = Some(extractValue(item))
-}
-
 
 /** Enhances Features with the option to create instances */
 class FeatureAnnotator(features: FeatureExtractor*) 
@@ -89,4 +94,3 @@ class FeatureAnnotator(features: FeatureExtractor*)
     instances
   }
 }
-
