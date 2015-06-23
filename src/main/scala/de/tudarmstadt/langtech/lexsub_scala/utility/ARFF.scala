@@ -1,7 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.utility
 
-package lojbanlib.nlp.weka
-
 import java.io.PrintStream
 import java.io.ByteArrayOutputStream
 
@@ -22,19 +20,20 @@ case class ARFFFeature(val value: Any, val domain: Seq[String]){
 class ARFFWriter(val out: PrintStream) {
   
   /** Automatically computes the domain and writes all colums. CAREFUL! only use for small datasets, otherwise memory may be exceeded */
-  def write(relName: String, rows: List[(String, List[Any])]) {
+  def write(relName: String, rows: List[(String, Vector[Any])]) {
     val (colNames, columns) = rows.unzip
     write(relName, colNames, columns :_*)
   }
   
   /** Automatically computes the domain and writes all colums. CAREFUL! only use for small datasets, otherwise memory may be exceeded */
-  def write(relName: String, colNames: Seq[String], columns: List[Any]*) {
-    val cols = columns map (c => c map toFeature)
-    val domains = cols map toDomain
+  def write(relName: String, colNames: Seq[String], rows: Vector[Any]*) {
+    val columns = colNames.indices.map(i => rows.map(row => row(i)))
+    // this is less memory consuming, but takes longer
+    val columnsDomains = colNames.indices.map(i => toDomain(rows.map(row => toFeature(row(i)))))
 
-    writeHeader(relName, colNames, domains)
-    for(row <- cols.transpose) 
-      out.println(row.mkString(","))
+    writeHeader(relName, colNames, columnsDomains)
+    for(row <- rows; val features = row map toFeature)
+      out.println(features.mkString(","))
   }
   
   def writeHeader(relName: String, columnNames: Seq[String], columnDomains: Seq[String]){
@@ -48,11 +47,32 @@ class ARFFWriter(val out: PrintStream) {
     out.println(row.map(toFeature).mkString(","))
   }
   
+  /** Translates a mallet file to ARFF */
+  def translateMalletFile(file: String, relName: String = "Mallet"){
+    def parse(line: String) = {
+      val s = line.split(" ")
+      val outcome = s.last
+      val kv = s.init.map(x => x.split(":") match { case Array(l, r) => (l, r.toDouble)}).toMap
+      (kv, outcome)
+    }
+    
+    val lines = io.lines(file)
+    val parsed = lines.map(parse).toList
+    val features = parsed.map(_._1.keySet).reduce(_ union _).toList.sorted
+    
+    val data: List[Vector[Any]] = parsed.map {
+      case (kv, outcome) => (features.map(kv.get) :+ Some(outcome)).toVector
+    }
+    val colnames = features :+ "OUTCOME"
+    write(relName, colnames, data :_*)
+  }
+  
   
   def guessDomain(objects: Seq[Any]): String = ARFFWriter.guessDomain(objects)
   def toDomain(items: Seq[ARFFFeature]): String = ARFFWriter.toDomain(items)
   def toFeature(obj: Any): ARFFFeature = ARFFWriter.toFeature(obj)
 }
+
 
 object ARFFWriter {
   
@@ -60,14 +80,14 @@ object ARFFWriter {
   
   
   /** Convenience method returning a string */
-  def string(relName: String, colNames: Seq[String], columns: List[Any]*): String = {
+  def string(relName: String, colNames: Seq[String], columns: Vector[Any]*): String = {
     val baos = new ByteArrayOutputStream
     new ARFFWriter(new PrintStream(baos)).write(relName, colNames, columns :_*)
     baos.toString
   }
   
   /** Convenience method returning a string */
-  def string(relName: String, rows: List[(String, List[Any])]): String = {
+  def string(relName: String, rows: List[(String, Vector[Any])]): String = {
     val (colNames, columns) = rows.unzip
     string(relName, colNames, columns :_*)
   }
