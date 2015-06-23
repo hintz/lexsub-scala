@@ -20,10 +20,11 @@ object RunLexSub extends App {
   
 
   lazy val preprocessing = Preprocessing(
-      tokenizer = new Preprocessing.Tokenizer {
-        val model = new TokenizerME(new TokenizerModel(new File("resources/models/opennlp/de-token.bin")))
-        def apply(sent: String) = model.tokenize(sent)
-      },
+      //tokenizer = new Preprocessing.Tokenizer {
+      //  val model = new TokenizerME(new TokenizerModel(new File("resources/models/opennlp/de-token.bin")))
+      //  def apply(sent: String) = model.tokenize(sent)
+      //},
+      tokenizer = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector, // still works best for German
       posTagger = new Preprocessing.PosTagger {
         val tagger = new POSTaggerME(new POSModel(new File("resources/models/opennlp/de-pos-perceptron.bin")))
         def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
@@ -34,19 +35,19 @@ object RunLexSub extends App {
   /* Preprocessed data can be trivially serialized */
   val data = utility.io.lazySerialized("germeval_cache.ser"){
     System.err.println("Cache does not exist, leading GermEval data..")
-    val plainData = new GermEvalReader("../lexsub-gpl/AIPHES_Data/GermEval2015", "train-dataset").items
+    val plainData = new GermEvalReader("../AIPHES_Data/GermEval2015", "train-dataset").items
     val processed = plainData.flatMap(preprocessing.tryApply)
     processed
   }
 
   val TrainingDir = new File("training")
-  val germanetFile = "../lexsub-gpl/AIPHES_Data/LexSub/candidates/germeval_germanet.tsv"
-  val masterlistFile = "../lexsub-gpl/AIPHES_Data/LexSub/candidates/germeval_masterlist.tsv" //germeval_masterlist.tsv
+  val germanetFile = "../AIPHES_Data/LexSub/candidates/germeval_germanet.tsv"
+  val masterlistFile = "../AIPHES_Data/LexSub/candidates/germeval_masterlist.tsv" //germeval_masterlist.tsv
   
-  val embeddingFile = "../lexsub-gpl/AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted"
-  val dtfile = "../lexsub-gpl/AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub"
-  val web1tFolder = "../lexsub-gpl/AIPHES_Data/web1t/de"
-  val coocFile = "../lexsub-gpl/AIPHES_Data/LexSub/coocs/germeval_coocs_truecase.txt"
+  val embeddingFile = "../AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted"
+  val dtfile = "../AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub"
+  val web1tFolder = "../AIPHES_Data/web1t/de"
+  val coocFile = "../AIPHES_Data/LexSub/coocs/germeval_coocs_truecase.txt"
   
   val candidates = new CandidateFile(germanetFile, semanticRelationColumn = true)
   val masterlist = new CandidateFile(masterlistFile, semanticRelationColumn = true)
