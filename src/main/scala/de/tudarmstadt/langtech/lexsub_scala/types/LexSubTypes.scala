@@ -18,6 +18,11 @@ case class LexSubInstance(val sentence: Sentence, val headIndex: Int, gold: Opti
   def head: Token = sentence.tokens(headIndex)
 }
 
+/** A pair of (lexsubInstance, candidates) */
+case class Substitutions(val lexSubInstance: LexSubInstance, candidates: Vector[String]){
+  lazy val asItems = candidates.map(c => SubstitutionItem(lexSubInstance, c))
+}
+
 /** A pair of (lexsubInstance, substitution) with optional gold scores */
 case class SubstitutionItem(
     val lexSubInstance: LexSubInstance,

@@ -7,10 +7,10 @@ import org.cleartk.classifier.Feature
 
 // TODO: frequency features
 
-case class PosContextWindow(left: Int, right: Int) extends NominalValueFeatureExtract("POS_" + left + "_" + right) {
+case class PosContextWindow(left: Int, right: Int) extends NominalValueFeatureExtract[Null]("POS_" + left + "_" + right) with PureLocal {
   val slicer = utility.context[String](left, right) _
   
-  def extractValue(item: SubstitutionItem): String = {
+  def extractValue(item: SubstitutionItem, global: Null): String = {
     val sentence = item.lexSubInstance.sentence
     val posTokens = sentence.tokens.map(_.pos)
     val posWindow = slicer(posTokens, item.lexSubInstance.headIndex)
@@ -20,5 +20,5 @@ case class PosContextWindow(left: Int, right: Int) extends NominalValueFeatureEx
   }
 }
 
-case class PosContextWindows(leftRange: Range, rightRange: Range) 
-extends FeatureExtractorCollection((for(l <- leftRange; r <- rightRange) yield PosContextWindow(l, r)) :_*)
+case class PosContextWindows(leftRange: Range, rightRange: Range, maxSize: Int) 
+extends Features((for(l <- leftRange; r <- rightRange; if l + r < maxSize) yield PosContextWindow(l, r)) :_*)

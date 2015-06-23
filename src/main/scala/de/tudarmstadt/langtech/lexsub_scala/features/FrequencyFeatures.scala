@@ -6,7 +6,8 @@ import de.tudarmstadt.langtech.lexsub_scala.utility
 import java.util.logging.Logger
 
 
-case class Web1TFreqRatio(web1t: JWeb1TSearcher, left: Int, right: Int) extends NumericOptionalValueFeatureExtractor("FreqRatio_" + left + "_" + right)  {
+case class Web1TFreqRatio(web1t: JWeb1TSearcher, left: Int, right: Int) 
+extends NumericOptionalValueFeatureExtractor[Null]("FreqRatio_" + left + "_" + right) with PureLocal  {
    
   // disable web1t logging, too much noise!
   try { Logger.getLogger("com.googlecode.jweb1t.JWeb1TSearcher").setLevel(java.util.logging.Level.OFF)}
@@ -14,7 +15,7 @@ case class Web1TFreqRatio(web1t: JWeb1TSearcher, left: Int, right: Int) extends 
 
   val slicer = utility.context[String](left, right) _
    
-   def extractOptValue(item: SubstitutionItem): Option[Double] = {
+   def extractOptValue(item: SubstitutionItem, global: Null): Option[Double] = {
      val sentence = item.lexSubInstance.sentence
      val originalTokens = sentence.tokens.map(_.word) // word forms, not lemmas
      val sliced = slicer(originalTokens, item.lexSubInstance.headIndex)
@@ -38,5 +39,10 @@ case class Web1TFreqRatio(web1t: JWeb1TSearcher, left: Int, right: Int) extends 
    }
  }
 
-case class Web1TFreqRatios(web1t: JWeb1TSearcher, leftRange: Range, rightRange: Range) 
-extends FeatureExtractorCollection((for(l <- leftRange; r <- rightRange) yield Web1TFreqRatio(web1t, l, r)) :_*)
+case class Web1TFreqRatios(web1t: JWeb1TSearcher, leftRange: Range, rightRange: Range, maxSize: Int) 
+extends Features((for(l <- leftRange; r <- rightRange; if l + r < maxSize) yield Web1TFreqRatio(web1t, l, r)) :_*)
+
+
+case class Web1TConjunctionRations(web1t: JWeb1TSearcher, conjunctions: Seq[String]){
+    
+}

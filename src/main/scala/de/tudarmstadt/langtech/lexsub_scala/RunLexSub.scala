@@ -66,8 +66,8 @@ object RunLexSub extends App {
       //WordSimilarity(dt),
       WordSimilarity(cooc),
       ThresholdedDTOverlap(dt, Seq(20, 50, 100), false),
-      PosContextWindows(0 to 2, 0 to 2),
-      Web1TFreqRatios(web1t, 0 to 2, 0 to 2),
+      PosContextWindows(0 to 2, 0 to 2, 3),
+      Web1TFreqRatios(web1t, 0 to 2, 0 to 2, 5),
       LexSemRelation(masterlist),
       WordEmbeddingDistanceVectors(embedding, 2, 2)
       //WordEmbeddingSimilarity(embedding),
@@ -75,7 +75,7 @@ object RunLexSub extends App {
   )
   
   // train
-  //Training.train(data, candidates, features, TrainingDir)
+  Training.train(data, candidates, features, TrainingDir)
   //JarClassifierBuilder.trainAndPackage(TrainingDir, "MaxEnt")
   
   val lexsub = LexSubExpander(candidates, features, ClassifierScorer(TrainingDir))

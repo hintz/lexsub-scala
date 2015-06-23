@@ -5,7 +5,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import org.cleartk.classifier.Feature
 
 /** Extracts lexical semantic features from candidate list */
-case class LexSemRelation(candidates: CandidateList) extends FeatureExtractor { 
+case class LexSemRelation(candidates: CandidateList) extends LocalFeatureExtractor { 
 
   private def mkFeature(rel: String) = new Feature( "SemRel_" + rel, 1f)
 

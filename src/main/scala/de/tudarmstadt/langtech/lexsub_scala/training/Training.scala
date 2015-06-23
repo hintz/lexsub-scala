@@ -4,10 +4,10 @@ import java.io.File
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types._
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter
-import de.tudarmstadt.langtech.lexsub_scala.features.FeatureAnnotator
 import org.cleartk.classifier.feature.transform.InstanceDataWriter
 import org.cleartk.classifier.jar.JarClassifierBuilder
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
+import de.tudarmstadt.langtech.lexsub_scala.features.FeatureAnnotator
 
 object Training {
   
@@ -24,7 +24,7 @@ object Training {
     
     
     // extract features
-    val instances = features(trainingData)
+    val instances = features(trainingData).flatten
     
     // write classifier data
     val dataWriter = new MalletStringOutcomeDataWriter(trainingDir)
@@ -36,13 +36,14 @@ object Training {
     //dataWriter.getClassifierBuilder.trainClassifier(trainingDir, "MaxEnt")
     //dataWriter.getClassifierBuilder.packageClassifier(trainingDir)
     
+    println("Starting train & package..")
     JarClassifierBuilder.trainAndPackage(trainingDir, "MaxEnt")
   }
   
   /** Pairs each LexSubInstance with a number of possible substitutes, based on a candidate list */
-  def createTrainingData(data: Iterable[LexSubInstance], candidates: CandidateList): Iterable[SubstitutionItem] = 
+  def createTrainingData(data: Iterable[LexSubInstance], candidates: CandidateList): Iterable[Substitutions] = 
   {
-    data.flatMap { instance =>
+    data.map { instance =>
       val headLemma = instance.head.lemma
       val listReplacements = candidates.get(headLemma)
         .collect { case c if c.replacement != headLemma => c.replacement} // exclude headLemma from candidates!
@@ -55,9 +56,7 @@ object Training {
             .getOrElse(List.empty)
           listReplacements.union(goldReplacements.toSet)
         }
-      replacements.map { subst =>
-        SubstitutionItem(instance, subst)
-      }
+      Substitutions(instance, replacements.toVector)
     }
   }
   

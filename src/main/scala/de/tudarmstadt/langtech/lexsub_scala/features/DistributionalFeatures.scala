@@ -18,11 +18,11 @@ case class DTLookup(val dtName: String, val dt: WordSimilarityFile[String],
 
 /** Looks up word similarity between target and substitute in a DTLookup */
 case class WordSimilarity(dt: DTLookup) 
-extends NumericOptionalValueFeatureExtractor("Sim_" + dt.dtName) {
-  def extractOptValue(item: SubstitutionItem): Option[Double] =  dt.similarity(item.target, item.substitution)
+extends NumericOptionalValueFeatureExtractor[Null]("Sim_" + dt.dtName) with PureLocal {
+  def extractOptValue(item: SubstitutionItem, global: Null): Option[Double] =  dt.similarity(item.target, item.substitution)
 }
 
-case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores: Boolean) extends FeatureExtractor {
+case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores: Boolean) extends LocalFeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature] = {
     val substituteLemma = item.substitution
     val orig = dt.similar(item.target)

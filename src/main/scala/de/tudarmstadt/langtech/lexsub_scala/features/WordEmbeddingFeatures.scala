@@ -11,29 +11,32 @@ import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import org.cleartk.classifier.feature.transform.extractor.CosineSimilarity
 
 case class WordEmbeddingSimilarity(val embedding: WordVectorFile) 
-extends NumericOptionalValueFeatureExtractor("EmbeddingCosSim") {
-  def extractOptValue(item: SubstitutionItem): Option[Double] = 
+  extends NumericOptionalValueFeatureExtractor[Null]("EmbeddingCosSim")
+  with PureLocal {
+  def extractOptValue(item: SubstitutionItem, global: Null): Option[Double] = 
     embedding.cossim(item.targetLemma, item.substitution)
 }
 
 
 case class WordEmbeddingDistance(val embedding: WordVectorFile) 
-extends NumericOptionalValueFeatureExtractor("EmbeddingDist") {
+  extends NumericOptionalValueFeatureExtractor[Null]("EmbeddingDist")
+  with PureLocal {
   
   private def distance(v1: Vector[Double], v2: Vector[Double]) = 
     breeze.linalg.norm[Vector[Double], Double](v1 - v2)
     
-  def extractOptValue(item: SubstitutionItem): Option[Double] = 
+  def extractOptValue(item: SubstitutionItem, global: Null): Option[Double] = 
     embedding.similarity(distance)(item.targetLemma, item.substitution)
 }
 
 
 case class WordEmbeddingDistanceVectors(embedding: WordVectorFile, leftContext: Int, rightContext: Int) 
-    extends NumericOptionalValueFeatureExtractor("EmbeddingDist_" + leftContext + "_" + rightContext) { 
+    extends NumericOptionalValueFeatureExtractor[Null]("EmbeddingDist_" + leftContext + "_" + rightContext)
+    with PureLocal { 
   
   val slicer = utility.context[String](leftContext, rightContext) _
   
-  def extractOptValue(item: SubstitutionItem): Option[Double] = {
+  def extractOptValue(item: SubstitutionItem, global: Null): Option[Double] = {
      val sentence = item.lexSubInstance.sentence
      val tokens = sentence.tokens.map(_.word) // use word forms, not lemmas!
      
