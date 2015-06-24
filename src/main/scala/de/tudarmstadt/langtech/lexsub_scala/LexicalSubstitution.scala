@@ -35,7 +35,7 @@ case class LexSubExpander(
     val candidateList: CandidateList, 
     val features: Features,
     val scorer: ClassifierScorer,
-    val maxItems: Int = 10) 
+    val maxItems: Int = Integer.MAX_VALUE) 
     extends BatchProcessing[LexSubInstance, Seq[(String, Double)]] {
   
   /** Expands and ranks */
