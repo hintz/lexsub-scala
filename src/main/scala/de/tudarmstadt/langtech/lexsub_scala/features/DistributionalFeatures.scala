@@ -1,9 +1,9 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
+import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.distributional.WordSimilarityFile
-import de.tudarmstadt.langtech.lexsub_scala.types.Token
 
 
 case class DTLookup(val dtName: String, val dt: WordSimilarityFile[String], 

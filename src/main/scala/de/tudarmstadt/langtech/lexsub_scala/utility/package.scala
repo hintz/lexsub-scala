@@ -215,9 +215,9 @@ package object utility {
   }
 
   /** Normalizes a set of positive real numbers */
-  def normalize(values: Seq[Double]): Seq[Double] = {
+  def normalize[I <: Iterable[Double]](values: I): I = {
     val sum = values.sum
-    if(sum > 0) values.map(_ / sum) else values
+    if(sum > 0) values.map(v => v / sum).asInstanceOf[I] else values
   }
 
   def normalizeValues[A](items: Seq[(A, Double)]): Seq[(A, Double)] = {

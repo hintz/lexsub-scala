@@ -7,7 +7,7 @@ import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter
 import org.cleartk.classifier.feature.transform.InstanceDataWriter
 import org.cleartk.classifier.jar.JarClassifierBuilder
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
-import de.tudarmstadt.langtech.lexsub_scala.features.FeatureAnnotator
+import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 
 object Training {
   

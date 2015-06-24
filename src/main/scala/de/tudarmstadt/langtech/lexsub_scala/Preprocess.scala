@@ -14,9 +14,9 @@ import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import scala.util.Try
 
 object Preprocessing {
-  type Tokenizer = Function[String, Iterable[String]]
-  type PosTagger = Function[Iterable[String], Iterable[String]]
-  type Lemmatizer = Function[String, String]
+  type Tokenizer = String => Iterable[String]
+  type PosTagger = Iterable[String] => Iterable[String]
+  type Lemmatizer = String => String
 }
 
 case class Preprocessing(

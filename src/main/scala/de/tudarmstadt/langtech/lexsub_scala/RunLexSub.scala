@@ -8,7 +8,7 @@ import de.tudarmstadt.langtech.lexsub_scala.training.Training
 import de.tudarmstadt.langtech.lexsub_scala.distributional._
 import de.tudarmstadt.langtech.lexsub_scala.germeval._
 import de.tudarmstadt.langtech.lexsub_scala.features._
-import de.tudarmstadt.langtech.lexsub_scala.features.{DTLookup, PosContextWindows, Web1TFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity}
+import de.tudarmstadt.langtech.lexsub_scala.features.{DTLookup, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity}
 import opennlp.tools.postag.POSModel
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.tokenize.TokenizerME
@@ -28,7 +28,7 @@ object RunLexSub extends App {
         val tagger = new POSTaggerME(new POSModel(new File("resources/models/opennlp/de-pos-perceptron.bin")))
         def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
       },
-      lemmatizer = identity
+      lemmatizer = identity // no need
    )
    
   /* Preprocessed data can be trivially serialized */
@@ -58,7 +58,7 @@ object RunLexSub extends App {
   val masterlist = new CandidateFile(masterlistFile, true)
 
   val embedding = new WordVectorFile(embeddingFile)
-  val web1t = new JWeb1TSearcher(new File(web1tFolder), 1, 5)
+  val web1t = Web1TLookup(new JWeb1TSearcher(new File(web1tFolder), 1, 5))
   
   val dt = DTLookup("de70M_mate_lemma", new WordSimilarityFile(dtfile, identity), 
       token => token.lemma.toLowerCase, 
@@ -68,14 +68,15 @@ object RunLexSub extends App {
   
   // setup features
   val features = new FeatureAnnotator(
-      //WordSimilarity(dt),
-      //WordSimilarity(cooc),
-      ThresholdedDTOverlap(dt, Seq(20, 50, 100), false),
+      WordSimilarity(dt),
+      WordSimilarity(cooc),
+      ThresholdedDTOverlap(dt, Seq(5, 20, 50, 100, 200), false),
       PosContextWindows(0 to 2, 0 to 2, 3),
-      Web1TFreqRatios(web1t, 0 to 2, 0 to 2, 5),
-      Web1TConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0),
-      LexSemRelation(masterlist),
-      WordEmbeddingDistanceVectors(embedding, 2, 2)
+      PairFreqRatios(web1t, 0 to 2, 0 to 2, 5),
+      SetFreqRatios(web1t, 0 to 2, 0 to 2, 5),
+      ConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0)
+      //LexSemRelation(masterlist),
+      //WordEmbeddingDistanceVectors(embedding, 2, 2),
       //WordEmbeddingSimilarity(embedding),
       //WordEmbeddingDistance(embedding)
   )

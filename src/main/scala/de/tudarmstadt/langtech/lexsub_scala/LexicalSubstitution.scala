@@ -4,13 +4,36 @@ import java.io.File
 import scala.collection.JavaConversions.asScalaBuffer
 import scala.collection.JavaConversions.seqAsJavaList
 import org.cleartk.classifier.Classifier
+import org.cleartk.classifier.Instance
 import org.cleartk.classifier.Feature
 import org.cleartk.classifier.jar.JarClassifierBuilder
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types._
 import de.tudarmstadt.langtech.lexsub_scala.utility.BatchProcessing
 import de.tudarmstadt.langtech.lexsub_scala.features.Features
+import de.tudarmstadt.langtech.lexsub_scala.features.FeatureExtractor
 
+/** Enhances Features with the option to create training instances */
+class FeatureAnnotator(features: FeatureExtractor*) 
+  extends Features(features :_*)
+  with BatchProcessing[Substitutions, Vector[Instance[String]]]
+{
+
+  private val mkFeature = (features: Seq[Feature], outcome: String) => {
+    val result = new Instance[String]
+    result setOutcome outcome
+    result addAll features
+    result
+  }
+  
+  def apply(item: Substitutions): Vector[Instance[String]] = {
+    val features = extract(item)
+    val gold = item.asItems.map(_.isGood.get)
+    val outcomes = gold.map(if(_) "GOOD" else "BAD")
+    val instances = features.zip(outcomes).map(mkFeature.tupled)
+    instances
+  }
+}
 
 case class ClassifierScorer(val trainingDiretory: File) {
   
