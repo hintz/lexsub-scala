@@ -8,6 +8,9 @@ trait CandidateList extends CandidateFunction {
   val items: Map[String, Seq[Candidate]]
   def get(lemma: String) = items.getOrElse(lemma, Seq.empty)
   
+  /** filters based on candidate predicate */
+  def filter(f: Candidate => Boolean): CandidateList = new FilteredCandidateList(this, f)
+  
   /** filters this candidate list down to one relation */
   def filterByRelation(relation: String): CandidateList = new FilteredCandidateList(this, relation)
   
@@ -27,16 +30,23 @@ trait CandidateList extends CandidateFunction {
   def save(filename: String) = io.write(filename, formatLines.mkString("\n"))
 }
 
-class FilteredCandidateList(val original: CandidateList, relation: String) extends CandidateList {
+
+class FilteredCandidateList(val original: CandidateList, f: Candidate => Boolean) extends CandidateList {
+  
+  def this(original: CandidateList, relation: String) = {
+    this(original, new Function[Candidate, Boolean]{
+      def apply(c: Candidate) = c.relations.contains(relation)
+      override def toString = "relation=" + relation
+      })}
+  
   lazy val items = {
-    val mapped = original.items.mapValues { candidates => candidates.filter { c => c.relations.contains(relation) } }
+    val mapped = original.items.mapValues { candidates => candidates.filter(f) }
     val subset = mapped.filter(_._2.nonEmpty)
     subset
   }
   
-  override def toString = getClass.getSimpleName + "(" + original + ", relation=" + relation + ")"
+  override def toString = getClass.getSimpleName + "(" + original + ", filter:" + f + ")"
 }
-
 /*
 /** A fixed (in-memory) candidate list. Currently not needed. */
 class FixedCandidateList(override val items: Map[String, Seq[Candidate]], name: String = "") extends CandidateList {

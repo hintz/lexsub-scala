@@ -39,21 +39,43 @@ object EvaluateCandidates extends App {
         subresults.reduce(_ + _)
   }
 
-  val gold = new GermEvalReader("AIPHES_Data/GermEval2015", "train-dataset").gold
+  val gold = new GermEvalReader("../AIPHES_Data/GermEval2015", "train-dataset").gold
 
-  val germanetCandidates = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates")
-  val germanetCandidatesHy = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates-hy")
-  val germanetCandidatesHyHo = new CandidateFile("AIPHES_Data/LexSub/candidates/germanet_candidates-hy-ho")
-  val germanetGermevalAll = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_germanet.tsv", true)
+  val germanetCandidates = new CandidateFile("../AIPHES_Data/LexSub/candidates/germanet_candidates")
+  val germanetCandidatesHy = new CandidateFile("../AIPHES_Data/LexSub/candidates/germanet_candidates-hy")
+  val germanetCandidatesHyHo = new CandidateFile("../AIPHES_Data/LexSub/candidates/germanet_candidates-hy-ho")
+  val germanetGermevalAll = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_germanet.tsv", true)
 
-  val duden = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_duden.tsv", true)
-  val woxikon = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_woxikon.tsv", true)
-  val wortschatzSyn = new CandidateFile("AIPHES_Data/LexSub/candidates/germeval_wortschatz.tsv", true)
+  val duden = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_duden.tsv", true)
+  val woxikon = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_woxikon.tsv", true)
+  val wortschatzSyn = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_wortschatz.tsv", true)
+  
+  val dt70mMate = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_DT_de_mate_lemma.tsv", true)
 
   val CandidateLists = List(
     germanetCandidates, germanetCandidatesHy, germanetCandidatesHyHo, germanetGermevalAll,
-    duden, woxikon, wortschatzSyn
+    duden, woxikon, wortschatzSyn,
+    dt70mMate
   )
+  
+  
+  /*
+   //Evaluates different thresholds for DT
+  case class DTThreshold(t: Int) extends Function[Candidate, Boolean] {
+    val pattern = "DT_(\\d+)".r
+    def apply(c: Candidate) = {
+      val m = pattern.findFirstMatchIn(c.relations.head).get.group(1).toInt
+      m < t
+    }
+    override def toString = "threshold=" + t
+  }  
+  val thresholds = (Seq(1,2,3,4,5,6,7,8,9) ++ Range(10, 100, 10) ++ Range(100, 1000, 100))
+  for (t <- thresholds) {
+    val candidateList = dt70mMate.filter(DTThreshold(t))
+    val e = evaluate(gold.items, candidateList.get)
+    println(Seq(t, e.precision, e.recall).mkString("\t"))
+  }
+  */
   
   val masterlist = new JoinedCandidates(duden, woxikon, wortschatzSyn, germanetGermevalAll)
   //masterlist.save("germeval_masterlist.tsv")
@@ -71,7 +93,8 @@ object EvaluateCandidates extends App {
   
   val Joined = List(
 		  new JoinedCandidates(duden, woxikon, wortschatzSyn),
-      masterlist
+      masterlist,
+      new JoinedCandidates(masterlist, dt70mMate)
    )
    
   val Filtered = duden.filteredByAllRelations ++ woxikon.filteredByAllRelations ++ wortschatzSyn.filteredByAllRelations
@@ -88,5 +111,4 @@ object EvaluateCandidates extends App {
     println(c) 
     c.get("glaubhaft").map(_.replacement) foreach println
   }*/
-  
 }
