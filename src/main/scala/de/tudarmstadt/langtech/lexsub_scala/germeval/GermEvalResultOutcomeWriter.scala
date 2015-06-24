@@ -43,18 +43,61 @@ class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
   }
   
   
-  def prettyPrint(filename: String, maxN: Int = 10){
+  def prettyPrint(filename: String, maxExpansions: Int = 20, context: (Int, Int) = (5, 5)){
     val parsed = parse(filename)
-    for((item, outcomes) <- parsed){
-      val words = item.sentence.tokens.map(_.word)
+    
+    val tables = for((item, allOutcomes) <- parsed) yield {
+      val outcomes = allOutcomes.take(maxExpansions)
+      val words1 = item.sentence.tokens.map(_.word)
+      val (left, right) = context
+      val words = utility.context(left, right)(words1, item.headIndex).map(_.getOrElse("")).toVector
       val emptyWords = words.map(_.replaceAll(".", " "))
-      val substs = outcomes.take(maxN).map { case (s, score) => 
-        emptyWords.updated(item.headIndex, "%s   %.2f".format(s, score))
+      val empty = Vector.fill(words.length)("")
+      
+      val correctSet = allOutcomes.map(_._1).toSet.intersect(item.gold.get.gold.substitutions.map(_._1).toSet)
+      def mkBold(subst: String) = {
+        if(correctSet.contains(subst)) <b>{subst}</b>
+        else subst
       }
+      def mkUpper(subst: String) = if(correctSet.contains(subst)) "* " + subst.toUpperCase else subst
+      
+      def mkHtmlTable(outcomes: List[(String, Any)]) = outcomes.map { case (s, score) => 
+        empty.updated(left, s).updated(left + 1, score.toString)
+      }
+      
+      def mkPrintTable(outcomes: List[(String, Any)]) = outcomes.map { case (s, score) => 
+        emptyWords.updated(left, mkUpper(s) + "   " + score.toString.take(4))
+      }
+      
+      val mkTable = mkPrintTable _
+      
+      val substs = mkTable(outcomes)
+      val goldlines = mkTable(item.gold.get.gold.substitutions.sortBy(_._2))
+      
+      val table =  (goldlines ::: (words :: substs))
+      
       val name = "Id: " + item.gold.get.sentence.id
-      val goldSubst = "Gold: " + item.gold.get.gold.substitutionWords.mkString(", ")
-      val lines = goldSubst :: (words :: substs).map(_.mkString(" ")) ::: List("Error class: ", "", "")
-      lines.foreach(println)
+      val main = table.map(_.mkString(" "))
+      val lines = main ::: List("Error class: TODO", "", "")
+      
+      lines foreach println
+      
+      def elem(e: String) = <td>{mkBold(e)}</td>
+      def tline(row: Vector[String]) = <tr>{row.map(elem)}</tr>
+      def html(table: List[Vector[String]]) = {
+        <table>{table.map(tline)}</table>
+      }
+
+      html(table)
     }
+    
+    val result = 
+    <html>
+    {tables.map(table => 
+      <div>
+      <hr></hr>{table}
+      </div>)}
+    </html>
+    //println(result)
   }
 }
