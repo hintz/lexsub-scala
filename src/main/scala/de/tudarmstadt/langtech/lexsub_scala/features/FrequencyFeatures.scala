@@ -52,5 +52,43 @@ case class Web1TFreqRatio(web1t: JWeb1TSearcher, left: Int, right: Int)
 case class Web1TFreqRatios(web1t: JWeb1TSearcher, leftRange: Range, rightRange: Range, maxSize: Int)
   extends Features((for (l <- leftRange; r <- rightRange; if l + r < maxSize) yield Web1TFreqRatio(web1t, l, r)): _*)
 
-case class Web1TConjunctionRations(web1t: JWeb1TSearcher, conjunctions: Seq[String]) {
+
+case class Web1TConjunctionFreqRatio(web1t: JWeb1TSearcher, conjunctions: Seq[String], left: Int, right: Int)
+  extends SmartFeature[Option[(Vector[String], Long)]] {
+
+  // disable web1t logging, too much noise!
+  try { Logger.getLogger("com.googlecode.jweb1t.JWeb1TSearcher").setLevel(java.util.logging.Level.OFF) }
+  catch { case e: Exception => System.err.println("Web1T logging could not be disabled") }
+
+  val slicer = utility.context[String](left + 1, right + 1) _ // slicing + 1
+
+  def global(item: LexSubInstance): Option[(Vector[String], Long)] = {
+    val sentence = item.sentence
+    val originalTokens = sentence.tokens.map(_.word) // word forms, not lemmas
+    val sliced = slicer(originalTokens, item.headIndex)
+
+    if (sliced.exists(_.isEmpty)) // if slice doesn't fit, don't yield any feature
+      return None
+    val tokens = sliced.map(_.get).toVector
+    val origFreq = web1t.getFrequency(tokens: _*)
+    Some(tokens, origFreq)
+  }
+
+  def extract(item: SubstitutionItem, global: Option[(Vector[String], Long)]): Seq[Feature] = {
+    val target = item.targetLemma
+    val substitute = item.substitution
+    
+    val features = for (
+        (tokens, origFreq) <- global.toSeq; 
+        conj <- conjunctions;
+        val replaced = tokens.take(left) ++ Seq(target, conj, substitute) ++ tokens.takeRight(right);
+        val replacedFreq = web1t.getFrequency(replaced: _*) if replacedFreq > 0)
+    yield {
+      if (origFreq < 10e-10) return Seq.empty // if original not found, don't yield any feature
+      val ratio = replacedFreq.toDouble / origFreq
+      val name = "ConjRatio_%d_%d_%s".format(left, right, conj)
+      new Feature(name, ratio)
+    }
+    features
+  }
 }

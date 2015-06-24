@@ -17,7 +17,6 @@ import org.cleartk.classifier.jar.JarClassifierBuilder
 
 /** Lexsub playground to train / run / evaluate / etc. */
 object RunLexSub extends App {
-  
 
   lazy val preprocessing = Preprocessing(
       //tokenizer = new Preprocessing.Tokenizer {
@@ -39,6 +38,12 @@ object RunLexSub extends App {
     val processed = plainData.flatMap(preprocessing.tryApply)
     processed
   }
+  
+  /*
+  val reader = new GermEvalResultOutcomeReader(data)
+  reader.prettyPrint("instances.old.out")
+  System.exit(0)
+  */
 
   val TrainingDir = new File("training")
   val germanetFile = "../AIPHES_Data/LexSub/candidates/germeval_germanet.tsv"
@@ -49,8 +54,8 @@ object RunLexSub extends App {
   val web1tFolder = "../AIPHES_Data/web1t/de"
   val coocFile = "../AIPHES_Data/LexSub/coocs/germeval_coocs_truecase.txt"
   
-  val candidates = new CandidateFile(germanetFile, semanticRelationColumn = true)
-  val masterlist = new CandidateFile(masterlistFile, semanticRelationColumn = true)
+  val candidates = new CandidateFile(germanetFile, true)
+  val masterlist = new CandidateFile(masterlistFile, true)
 
   val embedding = new WordVectorFile(embeddingFile)
   val web1t = new JWeb1TSearcher(new File(web1tFolder), 1, 5)
@@ -64,10 +69,11 @@ object RunLexSub extends App {
   // setup features
   val features = new FeatureAnnotator(
       //WordSimilarity(dt),
-      WordSimilarity(cooc),
+      //WordSimilarity(cooc),
       ThresholdedDTOverlap(dt, Seq(20, 50, 100), false),
       PosContextWindows(0 to 2, 0 to 2, 3),
       Web1TFreqRatios(web1t, 0 to 2, 0 to 2, 5),
+      Web1TConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0),
       LexSemRelation(masterlist),
       WordEmbeddingDistanceVectors(embedding, 2, 2)
       //WordEmbeddingSimilarity(embedding),
@@ -76,7 +82,6 @@ object RunLexSub extends App {
   
   // train
   Training.train(data, candidates, features, TrainingDir)
-  //JarClassifierBuilder.trainAndPackage(TrainingDir, "MaxEnt")
   
   val lexsub = LexSubExpander(candidates, features, ClassifierScorer(TrainingDir))
   val outcomes = lexsub(data)
