@@ -13,7 +13,7 @@ import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 
 case class WordEmbeddingSimilarity(val embedding: WordVectorFile)
-extends LocalFeatureExtractor with FeatureUtils {
+extends LocalFeatureExtractor with NumericFeature {
   val name = "EmbeddingCosSim"
   def extract(item: SubstitutionItem): Seq[Feature] = 
     embedding.cossim(item.targetLemma, item.substitution)
@@ -21,7 +21,7 @@ extends LocalFeatureExtractor with FeatureUtils {
 
 
 case class WordEmbeddingDistance(val embedding: WordVectorFile)
-extends LocalFeatureExtractor with FeatureUtils {
+extends LocalFeatureExtractor with NumericFeature {
   val name = "EmbeddingDist"
   private def distance(v1: Vector[Double], v2: Vector[Double]) = 
     breeze.linalg.norm[Vector[Double], Double](v1 - v2)
@@ -32,7 +32,7 @@ extends LocalFeatureExtractor with FeatureUtils {
 
 case class WordEmbeddingGlobalCache(originalHeadVector: Option[Vector[Double]], vectors: Seq[Option[Vector[Double]]])
 case class WordEmbeddingDistanceVectors(embedding: WordVectorFile, leftContext: Int, rightContext: Int) 
-extends SmartFeature[WordEmbeddingGlobalCache] with FeatureUtils {
+extends SmartFeature[WordEmbeddingGlobalCache] with NumericFeature {
 
   val name = "EmbeddingDist_" + leftContext + "_" + rightContext
   val slicer = utility.context[String](leftContext, rightContext) _

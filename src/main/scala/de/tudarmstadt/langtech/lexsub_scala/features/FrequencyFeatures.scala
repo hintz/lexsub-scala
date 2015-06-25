@@ -32,7 +32,7 @@ case class SetFreqRatios(nGrams: NGramLookup, leftRange: Range, rightRange: Rang
 
 case class PairFreqRatio(nGrams: NGramLookup, left: Int, right: Int)
   extends SmartFeature[Option[(Vector[String], Long)]]
-  with FeatureUtils {
+  with NumericFeature {
   
   val name = "PairFreqRatio_" + left + "_" + right
   val slicer = utility.context[String](left, right) _
@@ -68,7 +68,7 @@ case class PairFreqRatio(nGrams: NGramLookup, left: Int, right: Int)
 }
 
 
-case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends FeatureExtractor with FeatureUtils {
+case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends FeatureExtractor with NumericFeature {
   val slicer = utility.context[String](left, right) _
 	val name = "SetFreqRatio_" + left + "_" + right
 

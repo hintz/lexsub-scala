@@ -42,13 +42,17 @@ abstract class SmartFeature[A] extends FeatureExtractor {
 
 /** Some utility mixins for defining features */
 trait FeatureUtils {
-  val name: String
   implicit def noFeatures(implicit item: Substitutions) = Vector.fill(item.candidates.length)(Seq.empty[Feature])
+}
+
+trait NumericFeature extends FeatureUtils {
+  val name: String
   implicit def toFeatures(v: Double): Seq[Feature] = Seq(new Feature(name, v))
   implicit def toFeatures(v: Option[Double]): Seq[Feature] = v.toList.map(new Feature(name, _))
 }
 
 trait NominalFeature[A] extends FeatureUtils {
+  val name: String
   implicit def toFeatures(a: A): Seq[Feature] = Seq(new Feature(name, a))
 	implicit def toFeatures(a: Option[A]): Seq[Feature] = a.toList.map(new Feature(name, _))
 }
@@ -64,5 +68,15 @@ class Features(features: FeatureExtractor*) extends FeatureExtractor {
     val extracted = features.map(_.extract(item))
     val combined = extracted.reduce(combine)
     combined
+  }
+}
+
+
+case object CheatFeature extends LocalFeatureExtractor {
+  def extract(item: SubstitutionItem): Seq[Feature] = {
+    val id = item.lexSubInstance.gold.map { g => g.gold.id}.getOrElse("no_id")
+    val subst = item.substitution
+    val value = id + "=" + subst
+    Seq(new Feature("CheatFeature", value))
   }
 }
