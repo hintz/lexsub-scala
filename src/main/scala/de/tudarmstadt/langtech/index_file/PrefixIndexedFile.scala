@@ -10,15 +10,22 @@ import java.nio.ByteBuffer
 
 /**
  * A reader for a *SORTED* textfile encoded in UTF-8.
- * Retrieves subset of lines for a given prefix
+ * Retrieves subset of lines for a given prefix using the search(prefix: String) method.
+ * 
+ * Internally uses both a lazily generated index as well as fuzzy binary search.
  */
 class PrefixIndexedFile(val path: String, val prefixLength: Int = 5) {
 
-  val file = new RandomAccessFile(path, "r")
+  // accuracy level (in bytes) for fuzzy binary search to stop
+  private val ByteAccuracy = 200 
 
-  /** Fixes behavior of RandomAccessFile::readLine (proper UTF-8 reading!)
-   *  Leaves the filepointer at the beginning of the next line! */
-  def readline: String = {
+  // the random access file wrapped by this PrefixIndexFile
+  private val file = new RandomAccessFile(path, "r")
+  
+  /** Fixes behavior of RandomAccessFile::readLine:
+   *  1. proper UTF-8 reading! Interprets UTF-8 after reading complete line.
+   *  2. leaves the filepointer at the beginning of the next line! */
+  private def readline: String = {
     var readData = false
     val bytes = Iterator.continually(file.read).takeWhile(_ match {
       case -1   => false
@@ -38,7 +45,8 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 5) {
     string
   }
 
-  val index: PrefixFileIndex = {
+  // lazily loaded index
+  protected val index: PrefixFileIndex = {
     val indexpath = path + ".index"
     if (!new File(indexpath).exists) {
       System.err.println("Index file " + indexpath + " does not exist. Creating index..")
@@ -51,50 +59,53 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 5) {
       s.readObject.asInstanceOf[PrefixFileIndex]
     }
   }
-  
-  
-  def smart_search(prefix: String): List[String] = {
-    val prefixLength = prefix.length
-    var (begin, end) = index.search(prefix)
-    var middle = begin + (end - begin) / 2
-    
-    def prefixAt(pos: Long): String = {
-      file.seek(pos)
-      val discarded = readline
-      readline.take(prefixLength)
-    }
-    
-    
-    prefixAt(middle).compareTo(prefix) match {
-      case x if x < 0 => begin = middle + 1
-      case x if x > 0 => end = middle - 1
-      case 0 => // arbitrary try:
-        middle = begin + (middle - begin) / 2
-    }
-    
-    ???
-  }
-  
 
-  def search(prefix: String): List[String] = {
-    //val file = if(lazyRead) new RandomAccessFile(path, "r") else this.file
+  /** Yields all lines in this file starting with the given prefix */
+  def search(prefix: String): List[String] = file synchronized {
+    
+    val prefixLength = prefix.length
+    val (begin, end) = index.search(prefix)
+
+    var (low, high) = (begin, end)
+    var lastLow = low
+    def prefixAt(pos: Long): String = {
+      file.seek(pos); readline; readline.take(prefixLength)
+    }
+    while (high - low > ByteAccuracy) {
+      val mid = (low + high) / 2
+      if (prefixAt(mid) < prefix) {
+        lastLow = low; low = mid + 1
+      } else high = mid
+    }
+    file.seek(lastLow)
+
+    val lines = for (
+      line <- Iterator.continually(readline)
+        .takeWhile(line => line != null && file.getFilePointer <= end)
+    ) yield line
+
+    // profiling..
+    /*
+    val foo = lines.toList
+    println("Searching with prefix '%s', resulting in %d lines".format(prefix, foo.length))
+    val dropped = foo.dropWhile(!_.startsWith(prefix))
+    println(".. dropped left %d lines".format(foo.length - dropped.length))
+    val taken = dropped.takeWhile(_.startsWith(prefix))
+    println(".. dropped right %d lines".format(dropped.length - taken.length))
+    return taken
+    */
+    val cleaned = lines.dropWhile(!_.startsWith(prefix)).takeWhile(_.startsWith(prefix))
+    cleaned.toList
+  }
+
+  /** Same as *search*, but does not use binary search */
+  def naive_search(prefix: String): List[String] = {
     file synchronized {
       val (begin, end) = index.search(prefix)
       file.seek(begin)
       val lines = for (line <- Iterator.continually(readline)
           .takeWhile(line => line != null && file.getFilePointer <= end)) yield line
       
-      // profiling..
-      /*
-      val foo = lines.toList
-      println("Searching with prefix '%s', resulting in %d lines".format(prefix, foo.length))
-      val dropped = foo.dropWhile(!_.startsWith(prefix))
-      println(".. dropped left %d lines".format(foo.length - dropped.length))
-      val taken = dropped.takeWhile(_.startsWith(prefix))
-      println(".. dropped right %d lines".format(dropped.length - taken.length))
-      return taken
-      */
-        
       val cleaned = lines.dropWhile(!_.startsWith(prefix)).takeWhile(_.startsWith(prefix))
       cleaned.toList
     }
