@@ -52,6 +52,26 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 5) {
     }
   }
   
+  
+  def smart_search(prefix: String): List[String] = {
+    val prefixLength = prefix.length
+    var (begin, end) = index.search(prefix)
+    var middle = begin + (end - begin) / 2
+    
+    val middlePrefix = {
+      file.seek(middle)
+      val discarded = readline
+      readline.take(prefixLength)
+    }
+    middlePrefix.compareTo(prefix) match {
+      case x if x < 0 => begin = middle + 1
+      case x if x > 0 => end = middle - 1
+      case 0 =>
+    }
+    
+    ???
+  }
+  
 
   def search(prefix: String): List[String] = {
     //val file = if(lazyRead) new RandomAccessFile(path, "r") else this.file

@@ -1,6 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala.training
 
 import java.io.File
+import de.tudarmstadt.langtech.lexsub_scala.utility.io
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types._
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter
@@ -22,16 +23,19 @@ object Training {
     val trainingData = createTrainingData(data, candidates)
     println("Using " + candidates + " created " + trainingData.size + " training examples")
     
+    // write instances into a file, for later reference
+    writeInstances(trainingDir.getPath + "/" + InstanceDataWriter.INSTANCES_OUTPUT_FILENAME, trainingData)
+    
     // extract features
     val instances = features(trainingData).flatten
     
     // write classifier data
     val dataWriter = new MalletStringOutcomeDataWriter(trainingDir)
     
-    val writer = new InstanceDataWriter[String](trainingDir)
     instances foreach dataWriter.write
     dataWriter.finish
     
+    //val writer = new InstanceDataWriter[String](trainingDir)
     //dataWriter.getClassifierBuilder.trainClassifier(trainingDir, "MaxEnt")
     //dataWriter.getClassifierBuilder.packageClassifier(trainingDir)
     
@@ -57,6 +61,15 @@ object Training {
         }
       Substitutions(instance, replacements.toVector)
     }
+  }
+  
+  def writeInstances(filename: String, items: Iterable[Substitutions]){
+    val instances = items.flatMap(_.asItems)
+    val lines = for((substItem @ SubstitutionItem(instance, substitution)) <- instances) yield {
+      val line = Seq(instance.gold.get.gold.id, substitution, substItem.score.get)
+      line.mkString("\t")
+    }
+    io.write(filename, lines.mkString("\n"))
   }
   
   def collectOutcomes(items: Iterable[LexSubInstance], outcomes: Iterable[Seq[(String, Double)]]) = 

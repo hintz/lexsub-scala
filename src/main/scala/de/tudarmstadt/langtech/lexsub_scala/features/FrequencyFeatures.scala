@@ -32,9 +32,9 @@ case class SetFreqRatios(nGrams: NGramLookup, leftRange: Range, rightRange: Rang
 
 case class PairFreqRatio(nGrams: NGramLookup, left: Int, right: Int)
   extends SmartFeature[Option[(Vector[String], Long)]]
-  with OptionalNumericFeature {
+  with FeatureUtils {
   
-  val name = "FreqRatio_" + left + "_" + right
+  val name = "PairFreqRatio_" + left + "_" + right
   val slicer = utility.context[String](left, right) _
 
   def global(item: LexSubInstance): Option[(Vector[String], Long)] = {
@@ -57,7 +57,7 @@ case class PairFreqRatio(nGrams: NGramLookup, left: Int, right: Int)
         val replaced = tokens.updated(left, substitute)
         val replacedFreq = nGrams(replaced: _*)
 
-        if (origFreq < 10e-10) // if original not found, don't yield any feature
+        if (origFreq == 0|| replacedFreq == 0) // if original not found, don't yield any feature
           return None
 
         val ratio = replacedFreq.toDouble / origFreq
@@ -68,18 +68,18 @@ case class PairFreqRatio(nGrams: NGramLookup, left: Int, right: Int)
 }
 
 
-case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends FeatureExtractor {
+case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends FeatureExtractor with FeatureUtils {
   val slicer = utility.context[String](left, right) _
-	val name = "SetRatio_" + left + "_" + right
+	val name = "SetFreqRatio_" + left + "_" + right
 
-  def extract(item: Substitutions): Vector[Seq[Feature]] = {
+  def extract(substitutions: Substitutions): Vector[Seq[Feature]] = {
+    implicit val item = substitutions
     val sentence = item.lexSubInstance.sentence
     val originalTokens = sentence.tokens.map(_.word) // word forms, not lemmas
     val sliced = slicer(originalTokens, item.lexSubInstance.headIndex)
     
     // if slice doesn't fit, don't yield any feature
-    if (sliced.exists(_.isEmpty)) 
-      return Vector.fill(item.candidates.length)(Seq.empty)
+    if (sliced.exists(_.isEmpty)) return noFeatures
       
     val tokens = sliced.map(_.get).toVector
     
@@ -88,14 +88,13 @@ case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends Feat
       val replacedFreq = nGrams(replaced: _*)
       replacedFreq.toDouble
     }
-    
+    // normalize with respect to all substitutions
     val normalized = utility.normalize(replacementFreqs)
-    val features = normalized.map(d => Seq(new Feature(name, d)))
-    features
+    // yield only positive scores as feature
+    val features = normalized.map(Some(_).filter(_ > 0))
+    features.map(toFeatures)
   }
 }
-
-
 
 
 case class ConjunctionFreqRatio(nGrams: NGramLookup, conjunctions: Seq[String], left: Int, right: Int)

@@ -17,7 +17,7 @@ case class DTLookup(val dtName: String, val dt: WordSimilarityFile[String],
 }
 
 /** Looks up word similarity between target and substitute in a DTLookup */
-case class WordSimilarity(dt: DTLookup) extends LocalFeatureExtractor with OptionalNumericFeature  {
+case class WordSimilarity(dt: DTLookup) extends LocalFeatureExtractor with FeatureUtils  {
   val name = "Sim_" + dt.dtName
   def extract(item: SubstitutionItem): Seq[Feature] = dt.similarity(item.target, item.substitution)
 }

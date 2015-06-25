@@ -5,7 +5,7 @@ import de.tudarmstadt.langtech.lexsub_scala.utility
 import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 
-case class PosContextWindow(left: Int, right: Int) extends GlobalFeatureExtractor with SimpleNominalFeature[String]  {
+case class PosContextWindow(left: Int, right: Int) extends GlobalFeatureExtractor with NominalFeature[String]  {
   
   val name = "POS_" + left + "_" + right
   val slicer = utility.context[String](left, right) _

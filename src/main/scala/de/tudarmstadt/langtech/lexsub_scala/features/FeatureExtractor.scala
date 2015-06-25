@@ -40,50 +40,18 @@ abstract class SmartFeature[A] extends FeatureExtractor {
   }
 }
 
-/*
-/** A feature with an aggregation function */
-abstract class AggregatedFeature(inner: FeatureExtractor) extends FeatureExtractor {
-  def aggregator(in: Vector[Option[Object]]): Vector[Option[Object]]
-  def extract(item: Substitutions): Vector[Seq[Feature]] = {
-    // apply inner feature extractor
-    val original = inner.extract(item)
-    
-    // determine resulting features by name
-    val uniqueFeatures = original.flatMap(_.map(_.getName)).toSet.toSeq
-    
-    // apply aggregation function on all features
-    uniqueFeatures.map { featureName => 
-      val optValues = original.map { element => 
-        element.collectFirst { case feature if feature.getName == featureName => feature.getValue}
-      }
-      val aggregated = aggregator(optValues)
-      val foo = aggregated.map(_.toSeq.map(v => new Feature(featureName, v)))
-    }
-
-    
-  }
-}
-*/
-trait SimpleNominalFeature[A] {
+/** Some utility mixins for defining features */
+trait FeatureUtils {
   val name: String
-  implicit def toFeatures(a: A): Seq[Feature] = Seq(new Feature(name, a))
-}
-
-trait OptionalNominalFeature[A] {
-  val name: String
-  implicit def toFeatures(a: Option[A]): Seq[Feature] = a.toList.map(new Feature(name, _))
-}
-
-trait SimpleNumericFeature {
-  val name: String
+  implicit def noFeatures(implicit item: Substitutions) = Vector.fill(item.candidates.length)(Seq.empty[Feature])
   implicit def toFeatures(v: Double): Seq[Feature] = Seq(new Feature(name, v))
-}
-
-trait OptionalNumericFeature {
-  val name: String
   implicit def toFeatures(v: Option[Double]): Seq[Feature] = v.toList.map(new Feature(name, _))
 }
 
+trait NominalFeature[A] extends FeatureUtils {
+  implicit def toFeatures(a: A): Seq[Feature] = Seq(new Feature(name, a))
+	implicit def toFeatures(a: Option[A]): Seq[Feature] = a.toList.map(new Feature(name, _))
+}
 
 /** Applies a collection of features */
 class Features(features: FeatureExtractor*) extends FeatureExtractor {
