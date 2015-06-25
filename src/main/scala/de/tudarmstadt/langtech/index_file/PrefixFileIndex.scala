@@ -20,11 +20,11 @@ case class FixedSizePrefixIndex(index: Map[String, Long], end: Long) extends Pre
     val subindexKeys = byLength(prefixLength) // extract keys for given length
     val firstLarger = binsearch(subindexKeys, actualPrefix) // find first key that's bigger
     //val firstLargerCheck = subindexKeys.indexWhere(_ > actualPrefix) 
-    //assert(firstLarger == firstLargerCheck)
+    //assert(firstLarger < 0 || firstLarger == firstLargerCheck)
     val result: (Long, Long) = firstLarger match {
-      case i if i > 0 => (index(subindexKeys(i - 1)), index(subindexKeys(i))) // default case: between previous and entry
-      case 0           => (0, index(subindexKeys.head)) // must be between beginning and first entry
-      case -1          => (index(subindexKeys.last), end) // must be between last entry and end
+      case i if i > 0 && i < subindexKeys.length => (index(subindexKeys(i - 1)), index(subindexKeys(i))) // general case: between previous and entry
+      case 0 => (0, index(subindexKeys.head)) // must be between beginning and first entry
+      case i if i == -1 || i == subindexKeys.length => (index(subindexKeys.last), end) // must be between last entry and end
     }
     result
   }
@@ -36,7 +36,7 @@ case class FixedSizePrefixIndex(index: Map[String, Long], end: Long) extends Pre
       if (elems(mid) <= target) low = mid + 1
       else high = mid
     }
-    /* Now, low and high both point to the element in question. */
+    /* Now, low and high both point to the first element > target (or equal elems.size) */
     high
   }
 }

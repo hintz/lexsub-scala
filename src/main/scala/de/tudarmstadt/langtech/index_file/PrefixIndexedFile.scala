@@ -58,15 +58,18 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 5) {
     var (begin, end) = index.search(prefix)
     var middle = begin + (end - begin) / 2
     
-    val middlePrefix = {
-      file.seek(middle)
+    def prefixAt(pos: Long): String = {
+      file.seek(pos)
       val discarded = readline
       readline.take(prefixLength)
     }
-    middlePrefix.compareTo(prefix) match {
+    
+    
+    prefixAt(middle).compareTo(prefix) match {
       case x if x < 0 => begin = middle + 1
       case x if x > 0 => end = middle - 1
-      case 0 =>
+      case 0 => // arbitrary try:
+        middle = begin + (middle - begin) / 2
     }
     
     ???
@@ -78,8 +81,8 @@ class PrefixIndexedFile(val path: String, val prefixLength: Int = 5) {
     file synchronized {
       val (begin, end) = index.search(prefix)
       file.seek(begin)
-      val lines = for (line <- Iterator.continually(readline).takeWhile(line => file.getFilePointer <= end))
-        yield line
+      val lines = for (line <- Iterator.continually(readline)
+          .takeWhile(line => line != null && file.getFilePointer <= end)) yield line
       
       // profiling..
       /*
