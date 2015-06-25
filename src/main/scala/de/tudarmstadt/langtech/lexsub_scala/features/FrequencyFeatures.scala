@@ -60,7 +60,7 @@ case class PairFreqRatio(nGrams: NGramLookup, left: Int, right: Int)
         if (origFreq == 0|| replacedFreq == 0) // if original not found, don't yield any feature
           return None
 
-        val ratio = replacedFreq.toDouble / origFreq
+        val ratio = replacedFreq.toDouble / (origFreq + replacedFreq)
         ratio
     }
     result
