@@ -58,8 +58,10 @@ object RunLexSub extends App {
   
   val candidates = new CandidateFile(germanetFile, true)
   val masterlist = new CandidateFile(masterlistFile, true)
+  
+  val word2vecEmbedding = Word2VecLookup("../AIPHES_Data/WordEmbeddings/word2vec/denews-vectors.bin")
 
-  val embedding = new WordVectorFile(embeddingFile)
+  val eigenwordEmbedding = WordVectorFileLookup(embeddingFile)
   val web1t = Web1TLookup(new JWeb1TSearcher(new File(web1tFolder), 1, 5))
   
   val dt = DTLookup("de70M_mate_lemma", new WordSimilarityFile(dtfile, identity), 
@@ -78,10 +80,10 @@ object RunLexSub extends App {
       PairFreqRatios(web1t, 0 to 2, 0 to 2, 5),
       SetFreqRatios(web1t, 0 to 2, 0 to 2, 5),
       ConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0),
-      LexSemRelation(masterlist)
-      //WordEmbeddingDistanceVectors(embedding, 2, 2),
-      //WordEmbeddingSimilarity(embedding),
-      //WordEmbeddingDistance(embedding)
+      LexSemRelation(masterlist),
+      WordEmbeddingDistanceVectorsSet(word2vecEmbedding, 0 to 2, 0 to 2, 5),
+      WordEmbeddingSimilarity(word2vecEmbedding),
+      WordEmbeddingDistance(word2vecEmbedding)
   )
   
   // train
@@ -97,3 +99,5 @@ object RunLexSub extends App {
   outWriter.save("instances.out")
   println("Done.")
 }
+
+
