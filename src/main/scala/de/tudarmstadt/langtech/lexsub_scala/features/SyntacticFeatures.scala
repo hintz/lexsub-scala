@@ -13,7 +13,7 @@ case object TargetPosValue extends GlobalFeatureExtractor with NominalFeature[St
 
 case class PosContextWindow(left: Int, right: Int) extends GlobalFeatureExtractor with NominalFeature[String]  {
   val name = "POS_" + left + "_" + right
-  val slicer = utility.context[String](left, right) _
+  val slicer = utility.collections.context[String](left, right) _
   
   def extract(item: LexSubInstance): Seq[Feature] = {
     val sentence = item.sentence

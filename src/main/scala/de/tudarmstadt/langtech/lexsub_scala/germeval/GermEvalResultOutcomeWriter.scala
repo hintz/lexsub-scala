@@ -50,7 +50,7 @@ class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
       val outcomes = allOutcomes.take(maxExpansions)
       val words1 = item.sentence.tokens.map(_.word)
       val (left, right) = context
-      val words = utility.context(left, right)(words1, item.headIndex).map(_.getOrElse("")).toVector
+      val words = utility.collections.context(left, right)(words1, item.headIndex).map(_.getOrElse("")).toVector
       val emptyWords = words.map(_.replaceAll(".", " "))
       val empty = Vector.fill(words.length)("")
       

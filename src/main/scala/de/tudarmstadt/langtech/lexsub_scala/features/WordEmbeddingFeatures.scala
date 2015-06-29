@@ -35,7 +35,7 @@ case class WordEmbeddingDistanceVectors(embedding: WordVectorFile, leftContext: 
 extends SmartFeature[WordEmbeddingGlobalCache] with NumericFeature {
 
   val name = "EmbeddingDist_" + leftContext + "_" + rightContext
-  val slicer = utility.context[String](leftContext, rightContext) _
+  val slicer = utility.collections.context[String](leftContext, rightContext) _
   
   def global(item: LexSubInstance): WordEmbeddingGlobalCache = {
     val sentence = item.sentence
