@@ -93,7 +93,7 @@
 	<dependency>
 		<groupId>de.tudarmstadt.langtech</groupId>
 		<artifactId>scala-utilities</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.1</version>
 	</dependency>
   </dependencies>
 
