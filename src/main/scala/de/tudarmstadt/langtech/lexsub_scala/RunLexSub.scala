@@ -2,6 +2,7 @@ package de.tudarmstadt.langtech.lexsub_scala
 
 import java.io.File
 import com.googlecode.jweb1t.JWeb1TSearcher
+import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.distributional.WordSimilarityFile
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
@@ -14,6 +15,7 @@ import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.tokenize.TokenizerME
 import opennlp.tools.tokenize.TokenizerModel
 import org.cleartk.classifier.jar.JarClassifierBuilder
+import de.tudarmstadt.langtech.lexsub_scala.features.LexSemRelation
 
 /** Lexsub playground to train / run / evaluate / etc. */
 object RunLexSub extends App {
@@ -32,7 +34,7 @@ object RunLexSub extends App {
    )
    
   /* Preprocessed data can be trivially serialized */
-  val data = utility.io.lazySerialized("germeval_cache.ser"){
+  val data = io.lazySerialized("germeval_cache.ser"){
     System.err.println("Cache does not exist, leading GermEval data..")
     val plainData = new GermEvalReader("../AIPHES_Data/GermEval2015", "train-dataset").items
     val processed = plainData.flatMap(preprocessing.tryApply)
@@ -61,21 +63,22 @@ object RunLexSub extends App {
   val web1t = Web1TLookup(new JWeb1TSearcher(new File(web1tFolder), 1, 5))
   
   val dt = DTLookup("de70M_mate_lemma", new WordSimilarityFile(dtfile, identity), 
-      token => token.lemma.toLowerCase, 
-      (substitute, other) => other.startsWith(substitute.toLowerCase))
+      token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
+      (substitute, other) => other.startsWith(substitute.toLowerCase)) // how to define equivalence in this DT
   val cooc = DTLookup("cooc", new WordSimilarityFile(coocFile, identity), token => token.word)
   
   
   // setup features
   val features = new FeatureAnnotator(
-      WordSimilarity(dt),
-      WordSimilarity(cooc),
+      //CheatFeature,
+		  //WordSimilarity(dt),
+      Cooc(cooc),
       ThresholdedDTOverlap(dt, Seq(5, 20, 50, 100, 200), false),
       PosContextWindows(0 to 2, 0 to 2, 3),
       PairFreqRatios(web1t, 0 to 2, 0 to 2, 5),
       SetFreqRatios(web1t, 0 to 2, 0 to 2, 5),
-      ConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0)
-      //LexSemRelation(masterlist),
+      ConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0),
+      LexSemRelation(masterlist)
       //WordEmbeddingDistanceVectors(embedding, 2, 2),
       //WordEmbeddingSimilarity(embedding),
       //WordEmbeddingDistance(embedding)
@@ -83,6 +86,7 @@ object RunLexSub extends App {
   
   // train
   Training.train(data, candidates, features, TrainingDir)
+  //JarClassifierBuilder.trainAndPackage(TrainingDir, "MaxEnt")
   
   val lexsub = LexSubExpander(candidates, features, ClassifierScorer(TrainingDir))
   val outcomes = lexsub(data)

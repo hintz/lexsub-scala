@@ -1,9 +1,9 @@
 package de.tudarmstadt.langtech.lexsub_scala.distributional
 
-import de.tudarmstadt.langtech.index_file.PrefixIndexedFile
 import scalaz.Memo
 import breeze.linalg.{Vector => Vector}
 import breeze.linalg.DenseVector
+import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
 class WordVectorFile(val embedding_file: String)  {
   
   val file = new PrefixIndexedFile(embedding_file, 10)

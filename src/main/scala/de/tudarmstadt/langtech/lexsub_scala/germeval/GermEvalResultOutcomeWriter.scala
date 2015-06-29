@@ -1,6 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.germeval
-import de.tudarmstadt.langtech.lexsub_scala.utility
-import de.tudarmstadt.langtech.lexsub_scala.utility.io
+import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import java.util.IllegalFormatException
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
@@ -50,7 +49,7 @@ class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
       val outcomes = allOutcomes.take(maxExpansions)
       val words1 = item.sentence.tokens.map(_.word)
       val (left, right) = context
-      val words = utility.collections.context(left, right)(words1, item.headIndex).map(_.getOrElse("")).toVector
+      val words = collections.context(left, right)(words1, item.headIndex).map(_.getOrElse("")).toVector
       val emptyWords = words.map(_.replaceAll(".", " "))
       val empty = Vector.fill(words.length)("")
       

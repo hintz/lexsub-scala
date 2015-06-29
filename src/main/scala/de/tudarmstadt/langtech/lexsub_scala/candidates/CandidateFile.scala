@@ -1,6 +1,6 @@
 package de.tudarmstadt.langtech.lexsub_scala.candidates
-import de.tudarmstadt.langtech.lexsub_scala.utility
-import de.tudarmstadt.langtech.lexsub_scala.utility.io
+import de.tudarmstadt.langtech.scala_utilities
+import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.types.{Candidate, CandidateFunction}
 import java.util.IllegalFormatException
 

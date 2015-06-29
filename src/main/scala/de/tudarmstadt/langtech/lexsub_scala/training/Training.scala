@@ -1,7 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala.training
 
 import java.io.File
-import de.tudarmstadt.langtech.lexsub_scala.utility.io
+import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types._
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter

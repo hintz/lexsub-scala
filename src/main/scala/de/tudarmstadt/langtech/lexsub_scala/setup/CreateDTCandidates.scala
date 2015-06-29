@@ -4,7 +4,7 @@ import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
 import de.tudarmstadt.langtech.lexsub_scala.distributional.WordSimilarityFile
 import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
 import de.tudarmstadt.langtech.lexsub_scala.germeval.LexItem
-import de.tudarmstadt.langtech.lexsub_scala.utility.io
+import de.tudarmstadt.langtech.scala_utilities.io
 import org.apache.commons.lang.StringUtils
 
 object CreateDTCandidates extends App {

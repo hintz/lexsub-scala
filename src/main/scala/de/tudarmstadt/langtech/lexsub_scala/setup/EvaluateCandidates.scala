@@ -6,8 +6,7 @@ import de.tudarmstadt.langtech.lexsub_scala.germeval.GoldItem
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
-import de.tudarmstadt.langtech.lexsub_scala.utility
-import de.tudarmstadt.langtech.lexsub_scala.utility.io
+import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
 
 case class PRResult(val tp: Int, val fp: Int, val fn: Int, val tn: Option[Int]) {
@@ -16,7 +15,7 @@ case class PRResult(val tp: Int, val fp: Int, val fn: Int, val tn: Option[Int]) 
   def +(other: PRResult) = PRResult(tp + other.tp, fp + other.fp, fn + other.fn, for(a <- tn; b <- other.tn) yield a + b)
   def precision: Double = tp / retrieved.toDouble
   def recall: Double = tp / relevant.toDouble
-  def fmeasure: Double = utility.compute.fmeasure(precision, recall)
+  def fmeasure: Double = compute.fmeasure(precision, recall)
   override def toString = "R=%.2f P=%.2f F1=%.2f".format(recall, precision, fmeasure)
 }
 

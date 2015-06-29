@@ -2,7 +2,7 @@ package de.tudarmstadt.langtech.lexsub_scala.features
 
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.distributional.WordVectorFile
-import de.tudarmstadt.langtech.lexsub_scala.utility
+import de.tudarmstadt.langtech.scala_utilities._
 import breeze.linalg.operators._
 import breeze.linalg._
 import breeze.numerics._
@@ -35,7 +35,7 @@ case class WordEmbeddingDistanceVectors(embedding: WordVectorFile, leftContext: 
 extends SmartFeature[WordEmbeddingGlobalCache] with NumericFeature {
 
   val name = "EmbeddingDist_" + leftContext + "_" + rightContext
-  val slicer = utility.collections.context[String](leftContext, rightContext) _
+  val slicer = collections.context[String](leftContext, rightContext) _
   
   def global(item: LexSubInstance): WordEmbeddingGlobalCache = {
     val sentence = item.sentence

@@ -4,8 +4,8 @@ import org.cleartk.classifier.Feature
 import org.cleartk.classifier.Instance
 import scala.collection.JavaConversions._
 import de.tudarmstadt.langtech.lexsub_scala.types._
-import de.tudarmstadt.langtech.lexsub_scala.utility.ReportingIterable._
-import de.tudarmstadt.langtech.lexsub_scala.utility.BatchProcessing
+import de.tudarmstadt.langtech.scala_utilities.processing.ReportingIterable._
+import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 
 /** Abstract feature extraction for lexical substitution */
 abstract class FeatureExtractor {

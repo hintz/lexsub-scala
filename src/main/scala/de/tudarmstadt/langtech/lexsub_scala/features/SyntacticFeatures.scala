@@ -1,7 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
-import de.tudarmstadt.langtech.lexsub_scala.utility
+import de.tudarmstadt.langtech.scala_utilities._
 import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 
@@ -13,7 +13,7 @@ case object TargetPosValue extends GlobalFeatureExtractor with NominalFeature[St
 
 case class PosContextWindow(left: Int, right: Int) extends GlobalFeatureExtractor with NominalFeature[String]  {
   val name = "POS_" + left + "_" + right
-  val slicer = utility.collections.context[String](left, right) _
+  val slicer = collections.context[String](left, right) _
   
   def extract(item: LexSubInstance): Seq[Feature] = {
     val sentence = item.sentence

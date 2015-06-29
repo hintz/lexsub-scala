@@ -9,9 +9,9 @@ import org.cleartk.classifier.Feature
 import org.cleartk.classifier.jar.JarClassifierBuilder
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types._
-import de.tudarmstadt.langtech.lexsub_scala.utility.BatchProcessing
 import de.tudarmstadt.langtech.lexsub_scala.features.Features
 import de.tudarmstadt.langtech.lexsub_scala.features.FeatureExtractor
+import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 
 /** The central component of LexSub. Expands LexSubInstances with substitutions,
  *  according to a given CandidateList and a scorer

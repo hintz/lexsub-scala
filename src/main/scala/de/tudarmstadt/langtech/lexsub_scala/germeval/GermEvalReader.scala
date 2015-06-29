@@ -1,7 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala.germeval
 import scala.xml.XML
-import de.tudarmstadt.langtech.lexsub_scala.utility.io
-import de.tudarmstadt.langtech.lexsub_scala.utility.strings
+import de.tudarmstadt.langtech.scala_utilities.io
+import de.tudarmstadt.langtech.scala_utilities.strings
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import java.util.IllegalFormatException
 

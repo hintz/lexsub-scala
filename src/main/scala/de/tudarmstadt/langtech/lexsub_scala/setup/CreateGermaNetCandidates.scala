@@ -1,6 +1,6 @@
 package de.tudarmstadt.langtech.lexsub_scala.setup
 
-import de.tudarmstadt.langtech.lexsub_scala.utility._
+import de.tudarmstadt.langtech.scala_utilities._
 import de.tuebingen.uni.sfs.germanet.api.GermaNet
 import scala.collection.JavaConverters._
 import de.tuebingen.uni.sfs.germanet.api.GermaNet

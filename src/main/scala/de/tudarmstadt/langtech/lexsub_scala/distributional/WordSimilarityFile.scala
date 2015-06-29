@@ -1,8 +1,9 @@
 package de.tudarmstadt.langtech.lexsub_scala.distributional
 
-import de.tudarmstadt.langtech.index_file.PrefixIndexedFile
+
+import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
-import de.tudarmstadt.langtech.lexsub_scala.utility.strings
+import de.tudarmstadt.langtech.scala_utilities.strings
 import scalaz.Memo
 
 
