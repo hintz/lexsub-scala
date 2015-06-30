@@ -23,7 +23,7 @@ import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalResultOutcomeWriter
 object Training {
   
   val Classifier = "MaxEnt" // classifier string as expected by cleartk
-  val IncludeGoldNotInList = false
+  val IncludeGoldNotInList = false // add gold items which are not in candidate list to training
   
   /** Trains a classifier with the given training data in the directory given in trainingDir */
   def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator, trainingFolder: String){

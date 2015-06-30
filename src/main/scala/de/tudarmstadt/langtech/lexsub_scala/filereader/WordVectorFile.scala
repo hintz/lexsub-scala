@@ -24,6 +24,4 @@ object TestEmbedding extends App {
   println(e("Welt"))
   println(e("Mars"))
   println(e("wüsste"))
-  
-  
 }

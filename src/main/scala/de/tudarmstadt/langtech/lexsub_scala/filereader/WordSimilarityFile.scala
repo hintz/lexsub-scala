@@ -1,12 +1,9 @@
 package de.tudarmstadt.langtech.lexsub_scala.filereader
 
-
 import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.scala_utilities.strings
 import scalaz.Memo
-
-
 
 class WordSimilarityFile[Elem](val dt_filename: String, extractor: (String => Elem), sorted: Boolean = true) {
   
@@ -22,11 +19,15 @@ class WordSimilarityFile[Elem](val dt_filename: String, extractor: (String => El
   def similar(s: String) = sim(s)
   val sim: String => Result = Memo.mutableHashMapMemo { prefix =>
     val lines = file.search(prefix)
-    val processed = lines.map(_.split("\t")).map {
-      case Array(_, other, score) => (extractor(other), score.toDouble)
+    val processed = lines.map(_.split("\t")).flatMap {
+      case Array(_, other, score) => Seq((extractor(other), score.toDouble))
+      case line => 
+        System.err.printf("WARNING: Illegal format in %s, searching for %s, parsed line %s\n", 
+            dt_filename, prefix, line.mkString("\t"))
+        Seq.empty
     }
     val result = processed.toList
-    if(!sorted) result else result.sortBy(- _._2)
+    if(!sorted) processed else processed.sortBy(- _._2)
   }
 }
 
