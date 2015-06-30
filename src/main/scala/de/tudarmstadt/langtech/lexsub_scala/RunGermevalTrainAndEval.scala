@@ -11,14 +11,17 @@ object RunGermevalTrainingAndEval extends App {
   printf("Will train on %d examples and then lex. expand %d instances\n", trainingData.size, evaluationData.size)
   
   // do training
-  Training.train(
-      trainingData, 
-      Settings.candidates, 
+  Training.train(trainingData, 
+      Settings.candidates.duden, 
       Settings.features, 
       Settings.trainingDir)
   
   // load lexsub system
-  val lexsub = LexSubExpander(Settings.candidates, Settings.features, ClassifierScorer(Settings.trainingDir))
+  val lexsub = LexSubExpander(
+      Settings.candidates.duden,
+      Settings.features, 
+      ClassifierScorer(Settings.trainingDir))
+
   val outcomes = lexsub(evaluationData)
   
   // write results

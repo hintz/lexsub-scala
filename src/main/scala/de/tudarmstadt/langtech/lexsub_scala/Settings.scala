@@ -17,7 +17,10 @@ object Settings {
   val germevalFolder = "../AIPHES_Data/GermEval2015"
   
   val trainingDir = "training"
+  
+  // candidate lists
   val germanetFile = "../AIPHES_Data/LexSub/candidates/germeval_germanet.tsv"
+  val dudenFile = "../AIPHES_Data/LexSub/candidates/germeval_duden.tsv"  
   val masterlistFile = "../AIPHES_Data/LexSub/candidates/germeval_masterlist.tsv"
   
   val embeddingFile = "../AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted"
@@ -60,9 +63,14 @@ object Settings {
     }
   }
   
-  // Candidate lists
-  lazy val candidates = new CandidateFile(germanetFile, true)
-  lazy val masterlist = new CandidateFile(masterlistFile, true)
+  
+  object candidates {
+    // Candidate lists
+    lazy val germanet = new CandidateFile(germanetFile, true)
+    lazy val duden = new CandidateFile(dudenFile, true)
+    lazy val masterlist = new CandidateFile(masterlistFile, true)
+  }
+
   
   // N-gram counts
   lazy val web1t = Web1TLookup(web1tFolder, 5)
@@ -90,7 +98,7 @@ object Settings {
       PairFreqRatios(web1t, 0 to 2, 0 to 2, 5),
       SetFreqRatios(web1t, 0 to 2, 0 to 2, 5),
       ConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0),
-      LexSemRelation(masterlist)
+      LexSemRelation(candidates.masterlist)
       //WordEmbeddingDistanceVectorsSet(word2vecEmbedding, 0 to 2, 0 to 2, 5),
       //WordEmbeddingSimilarity(word2vecEmbedding),
       //WordEmbeddingDistance(word2vecEmbedding)
