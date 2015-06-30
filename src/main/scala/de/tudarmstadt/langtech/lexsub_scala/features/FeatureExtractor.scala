@@ -7,6 +7,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types._
 import de.tudarmstadt.langtech.scala_utilities.processing.ReportingIterable._
 import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 
+
 /** Abstract feature extraction for lexical substitution */
 abstract class FeatureExtractor {
   /** Yield a vector of multiple feature vectors for each substitute */
@@ -71,6 +72,11 @@ class Features(features: FeatureExtractor*) extends FeatureExtractor {
   }
 }
 
+
+/** Convenience class to load features from a pre-computed cache */
+case class PrecomputedFeatureExtractor(val cache: Map[Substitutions, Vector[Seq[Feature]]]) extends FeatureExtractor {
+  def extract(item: Substitutions): Vector[Seq[Feature]] =  cache(item)
+}
 
 case object CheatFeature extends LocalFeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature] = {

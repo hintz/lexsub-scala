@@ -31,10 +31,11 @@ trait WordVectorLookup {
 case class WordVectorFileLookup(filename: String) extends WordVectorFile(filename) with WordVectorLookup
 
 /** WordVectorLookup based on Word2Vec binary data */
-case class Word2VecLookup(filename: String, limit: Integer = Integer.MAX_VALUE) extends Word2Vec(filename, limit) with WordVectorLookup {
+case class Word2VecLookup(filename: String, limit: Integer = Integer.MAX_VALUE) extends WordVectorLookup {
+  lazy val file = new Word2Vec(filename, limit)
   
   val cache: String => Option[Vector[Double]] = Memo.mutableHashMapMemo { word =>
-    val vec = vector(word).map(_.toDouble)
+    val vec = file.vector(word).map(_.toDouble)
     Some(DenseVector(vec)).filter(_.length > 0)
   }
   

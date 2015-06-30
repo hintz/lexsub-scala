@@ -43,4 +43,11 @@ case class SubstitutionItem(
 
 case class Outcome(val lexSubInstance: LexSubInstance, substitutes: Seq[(String, Double)]){
   def toSubstituteItems: Seq[SubstitutionItem] = substitutes.map(ws => SubstitutionItem(lexSubInstance, ws._1))
+  def bestOutOf(n: Int) = {
+    val bestN = toSubstituteItems.take(n)
+    val tp = bestN.count(_.isGood.get)
+    val fp = bestN.count(! _.isGood.get)
+    val fn = lexSubInstance.gold.get.gold.substitutionWords.length - tp
+    PRResult(tp, fp, fn, None)
+  }
 }

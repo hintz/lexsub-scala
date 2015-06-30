@@ -1,6 +1,6 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
-import com.googlecode.jweb1t.JWeb1TSearcher
+
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.scala_utilities.{collections, compute}
@@ -14,10 +14,23 @@ trait NGramLookup {
 }
 
 /** Web1T wrapper for NGramLookup */
-case class Web1TLookup(web1t: JWeb1TSearcher) extends NGramLookup {
+case class Web1TLookup(web1tFolder: String, maxN: Int = 5) extends NGramLookup {
+	import com.googlecode.jweb1t.JWeb1TSearcher
+  import com.googlecode.jweb1t.JWeb1TIndexer
+  import java.io.File
+  
   // disable web1t logging, too much noise!
   try { Logger.getLogger("com.googlecode.jweb1t.JWeb1TSearcher").setLevel(java.util.logging.Level.OFF) }
   catch { case e: Exception => System.err.println("Web1T logging could not be disabled") }
+  
+  val web1t: JWeb1TSearcher = {
+    if(!new File(web1tFolder, "index-1gms").exists){
+      System.err.printf("Web1T index in folder %s does not exist, creating..\n", web1tFolder)
+      val idx = new JWeb1TIndexer(web1tFolder, maxN);
+      idx.create
+    }
+    new JWeb1TSearcher(new File(web1tFolder), 1, maxN)
+  }
   
   def apply(tokens: String*) = web1t.getFrequency(tokens :_*)
 }

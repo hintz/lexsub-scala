@@ -61,7 +61,7 @@ class FeatureAnnotator(features: FeatureExtractor*)
   }
 }
 
-case class ClassifierScorer(val trainingDiretory: File) {
+case class ClassifierScorer(val trainingDiretory: String) {
   
   import org.cleartk.classifier.mallet.MalletStringOutcomeClassifierBuilder
   import org.cleartk.classifier.Classifier
@@ -69,8 +69,8 @@ case class ClassifierScorer(val trainingDiretory: File) {
     
   val GoodLabel = "GOOD"
   val classifier = JarClassifierBuilder
-    .fromTrainingDirectory(trainingDiretory)
-    .loadClassifierFromTrainingDirectory(trainingDiretory)
+    .fromTrainingDirectory(new File(trainingDiretory))
+    .loadClassifierFromTrainingDirectory(new File(trainingDiretory))
     .asInstanceOf[Classifier[String]]
   
   def apply(features: Seq[Feature]): Double = {
