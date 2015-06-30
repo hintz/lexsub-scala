@@ -1,18 +1,9 @@
-package de.tudarmstadt.langtech.lexsub_scala
+package de.tudarmstadt.langtech.lexsub_scala.types
 
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalItem
-import opennlp.tools.tokenize.TokenizerME
-import opennlp.tools.tokenize.TokenizerModel
-import java.io.File
-import opennlp.tools.postag.POSModel
-import opennlp.tools.postag.POSTaggerME
-import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
-import de.tudarmstadt.langtech.lexsub_scala.types.Token
-import de.tudarmstadt.langtech.lexsub_scala.types.Sentence
-import java.util.IllegalFormatException
-import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import scala.util.Try
 
+/** Very slim interfaces for preprocessing! */
 object Preprocessing {
   type Tokenizer = String => Iterable[String]
   type PosTagger = Iterable[String] => Iterable[String]

@@ -55,19 +55,23 @@ class FeatureAnnotator(features: FeatureExtractor*)
   def apply(item: Substitutions): Vector[Instance[String]] = {
     val features = extract(item)
     val gold = item.asItems.map(_.isGood.get)
-    val outcomes = gold.map(if(_) "GOOD" else "BAD")
+    val outcomes = gold.map(if(_) FeatureAnnotator.Good else FeatureAnnotator.Bad)
     val instances = features.zip(outcomes).map(mkInstance.tupled)
     instances
   }
 }
 
+object FeatureAnnotator {
+  // some arbitrary labels for good and bad instances
+  val Good = "GOOD"
+  val Bad = "BAD"
+}
+
 case class ClassifierScorer(val trainingDiretory: String) {
-  
   import org.cleartk.classifier.mallet.MalletStringOutcomeClassifierBuilder
   import org.cleartk.classifier.Classifier
   import org.cleartk.classifier.Feature
     
-  val GoodLabel = "GOOD"
   val classifier = JarClassifierBuilder
     .fromTrainingDirectory(new File(trainingDiretory))
     .loadClassifierFromTrainingDirectory(new File(trainingDiretory))
@@ -75,7 +79,7 @@ case class ClassifierScorer(val trainingDiretory: String) {
   
   def apply(features: Seq[Feature]): Double = {
     val outcomes = classifier.score(features, 2)
-    val goodScore = outcomes.collectFirst { case o if o.getOutcome == GoodLabel => o.getScore }
+    val goodScore = outcomes.collectFirst { case o if o.getOutcome == FeatureAnnotator.Good => o.getScore }
     goodScore.getOrElse(throw new IllegalStateException)
   }
 }

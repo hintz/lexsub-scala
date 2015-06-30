@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.distributional
+package de.tudarmstadt.langtech.lexsub_scala.filereader
 
 
 import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile

@@ -7,7 +7,6 @@ import de.tudarmstadt.langtech.lexsub_scala.types._
 import de.tudarmstadt.langtech.scala_utilities.processing.ReportingIterable._
 import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 
-
 /** Abstract feature extraction for lexical substitution */
 abstract class FeatureExtractor {
   /** Yield a vector of multiple feature vectors for each substitute */

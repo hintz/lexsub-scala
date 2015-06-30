@@ -18,9 +18,11 @@ import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
+import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalResultOutcomeWriter
 
 object Training {
   
+  val Classifier = "MaxEnt" // classifier string as expected by cleartk
   val IncludeGoldNotInList = false
   
   /** Trains a classifier with the given training data in the directory given in trainingDir */
@@ -42,9 +44,9 @@ object Training {
     trainAndPackage(instances, trainingDir)
   }
   
-  
-  /** Performs crossvalidate and prints results to stdout */
-  def crossvalidate(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator, trainingRoot: String, folds: Int = 10){
+  /** Performs crossvalidate, prints results to stdout and writes aggregated results to outputFile */
+  def crossvalidate(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator, 
+      trainingRoot: String, outputFile: String, folds: Int = 10){
     
     println("Starting crossvalidation on " + data.size + " instances")
     
@@ -58,8 +60,9 @@ object Training {
     val featureCache = dataWithFeatures.toMap.mapValues(_.map(_.getFeatures.asScala))
     val featureExtractor = new FeatureAnnotator(PrecomputedFeatureExtractor(featureCache))
 
-    println("Grouping data..")
-    val grouped = dataWithFeatures.groupBy(_._1.lexSubInstance.gold.get.sentence.target)
+    println("Grouping data and creating folds..")
+    val grouping = (instance: LexSubInstance) => instance.gold.get.sentence.target.lemma
+    val grouped = dataWithFeatures.groupBy(x => grouping(x._1.lexSubInstance))
     val folded = crossfold(grouped.keys.toSeq, folds)
     
     val outcomes = for(((heldOutItems, trainingItems), i) <- folded.zipWithIndex) yield {
@@ -80,6 +83,8 @@ object Training {
       println("Fold %d: best=%s oot=%s".format(i + 1, best, oot))
       results
     }
+    
+    GermEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
     
     val oot = outcomes.flatten.map(_.bestOutOf(10)).reduce(_ + _)
     val best = outcomes.flatten.map(_.bestOutOf(1)).reduce(_ + _)
@@ -110,7 +115,7 @@ object Training {
     //dataWriter.getClassifierBuilder.packageClassifier(trainingDir)
     
     println("Starting train & package..")
-    JarClassifierBuilder.trainAndPackage(trainingDir, "MaxEnt")
+    JarClassifierBuilder.trainAndPackage(trainingDir, Classifier)
   }
   
   

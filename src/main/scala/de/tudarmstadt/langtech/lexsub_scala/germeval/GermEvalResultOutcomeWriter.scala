@@ -5,8 +5,13 @@ import java.util.IllegalFormatException
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
 
 
-class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
+object GermEvalResultOutcomeWriter {
+  def save(outcomes: Iterable[Outcome], outfile: String){
+    new GermEvalResultOutcomeWriter(outcomes).save(outfile)
+  }
+}
 
+class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
   def formatLines: Iterable[String] = {
     outcomes.flatMap { 
       case Outcome(LexSubInstance(_, _, Some(GermEvalItem(sentence, gold))), scoredSubstitutes) =>
@@ -18,7 +23,6 @@ class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
       case _ => throw new IllegalArgumentException("outcome has no gold data")
     }
   }
-  
   def save(outfile: String){
     io.write(outfile, formatLines.mkString("\n"))
   }

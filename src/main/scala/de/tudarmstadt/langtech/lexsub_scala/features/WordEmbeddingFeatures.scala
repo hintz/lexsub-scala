@@ -1,7 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
-import de.tudarmstadt.langtech.lexsub_scala.distributional.WordVectorFile
+import de.tudarmstadt.langtech.lexsub_scala.filereader.WordVectorFile
 import de.tudarmstadt.langtech.scala_utilities._
 import breeze.linalg.operators._
 import breeze.linalg._
