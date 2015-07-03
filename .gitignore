@@ -47,3 +47,6 @@ build.log
 #  syntax: regexp
 #  ^\.pc/
 
+/crawling/woxikon
+/crawling/duden
+/crawling/wortschatz

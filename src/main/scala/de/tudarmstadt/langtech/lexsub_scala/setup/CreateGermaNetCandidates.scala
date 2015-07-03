@@ -13,11 +13,20 @@ import de.tudarmstadt.langtech.lexsub_scala.germanet.GermaNetUtils
 
 object CreateGermaNetCandidates extends App {
   
-  val gn = new GermaNet("AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
+  // load GermaNet
+  val gn = new GermaNet("../AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
   val gnUtils = new GermaNetUtils(gn)
   import gnUtils._
   
-  def writeCandiadteFile(lexemes: Seq[(String, Option[WordCategory])], outfile: String){
+  // load targets
+  val targets = io.lines("targets-pos.txt").map(strings.splitAssign('\t')).toList
+  val targetsWithPos = targets.map { case (w, p) => (w, gnUtils.translatePos(p))}
+  
+  // write target file
+  writeCandidateFile(targetsWithPos, "resources/candidates/germeval_germanet.tsv")
+
+  
+  def writeCandidateFile(lexemes: Seq[(String, Option[WordCategory])], outfile: String){
       val out = new java.io.BufferedWriter(new java.io.FileWriter(outfile))
       for((lex, pos) <- lexemes; (other, relations) <- getSemanticRelations(lex, pos)) {
         val rel = relations.map("germanet_" + _).mkString(";")
@@ -29,10 +38,14 @@ object CreateGermaNetCandidates extends App {
     out.close
   }
   
-  val germevalGold = new GermEvalReader("AIPHES_Data/GermEval2015", "train-dataset").gold.items
+  /*
+  val germevalGold = 
+    new GermEvalReader("../AIPHES_Data/GermEval2015", "train-dataset").gold.items ++
+    new GermEvalReader("../AIPHES_Data/GermEval2015", "test-dataset").gold.items
   val germevalLexItems = germevalGold.map(_.target).distinct
   val germevalLexemes: Seq[(String, Option[WordCategory])] = germevalLexItems.map(x => (x.word, translatePos(x.pos)))
-  writeCandiadteFile(germevalLexemes, "germeval_germanet")
+  */
+  
   
   /*
   val lexemeSet: Set[(String, Option[WordCategory])] = 

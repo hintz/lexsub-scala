@@ -28,7 +28,11 @@ class GermEvalGold(goldfile: String) {
       val substitutions = solutions.split(";").map(parseSolution).toList
       GoldItem(id.trim, LexItem(word, pos), substitutions)
     }
-    io.lines(goldfile).map(parse).toList
+    try { io.lines(goldfile).map(parse).toList }
+    catch { case e: java.io.FileNotFoundException =>
+      System.err.println("WARNING: No gold file found: " + goldfile)
+      List.empty
+     }
   }
 }
 
@@ -63,15 +67,13 @@ class GermEvalReader(folder: String, filename: String) {
 
   lazy val items = {
     val goldItems = gold.items.map(g => g.id -> g).toMap
-    data.sentences.map { sentence =>
-      GermEvalItem(sentence, goldItems(sentence.id))
-    }
+    def getGold(sentence: Sentence) = 
+      goldItems.getOrElse(sentence.id, 
+          GoldItem(sentence.id, LexItem(sentence.target.lemma, sentence.target.pos), List.empty))
+    data.sentences.map { sentence => GermEvalItem(sentence, getGold(sentence)) }
   }
 }
 
 object TestGermEvalReader extends App {
   println(GermEvalData.parseSentence("Das ist ein <head>Test</head>"))
-  
-  val reader = new GermEvalReader("../lexsub-gpl/AIPHES_Data/GermEval2015", "train-dataset")
-  reader.items foreach println
 }

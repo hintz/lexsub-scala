@@ -42,7 +42,7 @@ class GermaNetUtils(val gn: GermaNet) {
   
   def getSemanticRelations(orthForm: String, pos: WordCategory): Map[String, Seq[String]] = getSemanticRelations(orthForm, Some(pos))
   def getSemanticRelations(orthForm: String, pos: Option[WordCategory] = None): Map[String, Seq[String]] = {
-    println("getSemanticRelations(%s)".format(orthForm))
+    //println("getSemanticRelations(%s)".format(orthForm))
     
     val synsets = (if(pos.isDefined) gn.getSynsets(orthForm, pos.get) else gn.getSynsets(orthForm)).asScala
 
