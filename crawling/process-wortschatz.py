@@ -8,10 +8,10 @@ from collections import defaultdict
 InputDirectory = "wortschatz"
 Outfile = "germeval_wortschatz.tsv"
 RelationPrefix = "Wortschatz_"
+POSFile = '../target-pos.txt'
 
-InstanceFile = '../AIPHES_Data/GermEval2015/train-dataset.gold' # for POS
-instanceFile = codecs.open(InstanceFile, encoding='utf-8"')
-instancePos = dict(x.split()[0].split('.') for x in instanceFile.readlines())
+posFile = codecs.open(POSFile, encoding='utf-8"')
+instancePos = dict(x.strip().split() for x in posFile.readlines())
 
 ExcludeRelations = ["Form"] # List of semantic relations to exclude!
 
