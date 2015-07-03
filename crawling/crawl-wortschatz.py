@@ -1,30 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import mechanize, sys, time
-from mechanize._util import write_file
+import mechanize, sys, time, os, string
+from crawler import LexsubCrawler
 
-OutFolder = 'wortschatz'
-SleepSeconds = 4
+class WortschatzCrawler(LexsubCrawler):
+	def __init__(self): LexsubCrawler.__init__(self, 
+		instanceFile = '../targets.txt', 
+		outFolder = 'wortschatz',
+		initUrl = "http://corpora2.informatik.uni-leipzig.de/cgi-bin/de/wort_www")
 
-InstanceFile = '../AIPHES_Data/GermEval2015/train-dataset.gold'
-instanceFile = open(InstanceFile, 'rU')
-instances = set(x.split()[0].split('.')[0] for x in instanceFile.readlines())
+	def search(self, keyword):
+		br = self.br
+		br.select_form(nr=0)
+		br['Wort'] = keyword
+		br['lang'] = ['de']
+		br.form.action = "http://corpora2.informatik.uni-leipzig.de/cgi-bin/de/wort_www"
+		result = br.submit(name="Submit")
+		## Alternative new version:
+		##result = self.br.open("http://corpora.informatik.uni-leipzig.de/res.php?corpusId=deu_newscrawl_2011&word=" + keyword)
+		return result.read()
 
-br = mechanize.Browser()
-br.set_handle_robots(False)
-br.open("http://corpora.informatik.uni-leipzig.de/cgi-bin/de/wort_www")
-
-def search_and_save(keyword):
-	br.select_form(nr=0)
-	br['Wort'] = keyword
-	br['lang'] = ['de']
-	br.form.action = "http://corpora.informatik.uni-leipzig.de/cgi-bin/de/wort_www"
-	result = br.submit(name="Submit")
-	data = result.read()
-	write_file(OutFolder + '/' + keyword + ".html", data)
-
-for word in instances:
-	print word + '..'
-	search_and_save(word)
-	time.sleep(SleepSeconds)
+WortschatzCrawler().crawl()

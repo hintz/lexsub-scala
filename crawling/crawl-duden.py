@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import mechanize, sys, time
+import mechanize, sys, time, os, string
 from mechanize._util import write_file
 
-OutFolder = 'download'
+OutFolder = 'duden'
 SleepSeconds = 3
 
-InstanceFile = '../AIPHES_Data/GermEval2015/train-dataset.gold'
-instanceFile = open(InstanceFile, 'rU')
-instances = set(x.split()[0].split('.')[0] for x in instanceFile.readlines())
+InstanceFile = '../targets.txt'
+instances = set(map(string.rstrip, open(InstanceFile, 'rU').readlines()))
 
 br = mechanize.Browser()
 br.open("http://www.duden.de/")
@@ -23,9 +22,9 @@ def search_and_save(keyword):
 	data = result.read()
 	write_file(OutFolder + '/' + keyword + ".html", data)
 
+if not os.path.exists(OutFolder): os.makedirs(OutFolder)
 
-# search_and_save("anspitzen")
-# search_and_save("Erleichterung")
 for word in instances:
+	print word + '..'
 	search_and_save(word)
 	time.sleep(SleepSeconds)

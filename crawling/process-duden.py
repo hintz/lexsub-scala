@@ -4,13 +4,12 @@
 import BeautifulSoup, glob, codecs
 from BeautifulSoup import BeautifulSoup
 
-
 InFolder = "duden"
 Outfile = "germeval_duden.tsv"
-InstanceFile = '../AIPHES_Data/GermEval2015/train-dataset.gold' # for POS
+POSFile = '../target-pos.txt'
 
-instanceFile = codecs.open(InstanceFile, encoding='utf-8"')
-instancePos = dict(x.split()[0].split('.') for x in instanceFile.readlines())
+posFile = codecs.open(POSFile, encoding='utf-8"')
+instancePos = dict(x.strip().split() for x in posFile.readlines())
 
 def clean(messedUpUnicode):
 	return messedUpUnicode.replace(u'\xad', u'')
