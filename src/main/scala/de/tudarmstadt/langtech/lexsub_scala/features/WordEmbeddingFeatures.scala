@@ -27,6 +27,11 @@ trait WordVectorLookup {
   }
 }
 
+object LinAlgFunctions { 
+  def distance(v1: Vector[Double], v2: Vector[Double]) = breeze.linalg.norm[Vector[Double], Double](v1 - v2)
+  def cossim(v1: Vector[Double], v2: Vector[Double]) = breeze.linalg.functions.cosineDistance(v1, v2)
+}
+
 /** WordVectorLookup based on a plaintext file */
 case class WordVectorFileLookup(filename: String) extends WordVectorFile(filename) with WordVectorLookup
 
@@ -54,6 +59,7 @@ case class WordEmbeddingSimilarity(val embedding: WordVectorLookup)
 
 }
 
+/** the negative distance in embedding space */
 case class WordEmbeddingDistance(val embedding: WordVectorLookup)
   extends LocalFeatureExtractor with NumericFeature {
   val name = "EmbeddingDist"
@@ -61,7 +67,7 @@ case class WordEmbeddingDistance(val embedding: WordVectorLookup)
     breeze.linalg.norm[Vector[Double], Double](v1 - v2)
 
   def extract(item: SubstitutionItem): Seq[Feature] =
-    embedding.similarity(distance)(item.targetLemma, item.substitution)
+    embedding.similarity(distance)(item.targetLemma, item.substitution).map(- _)
 }
 
 case class WordEmbeddingGlobalCache(originalHeadVector: Option[Vector[Double]], vectors: Seq[Option[Vector[Double]]])
@@ -84,6 +90,27 @@ case class WordEmbeddingDistanceVectors(embedding: WordVectorLookup, leftContext
 
     (global, embedding(item.substitution)) match {
       case (WordEmbeddingGlobalCache(Some(originalHeadVector), vectors), Some(substituteHeadVector)) =>
+
+        val vectorsWithSubst = vectors.updated(leftContext, Some(substituteHeadVector))
+        val origCos = vectors.map { v => v.map(LinAlgFunctions.cossim(_, originalHeadVector)) }
+        val substCos = vectorsWithSubst.map { v => v.map(LinAlgFunctions.cossim(_, substituteHeadVector)) }
+        
+        val cosDeltas = origCos.zip(substCos).collect {
+          case (Some(origCosSim), Some(newCosSim)) => Math.abs(origCosSim - newCosSim)
+          case (Some(origCosSim), None) => Math.abs(origCosSim)
+          case (None, Some(newCosSim)) => Math.abs(newCosSim)
+          case (None, None) => 0d
+        }
+        val negativeDeltaSum = - cosDeltas.sum
+        
+        //println(item.targetLemma + " -> " + item.substitution)
+        //println(cosDeltas)
+        //println(negativeDeltaSum)
+        
+        negativeDeltaSum
+
+        // Old idea: cosine similarity between diff vectors to each context word
+        /*
         val origDeltas = vectors.map { v => v.map(_ - originalHeadVector) }
         val newDeltas = vectors.map { v => v.map(_ - substituteHeadVector) }
 
@@ -96,8 +123,12 @@ case class WordEmbeddingDistanceVectors(embedding: WordVectorLookup, leftContext
         }
         val result = distances.sum
         Some(result)
+   
+        */
 
-      case _ => None // either head or target not in embedding file!
+      case other =>
+         // either head or target not in embedding file!
+        None
     }
   }
 }

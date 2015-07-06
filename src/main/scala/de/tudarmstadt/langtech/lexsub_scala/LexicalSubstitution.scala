@@ -74,7 +74,7 @@ object FeatureAnnotator {
 }
 
 /** A scorer extracting the value of a single named feature */
-case class SingleFeatureScorer(val featureName: String, val fallback: Double = 0d) extends Scorer {
+case class SingleFeatureScorer(val featureName: String, val fallback: Double = Double.NaN) extends Scorer {
   def apply(features: Seq[Feature]): Double = {
     val v = features.collectFirst { case f: Feature if f.getName == featureName => f.getValue.asInstanceOf[Double]}
     v getOrElse fallback
