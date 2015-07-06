@@ -16,6 +16,7 @@ object Settings {
   
   val germevalFolder = "../AIPHES_Data/GermEval2015"
   
+  // folder to store training data and trained model
   val trainingDir = "training"
   
   // GermaNet location (only needed to create candidate file during setup)
@@ -55,20 +56,12 @@ object Settings {
       lemmatizer = identity // no need
    )
    
-  lazy val germevalTraining = {
-    /* Preprocessed data can be trivially serialized */
-    println("Loading GermEval data..")
-     io.lazySerialized("germeval_cache.ser"){
-      System.err.println("Cache does not exist, leading GermEval data..")
-      val plainData = new GermEvalReader(germevalFolder, "train-dataset").items
-      val processed = plainData.flatMap(Settings.preprocessing.tryApply)
-      processed
-    }
-  }
+  // load the germeval data (from cache, if available)
+  lazy val germevalTraining = preprocessing.loadGermEval(germevalFolder, "train-dataset") 
+  lazy val germevalTest = preprocessing.loadGermEval(germevalFolder, "test-dataset") 
   
-  
+  // Candidate lists
   object candidates {
-    // Candidate lists
     lazy val germanet = new CandidateFile(germanetFile, true)
     lazy val duden = new CandidateFile(dudenFile, true)
     lazy val masterlist = new CandidateFile(masterlistFile, true)
@@ -76,18 +69,27 @@ object Settings {
 
   
   // N-gram counts
-  lazy val web1t = Web1TLookup(web1tFolder, 5)
-  lazy val germanWebCounts = Web1TLookup(germanWebCountsFolder, 5)
+  object ngrams {
+    lazy val web1t = Web1TLookup(web1tFolder, 5)
+    lazy val germanWebCounts = Web1TLookup(germanWebCountsFolder, 5)
+  }
   
   // Word embeddings
-  lazy val word2vecEmbedding = Word2VecLookup(word2vecFile)
-  lazy val eigenwordEmbedding = WordVectorFileLookup(embeddingFile)
+  object embeddings {
+    val word2vecPruning = Integer.MAX_VALUE
+    lazy val word2vec = Word2VecLookup(word2vecFile, word2vecPruning)
+    lazy val eigenword = WordVectorFileLookup(embeddingFile)
+  }
+  
   
   // DTs
-  lazy val dt1 = DTLookup("de70M_mate_lemma", new WordSimilarityFile(dtfile, identity), 
-      token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
-      (substitute, other) => other.startsWith(substitute.toLowerCase)) // how to define equivalence in this DT
-
+  object dts {
+    lazy val dt1 = DTLookup("de70M_mate_lemma", new WordSimilarityFile(dtfile, identity), 
+        token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
+        (substitute, other) => other.startsWith(substitute.toLowerCase)) // how to define equivalence in this DT
+   
+  }
+  
   // Co-occurence features
   lazy val cooc = DTLookup("cooc", new WordSimilarityFile(coocFile, identity), token => token.word)
   
@@ -95,15 +97,15 @@ object Settings {
   val features = new FeatureAnnotator(
       //CheatFeature,
       //WordSimilarity(dt),
-      ///Cooc(cooc),
-      ///ThresholdedDTOverlap(dt1, Seq(5, 20, 50, 100, 200), false),
-      ///PosContextWindows(0 to 2, 0 to 2, 3),
-      ///PairFreqRatios(web1t, 0 to 2, 0 to 2, 5),
-      ///SetFreqRatios(web1t, 0 to 2, 0 to 2, 5),
-      ///ConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0),
-      ///LexSemRelation(candidates.masterlist)
-      WordEmbeddingDistanceVectorsSet(word2vecEmbedding, 0 to 2, 0 to 2, 5),
-      WordEmbeddingSimilarity(word2vecEmbedding),
-      WordEmbeddingDistance(word2vecEmbedding)
+      Cooc(cooc),
+      ThresholdedDTOverlap(dts.dt1, Seq(5, 20, 50, 100, 200), false),
+      PosContextWindows(0 to 2, 0 to 2, 3),
+      PairFreqRatios(ngrams.germanWebCounts, 0 to 2, 0 to 2, 5),
+      SetFreqRatios(ngrams.germanWebCounts, 0 to 2, 0 to 2, 5),
+      ConjunctionFreqRatio(ngrams.web1t, Seq("und", "oder", ","), 0, 0),
+      LexSemRelation(candidates.masterlist)
+      //WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
+      //WordEmbeddingSimilarity(embeddings.word2vec),
+      //WordEmbeddingDistance(embeddings.word2vec)
   )
 }

@@ -1,7 +1,10 @@
 package de.tudarmstadt.langtech.lexsub_scala.types
 
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalItem
+import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
+import de.tudarmstadt.langtech.scala_utilities.io
 import scala.util.Try
+
 
 /** Very slim interfaces for preprocessing! */
 object Preprocessing {
@@ -39,5 +42,15 @@ case class Preprocessing(
 
 
     LexSubInstance(sentence, headIndex, Some(goldItem))
+  }
+  
+  def loadGermEval(germevalFolder: String, filename: String): Seq[LexSubInstance] = {
+     println("Loading GermEval data..")
+     io.lazySerialized("cache%s.ser".format(filename)){
+      System.err.println("Cache does not exist, preprocessing GermEval data..")
+      val plainData = new GermEvalReader(germevalFolder, filename).items
+      val processed = plainData.flatMap(tryApply)
+      processed
+    }
   }
 }

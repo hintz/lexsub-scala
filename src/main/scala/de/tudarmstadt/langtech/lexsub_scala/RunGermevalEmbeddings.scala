@@ -9,18 +9,18 @@ import breeze.linalg._
 import de.tudarmstadt.langtech.lexsub_scala.features.WordEmbeddingDistance
 import de.tudarmstadt.langtech.lexsub_scala.features.WordEmbeddingSimilarity
 import de.tudarmstadt.langtech.lexsub_scala.features.WordEmbeddingDistanceVectors
+import de.tudarmstadt.langtech.lexsub_scala.features.SummedWordEmbeddingDistances
 
 object RunGermevalEmbeddings extends App {
   
 	private def cossim(v1: Vector[Double], v2: Vector[Double]) = breeze.linalg.functions.cosineDistance(v1, v2)
   
-  val embedding: WordVectorLookup = Settings.word2vecEmbedding
-  //val embedding: WordVectorLookup = Settings.eigenwordEmbedding
-  
+  //val embedding: WordVectorLookup = Settings.embeddings.word2vec
+  val embedding: WordVectorLookup = Settings.embeddings.eigenword
   
   val trainingData = Settings.germevalTraining
   
-  val cosSim = WordEmbeddingDistanceVectors(embedding, 1, 1) //WordEmbeddingSimilarity(embedding)
+  val cosSim = WordEmbeddingSimilarity(embedding) //SummedWordEmbeddingDistances(embedding, 0 to 2, 0 to 2, 5) // WordEmbeddingDistanceVectors(embedding, 1, 1) //WordEmbeddingSimilarity(embedding)
   
   // load lexsub system
   val lexsub = LexSubExpander(
