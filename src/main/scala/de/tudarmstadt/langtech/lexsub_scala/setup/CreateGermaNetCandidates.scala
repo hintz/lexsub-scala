@@ -14,7 +14,8 @@ import de.tudarmstadt.langtech.lexsub_scala.germanet.GermaNetUtils
 object CreateGermaNetCandidates extends App {
   
   // load GermaNet
-  val gn = new GermaNet("../AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
+  //val gn = new GermaNet("../AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
+  val gn = new GermaNet("../AIPHES_Data/GermaNet/GN_V90/GN_V90_XML")
   val gnUtils = new GermaNetUtils(gn)
   import gnUtils._
   
@@ -23,7 +24,7 @@ object CreateGermaNetCandidates extends App {
   val targetsWithPos = targets.map { case (w, p) => (w, gnUtils.translatePos(p))}
   
   // write target file
-  writeCandidateFile(targetsWithPos, "resources/candidates/germeval_germanet.tsv")
+  writeCandidateFile(targetsWithPos, "resources/candidates/germeval_germanet90.tsv")
 
   
   def writeCandidateFile(lexemes: Seq[(String, Option[WordCategory])], outfile: String){

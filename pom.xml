@@ -45,7 +45,7 @@
     <dependency>
     	<groupId>de.tuebingen.uni.sfs.germanet</groupId>
     	<artifactId>germanetapi</artifactId>
-    	<version>8.0</version>
+    	<version>9.0.1</version>
     </dependency>
     <dependency>
     	<groupId>com.googlecode.jweb1t</groupId>
