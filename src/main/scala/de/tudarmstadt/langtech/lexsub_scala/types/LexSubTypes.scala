@@ -51,3 +51,13 @@ case class Outcome(val lexSubInstance: LexSubInstance, substitutes: Seq[(String,
     PRResult(tp, fp, fn, None)
   }
 }
+
+
+object Outcomes {
+  def collect(items: Iterable[LexSubInstance], outcomes: Iterable[Seq[(String, Double)]]) = 
+    items.zip(outcomes).map(Outcome.tupled)
+    
+  def evaluate(outcomes: Iterable[Outcome], bestOutOf: Int = 1): PRResult = {
+    outcomes.map(_.bestOutOf(bestOutOf)).reduce(_ + _)
+  }
+}

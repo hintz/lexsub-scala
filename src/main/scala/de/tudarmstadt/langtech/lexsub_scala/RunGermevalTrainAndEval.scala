@@ -2,6 +2,7 @@ package de.tudarmstadt.langtech.lexsub_scala
 
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 
 object RunGermevalTrainingAndEval extends App {
   
@@ -25,7 +26,7 @@ object RunGermevalTrainingAndEval extends App {
   val outcomes = lexsub(evaluationData)
   
   // write results
-  val results = Training.collectOutcomes(trainingData, outcomes)
+  val results = Outcomes.collect(trainingData, outcomes)
   GermEvalResultOutcomeWriter.save(results, Settings.instancesOutputFile)
 
   println("Done.")

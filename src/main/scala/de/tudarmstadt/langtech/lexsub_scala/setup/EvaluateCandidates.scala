@@ -37,6 +37,8 @@ object EvaluateCandidates extends App {
   val germanetCandidatesHy = new CandidateFile("../AIPHES_Data/LexSub/candidates/germanet_candidates-hy")
   val germanetCandidatesHyHo = new CandidateFile("../AIPHES_Data/LexSub/candidates/germanet_candidates-hy-ho")
   val germanetGermevalAll = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_germanet.tsv", true)
+  val germanet80 = new CandidateFile("resources/candidates/germeval_germanet80.tsv", true)
+  val germanet90 = new CandidateFile("resources/candidates/germeval_germanet90.tsv", true)
 
   val duden = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_duden.tsv", true)
   val woxikon = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_woxikon.tsv", true)
@@ -45,7 +47,7 @@ object EvaluateCandidates extends App {
   val dt70mMate = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_DT_de_mate_lemma.tsv", true)
 
   val CandidateLists = List(
-    germanetCandidates, germanetCandidatesHy, germanetCandidatesHyHo, germanetGermevalAll,
+    germanetCandidates, germanetCandidatesHy, germanetCandidatesHyHo, germanetGermevalAll, germanet80, germanet90,
     duden, woxikon, wortschatzSyn,
     dt70mMate
   )

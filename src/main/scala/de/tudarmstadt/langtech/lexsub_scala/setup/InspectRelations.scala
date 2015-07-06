@@ -6,7 +6,7 @@ import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalGold
 import de.tudarmstadt.langtech.lexsub_scala.germanet.GermaNetUtils
 
 object InspectRelations extends App {
-	val gn = new GermaNet("/Volumes/AIPHES_HDD/AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
+	val gn = new GermaNet("AIPHES_Data/GermaNet/GN_V90/GN_V90_XML")
   //val gn = new GermaNet("AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
   val utils = new GermaNetUtils(gn)
   import utils._

@@ -13,13 +13,18 @@ import de.tudarmstadt.langtech.lexsub_scala.features.Features
 import de.tudarmstadt.langtech.lexsub_scala.features.FeatureExtractor
 import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 
+/** A scorer scores a given instance's features */
+trait Scorer {
+  def apply(features: Seq[Feature]): Double
+}
+
 /** The central component of LexSub. Expands LexSubInstances with substitutions,
  *  according to a given CandidateList and a scorer
  */
 case class LexSubExpander(
 		val candidateList: CandidateList, 
 		val features: Features,
-		val scorer: ClassifierScorer,
+		val scorer: Scorer,
 		val maxItems: Int = Integer.MAX_VALUE) 
 		extends BatchProcessing[LexSubInstance, Seq[(String, Double)]] {
 	
@@ -33,11 +38,12 @@ case class LexSubExpander(
 	/** Ranks predefined substitution candidates */
 	def apply(item: Substitutions): Seq[(String, Double)] = {
 			val instances = features.extract(item)
-					val scores = instances.map(scorer.apply)
-					val scored = item.candidates.zip(scores)
-					scored.sortBy(- _._2).take(maxItems)
+			val scores = instances.map(scorer.apply)
+			val scored = item.candidates.zip(scores)
+			scored.sortBy(- _._2).take(maxItems)
 	}
 }
+
 
 /** Enhances Features with the option to create training instances */
 class FeatureAnnotator(features: FeatureExtractor*) 
@@ -67,7 +73,16 @@ object FeatureAnnotator {
   val Bad = "BAD"
 }
 
-case class ClassifierScorer(val trainingDiretory: String) {
+/** A scorer extracting the value of a single named feature */
+case class SingleFeatureScorer(val featureName: String, val fallback: Double = 0d) extends Scorer {
+  def apply(features: Seq[Feature]): Double = {
+    val v = features.collectFirst { case f: Feature if f.getName == featureName => f.getValue.asInstanceOf[Double]}
+    v getOrElse fallback
+  }
+}
+
+/** A scorer based on a ClearTK classifier trained in trainingDirectory */
+case class ClassifierScorer(val trainingDiretory: String) extends Scorer {
   import org.cleartk.classifier.mallet.MalletStringOutcomeClassifierBuilder
   import org.cleartk.classifier.Classifier
   import org.cleartk.classifier.Feature

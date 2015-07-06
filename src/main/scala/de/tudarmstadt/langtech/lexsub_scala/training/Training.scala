@@ -77,17 +77,18 @@ object Training {
       
       val lexsub = LexSubExpander(candidates, featureExtractor, ClassifierScorer(trainingFolder))
       val ranked = lexsub(testInstaces)
-      val results = collectOutcomes(testInstaces, ranked)
-      val oot = results.map(_.bestOutOf(10)).reduce(_ + _)
-      val best = results.map(_.bestOutOf(1)).reduce(_ + _)
+      val results = Outcomes.collect(testInstaces, ranked)
+      val oot = Outcomes.evaluate(results, 10)
+      val best = Outcomes.evaluate(results, 1)
       println("Fold %d: best=%s oot=%s".format(i + 1, best, oot))
       results
     }
     
     GermEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
     
-    val oot = outcomes.flatten.map(_.bestOutOf(10)).reduce(_ + _)
-    val best = outcomes.flatten.map(_.bestOutOf(1)).reduce(_ + _)
+    val results = outcomes.flatten
+    val oot =  Outcomes.evaluate(results, 10)
+    val best = Outcomes.evaluate(results, 1)
     println("Average best=[%s] oot=[%s]".format(best, oot))
   }
   
@@ -148,7 +149,4 @@ object Training {
     io.write(filename, lines.mkString("\n"))
   }
   
-  def collectOutcomes(items: Iterable[LexSubInstance], outcomes: Iterable[Seq[(String, Double)]]) = 
-    items.zip(outcomes).map(Outcome.tupled)
-
 }
