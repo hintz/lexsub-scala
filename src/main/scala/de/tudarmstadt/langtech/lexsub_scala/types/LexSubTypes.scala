@@ -47,7 +47,8 @@ case class Outcome(val lexSubInstance: LexSubInstance, substitutes: Seq[(String,
     val bestN = toSubstituteItems.take(n)
     val tp = bestN.count(_.isGood.get)
     val fp = bestN.count(! _.isGood.get)
-    val fn = lexSubInstance.gold.get.gold.substitutionWords.length - tp
+    val numGold = lexSubInstance.gold.get.gold.substitutionWords.length
+    val fn = math.min(n, numGold) - tp
     PRResult(tp, fp, fn, None)
   }
 }

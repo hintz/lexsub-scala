@@ -40,9 +40,9 @@ object EvaluateCandidates extends App {
   val germanet80 = new CandidateFile("resources/candidates/germeval_germanet80.tsv", true)
   val germanet90 = new CandidateFile("resources/candidates/germeval_germanet90.tsv", true)
 
-  val duden = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_duden.tsv", true)
-  val woxikon = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_woxikon.tsv", true)
-  val wortschatzSyn = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_wortschatz.tsv", true)
+  val duden = new CandidateFile("resources/candidates/germeval_duden.tsv", true)
+  val woxikon = new CandidateFile("resources/candidates/germeval_woxikon.tsv", true)
+  val wortschatzSyn = new CandidateFile("resources/candidates/germeval_wortschatz.tsv", true)
   
   val dt70mMate = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_DT_de_mate_lemma.tsv", true)
 

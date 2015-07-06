@@ -19,9 +19,9 @@ object Settings {
   val trainingDir = "training"
   
   // candidate lists
-  val germanetFile = "../AIPHES_Data/LexSub/candidates/germeval_germanet.tsv"
-  val dudenFile = "../AIPHES_Data/LexSub/candidates/germeval_duden.tsv"  
-  val masterlistFile = "../AIPHES_Data/LexSub/candidates/germeval_masterlist.tsv"
+  val germanetFile = "resources/candidates/germeval_germanet90.tsv"
+  val dudenFile = "resources/candidates/germeval_duden.tsv"  
+  val masterlistFile = "resources/candidates/germeval_masterlist.tsv"
   
   val embeddingFile = "../AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted"
   val word2vecFile = "../AIPHES_Data/WordEmbeddings/word2vec/denews-vectors.bin"
@@ -92,15 +92,15 @@ object Settings {
   val features = new FeatureAnnotator(
       //CheatFeature,
       //WordSimilarity(dt),
-      Cooc(cooc),
-      ThresholdedDTOverlap(dt1, Seq(5, 20, 50, 100, 200), false),
-      PosContextWindows(0 to 2, 0 to 2, 3),
-      PairFreqRatios(web1t, 0 to 2, 0 to 2, 5),
-      SetFreqRatios(web1t, 0 to 2, 0 to 2, 5),
-      ConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0),
-      LexSemRelation(candidates.masterlist)
-      //WordEmbeddingDistanceVectorsSet(word2vecEmbedding, 0 to 2, 0 to 2, 5),
-      //WordEmbeddingSimilarity(word2vecEmbedding),
-      //WordEmbeddingDistance(word2vecEmbedding)
+      ///Cooc(cooc),
+      ///ThresholdedDTOverlap(dt1, Seq(5, 20, 50, 100, 200), false),
+      ///PosContextWindows(0 to 2, 0 to 2, 3),
+      ///PairFreqRatios(web1t, 0 to 2, 0 to 2, 5),
+      ///SetFreqRatios(web1t, 0 to 2, 0 to 2, 5),
+      ///ConjunctionFreqRatio(web1t, Seq("und", "oder", ","), 0, 0),
+      ///LexSemRelation(candidates.masterlist)
+      WordEmbeddingDistanceVectorsSet(word2vecEmbedding, 0 to 2, 0 to 2, 5),
+      WordEmbeddingSimilarity(word2vecEmbedding),
+      WordEmbeddingDistance(word2vecEmbedding)
   )
 }

@@ -92,7 +92,7 @@ object Training {
     val results = outcomes.flatten
     val oot =  Outcomes.evaluate(results, 10)
     val best = Outcomes.evaluate(results, 1)
-    println("Average best=[%s] oot=[%s]".format(best, oot))
+    println("Overall best=[%s] oot=[%s]".format(best, oot))
   }
   
   
