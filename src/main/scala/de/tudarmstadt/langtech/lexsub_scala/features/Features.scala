@@ -71,10 +71,23 @@ class Features(features: FeatureExtractor*) extends FeatureExtractor {
   }
 }
 
+/** Aggregates an inner (real) feature with an aggregator function f */
+class AggregatedFeature(val name: String, inner: FeatureExtractor, f: Seq[Double] => Double) extends FeatureExtractor {
+  def extract(item: Substitutions): Vector[Seq[Feature]] = {
+    inner.extract(item).map { innerFeatures =>
+      if(innerFeatures.isEmpty) Seq.empty
+      else {
+        val innerValues = innerFeatures.map(_.getValue.asInstanceOf[Double])
+        val result = f(innerValues)
+        Seq(new Feature(name, result))
+      }
+     }
+  }
+}
 
-/** Convenience class to load features from a pre-computed cache */
-case class PrecomputedFeatureExtractor(val cache: Map[Substitutions, Vector[Seq[Feature]]]) extends FeatureExtractor {
-  def extract(item: Substitutions): Vector[Seq[Feature]] =  cache(item)
+/** Convenience class to load features from a pre-computed cache by supplying the instance object */
+case class PrecomputedFeatureExtractor(val cache: LexSubInstance => Vector[Seq[Feature]]) extends FeatureExtractor {
+  def extract(item: Substitutions): Vector[Seq[Feature]] = cache(item.lexSubInstance)
 }
 
 case object CheatFeature extends LocalFeatureExtractor {

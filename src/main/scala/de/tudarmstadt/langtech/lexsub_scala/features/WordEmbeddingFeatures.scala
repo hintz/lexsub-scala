@@ -27,6 +27,7 @@ trait WordVectorLookup {
   }
 }
 
+// Some wrappers for breeze. Shouldn't be necessary if I understood the breeze typing system correctly..
 object LinAlgFunctions { 
   def distance(v1: Vector[Double], v2: Vector[Double]) = breeze.linalg.norm[Vector[Double], Double](v1 - v2)
   def cossim(v1: Vector[Double], v2: Vector[Double]) = breeze.linalg.functions.cosineDistance(v1, v2)
@@ -47,27 +48,22 @@ case class Word2VecLookup(filename: String, limit: Integer = Integer.MAX_VALUE) 
   def apply(word: String): Option[Vector[Double]] = cache(word)
 }
 
+/** the negative cosine similarity in embedding space */
 case class WordEmbeddingSimilarity(val embedding: WordVectorLookup)
   extends LocalFeatureExtractor with NumericFeature {
   val name = "EmbeddingCosSim"
-
-  private def cossim(v1: Vector[Double], v2: Vector[Double]) =
-    breeze.linalg.functions.cosineDistance(v1, v2)
-
+  
   def extract(item: SubstitutionItem): Seq[Feature] =
-    embedding.similarity(cossim)(item.targetLemma, item.substitution)
-
+    embedding.similarity(LinAlgFunctions.cossim)(item.targetLemma, item.substitution).map(- _)
 }
 
 /** the negative distance in embedding space */
 case class WordEmbeddingDistance(val embedding: WordVectorLookup)
   extends LocalFeatureExtractor with NumericFeature {
   val name = "EmbeddingDist"
-  private def distance(v1: Vector[Double], v2: Vector[Double]) =
-    breeze.linalg.norm[Vector[Double], Double](v1 - v2)
 
   def extract(item: SubstitutionItem): Seq[Feature] =
-    embedding.similarity(distance)(item.targetLemma, item.substitution).map(- _)
+    embedding.similarity(LinAlgFunctions.distance)(item.targetLemma, item.substitution).map(- _)
 }
 
 case class WordEmbeddingGlobalCache(originalHeadVector: Option[Vector[Double]], vectors: Seq[Option[Vector[Double]]])
@@ -81,20 +77,24 @@ case class WordEmbeddingDistanceVectors(embedding: WordVectorLookup, leftContext
     val sentence = item.sentence
     val tokens = sentence.tokens.map(_.word) // use word forms, not lemmas!
     val originalHeadVector = embedding(item.head.lemma) // use lemma, because we compare with lemmas
-    val slice = slicer(tokens, item.headIndex)
-    val vectors = slice.flatMap(t => t.map(embedding.apply))
+    
+    // extract token slice, reject if out of sentence bounds..
+    val slice = slicer(tokens, item.headIndex).map(_.getOrElse { return WordEmbeddingGlobalCache(None, Seq.empty)})
+    
+    // map to embedding space
+    val vectors = slice.map(embedding.apply)
+    
     WordEmbeddingGlobalCache(originalHeadVector, vectors)
   }
 
   def extract(item: SubstitutionItem, global: WordEmbeddingGlobalCache): Seq[Feature] = {
 
     (global, embedding(item.substitution)) match {
-      case (WordEmbeddingGlobalCache(Some(originalHeadVector), vectors), Some(substituteHeadVector)) =>
+      case (WordEmbeddingGlobalCache(target @ Some(originalHeadVector), vectors), Some(substituteHeadVector)) =>
 
         val vectorsWithSubst = vectors.updated(leftContext, Some(substituteHeadVector))
         val origCos = vectors.map { v => v.map(LinAlgFunctions.cossim(_, originalHeadVector)) }
         val substCos = vectorsWithSubst.map { v => v.map(LinAlgFunctions.cossim(_, substituteHeadVector)) }
-        
         val cosDeltas = origCos.zip(substCos).collect {
           case (Some(origCosSim), Some(newCosSim)) => Math.abs(origCosSim - newCosSim)
           case (Some(origCosSim), None) => Math.abs(origCosSim)
@@ -133,5 +133,10 @@ case class WordEmbeddingDistanceVectors(embedding: WordVectorLookup, leftContext
   }
 }
 
+/** Generates WordEmbeddingDistance features for all given context windows */
 case class WordEmbeddingDistanceVectorsSet(embedding: WordVectorLookup, leftRange: Range, rightRange: Range, maxSize: Int)
   extends Features((for (l <- leftRange; r <- rightRange; if l + r < maxSize) yield WordEmbeddingDistanceVectors(embedding, l, r)): _*)
+
+/** Sums the WordEmbeddingDistance features for all given context windows */
+case class SummedWordEmbeddingDistances(embedding: WordVectorLookup, leftRange: Range, rightRange: Range, maxSize: Int)
+  extends AggregatedFeature("SummedWordEmbeddingDistances", WordEmbeddingDistanceVectorsSet(embedding, leftRange, rightRange, maxSize), _.sum) 

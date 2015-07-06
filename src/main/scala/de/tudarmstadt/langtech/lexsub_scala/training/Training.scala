@@ -19,6 +19,7 @@ import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalResultOutcomeWriter
+import java.util.IdentityHashMap
 
 object Training {
   
@@ -56,9 +57,11 @@ object Training {
     println("Extracting features..")
     val feats = features(trainingData)
     
+    val cache = new java.util.IdentityHashMap[LexSubInstance, Vector[Seq[Feature]]]
     val dataWithFeatures = trainingData.zip(feats)
-    val featureCache = dataWithFeatures.toMap.mapValues(_.map(_.getFeatures.asScala))
-    val featureExtractor = new FeatureAnnotator(PrecomputedFeatureExtractor(featureCache))
+    println("Writing " + dataWithFeatures.size + " items into feature cache..")
+    for((e, f) <- dataWithFeatures) cache.put(e.lexSubInstance, f.map(_.getFeatures.asScala))
+    val featureExtractor = new FeatureAnnotator(PrecomputedFeatureExtractor(cache.get))
 
     println("Grouping data and creating folds..")
     val grouping = (instance: LexSubInstance) => instance.gold.get.sentence.target.lemma
