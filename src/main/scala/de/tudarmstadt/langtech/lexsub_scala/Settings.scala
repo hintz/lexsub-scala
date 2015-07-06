@@ -18,6 +18,9 @@ object Settings {
   
   val trainingDir = "training"
   
+  // GermaNet location (only needed to create candidate file during setup)
+  val germanetFolder = "../AIPHES_Data/GermaNet/GN_V90/GN_V90_XML"
+  
   // candidate lists
   val germanetFile = "resources/candidates/germeval_germanet90.tsv"
   val dudenFile = "resources/candidates/germeval_duden.tsv"  

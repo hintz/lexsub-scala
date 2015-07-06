@@ -10,6 +10,8 @@ import de.tuebingen.uni.sfs.germanet.api._
 
 class GermaNetUtils(val gn: GermaNet) {
   
+  val WriteLevels = false
+  
   // defines mapping between WordCategory and String representation
   val posMapper = (wc: WordCategory) => wc.toString.substring(0, 1).toLowerCase
   val posTranslation = WordCategory.values.zip(WordCategory.values.map(posMapper))
@@ -44,6 +46,11 @@ class GermaNetUtils(val gn: GermaNet) {
   def getSemanticRelations(orthForm: String, pos: Option[WordCategory] = None): Map[String, Seq[String]] = {
     //println("getSemanticRelations(%s)".format(orthForm))
     
+    def depthString(idx: Int): String = {
+      if(WriteLevels) "_" + idx 
+      else if(idx <= 1) "" else "_t"
+    }
+    
     val synsets = (if(pos.isDefined) gn.getSynsets(orthForm, pos.get) else gn.getSynsets(orthForm)).asScala
 
     val synonymous = for (
@@ -58,13 +65,15 @@ class GermaNetUtils(val gn: GermaNet) {
       (transrelated, idx) <- getTransRelated(synset, rel).zipWithIndex;
       related <- transrelated;
       relatedLex <- related.getLexUnits.asScala if !relatedLex.isArtificial;
-      relatedOrthForm <- relatedLex.getOrthForms.asScala if relatedOrthForm != orthForm
-    ) yield (relatedOrthForm, rel.toString.dropWhile(_ != '_').tail + "_" + idx)
+      relatedOrthForm <- relatedLex.getOrthForms.asScala if relatedOrthForm != orthForm;
+      val relationString = rel.toString.dropWhile(_ != '_').tail + depthString(idx)
+    ) yield (relatedOrthForm, relationString)
 
     val both = synonymous.distinct ++ related.distinct
     val result = both.groupBy(_._1).mapValues(_.map(_._2))
     result
   }
+  
 
   def getSematicRelationPath(orthFormStart: String, orthFormTarget: String, maxDepth: Int = 15): Seq[String] = {
     // Perfrom BFS search through all relations

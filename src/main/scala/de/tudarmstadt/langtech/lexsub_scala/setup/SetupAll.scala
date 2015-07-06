@@ -28,11 +28,11 @@ object SetupAll extends App {
   
   
   println("Creating a candidate masterlist..")  
-  val germanet =  new CandidateFile("resources/candidates/germeval_germanet.tsv", true)
+  val germanet =  new CandidateFile("resources/candidates/germeval_germanet90.tsv", true)
   val duden = new CandidateFile("resources/candidates/germeval_duden.tsv", true)
   val woxikon = new CandidateFile("resources/candidates/germeval_woxikon.tsv", true)
   val wortschatzSyn = new CandidateFile("resources/candidates/germeval_wortschatz.tsv", true)
-  val masterlist = new JoinedCandidates(germanet, duden, woxikon, wortschatzSyn)
+  val masterlist = new JoinedCandidates(germanet, duden)
   val masterlistNoMWE = masterlist.filter(!_.replacement.contains(" ")) // removes Multi Word Expressions from the masterlist
   masterlistNoMWE.save("resources/candidates/germeval_masterlist.tsv")
   
