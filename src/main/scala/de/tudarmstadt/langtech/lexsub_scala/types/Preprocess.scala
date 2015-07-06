@@ -46,7 +46,7 @@ case class Preprocessing(
   
   def loadGermEval(germevalFolder: String, filename: String): Seq[LexSubInstance] = {
      println("Loading GermEval data..")
-     io.lazySerialized("cache%s.ser".format(filename)){
+     io.lazySerialized("cache_%s.ser".format(filename)){
       System.err.println("Cache does not exist, preprocessing GermEval data..")
       val plainData = new GermEvalReader(germevalFolder, filename).items
       val processed = plainData.flatMap(tryApply)

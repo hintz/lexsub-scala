@@ -12,6 +12,7 @@ object GermEvalResultOutcomeWriter {
 }
 
 class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
+  
   def formatLines: Iterable[String] = {
     outcomes.flatMap { 
       case Outcome(LexSubInstance(_, _, Some(GermEvalItem(sentence, gold))), scoredSubstitutes) =>
@@ -20,12 +21,37 @@ class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
             val entry = Seq(gold.target.word, gold.target.pos, gold.id, subst, score)
             entry.mkString("\t")
         }
-      case _ => throw new IllegalArgumentException("outcome has no gold data")
+      case _ => noGold
     }
   }
+  
+  def formatBest: Iterable[String] = {
+    outcomes.map {
+      case Outcome(LexSubInstance(_, _, Some(GermEvalItem(sentence, gold))), scoredSubstitutes) =>
+        val left = gold.target.word + "." + gold.target.pos + " " + gold.id
+        val best =  scoredSubstitutes.headOption.map(_._1).getOrElse("")
+        left + " :: " + best
+      case _ => noGold
+    }
+  }
+  
+  def formatOot: Iterable[String] = {
+    outcomes.map {
+      case Outcome(LexSubInstance(_, _, Some(GermEvalItem(sentence, gold))), scoredSubstitutes) =>
+        val left = gold.target.word + "." + gold.target.pos + " " + gold.id
+        val oot =  scoredSubstitutes.take(10).map(_._1).mkString(";")
+        left + " ::: " + oot
+      case _ => noGold
+    }
+  }
+  
   def save(outfile: String){
     io.write(outfile, formatLines.mkString("\n"))
+    io.write(outfile + ".best", formatBest.mkString("\n"))
+    io.write(outfile + ".oot", formatOot.mkString("\n"))
   }
+  
+  private def noGold = throw new IllegalArgumentException("outcome has no gold data")
 }
 
 

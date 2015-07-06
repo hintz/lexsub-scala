@@ -19,6 +19,9 @@ object Settings {
   // folder to store training data and trained model
   val trainingDir = "training"
   
+  // output file
+  val instancesOutputFile = "instances.out"
+  
   // GermaNet location (only needed to create candidate file during setup)
   val germanetFolder = "../AIPHES_Data/GermaNet/GN_V90/GN_V90_XML"
   
@@ -30,14 +33,16 @@ object Settings {
   val embeddingFile = "../AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted"
   val word2vecFile = "../AIPHES_Data/WordEmbeddings/word2vec/denews-vectors.bin"
   
-  val dtfile = "../AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub"
-  val dt2file = "../AIPHES_Data/DT/..."
+  // some DTs:
+  val dt1Bims = "../AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_BIM_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_sorted"
+  val dt1Similar = "../AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub"
+  val dt2Bims = "../AIPHES_Data/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_filtered_g1_sorted"
+  val dt2Similar = "../AIPHES_Data/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_sorted"
+  
   val coocFile = "../AIPHES_Data/LexSub/coocs/germeval_coocs_truecase.txt"
   
   val web1tFolder = "../AIPHES_Data/web1t/de"
   val germanWebCountsFolder = "../AIPHES_Data/NGrams/GermanWebCounts"
-  
-  val instancesOutputFile = "instances.out"
   
   // Defines complete processing
   lazy val preprocessing = Preprocessing(
@@ -84,10 +89,21 @@ object Settings {
   
   // DTs
   object dts {
-    lazy val dt1 = DTLookup("de70M_mate_lemma", new WordSimilarityFile(dtfile, identity), 
+    lazy val dt1 = DTLookup("de70M_mate_lemma", new WordSimilarityFile(dt1Similar, identity), 
         token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
         (substitute, other) => other.startsWith(substitute.toLowerCase)) // how to define equivalence in this DT
-   
+        
+    lazy val dt1_bims = DTLookup("de70M_mate_lemma_bims", new WordSimilarityFile(dt1Bims, identity), 
+        token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
+        (substitute, other) => throw new IllegalStateException) // no equivalence for bims
+        
+    lazy val dt2 = DTLookup("de70M_trigram", new WordSimilarityFile(dt2Similar, identity), 
+        token => token.lemma, // how to look up token in this DT
+        (substitute, other) => other.startsWith(substitute)) // how to define equivalence in this DT
+        
+    lazy val dt2_bims = DTLookup("de70M_trigram_bims", new WordSimilarityFile(dt2Bims, identity), 
+        token => token.lemma, // how to look up token in this DT
+        (substitute, other) => throw new IllegalStateException) // how to define equivalence in this DT
   }
   
   // Co-occurence features
@@ -99,9 +115,12 @@ object Settings {
       //WordSimilarity(dt),
       Cooc(cooc),
       ThresholdedDTOverlap(dts.dt1, Seq(5, 20, 50, 100, 200), false),
+      //ThresholdedDTOverlap(dts.dt2, Seq(5, 20, 50, 100, 200), false),
+      //ThresholdedDTOverlap(dts.dt1_bims, Seq(5, 20, 50, 100, 200), false),
+      //ThresholdedDTOverlap(dts.dt2_bims, Seq(5, 20, 50, 100, 200), false),
       PosContextWindows(0 to 2, 0 to 2, 3),
-      PairFreqRatios(ngrams.germanWebCounts, 0 to 2, 0 to 2, 5),
-      SetFreqRatios(ngrams.germanWebCounts, 0 to 2, 0 to 2, 5),
+      PairFreqRatios(ngrams.web1t, 0 to 2, 0 to 2, 5),
+      SetFreqRatios(ngrams.web1t, 0 to 2, 0 to 2, 5),
       ConjunctionFreqRatio(ngrams.web1t, Seq("und", "oder", ","), 0, 0),
       LexSemRelation(candidates.masterlist)
       //WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
