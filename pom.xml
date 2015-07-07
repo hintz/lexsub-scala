@@ -30,8 +30,8 @@
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <encoding>UTF-8</encoding>
-    <scala.tools.version>2.10</scala.tools.version>
-    <scala.version>2.10.0</scala.version>
+    <!-- <scala.tools.version>2.11</scala.tools.version> -->
+    <scala.version>2.11.6</scala.version>
   </properties>
 
   <dependencies>
@@ -131,7 +131,6 @@
             </goals>
             <configuration>
               <args>
-                <arg>-make:transitive</arg>
                 <arg>-dependencyfile</arg>
                 <arg>${project.build.directory}/.scala_dependencies</arg>
               </args>
