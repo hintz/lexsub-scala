@@ -19,6 +19,10 @@ trait CandidateList extends CandidateFunction {
     relations.toSet.toSeq.map(filterByRelation)
   }
   
+  def allTargets = items.keys.toList
+  def allCandidates = items.values.flatMap(_.map(_.replacement)).toList.distinct
+  def allItems = allTargets ++ allCandidates
+  
   /** outputs the candidate list in the correct format */
   def formatLines: List[String] = items.toList.sortBy(_._1).flatMap { case (target, candidates) => 
     candidates.map { case Candidate(word, pos, replacement, relations) => 

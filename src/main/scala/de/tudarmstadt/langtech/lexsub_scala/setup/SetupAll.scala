@@ -2,6 +2,7 @@ package de.tudarmstadt.langtech.lexsub_scala.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
+import de.tudarmstadt.langtech.scala_utilities.io
 
 object SetupAll extends App {
   // TODO: call all necessary setup steps
@@ -26,14 +27,21 @@ object SetupAll extends App {
    *
    */
   
+  //CreateTargetList
+  
   
   println("Creating a candidate masterlist..")  
   val germanet =  new CandidateFile("resources/candidates/germeval_germanet90.tsv", true)
   val duden = new CandidateFile("resources/candidates/germeval_duden.tsv", true)
   val woxikon = new CandidateFile("resources/candidates/germeval_woxikon.tsv", true)
   val wortschatzSyn = new CandidateFile("resources/candidates/germeval_wortschatz.tsv", true)
-  val masterlist = new JoinedCandidates(germanet, duden)
+  val masterlist = new JoinedCandidates(germanet, duden /*, woxikon, wortschatzSyn */)
   val masterlistNoMWE = masterlist.filter(!_.replacement.contains(" ")) // removes Multi Word Expressions from the masterlist
+  
+  println("Creating vocab file")
+  io.write("vocab.txt", masterlistNoMWE.allItems.mkString("\n"))
+  
+  println("Saving masterlist")
   masterlistNoMWE.save("resources/candidates/germeval_masterlist.tsv")
   
 }
