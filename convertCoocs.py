@@ -6,7 +6,7 @@ from operator import itemgetter
 
 
 VocabFile = 'vocab.txt'
-OutputFile = 'output_coocs.txt'
+OutputFile = 'resources/coocs/output_coocs.txt'
 
 WordFile = "../AIPHES_Data/coocs/deu_news_10M/deu_news_2010_10M-words.txt" # "words.txt"
 CoocsFile = "../AIPHES_Data/coocs/deu_news_10M/deu_news_2010_10M-co_s.txt" # "coocs.txt" 

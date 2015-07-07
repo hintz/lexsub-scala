@@ -39,7 +39,7 @@ object Settings {
   val dt2Bims = "../AIPHES_Data/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_filtered_g1_sorted"
   val dt2Similar = "../AIPHES_Data/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_sorted"
   
-  val coocFile = "../AIPHES_Data/LexSub/coocs/germeval_coocs_truecase.txt"
+  val coocFile = "resources/coocs/germeval_coocs.tsv"
   
   val web1tFolder = "../AIPHES_Data/web1t/de"
   val germanWebCountsFolder = "../AIPHES_Data/NGrams/GermanWebCounts"
@@ -119,9 +119,9 @@ object Settings {
       //ThresholdedDTOverlap(dts.dt1_bims, Seq(5, 20, 50, 100, 200), false),
       //ThresholdedDTOverlap(dts.dt2_bims, Seq(5, 20, 50, 100, 200), false),
       PosContextWindows(0 to 2, 0 to 2, 3),
-      PairFreqRatios(ngrams.web1t, 0 to 2, 0 to 2, 5),
-      SetFreqRatios(ngrams.web1t, 0 to 2, 0 to 2, 5),
-      ConjunctionFreqRatio(ngrams.web1t, Seq("und", "oder", ","), 0, 0),
+      PairFreqRatios(ngrams.germanWebCounts, 0 to 2, 0 to 2, 5),
+      SetFreqRatios(ngrams.germanWebCounts, 0 to 2, 0 to 2, 5),
+      ConjunctionFreqRatio(ngrams.germanWebCounts, Seq("und", "oder", ","), 0, 0),
       LexSemRelation(candidates.masterlist)
       //WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
       //WordEmbeddingSimilarity(embeddings.word2vec),
