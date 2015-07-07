@@ -10,51 +10,58 @@ import de.tudarmstadt.langtech.lexsub_scala.features.{DTLookup, PosContextWindow
 import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
+import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 
 /** Nearly all of lexsub-scala can be configured in this file */
-object Settings {
+object Settings extends YamlSettings("paths.yaml") {
   
-  val germevalFolder = "../AIPHES_Data/GermEval2015"
+  val germevalFolder = path("germEvalFolder")
   
   // folder to store training data and trained model
-  val trainingDir = "training"
+  val trainingDir = path("trainingFolder")
   
   // output file
-  val instancesOutputFile = "instances.out"
+  val instancesOutputFile = path("outputFile")
   
   // GermaNet location (only needed to create candidate file during setup)
-  val germanetFolder = "../AIPHES_Data/GermaNet/GN_V90/GN_V90_XML"
+  val germanetFolder = path("SemanticResources", "GermaNetFolder")
   
-  // candidate lists
-  val germanetFile = "resources/candidates/germeval_germanet90.tsv"
-  val dudenFile = "resources/candidates/germeval_duden.tsv"  
-  val masterlistFile = "resources/candidates/germeval_masterlist.tsv"
+  // intermediate files
+  val targetsFile = "resources/targets.txt"
+  val targetsPosFile = "resources/targets-pos.txt"
+  val vocabFile = "resources/vocab.txt"
   
-  val embeddingFile = "../AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted"
-  val word2vecFile = "../AIPHES_Data/WordEmbeddings/word2vec/denews-vectors.bin"
-  
-  // some DTs:
-  val dt1Bims = "../AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_BIM_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_sorted"
-  val dt1Similar = "../AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub"
-  val dt2Bims = "../AIPHES_Data/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_filtered_g1_sorted"
-  val dt2Similar = "../AIPHES_Data/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_sorted"
-  
+  // cooc files
   val coocFile = "resources/coocs/germeval_coocs.tsv"
   
-  val web1tFolder = "../AIPHES_Data/web1t/de"
-  val germanWebCountsFolder = "../AIPHES_Data/NGrams/GermanWebCounts"
+  // candidate lists
+  val germanetFile = path("Candidates", "germanet")
+  val dudenFile = path("Candidates", "duden")
+  val masterlistFile = path("Candidates", "masterlist")  
+  
+  val embeddingFile = path("Embeddings", "eigenwords")
+  val word2vecFile =  path("Embeddings", "word2vec")
+  
+  // some DTs:
+  val dt1Bims = path("DT", "mateBims")
+  val dt1Similar = path("DT", "mateSim")
+  val dt2Bims = path("DT", "trigramBims")
+  val dt2Similar = path("DT", "trigramSim")
+
+  val web1tFolder = path("NGrams", "web1t")
+  val germanWebCountsFolder = path("NGrams", "germanWebCounts")
   
   // Defines complete processing
   lazy val preprocessing = Preprocessing(
       /*tokenizer = new Preprocessing.Tokenizer {
-        val model = new TokenizerME(new TokenizerModel(new File("resources/models/opennlp/de-token.bin")))
+        val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpPOSModel"))))
         def apply(sent: String) = model.tokenize(sent)
       },*/
       
       tokenizer = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector, // still works best for German
       
       posTagger = new Preprocessing.PosTagger {
-        val tagger = new POSTaggerME(new POSModel(new File("resources/models/opennlp/de-pos-perceptron.bin")))
+        val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "opennlpPOSModel"))))
         def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
       },
       
@@ -86,7 +93,6 @@ object Settings {
     lazy val eigenword = WordVectorFileLookup(embeddingFile)
   }
   
-  
   // DTs
   object dts {
     lazy val dt1 = DTLookup("de70M_mate_lemma", new WordSimilarityFile(dt1Similar, identity), 
@@ -109,19 +115,21 @@ object Settings {
   // Co-occurence features
   lazy val cooc = DTLookup("cooc", new WordSimilarityFile(coocFile, identity), token => token.word)
   
+  val ngramCounts = ngrams.web1t
+  
   // setup features
   val features = new FeatureAnnotator(
       //CheatFeature,
       //WordSimilarity(dt),
       Cooc(cooc),
-      ThresholdedDTOverlap(dts.dt1, Seq(5, 20, 50, 100, 200), false),
+      //ThresholdedDTOverlap(dts.dt1, Seq(5, 20, 50, 100, 200), false),
+      ThresholdedDTOverlap(dts.dt1_bims, Seq(5, 20, 50, 100, 200), false),
       //ThresholdedDTOverlap(dts.dt2, Seq(5, 20, 50, 100, 200), false),
-      //ThresholdedDTOverlap(dts.dt1_bims, Seq(5, 20, 50, 100, 200), false),
       //ThresholdedDTOverlap(dts.dt2_bims, Seq(5, 20, 50, 100, 200), false),
       PosContextWindows(0 to 2, 0 to 2, 3),
-      PairFreqRatios(ngrams.germanWebCounts, 0 to 2, 0 to 2, 5),
-      SetFreqRatios(ngrams.germanWebCounts, 0 to 2, 0 to 2, 5),
-      ConjunctionFreqRatio(ngrams.germanWebCounts, Seq("und", "oder", ","), 0, 0),
+      PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
+      SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
+      ConjunctionFreqRatio(ngramCounts, Seq("und", "oder", ","), 0, 0),
       LexSemRelation(candidates.masterlist)
       //WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
       //WordEmbeddingSimilarity(embeddings.word2vec),
