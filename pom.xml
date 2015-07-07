@@ -13,6 +13,18 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+  
+  <repositories>
+		<repository>
+			<id>central</id> <!--  needed for maven shade -->
+			<name>Maven Repository Switchboard</name>
+			<layout>default</layout>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+  </repositories>
 
   <properties>
     <maven.compiler.source>1.6</maven.compiler.source>
@@ -151,7 +163,30 @@
               <downloadJavadocs>true</downloadJavadocs>
           </configuration>
       </plugin>
-
+      
+      <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-shade-plugin</artifactId>
+		<version>2.4</version>
+		<configuration>
+		  <finalName>${project.artifactId}-${project.version}</finalName>
+		  <filters>
+			 <filter>
+				<artifact>*:*</artifact>
+				   <excludes>
+				   </excludes>
+				</filter>
+			 </filters>
+		</configuration>
+		<executions>
+			<execution>
+				<phase>package</phase>
+				<goals>
+					<goal>shade</goal>
+				</goals>
+			</execution>
+		</executions>
+	</plugin>
     </plugins>
   </build>
 </project>
