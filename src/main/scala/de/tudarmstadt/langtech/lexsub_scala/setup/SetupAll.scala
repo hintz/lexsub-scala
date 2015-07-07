@@ -35,7 +35,7 @@ object SetupAll extends App {
   val duden = new CandidateFile("resources/candidates/germeval_duden.tsv", true)
   val woxikon = new CandidateFile("resources/candidates/germeval_woxikon.tsv", true)
   val wortschatzSyn = new CandidateFile("resources/candidates/germeval_wortschatz.tsv", true)
-  val masterlist = new JoinedCandidates(germanet, duden /*, woxikon, wortschatzSyn */)
+  val masterlist = new JoinedCandidates(germanet, duden , woxikon, wortschatzSyn)
   val masterlistNoMWE = masterlist.filter(!_.replacement.contains(" ")) // removes Multi Word Expressions from the masterlist
   
   println("Creating vocab file")
