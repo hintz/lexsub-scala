@@ -41,8 +41,15 @@ class GermEvalData(datafile: String) {
     val xml = XML.loadFile(datafile)
     for (lexelt <- xml \\ "lexelt"; val lemmaPos = (lexelt \\ "@item").text;
         instance <- lexelt \\ "instance"; val id = (instance \\ "@id").text;
-        context <- instance \\ "context"; val target = (context \\ "head").text.trim) yield {
+        context <- instance \\ "context"; val head = (context \\ "head").text.trim) yield {
       val sentence = context.text.trim
+      val target = context.child match {
+        case Seq(before, _, after) => // target may include stuff outside the XML <head>
+           val leftAppend = before.text.reverse.takeWhile(_.isLetter).reverse
+           val rightAppend = after.text.takeWhile(_.isLetter)
+           leftAppend + head + rightAppend
+        case _ => head
+      }
       val (lemma, pos) = strings.splitAssign('.')(lemmaPos)
       Sentence(id, sentence, Token(target, pos, lemma))
     }
