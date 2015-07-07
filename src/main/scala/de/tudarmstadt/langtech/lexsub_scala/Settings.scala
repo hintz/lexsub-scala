@@ -30,26 +30,7 @@ object Settings extends YamlSettings("paths.yaml") {
   val targetsFile = "resources/targets.txt"
   val targetsPosFile = "resources/targets-pos.txt"
   val vocabFile = "resources/vocab.txt"
-  
-  // cooc files
-  val coocFile = "resources/coocs/germeval_coocs.tsv"
-  
-  // candidate lists
-  val germanetFile = path("Candidates", "germanet")
-  val dudenFile = path("Candidates", "duden")
-  val masterlistFile = path("Candidates", "masterlist")  
-  
-  val embeddingFile = path("Embeddings", "eigenwords")
-  val word2vecFile =  path("Embeddings", "word2vec")
-  
-  // some DTs:
-  val dt1Bims = path("DT", "mateBims")
-  val dt1Similar = path("DT", "mateSim")
-  val dt2Bims = path("DT", "trigramBims")
-  val dt2Similar = path("DT", "trigramSim")
-
-  val web1tFolder = path("NGrams", "web1t")
-  val germanWebCountsFolder = path("NGrams", "germanWebCounts")
+  val coocFile = "resources/coocs/germeval_coocs.tsv" // (generated from vocabFile and cooccurence corpus)
   
   // Defines complete processing
   lazy val preprocessing = Preprocessing(
@@ -70,44 +51,47 @@ object Settings extends YamlSettings("paths.yaml") {
    
   // load the germeval data (from cache, if available)
   lazy val germevalTraining = preprocessing.loadGermEval(germevalFolder, "train-dataset") 
-  lazy val germevalTest = preprocessing.loadGermEval(germevalFolder, "test-dataset") 
+  lazy val germevalTest = preprocessing.loadGermEval(germevalFolder, "test-dataset")
   
   // Candidate lists
   object candidates {
-    lazy val germanet = new CandidateFile(germanetFile, true)
-    lazy val duden = new CandidateFile(dudenFile, true)
-    lazy val masterlist = new CandidateFile(masterlistFile, true)
+    lazy val germanet = new CandidateFile(path("Candidates", "germanet"), true)
+    lazy val duden = new CandidateFile(path("Candidates", "duden"), true)
+    lazy val masterlist = new CandidateFile(path("Candidates", "masterlist")  , true)
+    
+    // shortcut to select candidate lists
+    lazy val trainingList = masterlist
+    lazy val systemList = germanet
   }
-
   
   // N-gram counts
   object ngrams {
-    lazy val web1t = Web1TLookup(web1tFolder, 5)
-    lazy val germanWebCounts = Web1TLookup(germanWebCountsFolder, 5)
+    lazy val web1t = Web1TLookup(path("NGrams", "web1t"), 5)
+    lazy val germanWebCounts = Web1TLookup(path("NGrams", "germanWebCounts"), 5)
   }
   
   // Word embeddings
   object embeddings {
     val word2vecPruning = Integer.MAX_VALUE
-    lazy val word2vec = Word2VecLookup(word2vecFile, word2vecPruning)
-    lazy val eigenword = WordVectorFileLookup(embeddingFile)
+    lazy val word2vec = Word2VecLookup(path("Embeddings", "word2vec"), word2vecPruning)
+    lazy val eigenword = WordVectorFileLookup(path("Embeddings", "eigenwords"))
   }
   
   // DTs
   object dts {
-    lazy val dt1 = DTLookup("de70M_mate_lemma", new WordSimilarityFile(dt1Similar, identity), 
+    lazy val mateSim = DTLookup("de70M_mate_lemma", new WordSimilarityFile(path("DT", "mateSim"), identity), 
         token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
         (substitute, other) => other.startsWith(substitute.toLowerCase)) // how to define equivalence in this DT
         
-    lazy val dt1_bims = DTLookup("de70M_mate_lemma_bims", new WordSimilarityFile(dt1Bims, identity), 
+    lazy val mateBims = DTLookup("de70M_mate_lemma_bims", new WordSimilarityFile(path("DT", "mateBims"), identity), 
         token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
         (substitute, other) => throw new IllegalStateException) // no equivalence for bims
         
-    lazy val dt2 = DTLookup("de70M_trigram", new WordSimilarityFile(dt2Similar, identity), 
+    lazy val trigramSim = DTLookup("de70M_trigram", new WordSimilarityFile(path("DT", "trigramSim"), identity), 
         token => token.lemma, // how to look up token in this DT
         (substitute, other) => other.startsWith(substitute)) // how to define equivalence in this DT
         
-    lazy val dt2_bims = DTLookup("de70M_trigram_bims", new WordSimilarityFile(dt2Bims, identity), 
+    lazy val trigramBims = DTLookup("de70M_trigram_bims", new WordSimilarityFile(path("DT", "trigramBims"), identity), 
         token => token.lemma, // how to look up token in this DT
         (substitute, other) => throw new IllegalStateException) // how to define equivalence in this DT
   }
@@ -119,20 +103,20 @@ object Settings extends YamlSettings("paths.yaml") {
   
   // setup features
   val features = new FeatureAnnotator(
-      //CheatFeature,
-      //WordSimilarity(dt),
+      //CheatFeature /* writes the gold into the training data, useful for testing */
+      WordSimilarity(dts.mateSim),
       Cooc(cooc),
-      //ThresholdedDTOverlap(dts.dt1, Seq(5, 20, 50, 100, 200), false),
-      ThresholdedDTOverlap(dts.dt1_bims, Seq(5, 20, 50, 100, 200), false),
-      //ThresholdedDTOverlap(dts.dt2, Seq(5, 20, 50, 100, 200), false),
-      //ThresholdedDTOverlap(dts.dt2_bims, Seq(5, 20, 50, 100, 200), false),
+      ThresholdedDTOverlap(dts.mateSim, Seq(5, 20, 50, 100, 200), false),
+      ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false),
+      ThresholdedDTOverlap(dts.trigramSim, Seq(5, 20, 50, 100, 200), false),
+      ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false),
       PosContextWindows(0 to 2, 0 to 2, 3),
       PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
       SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
       ConjunctionFreqRatio(ngramCounts, Seq("und", "oder", ","), 0, 0),
-      LexSemRelation(candidates.masterlist)
-      //WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
-      //WordEmbeddingSimilarity(embeddings.word2vec),
-      //WordEmbeddingDistance(embeddings.word2vec)
+      LexSemRelation(candidates.masterlist),
+      WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
+      WordEmbeddingSimilarity(embeddings.word2vec),
+      WordEmbeddingDistance(embeddings.word2vec)
   )
 }

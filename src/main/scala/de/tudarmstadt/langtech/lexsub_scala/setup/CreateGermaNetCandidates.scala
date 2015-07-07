@@ -24,8 +24,7 @@ object CreateGermaNetCandidates extends App {
   val targetsWithPos = targets.map { case (w, p) => (w, gnUtils.translatePos(p))}
   
   // write target file
-  writeCandidateFile(targetsWithPos, Settings.germanetFile)
-
+  writeCandidateFile(targetsWithPos, Settings.path("Candidates", "germanet"))
   
   def writeCandidateFile(lexemes: Seq[(String, Option[WordCategory])], outfile: String){
       val out = new java.io.BufferedWriter(new java.io.FileWriter(outfile))
@@ -39,15 +38,7 @@ object CreateGermaNetCandidates extends App {
     out.close
   }
   
-  /*
-  val germevalGold = 
-    new GermEvalReader("../AIPHES_Data/GermEval2015", "train-dataset").gold.items ++
-    new GermEvalReader("../AIPHES_Data/GermEval2015", "test-dataset").gold.items
-  val germevalLexItems = germevalGold.map(_.target).distinct
-  val germevalLexemes: Seq[(String, Option[WordCategory])] = germevalLexItems.map(x => (x.word, translatePos(x.pos)))
-  */
-  
-  
+
   /*
   val lexemeSet: Set[(String, Option[WordCategory])] = 
     gn.getLexUnits.asScala

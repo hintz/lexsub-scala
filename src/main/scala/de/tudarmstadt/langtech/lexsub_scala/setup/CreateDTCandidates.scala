@@ -13,8 +13,7 @@ object CreateDTCandidates extends App {
   val germevalGold = new GermEvalReader(Settings.germevalFolder, "train-dataset").gold.items
   val germevalLexItems = germevalGold.map(_.target).distinct
   
-  val dtfile = Settings.dt1Similar
-  val dt = new WordSimilarityFile(dtfile, identity)
+  val dt = Settings.dts.mateSim.dt
   
   val lines = for(
     LexItem(lemma, pos) <- germevalLexItems;

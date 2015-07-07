@@ -7,19 +7,19 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 object RunGermevalTrainingAndEval extends App {
   
   val trainingData = Settings.germevalTraining
-  val evaluationData = Settings.germevalTraining
+  val evaluationData = Settings.germevalTest
   
-  printf("Will train on %d examples and then lex. expand %d instances\n", trainingData.size, evaluationData.size)
+  printf("Will train on %d examples and then lex-expand %d instances\n", trainingData.size, evaluationData.size)
   
   // do training
   Training.train(trainingData, 
-      Settings.candidates.duden, 
+      Settings.candidates.trainingList, 
       Settings.features, 
       Settings.trainingDir)
   
   // load lexsub system
   val lexsub = LexSubExpander(
-      Settings.candidates.duden,
+      Settings.candidates.systemList,
       Settings.features, 
       ClassifierScorer(Settings.trainingDir))
 
