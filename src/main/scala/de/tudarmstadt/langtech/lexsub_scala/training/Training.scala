@@ -24,7 +24,7 @@ import java.util.IdentityHashMap
 object Training {
   
   val Classifier = "MaxEnt" // classifier string as expected by cleartk
-  val IncludeGoldNotInList = false // add gold items which are not in candidate list to training
+  val IncludeGoldNotInList = false // add gold items which are not in candidate list to training. Setting this to true drastically hurts performance!
   
   /** Trains a classifier with the given training data in the directory given in trainingDir */
   def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator, trainingFolder: String){
