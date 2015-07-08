@@ -24,11 +24,11 @@ class GermEvalGold(goldfile: String) {
     def parse(line: String): GoldItem = {
       val Seq(item, solutions) = line.split("::").toSeq
       val Seq(lexItem, id) = item.split(" ", 2).toSeq
-      val Seq(word, pos) = lexItem.split('.').toSeq
+      val Seq(word, pos) = lexItem.split("\\.", 2).toSeq
       val substitutions = solutions.split(";").map(parseSolution).toList
       GoldItem(id.trim, LexItem(word, pos), substitutions)
     }
-    try { io.lines(goldfile).map(parse).toList }
+    try { io.lines(goldfile).filter(_.length > 1).map(parse).toList }
     catch { case e: java.io.FileNotFoundException =>
       System.err.println("WARNING: No gold file found: " + goldfile)
       List.empty
