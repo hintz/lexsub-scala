@@ -50,3 +50,7 @@ build.log
 /crawling/woxikon
 /crawling/duden
 /crawling/wortschatz
+/scripts/duden
+/scripts/wortschatz
+/scripts/woxikon
+/arff
