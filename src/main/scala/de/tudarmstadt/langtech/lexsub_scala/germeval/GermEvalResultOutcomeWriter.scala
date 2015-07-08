@@ -72,8 +72,9 @@ class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
   }
   
   
-  def prettyPrint(filename: String, maxExpansions: Int = 20, context: (Int, Int) = (5, 5)){
+  def prettyPrint(filename: String, maxExpansions: Int = 20, context: (Int, Int) = (5, 5)): String = {
     val parsed = parse(filename)
+    val output = new StringBuffer
     
     val tables = for((item, allOutcomes) <- parsed) yield {
       val outcomes = allOutcomes.take(maxExpansions)
@@ -107,9 +108,9 @@ class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
       
       val name = "Id: " + item.gold.get.sentence.id
       val main = table.map(_.mkString(" "))
-      val lines = main ::: List("Error class: TODO", "", "")
+      val lines = main ::: List( /*"Error class: TODO",*/ "", "")
       
-      lines foreach println
+      output append lines.mkString("\n")
       
       def elem(e: String) = <td>{mkBold(e)}</td>
       def tline(row: Vector[String]) = <tr>{row.map(elem)}</tr>
@@ -120,13 +121,14 @@ class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
       html(table)
     }
     
-    val result = 
-    <html>
-    {tables.map(table => 
+    val htmlResult = 
+    <html>{ 
+      tables.map(table => 
       <div>
       <hr></hr>{table}
       </div>)}
     </html>
-    //println(result)
+    
+    output.toString
   }
 }

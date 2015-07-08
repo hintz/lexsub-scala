@@ -71,7 +71,7 @@ object EvaluateCandidates extends App {
   }
   */
   
-  val masterlist = new JoinedCandidates(duden, woxikon, wortschatzSyn, germanetGermevalAll)
+  val masterlist = new JoinedCandidates(duden, woxikon, wortschatzSyn, germanet90)
   //masterlist.save("germeval_masterlist.tsv")
   
   /*
