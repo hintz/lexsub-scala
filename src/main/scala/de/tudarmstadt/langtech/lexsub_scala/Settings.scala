@@ -62,7 +62,6 @@ object Settings extends YamlSettings("paths.yaml") {
     
     // shortcut to select candidate lists
     lazy val trainingList = germanet
-    lazy val systemList = germanet
   }
   
   // N-gram counts
@@ -103,7 +102,7 @@ object Settings extends YamlSettings("paths.yaml") {
   val ngramCounts = ngrams.web1t
   
   // setup features
-  val features = new FeatureAnnotator(
+  lazy val features = new FeatureAnnotator(
       //CheatFeature /* writes the gold into the training data, useful for testing */
       //WordSimilarity(dts.mateSim),
       Cooc(cooc),

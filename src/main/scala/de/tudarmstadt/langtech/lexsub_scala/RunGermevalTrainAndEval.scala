@@ -19,7 +19,7 @@ object RunGermevalTrainingAndEval extends App {
   
   // load lexsub system
   val lexsub = LexSubExpander(
-      Settings.candidates.systemList,
+      Settings.candidates.trainingList,
       Settings.features, 
       ClassifierScorer(Settings.trainingDir))
 
