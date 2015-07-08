@@ -49,6 +49,9 @@ class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
     io.write(outfile, formatLines.mkString("\n"))
     io.write(outfile + ".best", formatBest.mkString("\n"))
     io.write(outfile + ".oot", formatOot.mkString("\n"))
+    
+    val prettyPrinted = new GermEvalResultOutcomeReader(outcomes.map(_.lexSubInstance).toSeq).prettyPrint(outfile)
+    io.write(outfile + ".prettyprint.txt", prettyPrinted)
   }
   
   private def noGold = throw new IllegalArgumentException("outcome has no gold data")
@@ -72,7 +75,9 @@ class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
   }
   
   
-  def prettyPrint(filename: String, maxExpansions: Int = 20, context: (Int, Int) = (5, 5)): String = {
+  /** Pretty-prints an "instances" file (as used by lexsub or lexsub-scala) and outputs a human-readable pretty print version
+   *  @param outputHtml enables HTML output instead of plaintext */
+  def prettyPrint(filename: String, maxExpansions: Int = 5, context: (Int, Int) = (5, 5), outputHtml: Boolean = false): String = {
     val parsed = parse(filename)
     val output = new StringBuffer
     
@@ -129,6 +134,6 @@ class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
       </div>)}
     </html>
     
-    output.toString
+    if(outputHtml) htmlResult.toString else  output.toString
   }
 }
