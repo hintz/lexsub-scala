@@ -4,9 +4,13 @@ import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.scala_utilities.strings
 import scalaz.Memo
+import de.tudarmstadt.langtech.lexsub_scala.Settings
 
-class WordSimilarityFile[Elem](val dt_filename: String, extractor: (String => Elem), sorted: Boolean = true) {
-  
+class WordSimilarityFile[Elem](val dt_filename: String, 
+    extractor: (String => Elem), 
+    sorted: Boolean = true, // if the output should be sorted
+    matchPrefix: Boolean = false) // if entries are looked up only by prefix
+{
   type Result = Seq[(Elem, Double)]
 	
   // splitter splitting word / otherWord / score
@@ -20,9 +24,12 @@ class WordSimilarityFile[Elem](val dt_filename: String, extractor: (String => El
   val sim: String => Result = Memo.mutableHashMapMemo { prefix =>
     val lines = file.search(prefix)
     val processed = lines.map(_.split("\t")).flatMap {
-      case Array(_, other, score) => Seq((extractor(other), score.toDouble))
+      case Array(elem, other, score) if matchPrefix || elem == prefix => 
+        Seq((extractor(other), score.toDouble))
+      case Array(_, _, _) => Seq.empty
       case line => 
-        System.err.printf("WARNING: Illegal format in %s, searching for %s, parsed line %s\n", 
+        System.err.printf(
+            "WARNING: Illegal format in %s, searching for %s, parsed line %s\n", 
             dt_filename, prefix, line.mkString("\t"))
         Seq.empty
     }
@@ -43,9 +50,6 @@ object HashtagSeparatedPos extends Function[String, Token] {
 }
 
 object Test extends App {
-  val dt = new WordSimilarityFile("../lexsub-gpl/AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub", 
-      HashtagSeparatedPos)
-  
+  val dt = new WordSimilarityFile(Settings.path("DT", "mateBims"), identity, matchPrefix = true)
   dt.similar("erleichterung") foreach println
-  
 }

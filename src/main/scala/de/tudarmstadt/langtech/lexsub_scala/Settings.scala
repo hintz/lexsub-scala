@@ -7,6 +7,7 @@ import de.tudarmstadt.langtech.lexsub_scala.germeval._
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader._
 import de.tudarmstadt.langtech.lexsub_scala.features.{DTLookup, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity}
+import de.tudarmstadt.langtech.lexsub_scala.features.Cooc
 import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
@@ -35,14 +36,14 @@ object Settings extends YamlSettings("paths.yaml") {
   // Defines complete processing
   lazy val preprocessing = Preprocessing(
       /*tokenizer = new Preprocessing.Tokenizer {
-        val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpPOSModel"))))
+        lazy val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpPOSModel"))))
         def apply(sent: String) = model.tokenize(sent)
       },*/
       
       tokenizer = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector, // still works best for German
       
       posTagger = new Preprocessing.PosTagger {
-        val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "opennlpPOSModel"))))
+        lazy val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "opennlpPOSModel"))))
         def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
       },
       
@@ -60,7 +61,7 @@ object Settings extends YamlSettings("paths.yaml") {
     lazy val masterlist = new CandidateFile(path("Candidates", "masterlist")  , true)
     
     // shortcut to select candidate lists
-    lazy val trainingList = masterlist
+    lazy val trainingList = germanet
     lazy val systemList = germanet
   }
   
@@ -79,11 +80,11 @@ object Settings extends YamlSettings("paths.yaml") {
   
   // DTs
   object dts {
-    lazy val mateSim = DTLookup("de70M_mate_lemma", new WordSimilarityFile(path("DT", "mateSim"), identity), 
+    lazy val mateSim = DTLookup("de70M_mate_lemma", new WordSimilarityFile(path("DT", "mateSim"), identity, matchPrefix = true), 
         token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
         (substitute, other) => other.startsWith(substitute.toLowerCase)) // how to define equivalence in this DT
         
-    lazy val mateBims = DTLookup("de70M_mate_lemma_bims", new WordSimilarityFile(path("DT", "mateBims"), identity), 
+    lazy val mateBims = DTLookup("de70M_mate_lemma_bims", new WordSimilarityFile(path("DT", "mateBims"), identity, matchPrefix = true), 
         token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
         (substitute, other) => throw new IllegalStateException) // no equivalence for bims
         
@@ -104,7 +105,7 @@ object Settings extends YamlSettings("paths.yaml") {
   // setup features
   val features = new FeatureAnnotator(
       //CheatFeature /* writes the gold into the training data, useful for testing */
-      WordSimilarity(dts.mateSim),
+      //WordSimilarity(dts.mateSim),
       Cooc(cooc),
       ThresholdedDTOverlap(dts.mateSim, Seq(5, 20, 50, 100, 200), false),
       ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false),
