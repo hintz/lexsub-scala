@@ -6,6 +6,7 @@ object RunGermevalCrossvalidation extends App {
   Training.crossvalidate(
       Settings.germevalTraining, 
       Settings.candidates.trainingList,
+      Settings.candidates.systemList,
       Settings.features, 
       Settings.trainingDir, 
       Settings.instancesOutputFile,

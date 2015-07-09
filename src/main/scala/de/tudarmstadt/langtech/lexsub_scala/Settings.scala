@@ -12,6 +12,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
 import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
+import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 
 /** Nearly all of lexsub-scala can be configured in this file */
 object Settings extends YamlSettings("paths.yaml") {
@@ -58,10 +59,13 @@ object Settings extends YamlSettings("paths.yaml") {
   object candidates {
     lazy val germanet = new CandidateFile(path("Candidates", "germanet"), true)
     lazy val duden = new CandidateFile(path("Candidates", "duden"), true)
+    lazy val woxikon = new CandidateFile(path("Candidates", "woxikon"), true)
+    lazy val wortschatz = new CandidateFile(path("Candidates", "wortschatz"), true)
     lazy val masterlist = new CandidateFile(path("Candidates", "masterlist")  , true)
     
     // shortcut to select candidate lists
     lazy val trainingList = germanet
+    lazy val systemList = germanet //new JoinedCandidates(germanet, wortschatz)
   }
   
   // N-gram counts
@@ -104,8 +108,9 @@ object Settings extends YamlSettings("paths.yaml") {
   // setup features
   lazy val features = new FeatureAnnotator(
       //CheatFeature /* writes the gold into the training data, useful for testing */
-      //WordSimilarity(dts.mateSim),
-      Cooc(cooc),
+		  Cooc(cooc),
+		  WordSimilarity(dts.mateSim),
+      WordSimilarity(dts.trigramSim),
       ThresholdedDTOverlap(dts.mateSim, Seq(5, 20, 50, 100, 200), false),
       ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false),
       ThresholdedDTOverlap(dts.trigramSim, Seq(5, 20, 50, 100, 200), false),

@@ -46,13 +46,14 @@ object Training {
   }
   
   /** Performs crossvalidate, prints results to stdout and writes aggregated results to outputFile */
-  def crossvalidate(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator, 
+  def crossvalidate(data: Iterable[LexSubInstance], 
+      trainingList: CandidateList, systemList: CandidateList, features: FeatureAnnotator, 
       trainingRoot: String, outputFile: String, folds: Int = 10){
     
     println("Starting crossvalidation on " + data.size + " instances")
     
-    val trainingData = createTrainingData(data, candidates)
-    println("Using " + candidates + " created " + trainingData.size + " training examples..")
+    val trainingData = createTrainingData(data, trainingList)
+    println("Using " + trainingList + " created " + trainingData.size + " training examples..")
     
     println("Extracting features..")
     val feats = features(trainingData)
@@ -78,7 +79,7 @@ object Training {
       val testData: Seq[Substitutions] = heldOutItems.flatMap(grouped.apply).map(_._1)
       val testInstaces = testData.map(_.lexSubInstance)
       
-      val lexsub = LexSubExpander(candidates, featureExtractor, ClassifierScorer(trainingFolder))
+      val lexsub = LexSubExpander(systemList, featureExtractor, ClassifierScorer(trainingFolder))
       val ranked = lexsub(testInstaces)
       val results = Outcomes.collect(testInstaces, ranked)
       val oot = Outcomes.evaluate(results, 10)
