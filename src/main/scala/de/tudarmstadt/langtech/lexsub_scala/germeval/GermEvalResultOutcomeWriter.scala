@@ -45,10 +45,21 @@ class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
     }
   }
   
+  def formatRank: Iterable[String] = {
+    outcomes.map {
+      case Outcome(LexSubInstance(_, _, Some(GermEvalItem(sentence, gold))), scoredSubstitutes) =>
+        val left = gold.target.word + "." + gold.target.pos + " " + gold.id
+        val rank =  scoredSubstitutes.map(_._1).mkString(";")
+        left + " :::: " + rank
+      case _ => noGold
+    }
+  }
+  
   def save(outfile: String){
     io.write(outfile, formatLines.mkString("\n"))
     io.write(outfile + ".best", formatBest.mkString("\n"))
     io.write(outfile + ".oot", formatOot.mkString("\n"))
+    io.write(outfile + ".rank", formatRank.mkString("\n"))
     
     val prettyPrinted = new GermEvalResultOutcomeReader(outcomes.map(_.lexSubInstance).toSeq).prettyPrint(outfile)
     io.write(outfile + ".prettyprint.txt", prettyPrinted)

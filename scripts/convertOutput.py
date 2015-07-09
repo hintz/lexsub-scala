@@ -7,6 +7,7 @@ Input = 'instances.out'
 if len(sys.argv) > 1: Input = sys.argv[1]
 OOTOutput = Input + '.oot'
 BestOutput = Input + '.best'
+RankOutput = Input + '.rank'
 
 with open(Input, 'r') as f:
 	byId = defaultdict(list)
@@ -24,8 +25,11 @@ with open(Input, 'r') as f:
 	# output in semeval format:
 	with open(OOTOutput, 'wb') as ootFile:
 		with open(BestOutput, 'wb') as bestFile:
-			for (id, extensions) in byId.items():
-				oot = ";".join(extensions[:10])
-				best = extensions[0]
-				print >>ootFile, id + ' ::: ' + oot
-				print >>bestFile, id + ' :: ' + best
+			with open(RankOutput, 'wb') as rankFile:
+				for (id, extensions) in byId.items():
+					rank = ";".join(extensions)
+					oot = ";".join(extensions[:10])
+					best = extensions[0]
+					print >>rankFile, id + ' :::: ' + rank
+					print >>ootFile, id + ' ::: ' + oot
+					print >>bestFile, id + ' :: ' + best
