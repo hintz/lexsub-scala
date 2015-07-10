@@ -16,6 +16,7 @@ case class Sentence(val tokens: Vector[Token]) // val sent: String,
 /** A pre-processed item */
 case class LexSubInstance(val sentence: Sentence, val headIndex: Int, gold: Option[GermEvalItem]){
   def head: Token = sentence.tokens(headIndex)
+  def getGold = gold.getOrElse(throw new RuntimeException("gold data was required but not supplied: " + this))
 }
 
 /** A pair of (lexsubInstance, candidates) */
