@@ -20,6 +20,7 @@ import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalResultOutcomeWriter
 import java.util.IdentityHashMap
+import de.tudarmstadt.langtech.lexsub_scala.GoldCandidatesRanker
 
 object Training {
   
@@ -29,11 +30,9 @@ object Training {
   /** Trains a classifier with the given training data in the directory given in trainingDir */
   def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator, trainingFolder: String){
     
-    println("Starting training on " + data.size + " instances")
-    
     // create training data
     val trainingData = createTrainingData(data, candidates)
-    println("Using " + candidates + " created " + trainingData.size + " training examples")
+    println("Using %d candidates from %s created %d training examples".format(data.size, candidates, trainingData.map(_.candidates.size).sum))
     
     // write instances into a file, for later reference
     val trainingDir = new java.io.File(trainingFolder)
@@ -43,6 +42,74 @@ object Training {
     val instances = features(trainingData).flatten
     
     trainAndPackage(instances, trainingDir)
+  }
+  
+  
+  /** Trains a classifier with the given training data in the directory given in trainingDir */
+  def trainOnGold(data: Iterable[LexSubInstance], features: FeatureAnnotator, trainingFolder: String){
+    
+    // create training data
+    val trainingData = createTrainingDataFromGold(data)
+    println("Using %d candidates from gold candidates created %d training examples".format(data.size, trainingData.map(_.candidates.size).sum))
+    
+    // write instances into a file, for later reference
+    val trainingDir = new java.io.File(trainingFolder)
+    writeInstances(trainingDir.getPath + "/" + InstanceDataWriter.INSTANCES_OUTPUT_FILENAME, trainingData)
+    
+    // extract features
+    val instances = features(trainingData).flatten
+    
+    trainAndPackage(instances, trainingDir)
+  }
+  
+  /** Performs crossvalidate, prints results to stdout and writes aggregated results to outputFile */
+  def crossvalidateOnGold(data: Iterable[LexSubInstance], features: FeatureAnnotator, 
+      trainingRoot: String, outputFile: String, folds: Int = 10){
+    
+    println("Starting crossvalidation on " + data.size + " instances")
+    
+    val trainingData = createTrainingDataFromGold(data)
+    println("Using %d candidates from gold candidates created %d training examples".format(data.size, trainingData.map(_.candidates.size).sum))
+    
+    println("Extracting features..")
+    val feats = features(trainingData)
+    
+    val cache = new java.util.IdentityHashMap[LexSubInstance, Vector[Seq[Feature]]]
+    val dataWithFeatures = trainingData.zip(feats)
+    println("Writing " + dataWithFeatures.size + " items into feature cache..")
+    for((e, f) <- dataWithFeatures) cache.put(e.lexSubInstance, f.map(_.getFeatures.asScala))
+    val featureExtractor = new FeatureAnnotator(PrecomputedFeatureExtractor(cache.get))
+
+    println("Grouping data and creating folds..")
+    val grouping = (instance: LexSubInstance) => instance.gold.get.sentence.target.lemma
+    val grouped = dataWithFeatures.groupBy(x => grouping(x._1.lexSubInstance))
+    val folded = crossfold(grouped.keys.toSeq, folds)
+    
+    val outcomes = for(((heldOutItems, trainingItems), i) <- folded.zipWithIndex) yield {
+      val trainingFolder = trainingRoot + "/fold" + i
+      val folder = new File(trainingFolder); folder.mkdir
+      println("Fold %d (items %s)".format(i + 1, heldOutItems.mkString(", ")))
+      val trainingData: Iterable[Instance[String]] = trainingItems.flatMap(grouped.apply).flatMap(_._2)
+      trainAndPackage(trainingData, folder)
+      
+      val testData: Seq[Substitutions] = heldOutItems.flatMap(grouped.apply).map(_._1)
+      val testInstaces = testData.map(_.lexSubInstance)
+      
+      val lexsub = GoldCandidatesRanker(featureExtractor, ClassifierScorer(trainingFolder))
+      val ranked = lexsub(testInstaces)
+      val results = Outcomes.collect(testInstaces, ranked)
+      val oot = Outcomes.evaluate(results, 10)
+      val best = Outcomes.evaluate(results, 1)
+      println("Fold %d: best=%s oot=%s".format(i + 1, best, oot))
+      results
+    }
+    
+    GermEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
+    
+    val results = outcomes.flatten
+    val oot =  Outcomes.evaluate(results, 10)
+    val best = Outcomes.evaluate(results, 1)
+    println("Overall best=[%s] oot=[%s]".format(best, oot))
   }
   
   /** Performs crossvalidate, prints results to stdout and writes aggregated results to outputFile */
@@ -122,7 +189,10 @@ object Training {
     println("Starting train & package..")
     JarClassifierBuilder.trainAndPackage(trainingDir, Classifier)
   }
-  
+ 
+ private def createTrainingDataFromGold(data: Iterable[LexSubInstance]): Iterable[Substitutions] = {
+   data.map { x => Substitutions(x, x.getGold.gold.substitutionWordsWithoutMultiwords.toVector) }
+ }
   
   /** Pairs each LexSubInstance with a number of possible substitutes, based on a candidate list */
   def createTrainingData(data: Iterable[LexSubInstance], candidates: CandidateList): Iterable[Substitutions] = 
