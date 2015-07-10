@@ -109,23 +109,6 @@ case class WordEmbeddingDistanceVectors(embedding: WordVectorLookup, leftContext
         
         negativeDeltaSum
 
-        // Old idea: cosine similarity between diff vectors to each context word
-        /*
-        val origDeltas = vectors.map { v => v.map(_ - originalHeadVector) }
-        val newDeltas = vectors.map { v => v.map(_ - substituteHeadVector) }
-
-        val distances: Traversable[Double] = (origDeltas, newDeltas).zipped.collect {
-          case (Some(origDelta), Some(newDelta)) =>
-            //val deltaDelta = origDelta - newDelta
-            //val difference = breeze.linalg.norm.apply[Vector[Double], Double](deltaDelta)
-            val cossim = breeze.linalg.functions.cosineDistance(origDelta, newDelta)
-            cossim
-        }
-        val result = distances.sum
-        Some(result)
-   
-        */
-
       case other =>
          // either head or target not in embedding file!
         None
@@ -140,3 +123,9 @@ case class WordEmbeddingDistanceVectorsSet(embedding: WordVectorLookup, leftRang
 /** Sums the WordEmbeddingDistance features for all given context windows */
 case class SummedWordEmbeddingDistances(embedding: WordVectorLookup, leftRange: Range, rightRange: Range, maxSize: Int)
   extends AggregatedFeature("SummedWordEmbeddingDistances", WordEmbeddingDistanceVectorsSet(embedding, leftRange, rightRange, maxSize), _.sum) 
+
+/** Aggregates EmbeddingSimilarity with context distances, similar to (Melamud et. al, 2015) */
+case class MeanEmbeddingSimilarityAndContextDistance(embedding: WordVectorLookup, leftRange: Range, rightRange: Range, maxSize: Int)
+  extends AggregatedFeature("MeanEmbSimContextDist", new Features(
+      SummedWordEmbeddingDistances(embedding, leftRange, rightRange, maxSize), 
+      WordEmbeddingSimilarity(embedding)), compute.mean)

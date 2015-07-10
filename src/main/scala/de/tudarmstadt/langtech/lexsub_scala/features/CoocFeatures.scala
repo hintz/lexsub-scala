@@ -16,7 +16,7 @@ case class Cooc(val coocLookup: DTLookup) extends FeatureExtractor with FeatureU
     
     val (overlapCounts, overlapSum) = item.candidates.map { substitute =>
       val coocs = coocLookup.similar(Token(substitute, item.lexSubInstance.head.pos, substitute))
-      val coocValues = coocs.toMap.mapValues(_.abs)
+      val coocValues = coocs.toMap //.mapValues(_.abs)
       val overlaps: Set[Double] = contextTokens.flatMap(coocValues.get)
       val overlapValue = overlaps.size
       (overlapValue, overlaps.sum)
