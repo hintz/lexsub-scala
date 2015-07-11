@@ -6,8 +6,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.germeval._
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader._
-import de.tudarmstadt.langtech.lexsub_scala.features.{DTLookup, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity}
-import de.tudarmstadt.langtech.lexsub_scala.features.Cooc
+import de.tudarmstadt.langtech.lexsub_scala.features.{Cooc, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity}
 import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
@@ -85,19 +84,19 @@ object Settings extends YamlSettings("paths.yaml") {
   object dts {
     lazy val mateSim = DTLookup("de70M_mate_lemma", new WordSimilarityFile(path("DT", "mateSim"), identity, matchPrefix = true), 
         token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
-        (substitute, other) => other.startsWith(substitute.toLowerCase)) // how to define equivalence in this DT
+        (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // how to define equivalence in this DT
         
     lazy val mateBims = DTLookup("de70M_mate_lemma_bims", new WordSimilarityFile(path("DT", "mateBims"), identity, matchPrefix = true), 
         token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
-        (substitute, other) => throw new IllegalStateException) // no equivalence for bims
+        (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // no equivalence for bims
         
     lazy val trigramSim = DTLookup("de70M_trigram", new WordSimilarityFile(path("DT", "trigramSim"), identity), 
         token => token.lemma, // how to look up token in this DT
-        (substitute, other) => other.startsWith(substitute)) // how to define equivalence in this DT
+        (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma)) // how to define equivalence in this DT
         
     lazy val trigramBims = DTLookup("de70M_trigram_bims", new WordSimilarityFile(path("DT", "trigramBims"), identity), 
         token => token.lemma, // how to look up token in this DT
-        (substitute, other) => throw new IllegalStateException) // how to define equivalence in this DT
+        (substitute, dtFeature) => dtFeature.contains(substitute.lemma)) // how to define equivalence in this DT
   }
   
   // Co-occurence features
@@ -107,12 +106,15 @@ object Settings extends YamlSettings("paths.yaml") {
   
   // setup features
   lazy val features = new FeatureAnnotator(
-      //CheatFeature /* writes the gold into the training data, useful for testing */
 		  Cooc(cooc),
-		  WordSimilarity(dts.mateSim),
-      WordSimilarity(dts.trigramSim),
+		  //WordSimilarity(dts.mateSim),
+      //WordSimilarity(dts.trigramSim),
+      SalientDTFeatures(dts.trigramBims),
+      SalientDTFeatures(dts.mateBims),
+      BinaryWordSimilarity(dts.mateSim, 100),
+      BinaryWordSimilarity(dts.trigramSim, 100),
       ThresholdedDTOverlap(dts.mateSim, Seq(5, 20, 50, 100, 200), false),
-      ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false),
+		  ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false),
       ThresholdedDTOverlap(dts.trigramSim, Seq(5, 20, 50, 100, 200), false),
       ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false),
       PosContextWindows(0 to 2, 0 to 2, 3),
