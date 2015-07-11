@@ -107,7 +107,7 @@ object Settings extends YamlSettings("paths.yaml") {
   // setup features
   lazy val features = new FeatureAnnotator(
 		  Cooc(cooc),
-		  //WordSimilarity(dts.mateSim),
+      //WordSimilarity(dts.mateSim),
       //WordSimilarity(dts.trigramSim),
       SalientDTFeatures(dts.trigramBims),
       SalientDTFeatures(dts.mateBims),

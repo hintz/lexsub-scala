@@ -28,7 +28,7 @@ case class WordSimilarity(dt: DTLookup) extends LocalFeatureExtractor with Numer
 
 /** Binary feature determining if substitution candidate is present in the DT features of target */
 case class BinaryWordSimilarity(dt: DTLookup, k: Int) extends FeatureExtractor   {
-  val name = "BinarySim_" + dt.dtName
+  val name = "BinarySim_" + dt.dtName + "_" + k
   def extract(item: Substitutions): Vector[Seq[Feature]] = {
     val expansions = dt.similar(item.lexSubInstance.head).take(k).map(_._1)
     item.candidates.map { c => 
@@ -71,9 +71,8 @@ case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores
   }
 }
 
-
+/** This feature is near-equivalent to the "Cooc" feature, except that a custom equivalence function is specified via the DTLookup */
 case class SalientDTFeatures(dt: DTLookup) extends FeatureExtractor {
-  
   val name = dt.dtName + "_ctxSaliency"
   
   def extract(item: Substitutions): Vector[Seq[Feature]] = {
