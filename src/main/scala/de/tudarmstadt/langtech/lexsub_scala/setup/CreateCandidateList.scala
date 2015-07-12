@@ -22,6 +22,6 @@ object CreateCandidateList extends App {
     val target = goldItem.target
     val candidates = goldItem.substitutionWordsWithoutMultiwords
     candidates.map(c => Seq(target.word, target.pos, c, "gold_candidate").mkString("\t"))
-  }
+  }.sorted.distinct
   io.write("resources/candidates/germeval_gold.tsv", goldCandidates.mkString("\n"))
 }

@@ -120,7 +120,7 @@ object Training {
     println("Starting crossvalidation on " + data.size + " instances")
     
     val trainingData = createTrainingData(data, trainingList)
-    println("Using " + trainingList + " created " + trainingData.size + " training examples..")
+    println("Using %d candidates from gold candidates created %d training examples".format(data.size, trainingData.map(_.candidates.size).sum))
     
     println("Extracting features..")
     val feats = features(trainingData)
