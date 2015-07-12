@@ -61,6 +61,7 @@ object Settings extends YamlSettings("paths.yaml") {
     lazy val woxikon = new CandidateFile(path("Candidates", "woxikon"), true)
     lazy val wortschatz = new CandidateFile(path("Candidates", "wortschatz"), true)
     lazy val masterlist = new CandidateFile(path("Candidates", "masterlist")  , true)
+    lazy val goldCandidates = new CandidateFile("resources/candidates/germeval_gold.tsv" , true)
     
     // shortcut to select candidate lists
     lazy val trainingList = germanet
@@ -102,7 +103,7 @@ object Settings extends YamlSettings("paths.yaml") {
   // Co-occurence features
   lazy val cooc = DTLookup("cooc", new WordSimilarityFile(coocFile, identity), token => token.word)
   
-  val ngramCounts = ngrams.web1t
+  lazy val ngramCounts = ngrams.web1t
   
   // setup features
   lazy val features = new FeatureAnnotator(
