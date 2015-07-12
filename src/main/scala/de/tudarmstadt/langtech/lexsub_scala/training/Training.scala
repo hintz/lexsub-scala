@@ -166,8 +166,8 @@ object Training {
   
   private def crossfold[A](items: Seq[A], folds: Int): Iterable[(Seq[A], Seq[A])] = {
     val heldOutSize = items.size / folds
-    for(i <- 0 until folds) yield {
-      val start = i * heldOutSize; val end = start + heldOutSize
+    for(i <- 0 to folds) yield {
+      val start = i * heldOutSize; val end = if(i == folds) items.size else start + heldOutSize
       val heldOut = items.slice(start, end)
       val rest = items.take(start) ++ items.drop(end)
       (heldOut, rest)
