@@ -10,8 +10,8 @@ import de.tudarmstadt.langtech.lexsub_scala.germeval2015.Settings
 
 object CreateDTCandidates extends App {
   
-  val SemEvalGold = new SemEvalReader(Settings.germevalFolder, "train-dataset").gold.items
-  val germevalLexItems = SemEvalGold.map(_.target).distinct
+  val germevalGold = new SemEvalReader(Settings.germevalFolder, "train-dataset").gold.items
+  val germevalLexItems = germevalGold.map(_.target).distinct
   
   val dt = Settings.dts.mateSim.dt
   
