@@ -10,31 +10,58 @@ import de.tudarmstadt.langtech.lexsub_scala.features.WordEmbeddingDistance
 import de.tudarmstadt.langtech.lexsub_scala.features.WordEmbeddingSimilarity
 import de.tudarmstadt.langtech.lexsub_scala.features.WordEmbeddingDistanceVectors
 import de.tudarmstadt.langtech.lexsub_scala.features.SummedWordEmbeddingDistances
+import de.tudarmstadt.langtech.lexsub_scala.features.MeanEmbeddingSimilarityAndContextDistance
 
 object RunGermevalEmbeddings extends App {
   
-	private def cossim(v1: Vector[Double], v2: Vector[Double]) = breeze.linalg.functions.cosineDistance(v1, v2)
   
+	val trainingData = Settings.germevalTraining
+  
+  /*
   //val embedding: WordVectorLookup = Settings.embeddings.word2vec
-  val embedding: WordVectorLookup = Settings.embeddings.eigenword
+  //val embedding: WordVectorLookup = Settings.embeddings.eigenword
   
-  val trainingData = Settings.germevalTraining
+  val cosSim = SummedWordEmbeddingDistances(embedding, 0 to 2, 0 to 2, 5) //WordEmbeddingSimilarity(embedding) //  WordEmbeddingDistanceVectors(embedding, 1, 1) //WordEmbeddingSimilarity(embedding)
   
-  val cosSim = WordEmbeddingSimilarity(embedding) //SummedWordEmbeddingDistances(embedding, 0 to 2, 0 to 2, 5) // WordEmbeddingDistanceVectors(embedding, 1, 1) //WordEmbeddingSimilarity(embedding)
-  
-  // load lexsub system
   val lexsub = LexSubExpander(
       Settings.candidates.germanet,
       new FeatureAnnotator(cosSim),
-      SingleFeatureScorer(cosSim.name))
+      SingleFeatureScorer())
 
   val outcomes = lexsub(trainingData)
   
-  // write results
   val results = Outcomes.collect(trainingData, outcomes)
   GermEvalResultOutcomeWriter.save(results, Settings.instancesOutputFile)
   
   val best = Outcomes.evaluate(results, 1)
   val oot = Outcomes.evaluate(results, 10)
   println("best = %s\noot = %s".format(best, oot))
+  */
+  
+  for((embeddingName, embedding) <- Seq(
+       ("word2vec", Settings.embeddings.word2vec),
+       ("eigenword", Settings.embeddings.eigenword)
+      );
+      feat <- Seq(
+      SummedWordEmbeddingDistances(embedding, 0 to 2, 0 to 2, 5),
+      MeanEmbeddingSimilarityAndContextDistance(embedding, 0 to 2, 0 to 2, 5),
+      WordEmbeddingSimilarity(embedding),
+      WordEmbeddingDistanceVectors(embedding, 1, 1),
+      WordEmbeddingSimilarity(embedding))) {
+    val experimentName = embeddingName + feat.getClass.getSimpleName
+    new java.io.File(experimentName).mkdirs
+    
+    val lexsub = LexSubExpander(
+      Settings.candidates.germanet,
+      new FeatureAnnotator(feat),
+      SingleFeatureScorer())
+
+    val outcomes = lexsub(trainingData)
+    val results = Outcomes.collect(trainingData, outcomes)
+    GermEvalResultOutcomeWriter.save(results, experimentName + "/instances.out" )
+    val best = Outcomes.evaluate(results, 1)
+    val oot = Outcomes.evaluate(results, 10)
+    println("best = %s\noot = %s".format(best, oot))
+  }
 }
+
