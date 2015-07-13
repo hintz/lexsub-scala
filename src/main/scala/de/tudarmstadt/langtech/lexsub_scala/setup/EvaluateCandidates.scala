@@ -1,8 +1,8 @@
 package de.tudarmstadt.langtech.lexsub_scala.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GoldItem
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
+import de.tudarmstadt.langtech.lexsub_scala.reader.GoldItem
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
@@ -31,7 +31,7 @@ object EvaluateCandidates extends App {
         subresults.reduce(_ + _)
   }
 
-  val gold = new GermEvalReader("../AIPHES_Data/GermEval2015", "train-dataset").gold
+  val gold = new SemEvalReader("../AIPHES_Data/GermEval2015", "train-dataset").gold
 
   val germanetCandidates = new CandidateFile("../AIPHES_Data/LexSub/candidates/germanet_candidates")
   val germanetCandidatesHy = new CandidateFile("../AIPHES_Data/LexSub/candidates/germanet_candidates-hy")

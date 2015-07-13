@@ -1,21 +1,21 @@
-package de.tudarmstadt.langtech.lexsub_scala.germeval
+package de.tudarmstadt.langtech.lexsub_scala.reader
 import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import java.util.IllegalFormatException
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
 
 
-object GermEvalResultOutcomeWriter {
+object SemEvalResultOutcomeWriter {
   def save(outcomes: Iterable[Outcome], outfile: String){
-    new GermEvalResultOutcomeWriter(outcomes).save(outfile)
+    new SemEvalResultOutcomeWriter(outcomes).save(outfile)
   }
 }
 
-class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
+class SemEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
   
   def formatLines: Iterable[String] = {
     outcomes.flatMap { 
-      case Outcome(LexSubInstance(_, _, Some(GermEvalItem(sentence, gold))), scoredSubstitutes) =>
+      case Outcome(LexSubInstance(_, _, Some(SemEvalItem(sentence, gold))), scoredSubstitutes) =>
         scoredSubstitutes.map {
           case (subst, score) => 
             val entry = Seq(gold.target.word, gold.target.pos, gold.id, subst, score)
@@ -27,7 +27,7 @@ class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
   
   def formatBest: Iterable[String] = {
     outcomes.map {
-      case Outcome(LexSubInstance(_, _, Some(GermEvalItem(sentence, gold))), scoredSubstitutes) =>
+      case Outcome(LexSubInstance(_, _, Some(SemEvalItem(sentence, gold))), scoredSubstitutes) =>
         val left = gold.target.word + "." + gold.target.pos + " " + gold.id
         val best =  scoredSubstitutes.headOption.map(_._1).getOrElse("")
         left + " :: " + best
@@ -37,7 +37,7 @@ class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
   
   def formatOot: Iterable[String] = {
     outcomes.map {
-      case Outcome(LexSubInstance(_, _, Some(GermEvalItem(sentence, gold))), scoredSubstitutes) =>
+      case Outcome(LexSubInstance(_, _, Some(SemEvalItem(sentence, gold))), scoredSubstitutes) =>
         val left = gold.target.word + "." + gold.target.pos + " " + gold.id
         val oot =  scoredSubstitutes.take(10).map(_._1).mkString(";")
         left + " ::: " + oot
@@ -47,7 +47,7 @@ class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
   
   def formatRank: Iterable[String] = {
     outcomes.map {
-      case Outcome(LexSubInstance(_, _, Some(GermEvalItem(sentence, gold))), scoredSubstitutes) =>
+      case Outcome(LexSubInstance(_, _, Some(SemEvalItem(sentence, gold))), scoredSubstitutes) =>
         val left = gold.target.word + "." + gold.target.pos + " " + gold.id
         val rank =  scoredSubstitutes.map(_._1).mkString(";")
         left + " :::: " + rank
@@ -61,7 +61,7 @@ class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
     io.write(outfile + ".oot", formatOot.mkString("\n"))
     io.write(outfile + ".rank", formatRank.mkString("\n"))
     
-    val prettyPrinted = new GermEvalResultOutcomeReader(outcomes.map(_.lexSubInstance).toSeq).prettyPrint(outfile)
+    val prettyPrinted = new SemEvalResultOutcomeReader(outcomes.map(_.lexSubInstance).toSeq).prettyPrint(outfile)
     io.write(outfile + ".prettyprint.txt", prettyPrinted)
   }
   
@@ -69,7 +69,7 @@ class GermEvalResultOutcomeWriter(outcomes: Iterable[Outcome]){
 }
 
 
-class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
+class SemEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
   val idLookup = gold.map(g => (g.gold.get.sentence.id, g)).toMap
   
   def parse(filename: String) = {
@@ -77,9 +77,9 @@ class GermEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
     val foo = lines.map(_.split("\t")).toList
     val byId = foo.filter(_.length == 5).groupBy(_(2))
     val result = byId.toList.flatMap { case (id, lines) => 
-      idLookup.get(id).map { germEvalGold =>
+      idLookup.get(id).map { SemEvalGold =>
         val outcomes = lines.map(line => line.takeRight(2) match { case Array(word, score) => (word, score.toDouble)})
-        (germEvalGold, outcomes)
+        (SemEvalGold, outcomes)
       }
     }
     result.sortBy(_._1.gold.get.sentence.id)

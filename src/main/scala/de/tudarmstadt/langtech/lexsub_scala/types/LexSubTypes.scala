@@ -1,6 +1,6 @@
 package de.tudarmstadt.langtech.lexsub_scala.types
 
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalItem
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
 
 // General note for fans of NLP frameworks:
 // PLEASE don't try to use "universal" types for NLP stuff
@@ -14,7 +14,7 @@ case class Token(val word: String, val pos: String, val lemma: String)
 case class Sentence(val tokens: Vector[Token]) // val sent: String,
 
 /** A pre-processed item */
-case class LexSubInstance(val sentence: Sentence, val headIndex: Int, gold: Option[GermEvalItem]){
+case class LexSubInstance(val sentence: Sentence, val headIndex: Int, gold: Option[SemEvalItem]){
   def head: Token = sentence.tokens(headIndex)
   def getGold = gold.getOrElse(throw new RuntimeException("gold data was required but not supplied: " + this))
 }

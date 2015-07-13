@@ -1,7 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala
 
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 
 object RunGermevalOnGoldCandidates extends App {
@@ -28,7 +28,7 @@ object RunGermevalOnGoldCandidates extends App {
   
   // write results
   val results = Outcomes.collect(data, outcomes)
-  GermEvalResultOutcomeWriter.save(results, Settings.instancesOutputFile)
+  SemEvalResultOutcomeWriter.save(results, Settings.instancesOutputFile)
   val oot =  Outcomes.evaluate(results, 10)
   val best = Outcomes.evaluate(results, 1)
   println("Evaluation: best=[%s] oot=[%s]".format(best, oot))

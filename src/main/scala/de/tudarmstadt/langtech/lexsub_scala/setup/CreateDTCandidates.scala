@@ -1,17 +1,17 @@
 package de.tudarmstadt.langtech.lexsub_scala.setup
 
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.lexsub_scala.filereader.WordSimilarityFile
 import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
-import de.tudarmstadt.langtech.lexsub_scala.germeval.LexItem
+import de.tudarmstadt.langtech.lexsub_scala.reader.LexItem
 import de.tudarmstadt.langtech.scala_utilities.io
 import org.apache.commons.lang.StringUtils
 import de.tudarmstadt.langtech.lexsub_scala.Settings
 
 object CreateDTCandidates extends App {
   
-  val germevalGold = new GermEvalReader(Settings.germevalFolder, "train-dataset").gold.items
-  val germevalLexItems = germevalGold.map(_.target).distinct
+  val SemEvalGold = new SemEvalReader(Settings.germevalFolder, "train-dataset").gold.items
+  val germevalLexItems = SemEvalGold.map(_.target).distinct
   
   val dt = Settings.dts.mateSim.dt
   

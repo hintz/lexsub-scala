@@ -1,7 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala
 
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.features.WordEmbeddingSimilarity
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.features.WordVectorLookup
@@ -31,7 +31,7 @@ object RunGermevalEmbeddings extends App {
   val outcomes = lexsub(trainingData)
   
   val results = Outcomes.collect(trainingData, outcomes)
-  GermEvalResultOutcomeWriter.save(results, Settings.instancesOutputFile)
+  SemEvalResultOutcomeWriter.save(results, Settings.instancesOutputFile)
   
   val best = Outcomes.evaluate(results, 1)
   val oot = Outcomes.evaluate(results, 10)
@@ -58,7 +58,7 @@ object RunGermevalEmbeddings extends App {
 
     val outcomes = lexsub(trainingData)
     val results = Outcomes.collect(trainingData, outcomes)
-    GermEvalResultOutcomeWriter.save(results, experimentName + "/instances.out" )
+    SemEvalResultOutcomeWriter.save(results, experimentName + "/instances.out" )
     val best = Outcomes.evaluate(results, 1)
     val oot = Outcomes.evaluate(results, 10)
     println("best = %s\noot = %s".format(best, oot))

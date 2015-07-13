@@ -3,7 +3,7 @@ package de.tudarmstadt.langtech.lexsub_scala
 import java.io.File
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
-import de.tudarmstadt.langtech.lexsub_scala.germeval._
+import de.tudarmstadt.langtech.lexsub_scala.reader._
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader._
 import de.tudarmstadt.langtech.lexsub_scala.features.{Cooc, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity}

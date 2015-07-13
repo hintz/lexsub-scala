@@ -18,7 +18,7 @@ import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import java.util.IdentityHashMap
 import de.tudarmstadt.langtech.lexsub_scala.GoldCandidatesRanker
 
@@ -104,7 +104,7 @@ object Training {
       results
     }
     
-    GermEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
+    SemEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
     
     val results = outcomes.flatten
     val oot =  Outcomes.evaluate(results, 10)
@@ -155,7 +155,7 @@ object Training {
       results
     }
     
-    GermEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
+    SemEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
     
     val results = outcomes.flatten
     val oot =  Outcomes.evaluate(results, 10)

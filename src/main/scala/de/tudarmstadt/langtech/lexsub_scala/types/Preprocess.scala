@@ -1,7 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala.types
 
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalItem
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.scala_utilities.io
 import scala.util.Try
 
@@ -18,13 +18,13 @@ case class Preprocessing(
   posTagger: Preprocessing.PosTagger,
   lemmatizer: Preprocessing.Lemmatizer) {
   
-  def tryApply(goldItem: GermEvalItem): Option[LexSubInstance] = {
+  def tryApply(goldItem: SemEvalItem): Option[LexSubInstance] = {
     val tried = Try(apply(goldItem))
     tried.recover { case e => System.err.println(e)}.toOption
     tried.toOption
   }
 
-  def apply(goldItem: GermEvalItem): LexSubInstance = {
+  def apply(goldItem: SemEvalItem): LexSubInstance = {
     val plaintext = goldItem.sentence.sentence
     val targetWord = goldItem.sentence.target.word
 
@@ -48,7 +48,7 @@ case class Preprocessing(
      println("Loading GermEval data..")
      io.lazySerialized("cache_%s.ser".format(filename)){
       System.err.println("Cache does not exist, preprocessing GermEval data..")
-      val plainData = new GermEvalReader(germevalFolder, filename).items
+      val plainData = new SemEvalReader(germevalFolder, filename).items
       val processed = plainData.flatMap(tryApply)
       processed
     }

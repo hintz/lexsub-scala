@@ -1,11 +1,11 @@
-package de.tudarmstadt.langtech.lexsub_scala.germeval
+package de.tudarmstadt.langtech.lexsub_scala.reader
 import scala.xml.XML
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.scala_utilities.strings
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import java.util.IllegalFormatException
 
-case class GermEvalItem(val sentence: Sentence, val gold: GoldItem)
+case class SemEvalItem(val sentence: Sentence, val gold: GoldItem)
 case class Sentence(val id: String, val sentence: String, val target: Token)
 case class LexItem(val word: String, val pos: String)
 case class GoldItem(val id: String, target: LexItem, val substitutions: List[(String, Int)]) {
@@ -14,7 +14,7 @@ case class GoldItem(val id: String, target: LexItem, val substitutions: List[(St
   def substitutionWordsWithoutMultiwords = substitutionWords.filter(!_.contains(" "))
 }
 
-class GermEvalGold(goldfile: String) {
+class SemEvalGold(goldfile: String) {
 
   lazy val items: List[GoldItem] = {
     def parseSolution(s: String) = {
@@ -36,7 +36,7 @@ class GermEvalGold(goldfile: String) {
   }
 }
 
-class GermEvalData(datafile: String) {
+class SemEvalData(datafile: String) {
   lazy val sentences: Seq[Sentence] = {
     val xml = XML.loadFile(datafile)
     for (lexelt <- xml \\ "lexelt"; val lemmaPos = (lexelt \\ "@item").text;
@@ -56,7 +56,7 @@ class GermEvalData(datafile: String) {
   }
 }
 
-object GermEvalData {
+object SemEvalData {
   
   /** Utility function to load just a sentence with a "head" annotation instead of full XML */
   def parseSentence(s: String): Sentence = {
@@ -67,20 +67,20 @@ object GermEvalData {
   }
 }
 
-class GermEvalReader(folder: String, filename: String) {
+class SemEvalReader(folder: String, filename: String) {
 
-  val gold = new GermEvalGold(Seq(folder, "/", filename, ".gold").mkString)
-  val data = new GermEvalData(Seq(folder, "/", filename, ".xml").mkString)
+  val gold = new SemEvalGold(Seq(folder, "/", filename, ".gold").mkString)
+  val data = new SemEvalData(Seq(folder, "/", filename, ".xml").mkString)
 
   lazy val items = {
     val goldItems = gold.items.map(g => g.id -> g).toMap
     def getGold(sentence: Sentence) = 
       goldItems.getOrElse(sentence.id, 
           GoldItem(sentence.id, LexItem(sentence.target.lemma, sentence.target.pos), List.empty))
-    data.sentences.map { sentence => GermEvalItem(sentence, getGold(sentence)) }
+    data.sentences.map { sentence => SemEvalItem(sentence, getGold(sentence)) }
   }
 }
 
-object TestGermEvalReader extends App {
-  println(GermEvalData.parseSentence("Das ist ein <head>Test</head>"))
+object TestSemEvalReader extends App {
+  println(SemEvalData.parseSentence("Das ist ein <head>Test</head>"))
 }

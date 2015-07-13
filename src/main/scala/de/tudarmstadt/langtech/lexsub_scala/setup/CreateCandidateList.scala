@@ -1,18 +1,18 @@
 package de.tudarmstadt.langtech.lexsub_scala.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.Settings
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalData
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalData
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.scala_utilities.collections
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GoldItem
+import de.tudarmstadt.langtech.lexsub_scala.reader.GoldItem
 
 object CreateCandidateList extends App {
   
   // write all targets to targets.txt
-  def extractLemmas(data: GermEvalData) = data.sentences.map(_.target).distinct
-  val train = new GermEvalReader(Settings.germevalFolder, "train-dataset")
-  val test = new GermEvalReader(Settings.germevalFolder, "test-dataset")
+  def extractLemmas(data: SemEvalData) = data.sentences.map(_.target).distinct
+  val train = new SemEvalReader(Settings.germevalFolder, "train-dataset")
+  val test = new SemEvalReader(Settings.germevalFolder, "test-dataset")
   val targets = extractLemmas(train.data) ++ extractLemmas(test.data)
   io.write("resources/targets.txt", targets.map(_.lemma).distinct.mkString("\n"))
   io.write("resources/targets-pos.txt", targets.map(t => t.lemma + "\t" + t.pos).distinct.mkString("\n"))

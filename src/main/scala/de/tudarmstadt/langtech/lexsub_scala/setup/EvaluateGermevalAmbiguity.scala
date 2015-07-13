@@ -1,15 +1,15 @@
 package de.tudarmstadt.langtech.lexsub_scala.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.Settings
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalReader
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.scala_utilities.compute
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GermEvalGold
-import de.tudarmstadt.langtech.lexsub_scala.germeval.GoldItem
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalGold
+import de.tudarmstadt.langtech.lexsub_scala.reader.GoldItem
 
 object EvaluateGermevalAmbiguity extends App {
-  val gold = new GermEvalReader(Settings.germevalFolder, "train-dataset").gold.items
-  val gold2 = new GermEvalGold("../AIPHES_Data/SemEval2007/trial/gold.trial").items
+  val gold = new SemEvalReader(Settings.germevalFolder, "train-dataset").gold.items
+  val gold2 = new SemEvalGold("../AIPHES_Data/SemEval2007/trial/gold.trial").items
   
   println(meanDiceByPos(gold))
   println(meanDice(gold))
