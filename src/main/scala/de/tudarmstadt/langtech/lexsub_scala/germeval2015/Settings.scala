@@ -104,7 +104,7 @@ object Settings extends YamlSettings("paths.yaml") {
   // Co-occurence features
   lazy val cooc = DTLookup("cooc", new WordSimilarityFile(coocFile, identity), token => token.word)
   
-  lazy val ngramCounts = ngrams.germanWebCounts
+  lazy val ngramCounts = ngrams.web1t
   
   // setup features
   lazy val features = new FeatureAnnotator(
