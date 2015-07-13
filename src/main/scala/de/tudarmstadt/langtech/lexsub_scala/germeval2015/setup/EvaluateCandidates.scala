@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.setup
+package de.tudarmstadt.langtech.lexsub_scala.germeval2015.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
@@ -9,6 +9,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
 import de.tudarmstadt.langtech.lexsub_scala.types.PRResult
+import de.tudarmstadt.langtech.lexsub_scala.germeval2015.Settings
 
 
 
@@ -43,12 +44,13 @@ object EvaluateCandidates extends App {
   val duden = new CandidateFile("resources/candidates/germeval_duden.tsv", true)
   val woxikon = new CandidateFile("resources/candidates/germeval_woxikon.tsv", true)
   val wortschatzSyn = new CandidateFile("resources/candidates/germeval_wortschatz.tsv", true)
+  val wiktionary = Settings.candidates.wiktionary
   
   val dt70mMate = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_DT_de_mate_lemma.tsv", true)
 
   val CandidateLists = List(
     germanetCandidates, germanetCandidatesHy, germanetCandidatesHyHo, germanetGermevalAll, germanet80, germanet90,
-    duden, woxikon, wortschatzSyn,
+    duden, woxikon, wortschatzSyn, wiktionary,
     dt70mMate
   )
   
@@ -71,7 +73,7 @@ object EvaluateCandidates extends App {
   }
   */
   
-  val masterlist = new JoinedCandidates(duden, woxikon, wortschatzSyn, germanet90)
+  val masterlist = new JoinedCandidates(germanet90, duden, woxikon, wortschatzSyn, wiktionary)
   //masterlist.save("germeval_masterlist.tsv")
   
   /*

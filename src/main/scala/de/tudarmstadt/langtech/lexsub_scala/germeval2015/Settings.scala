@@ -6,7 +6,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.reader._
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader._
-import de.tudarmstadt.langtech.lexsub_scala.features.{Cooc, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity}
+import de.tudarmstadt.langtech.lexsub_scala.features.{Cooc, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity, Word2VecLookup}
 import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
@@ -62,6 +62,7 @@ object Settings extends YamlSettings("paths.yaml") {
     lazy val woxikon = new CandidateFile(path("Candidates", "woxikon"), true)
     lazy val wortschatz = new CandidateFile(path("Candidates", "wortschatz"), true)
     lazy val masterlist = new CandidateFile(path("Candidates", "masterlist")  , true)
+    lazy val wiktionary =  new CandidateFile("resources/candidates/germeval_uby_OntoWiktionaryDE.tsv")
     lazy val goldCandidates = new CandidateFile("resources/candidates/germeval_gold.tsv" , true)
     
     // shortcut to select candidate lists
