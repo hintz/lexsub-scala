@@ -9,7 +9,7 @@ import de.tuebingen.uni.sfs.germanet.api.Synset
 import de.tuebingen.uni.sfs.germanet.api.WordCategory
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.lexsub_scala.germanet.GermaNetUtils
-import de.tudarmstadt.langtech.lexsub_scala.Settings
+import de.tudarmstadt.langtech.lexsub_scala.germeval2015.Settings
 
 
 object CreateGermaNetCandidates extends App {

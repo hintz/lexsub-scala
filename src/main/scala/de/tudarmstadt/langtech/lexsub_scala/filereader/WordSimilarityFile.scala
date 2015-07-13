@@ -4,8 +4,9 @@ import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.scala_utilities.strings
 import scalaz.Memo
-import de.tudarmstadt.langtech.lexsub_scala.Settings
 
+/** A simple reader for sorted files in the format [word] \t [somethingElse] \t [score].
+ *  Internally uses PrefixIndexedFile which transparently builds an index */
 class WordSimilarityFile[Elem](val dt_filename: String, 
     extractor: (String => Elem), 
     sorted: Boolean = true, // if the output should be sorted
@@ -47,9 +48,4 @@ object HashtagSeparatedPos extends Function[String, Token] {
     val (token, pos) = strings.splitAssign('#')(word)
     Token(token, pos, token)
   }
-}
-
-object Test extends App {
-  val dt = new WordSimilarityFile(Settings.path("DT", "mateBims"), identity, matchPrefix = true)
-  dt.similar("erleichterung") foreach println
 }

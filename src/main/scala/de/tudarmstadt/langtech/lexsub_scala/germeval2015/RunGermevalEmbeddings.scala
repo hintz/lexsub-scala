@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala
+package de.tudarmstadt.langtech.lexsub_scala.germeval2015
 
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
@@ -11,6 +11,9 @@ import de.tudarmstadt.langtech.lexsub_scala.features.WordEmbeddingSimilarity
 import de.tudarmstadt.langtech.lexsub_scala.features.WordEmbeddingDistanceVectors
 import de.tudarmstadt.langtech.lexsub_scala.features.SummedWordEmbeddingDistances
 import de.tudarmstadt.langtech.lexsub_scala.features.MeanEmbeddingSimilarityAndContextDistance
+import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
+import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
+import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
 
 object RunGermevalEmbeddings extends App {
   

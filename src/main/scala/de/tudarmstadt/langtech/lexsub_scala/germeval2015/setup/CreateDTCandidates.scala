@@ -6,7 +6,7 @@ import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
 import de.tudarmstadt.langtech.lexsub_scala.reader.LexItem
 import de.tudarmstadt.langtech.scala_utilities.io
 import org.apache.commons.lang.StringUtils
-import de.tudarmstadt.langtech.lexsub_scala.Settings
+import de.tudarmstadt.langtech.lexsub_scala.germeval2015.Settings
 
 object CreateDTCandidates extends App {
   

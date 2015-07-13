@@ -4,6 +4,9 @@ import scalaz.Memo
 import breeze.linalg.{Vector => Vector}
 import breeze.linalg.DenseVector
 import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
+
+/** A simple reader for word vector files in the format [word] [SPACE] [floating-point vector].
+ *  Internally uses PrefixIndexedFile which transparently builds an index */
 class WordVectorFile(val embedding_file: String)  {
   
   val file = new PrefixIndexedFile(embedding_file, 10)
@@ -17,11 +20,4 @@ class WordVectorFile(val embedding_file: String)  {
     }
     v.map(DenseVector.apply)
   }
-}
-
-object TestEmbedding extends App {
-  val e = new WordVectorFile("../lexsub-gpl/AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted")
-  println(e("Welt"))
-  println(e("Mars"))
-  println(e("wüsste"))
 }

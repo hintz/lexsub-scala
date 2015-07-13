@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala
+package de.tudarmstadt.langtech.lexsub_scala.germeval2015
 
 import java.io.File
 import de.tudarmstadt.langtech.scala_utilities.io
@@ -12,6 +12,7 @@ import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
 import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
+import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 
 /** Nearly all of lexsub-scala can be configured in this file */
 object Settings extends YamlSettings("paths.yaml") {
