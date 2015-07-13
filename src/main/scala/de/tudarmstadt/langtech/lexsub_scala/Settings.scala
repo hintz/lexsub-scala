@@ -103,28 +103,30 @@ object Settings extends YamlSettings("paths.yaml") {
   // Co-occurence features
   lazy val cooc = DTLookup("cooc", new WordSimilarityFile(coocFile, identity), token => token.word)
   
-  lazy val ngramCounts = ngrams.web1t
+  lazy val ngramCounts = ngrams.germanWebCounts
   
   // setup features
   lazy val features = new FeatureAnnotator(
-		  Cooc(cooc),
-      //WordSimilarity(dts.mateSim),
-      //WordSimilarity(dts.trigramSim),
-      SalientDTFeatures(dts.trigramBims),
-      SalientDTFeatures(dts.mateBims),
-      BinaryWordSimilarity(dts.mateSim, 100),
-      BinaryWordSimilarity(dts.trigramSim, 100),
-      ThresholdedDTOverlap(dts.mateSim, Seq(5, 20, 50, 100, 200), false),
-		  ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false),
-      ThresholdedDTOverlap(dts.trigramSim, Seq(5, 20, 50, 100, 200), false),
-      ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false),
-      PosContextWindows(0 to 2, 0 to 2, 3),
-      PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
-      SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
-      ConjunctionFreqRatio(ngramCounts, Seq("und", "oder", ","), 0, 0),
-      LexSemRelation(candidates.masterlist),
-      WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
-      WordEmbeddingSimilarity(embeddings.word2vec),
-      WordEmbeddingDistance(embeddings.word2vec)
+    Cooc(cooc),
+    WordSimilarity(dts.mateSim),
+    WordSimilarity(dts.trigramSim),
+    SalientDTFeatures(dts.trigramBims),
+    SalientDTFeatures(dts.mateBims),
+    BinaryWordSimilarity(dts.mateSim, 100),
+    BinaryWordSimilarity(dts.trigramSim, 100),
+    ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false),
+    ThresholdedDTOverlap(dts.mateSim, Seq(5, 20, 50, 100, 200), false),
+    ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false),
+    ThresholdedDTOverlap(dts.trigramSim, Seq(5, 20, 50, 100, 200), false),
+    PosContextWindows(0 to 2, 0 to 2, 3),
+    PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
+    SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
+    ConjunctionFreqRatio(ngramCounts, Seq("und", "oder", ","), 0, 0),
+    LexSemRelation(candidates.masterlist),
+    WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
+    WordEmbeddingSimilarity(embeddings.word2vec)
   )
+  
+  // Others:
+  // WordEmbeddingDistance(embeddings.word2vec)
 }
