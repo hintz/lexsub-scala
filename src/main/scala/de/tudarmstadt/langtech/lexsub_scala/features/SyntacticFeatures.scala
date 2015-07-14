@@ -27,3 +27,11 @@ case class PosContextWindow(left: Int, right: Int) extends GlobalFeatureExtracto
 
 case class PosContextWindows(leftRange: Range, rightRange: Range, maxSize: Int) 
 extends Features((for(l <- leftRange; r <- rightRange; if l + r < maxSize) yield PosContextWindow(l, r)) :_*)
+
+
+
+case object EditDistance extends LocalFeatureExtractor with NumericFeature {
+  val name = getClass.getSimpleName
+  val scorer = new edu.stanford.nlp.util.EditDistance
+  def extract(item: SubstitutionItem): Seq[Feature] = scorer.score(item.targetLemma, item.substitution)
+}
