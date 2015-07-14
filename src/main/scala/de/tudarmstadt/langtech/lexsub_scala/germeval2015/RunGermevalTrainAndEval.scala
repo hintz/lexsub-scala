@@ -9,7 +9,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 object RunGermevalTrainingAndEval extends App {
   
   val trainingData = Settings.germevalTraining
-  val evaluationData = Settings.germevalTraining
+  val evaluationData = Settings.germevalTest
   
   printf("Will train on %d examples and then lex-expand %d instances\n", trainingData.size, evaluationData.size)
   
@@ -28,7 +28,7 @@ object RunGermevalTrainingAndEval extends App {
   val outcomes = lexsub(evaluationData)
   
   // write results
-  val results = Outcomes.collect(trainingData, outcomes)
+  val results = Outcomes.collect(evaluationData, outcomes)
   SemEvalResultOutcomeWriter.save(results, Settings.instancesOutputFile)
   
   val oot =  Outcomes.evaluate(results, 10)

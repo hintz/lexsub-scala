@@ -63,6 +63,7 @@ object Settings extends YamlSettings("paths.yaml") {
     lazy val wortschatz = new CandidateFile(path("Candidates", "wortschatz"), true)
     lazy val masterlist = new CandidateFile(path("Candidates", "masterlist")  , true)
     lazy val wiktionary =  new CandidateFile("resources/candidates/germeval_uby_OntoWiktionaryDE.tsv")
+    lazy val ubyGermanet =  new CandidateFile("resources/candidates/germeval_uby_GermaNet.tsv")
     lazy val goldCandidates = new CandidateFile("resources/candidates/germeval_gold.tsv" , true)
     
     // shortcut to select candidate lists
@@ -120,7 +121,7 @@ object Settings extends YamlSettings("paths.yaml") {
     ThresholdedDTOverlap(dts.mateSim, Seq(5, 20, 50, 100, 200), false),
     ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false),
     ThresholdedDTOverlap(dts.trigramSim, Seq(5, 20, 50, 100, 200), false),
-    PosContextWindows(0 to 2, 0 to 2, 3),
+    PosContextWindows(0 to 0, 0 to 0, 1),
     PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     ConjunctionFreqRatio(ngramCounts, Seq("und", "oder", ","), 0, 0),
