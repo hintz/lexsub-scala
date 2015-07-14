@@ -3,6 +3,7 @@ package de.tudarmstadt.langtech.lexsub_scala.filereader
 import scalaz.Memo
 import breeze.linalg.{Vector => Vector}
 import breeze.linalg.DenseVector
+import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
 
 /** A simple reader for word vector files in the format [word] [SPACE] [floating-point vector].
@@ -20,4 +21,6 @@ class WordVectorFile(val embedding_file: String)  {
     }
     v.map(DenseVector.apply)
   }
+  
+  override def toString = "WordVectorFile(%s)".format(io.filenamePart(embedding_file))
 }

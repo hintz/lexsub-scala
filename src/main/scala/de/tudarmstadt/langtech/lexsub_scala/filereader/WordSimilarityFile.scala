@@ -2,7 +2,7 @@ package de.tudarmstadt.langtech.lexsub_scala.filereader
 
 import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
-import de.tudarmstadt.langtech.scala_utilities.strings
+import de.tudarmstadt.langtech.scala_utilities.{strings, io}
 import scalaz.Memo
 
 /** A simple reader for sorted files in the format [word] \t [somethingElse] \t [score].
@@ -37,6 +37,8 @@ class WordSimilarityFile[Elem](val dt_filename: String,
     val result = processed.toList
     if(!sorted) processed else processed.sortBy(- _._2)
   }
+  
+  override def toString = "WordSimilarityFile(%s)".format(io.filenamePart(dt_filename))
 }
 
 object PlainLemma extends Function[String, Token] {

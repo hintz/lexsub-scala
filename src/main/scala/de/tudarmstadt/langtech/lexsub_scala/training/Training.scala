@@ -16,11 +16,11 @@ import de.tudarmstadt.langtech.lexsub_scala.features.PrecomputedFeatureExtractor
 import scala.collection.JavaConverters._
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
+import de.tudarmstadt.langtech.lexsub_scala.GoldCandidatesRanker
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import java.util.IdentityHashMap
-import de.tudarmstadt.langtech.lexsub_scala.GoldCandidatesRanker
 
 object Training {
   
@@ -32,7 +32,7 @@ object Training {
     
     // create training data
     val trainingData = createTrainingData(data, candidates)
-    println("Using %d candidates from %s created %d training examples".format(data.size, candidates, trainingData.map(_.candidates.size).sum))
+    println("Using %d instances with candidates from %s created %d training examples".format(data.size, candidates, trainingData.map(_.candidates.size).sum))
     
     // write instances into a file, for later reference
     val trainingDir = new java.io.File(trainingFolder)
@@ -50,7 +50,7 @@ object Training {
     
     // create training data
     val trainingData = createTrainingDataFromGold(data)
-    println("Using %d candidates from gold candidates created %d training examples".format(data.size, trainingData.map(_.candidates.size).sum))
+    println("Using %d instances with candidates from gold created %d training examples".format(data.size, trainingData.map(_.candidates.size).sum))
     
     // write instances into a file, for later reference
     val trainingDir = new java.io.File(trainingFolder)
@@ -120,7 +120,7 @@ object Training {
     println("Starting crossvalidation on " + data.size + " instances")
     
     val trainingData = createTrainingData(data, trainingList)
-    println("Using %d candidates from %s created %d training examples".format(data.size, trainingList, trainingData.map(_.candidates.size).sum))
+    println("Using %d instances with candidates from %s created %d training examples".format(data.size, trainingList, trainingData.map(_.candidates.size).sum))
     
     println("Extracting features..")
     val feats = features(trainingData)

@@ -33,6 +33,8 @@ case class Web1TLookup(web1tFolder: String, maxN: Int = 5) extends NGramLookup {
   }
   
   def apply(tokens: String*) = web1t.getFrequency(tokens :_*)
+  
+  override def toString = "Web1TLookup(%s)".format(web1tFolder.replaceAll("""[\/\\]+""", "_"))
 }
 
 /** Sliding window for PairFreqRatio */

@@ -1,19 +1,16 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
-import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
-import de.tudarmstadt.langtech.lexsub_scala.filereader.WordVectorFile
-import de.tudarmstadt.langtech.scala_utilities._
-import breeze.linalg.operators._
-import breeze.linalg._
-import breeze.numerics._
-import breeze.linalg.functions.cosineDistance
-import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
-import org.cleartk.classifier.feature.transform.extractor.CosineSimilarity
 import org.cleartk.classifier.Feature
-import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
-import de.tudarmstadt.langtech.scala_utilities.formatting.Word2Vec
+
 import breeze.linalg.DenseVector
-import scalaz.Memo
+import breeze.linalg.Vector
+import de.tudarmstadt.langtech.lexsub_scala.filereader.WordVectorFile
+import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
+import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
+import de.tudarmstadt.langtech.scala_utilities.collections
+import de.tudarmstadt.langtech.scala_utilities.compute
+import de.tudarmstadt.langtech.scala_utilities.formatting.Word2Vec
+import scalaz._
 
 /** Slim interface for looking up a word vector */
 trait WordVectorLookup {
@@ -46,6 +43,8 @@ case class Word2VecLookup(filename: String, limit: Integer = Integer.MAX_VALUE) 
   }
   
   def apply(word: String): Option[Vector[Double]] = cache(word)
+  
+  override def toString = "Word2VecLookup(%s)".format(filename.replaceAll("""[\/\\]+""", "_"))
 }
 
 /** the negative cosine similarity in embedding space */

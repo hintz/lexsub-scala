@@ -77,7 +77,7 @@ case class GoldCandidatesRanker(
 
 
 /** Enhances Features with the option to create training instances */
-class FeatureAnnotator(features: FeatureExtractor*) 
+class FeatureAnnotator(val features: FeatureExtractor*) 
   extends Features(features :_*)
   with BatchProcessing[Substitutions, Vector[Instance[String]]]
 {
