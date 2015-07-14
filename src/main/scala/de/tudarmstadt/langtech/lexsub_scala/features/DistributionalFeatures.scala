@@ -1,10 +1,11 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
-import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
-import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.filereader.WordSimilarityFile
+import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
+import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
+import de.tudarmstadt.langtech.lexsub_scala.types.Token
 
 
 /** Utility wrapper for lookup-based DTs */
@@ -18,6 +19,8 @@ case class DTLookup(val dtName: String, val dt: WordSimilarityFile[String],
     val sim = expansions.collectFirst { case (other, score) if equivalenceFunction(substitute, other) => score }
     sim
   }
+  
+  override def toString = "DT(%s)".format(dtName)
 }
 
 /** Looks up word similarity between target and substitute in a DT */
@@ -39,19 +42,30 @@ case class BinaryWordSimilarity(dt: DTLookup, k: Int) extends FeatureExtractor  
   }
 }
 
-case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores: Boolean) extends LocalFeatureExtractor {
+
+case class ThresholdedDTCache(val origSimilar: Seq[(String, Double)], val contextFilter: String => Boolean)
+case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores: Boolean, useContextFilter: Boolean) 
+extends SmartFeature[ThresholdedDTCache] {  
   
-  private def mkFeature(name: String, value: Double) = 
-      if(!value.isNaN && value > 0) Seq(new Feature(name, value)) else Seq.empty[Feature]
+  def global(item: LexSubInstance): ThresholdedDTCache = {
+    val contextTokens = item.sentence.tokens.toSet
+    def isInContext(dtFeature: String) = contextTokens.exists { token => dt.equivalenceFunction(token, dtFeature) }
+    val similar = dt.similar(item.head)
+    ThresholdedDTCache(similar, isInContext)
+   }
   
-  def extract(item: SubstitutionItem): Seq[Feature] = {
+  def extract(item: SubstitutionItem, global: ThresholdedDTCache): Seq[Feature] = {
+    val ThresholdedDTCache(orig, isInContext) = global
+    val contextFilter: ((String, Double)) => Boolean = 
+      if(useContextFilter) x => isInContext(x._1)
+      else _ => true
+    
     val substituteLemma = item.substitution
-    val orig = dt.similar(item.target)
     val subst = dt.similar(Token(substituteLemma, item.target.pos, substituteLemma))
     
     val features = for(threshold <- thresholds) yield {
-      val a = orig.take(threshold).toMap
-      val b = subst.take(threshold).toMap
+      val a = orig.take(threshold).filter(contextFilter).toMap
+      val b = subst.take(threshold).filter(contextFilter).toMap
       val overlap = a.keySet.intersect(b.keySet)
       val overlapSize = overlap.size.toDouble
       val name = dt.dtName + "_" + threshold
@@ -69,6 +83,9 @@ case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores
     }
     features.flatten
   }
+
+  private def mkFeature(name: String, value: Double) =
+    if (!value.isNaN && value > 0) Seq(new Feature(name, value)) else Seq.empty[Feature]
 }
 
 /** This feature is near-equivalent to the "Cooc" feature, except that a custom equivalence function is specified via the DTLookup */
