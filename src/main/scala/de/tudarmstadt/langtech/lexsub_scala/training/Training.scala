@@ -115,7 +115,7 @@ object Training {
   /** Performs crossvalidate, prints results to stdout and writes aggregated results to outputFile */
   def crossvalidate(data: Iterable[LexSubInstance], 
       trainingList: CandidateList, systemList: CandidateList, features: FeatureAnnotator, 
-      trainingRoot: String, outputFile: String, folds: Int = 10){
+      trainingRoot: String, outputFile: String, folds: Int = 10, maxItems: Int = 20){
     
     println("Starting crossvalidation on " + data.size + " instances")
     
@@ -146,7 +146,7 @@ object Training {
       val testData: Seq[Substitutions] = heldOutItems.flatMap(grouped.apply).map(_._1)
       val testInstaces = testData.map(_.lexSubInstance)
       
-      val lexsub = LexSubExpander(systemList, featureExtractor, ClassifierScorer(trainingFolder))
+      val lexsub = LexSubExpander(systemList, featureExtractor, ClassifierScorer(trainingFolder), maxItems = maxItems)
       val ranked = lexsub(testInstaces)
       val results = Outcomes.collect(testInstaces, ranked)
       val oot = Outcomes.evaluate(results, 10)
@@ -156,7 +156,7 @@ object Training {
     }
     
     SemEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
-    io.write(outputFile + ".system.txt", LexSubExpander(systemList, featureExtractor, ClassifierScorer("-")).toString)
+    io.write(outputFile + ".system.txt", LexSubExpander(systemList, features, null, maxItems = maxItems).toString)
     
     val results = outcomes.flatten
     val oot =  Outcomes.evaluate(results, 10)

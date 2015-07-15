@@ -1,5 +1,6 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
+import de.tudarmstadt.langtech.scala_utilities.compute
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
@@ -28,6 +29,7 @@ case class NumLexSemRelations(candidates: CandidateList) extends FeatureExtracto
 
   def extract(item: Substitutions): Vector[Seq[Feature]] = {
      val numRelations = inner.extract(item).map(_.length.toDouble)
-     numRelations.map(toFeatures)
+     val result = compute.normalize(numRelations)
+     result.map(toFeatures)
    }
 }
