@@ -156,6 +156,7 @@ object Training {
     }
     
     SemEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
+    io.write(outputFile + ".system.txt", LexSubExpander(systemList, featureExtractor, ClassifierScorer("-")).toString)
     
     val results = outcomes.flatten
     val oot =  Outcomes.evaluate(results, 10)

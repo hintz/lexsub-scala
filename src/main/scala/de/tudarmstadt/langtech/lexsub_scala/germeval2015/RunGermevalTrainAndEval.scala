@@ -5,6 +5,7 @@ import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
+import de.tudarmstadt.langtech.scala_utilities.io
 
 object RunGermevalTrainingAndEval extends App {
   
@@ -30,6 +31,7 @@ object RunGermevalTrainingAndEval extends App {
   // write results
   val results = Outcomes.collect(evaluationData, outcomes)
   SemEvalResultOutcomeWriter.save(results, Settings.instancesOutputFile)
+  io.write(Settings.instancesOutputFile + ".system.txt", lexsub.toString)
   
   val oot =  Outcomes.evaluate(results, 10)
   val best = Outcomes.evaluate(results, 1)

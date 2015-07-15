@@ -68,7 +68,7 @@ extends SmartFeature[ThresholdedDTCache] {
       val b = subst.take(threshold).filter(contextFilter).toMap
       val overlap = a.keySet.intersect(b.keySet)
       val overlapSize = overlap.size.toDouble
-      val name = dt.dtName + "_" + threshold
+      val name = dt.dtName + "_" + threshold + (if(useContextFilter) "_ctx" else "")
       
       // compute scores by different aggregations
       val byThreshold = mkFeature(name + "_thresh", overlapSize / threshold)
@@ -112,3 +112,7 @@ case class SalientDTFeatures(dt: DTLookup) extends FeatureExtractor {
   private def mkFeature(value: Double) = 
       if(!value.isNaN && value > 0) Seq(new Feature(name, value)) else Seq.empty[Feature]
 }
+
+case class AllThresholdedDTFeatures(dts: Seq[DTLookup], thresholds: Seq[Int])
+  extends Features((for (dt <- dts; useLMI <- Seq(true, false); useContext <- Seq(true, false))
+    yield ThresholdedDTOverlap(dt, thresholds, useLMI, useContext)): _*)

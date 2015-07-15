@@ -96,6 +96,8 @@ class FeatureAnnotator(val features: FeatureExtractor*)
     val instances = features.zip(outcomes).map(mkInstance.tupled)
     instances
   }
+  
+  override def toString = "FeatureAnnotator(%s)".format(features.mkString("\n", "\n", "\n"))
 }
 
 object FeatureAnnotator {
