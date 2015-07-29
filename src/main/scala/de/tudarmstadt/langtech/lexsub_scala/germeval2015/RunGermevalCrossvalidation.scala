@@ -10,5 +10,6 @@ object RunGermevalCrossvalidation extends App {
       Settings.features, 
       Settings.trainingDir, 
       Settings.instancesOutputFile,
-      folds = 10)
+      folds = 10,
+      maxItems = 20)
 }

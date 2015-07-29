@@ -6,7 +6,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.reader._
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader._
-import de.tudarmstadt.langtech.lexsub_scala.features.{Cooc, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity, Word2VecLookup}
+import de.tudarmstadt.langtech.lexsub_scala.features.{ Cooc, EditDistance, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity, Word2VecLookup}
 import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
@@ -110,26 +110,32 @@ object Settings extends YamlSettings("paths.yaml") {
   
   // setup features
   lazy val features = new FeatureAnnotator(
-    Cooc(cooc),
-    WordSimilarity(dts.mateSim),
-    WordSimilarity(dts.trigramSim),
-    SalientDTFeatures(dts.trigramBims),
-    SalientDTFeatures(dts.mateBims),
-    BinaryWordSimilarity(dts.mateSim, 100),
-    BinaryWordSimilarity(dts.trigramSim, 100),
-    ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false),
-    ThresholdedDTOverlap(dts.mateSim, Seq(5, 20, 50, 100, 200), false),
-    ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false),
-    ThresholdedDTOverlap(dts.trigramSim, Seq(5, 20, 50, 100, 200), false),
-    PosContextWindows(0 to 0, 0 to 0, 1),
-    PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
-    SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
-    ConjunctionFreqRatio(ngramCounts, Seq("und", "oder", ","), 0, 0),
-    LexSemRelation(candidates.masterlist),
-    WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
-    WordEmbeddingSimilarity(embeddings.word2vec)
+      Cooc(cooc),
+      WordSimilarity(dts.mateSim),
+      WordSimilarity(dts.trigramSim),
+      SalientDTFeatures(dts.trigramBims),
+      SalientDTFeatures(dts.mateBims),
+      BinaryWordSimilarity(dts.mateSim, 100),
+      BinaryWordSimilarity(dts.trigramSim, 100),
+      AllThresholdedDTFeatures(
+          Seq(dts.mateBims, dts.mateSim,  dts.trigramBims, dts.trigramSim), 
+          Seq(5, 20, 50, 100, 200)),
+      //ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false, false),
+      //ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false, false),
+      //ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false, true),
+      //ThresholdedDTOverlap(dts.mateSim, Seq(5, 20, 50, 100, 200), false, true),
+      //ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false, true),
+      //ThresholdedDTOverlap(dts.trigramSim, Seq(5, 20, 50, 100, 200), false, true),
+      PosContextWindows(0 to 1, 0 to 1, 3),
+      PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
+      SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
+      ConjunctionFreqRatio(ngramCounts, Seq("und", "oder", ","), 0, 0),
+      NumLexSemRelations(candidates.masterlist),
+      LexSemRelation(candidates.masterlist),
+      WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
+      WordEmbeddingSimilarity(embeddings.word2vec)
   )
-  
   // Others:
   // WordEmbeddingDistance(embeddings.word2vec)
+  // EditDistance
 }
