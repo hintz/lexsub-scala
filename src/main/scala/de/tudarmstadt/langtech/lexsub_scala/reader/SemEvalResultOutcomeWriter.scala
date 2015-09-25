@@ -102,7 +102,7 @@ class SemEvalResultOutcomeReader(val gold: Seq[LexSubInstance]) {
       
       val correctSet = allOutcomes.map(_._1).toSet.intersect(item.gold.get.gold.substitutions.map(_._1).toSet)
       def mkBold(subst: String) = {
-        if(correctSet.contains(subst)) <b>{subst}</b>
+        if(subst.startsWith("*")) <b>{subst}</b>
         else subst
       }
       def mkUpper(subst: String) = if(correctSet.contains(subst)) "* " + subst.toUpperCase else subst
