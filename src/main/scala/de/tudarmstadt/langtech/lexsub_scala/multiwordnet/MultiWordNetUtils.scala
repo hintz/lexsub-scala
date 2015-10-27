@@ -6,11 +6,10 @@ import java.io._
 import java.nio.charset.Charset
 import scala.collection.JavaConversions._
 
-object MultiWordNetUtils {
+class MultiWordNetUtils(language: String) {
   
   // Load Dictionary
   val dictionary = new MysqlDictionary
-  val language = "italian"
 
   def lookup(word: String, pos: String, relationDepth: Int = 10) {
     val postag = POS.CATS.collectFirst { case p if p.getKey == pos => p }.get
@@ -59,6 +58,6 @@ object MultiWordNetUtils {
 // Example:
 /*
 object TestMWN extends App {
-  MultiWordNetUtils.lookup("parlare", "v")
+  new MultiWordNetUtils("italian").lookup("parlare", "v")
 }
 */
