@@ -24,6 +24,18 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+		
+		<repository>
+			<id>local-repo</id>
+			<url>file://${project.basedir}/local-repo</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
   </repositories>
 
   <properties>
@@ -134,6 +146,16 @@
 		<groupId>edu.stanford.nlp</groupId>
 		<artifactId>corenlp</artifactId>
 		<version>1.0.4.20110605</version>
+	</dependency>
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.8</version>
+	</dependency>
+	<dependency>
+		<groupId>org.itc</groupId>
+		<artifactId>org.itc.mwn</artifactId>
+		<version>1.0.0</version>
 	</dependency>
   </dependencies>
 

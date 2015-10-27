@@ -1,0 +1,1 @@
+mvn deploy:deploy-file -Durl=file:///Users/gerold/AIPHES/Code/lexsub-scala/local-repo -Dfile=jmwn-1.2.jar -DgroupId=org.itc -DartifactId=org.itc.mwn -Dpackaging=jar -Dversion=1.0.0
