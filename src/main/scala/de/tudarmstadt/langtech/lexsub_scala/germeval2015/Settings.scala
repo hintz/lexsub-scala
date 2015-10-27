@@ -15,7 +15,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 
 /** Nearly all of lexsub-scala can be configured in this file */
-object Settings extends YamlSettings("paths.yaml") {
+object Settings extends YamlSettings("germeval2015-paths.yaml") {
   
   val germevalFolder = path("germEvalFolder")
   
