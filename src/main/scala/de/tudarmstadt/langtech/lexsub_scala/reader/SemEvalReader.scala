@@ -67,10 +67,14 @@ object SemEvalData {
   }
 }
 
-class SemEvalReader(folder: String, filename: String) {
+class SemEvalReader(folder: String, datafile: String, goldfile: String) {
+  
+  /** Constructor for default naming convention
+   *  (not all lexsub datasets follow this) */
+  def this(folder: String, filename: String) = this(folder, filename + ".xml", filename + ".gold")
 
-  val gold = new SemEvalGold(Seq(folder, "/", filename, ".gold").mkString)
-  val data = new SemEvalData(Seq(folder, "/", filename, ".xml").mkString)
+  val gold = new SemEvalGold(Seq(folder, "/", goldfile).mkString)
+  val data = new SemEvalData(Seq(folder, "/", datafile).mkString)
 
   lazy val items = {
     val goldItems = gold.items.map(g => g.id -> g).toMap

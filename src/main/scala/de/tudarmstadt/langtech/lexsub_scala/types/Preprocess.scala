@@ -44,13 +44,19 @@ case class Preprocessing(
     LexSubInstance(sentence, headIndex, Some(goldItem))
   }
   
-  def loadGermEval(germevalFolder: String, filename: String): Seq[LexSubInstance] = {
-     println("Loading GermEval data..")
-     io.lazySerialized("cache_%s.ser".format(filename)){
-      System.err.println("Cache does not exist, preprocessing GermEval data..")
-      val plainData = new SemEvalReader(germevalFolder, filename).items
+  /** Loads and preprocesses SemEval data and caches it in a temporary file */
+  def preprocessSemEval(folder: String, datafile: String, goldfile: String): Seq[LexSubInstance] = {
+     val cachefile = "cache_%s.ser".format((folder + "-" + datafile).replaceAll("""[\/\.]+""","-"))
+     io.lazySerialized(cachefile){
+      System.err.println("Cachefile does not exist, preprocessing SemEval data..")
+      val plainData = new SemEvalReader(folder, datafile, goldfile).items
       val processed = plainData.flatMap(tryApply)
       processed
     }
   }
+  
+  // TODO: remove
+  def loadGermEval(germevalFolder: String, filename: String): Seq[LexSubInstance] = 
+    preprocessSemEval(germevalFolder, filename + ".xml", filename + ".gold")
+  
 }
