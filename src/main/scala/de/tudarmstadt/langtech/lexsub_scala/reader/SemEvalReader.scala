@@ -4,6 +4,7 @@ import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.scala_utilities.strings
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import java.util.IllegalFormatException
+import scala.util.{Try, Success, Failure}
 
 case class SemEvalItem(val sentence: Sentence, val gold: GoldItem)
 case class Sentence(val id: String, val sentence: String, val target: Token)
@@ -17,18 +18,28 @@ case class GoldItem(val id: String, target: LexItem, val substitutions: List[(St
 class SemEvalGold(goldfile: String) {
 
   lazy val items: List[GoldItem] = {
-    def parseSolution(s: String) = {
-      val tmp = s.trim.split(" ").toSeq
-      (tmp.init.mkString(" "), tmp.last.toInt)
+    
+    def parseSolution(s: String) = Try {
+      val (word, count) = strings.splitAssign(' ')(s.trim)
+      (word, count.toInt)
     }
-    def parse(line: String): GoldItem = {
-      val Seq(item, solutions) = line.split("::").toSeq
-      val Seq(lexItem, id) = item.split(" ", 2).toSeq
-      val Seq(word, pos) = lexItem.split("\\.", 2).toSeq
-      val substitutions = solutions.split(";").map(parseSolution).toList
-      GoldItem(id.trim, LexItem(word, pos), substitutions)
+    
+    def parse(line: String): Option[GoldItem] = {
+      def warn(s: Any) = System.err.println("WARNING: Could not parse line '%s': %s".format(line, s))
+      try {
+        val Seq(item, solutions) = line.split("::").toSeq
+        val Seq(lexItem, id) = item.split(" ", 2).toSeq
+        val Seq(word, pos) = lexItem.split("\\.", 2).toSeq
+        val parsedSolutions = solutions.split("(?<=\\d+);").map(parseSolution)
+        for(Failure(e) <- parsedSolutions.filter(_.isFailure)) warn(e)
+        val substitutions = parsedSolutions.flatMap(_.toOption).toList
+        Some(GoldItem(id.trim, LexItem(word, pos), substitutions))
+      } catch {
+        case e: Exception => warn(e); None
+      }
     }
-    try { io.lines(goldfile).filter(_.length > 1).map(parse).toList }
+    
+    try { io.lines(goldfile).filter(_.length > 1).flatMap(parse).toList }
     catch { case e: java.io.FileNotFoundException =>
       System.err.println("WARNING: No gold file found: " + goldfile)
       List.empty

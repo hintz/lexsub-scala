@@ -37,7 +37,7 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
   // Defines complete processing
   lazy val preprocessing = Preprocessing(
       /*tokenizer = new Preprocessing.Tokenizer {
-        lazy val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpPOSModel"))))
+        lazy val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpTokenModel"))))
         def apply(sent: String) = model.tokenize(sent)
       },*/
       
@@ -52,8 +52,8 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
    )
    
   // load the germeval data (from cache, if available)
-  lazy val germevalTraining = preprocessing.loadGermEval(germevalFolder, "train-dataset") 
-  lazy val germevalTest = preprocessing.loadGermEval(germevalFolder, "test-dataset")
+  lazy val germevalTraining = preprocessing.preprocessSemEval(germevalFolder, "train-dataset") 
+  lazy val germevalTest = preprocessing.preprocessSemEval(germevalFolder, "test-dataset")
   
   // Candidate lists
   object candidates {

@@ -55,8 +55,10 @@ case class Preprocessing(
     }
   }
   
-  // TODO: remove
-  def loadGermEval(germevalFolder: String, filename: String): Seq[LexSubInstance] = 
+  /** Loads and preprocesses SemEval data and caches it in a temporary file
+   *  (default naming convention)
+   */
+  def preprocessSemEval(germevalFolder: String, filename: String): Seq[LexSubInstance] = 
     preprocessSemEval(germevalFolder, filename + ".xml", filename + ".gold")
   
 }
