@@ -4,7 +4,7 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.scala_utilities.io
 import scala.util.Try
-
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
 
 /** Very slim interfaces for preprocessing! */
 object Preprocessing {
@@ -18,12 +18,16 @@ case class Preprocessing(
   posTagger: Preprocessing.PosTagger,
   lemmatizer: Preprocessing.Lemmatizer) {
   
+  /** Parses SemEval data */
+  def parseSemEval(data: Seq[SemEvalItem]) = data.flatMap(tryApply)
+  
+  /** Parses a single SemEvalItem wrapping any exceptions in Option */
   def tryApply(goldItem: SemEvalItem): Option[LexSubInstance] = {
     val tried = Try(apply(goldItem))
     tried.recover { case e => System.err.println(e)}.toOption
     tried.toOption
   }
-
+  /** Parses a single SemEvalItem */
   def apply(goldItem: SemEvalItem): LexSubInstance = {
     val plaintext = goldItem.sentence.sentence
     val targetWord = goldItem.sentence.target.word
@@ -43,22 +47,4 @@ case class Preprocessing(
 
     LexSubInstance(sentence, headIndex, Some(goldItem))
   }
-  
-  /** Loads and preprocesses SemEval data and caches it in a temporary file */
-  def preprocessSemEval(folder: String, datafile: String, goldfile: String): Seq[LexSubInstance] = {
-     val cachefile = "cache_%s.ser".format((folder + "-" + datafile).replaceAll("""[\/\.]+""","-"))
-     io.lazySerialized(cachefile){
-      System.err.println("Cachefile does not exist, preprocessing SemEval data..")
-      val plainData = new SemEvalReader(folder, datafile, goldfile).items
-      val processed = plainData.flatMap(tryApply)
-      processed
-    }
-  }
-  
-  /** Loads and preprocesses SemEval data and caches it in a temporary file
-   *  (default naming convention)
-   */
-  def preprocessSemEval(germevalFolder: String, filename: String): Seq[LexSubInstance] = 
-    preprocessSemEval(germevalFolder, filename + ".xml", filename + ".gold")
-  
 }

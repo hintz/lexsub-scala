@@ -13,6 +13,7 @@ import opennlp.tools.postag.POSModel
 import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
+import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 
 /** Nearly all of lexsub-scala can be configured in this file */
 object Settings extends YamlSettings("germeval2015-paths.yaml") {
@@ -35,7 +36,7 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
   val coocFile = "resources/coocs/germeval_coocs.tsv" // (generated from vocabFile and cooccurence corpus)
   
   // Defines complete processing
-  lazy val preprocessing = Preprocessing(
+  implicit lazy val preprocessing = Preprocessing(
       /*tokenizer = new Preprocessing.Tokenizer {
         lazy val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpTokenModel"))))
         def apply(sent: String) = model.tokenize(sent)
@@ -52,8 +53,8 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
    )
    
   // load the germeval data (from cache, if available)
-  lazy val germevalTraining = preprocessing.preprocessSemEval(germevalFolder, "train-dataset") 
-  lazy val germevalTest = preprocessing.preprocessSemEval(germevalFolder, "test-dataset")
+  lazy val germevalTraining = LexsubUtil.preprocessSemEval(germevalFolder, "train-dataset") 
+  lazy val germevalTest = LexsubUtil.preprocessSemEval(germevalFolder, "test-dataset")
   
   // Candidate lists
   object candidates {
