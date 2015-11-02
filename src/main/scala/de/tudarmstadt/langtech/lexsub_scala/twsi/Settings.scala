@@ -82,21 +82,16 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
 
   // DTs
   object dts {
-    lazy val mateSim = DTLookup("de70M_mate_lemma", new WordSimilarityFile(path("DT", "mateSim"), identity, matchPrefix = true),
+    
+    lazy val firstOrder = DTLookup("LMI_1stOrder", new WordSimilarityFile(path("DT", "firstOrder"), identity, matchPrefix = true),
+      token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
+      (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // how to define equivalence in this DT
+     
+      
+    lazy val secondOrder = DTLookup("LMI_2ndOrder", new WordSimilarityFile(path("DT", "secondOrder"), identity, matchPrefix = true),
       token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // how to define equivalence in this DT
 
-    lazy val mateBims = DTLookup("de70M_mate_lemma_bims", new WordSimilarityFile(path("DT", "mateBims"), identity, matchPrefix = true),
-      token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
-      (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // no equivalence for bims
-
-    lazy val trigramSim = DTLookup("de70M_trigram", new WordSimilarityFile(path("DT", "trigramSim"), identity),
-      token => token.lemma, // how to look up token in this DT
-      (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma)) // how to define equivalence in this DT
-
-    lazy val trigramBims = DTLookup("de70M_trigram_bims", new WordSimilarityFile(path("DT", "trigramBims"), identity),
-      token => token.lemma, // how to look up token in this DT
-      (substitute, dtFeature) => dtFeature.contains(substitute.lemma)) // how to define equivalence in this DT
   }
 
   // Co-occurence features
@@ -106,16 +101,16 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
 
   // setup features
   lazy val features = new FeatureAnnotator(
+    SentenceIDFeature,
+    SubstitutionFeature,
+    
     //Cooc(cooc),
-    //WordSimilarity(dts.mateSim),
-    //WordSimilarity(dts.trigramSim),
-    //SalientDTFeatures(dts.trigramBims),
-    //SalientDTFeatures(dts.mateBims),
-    //BinaryWordSimilarity(dts.mateSim, 100),
-    //BinaryWordSimilarity(dts.trigramSim, 100),
-    //AllThresholdedDTFeatures(
-    //  Seq(dts.mateBims, dts.mateSim, dts.trigramBims, dts.trigramSim),
-    //  Seq(5, 20, 50, 100, 200)),
+    SalientDTFeatures(dts.firstOrder),
+    WordSimilarity(dts.secondOrder),
+    BinaryWordSimilarity(dts.secondOrder, 100),
+    AllThresholdedDTFeatures(
+      Seq(dts.firstOrder, dts.secondOrder),
+      Seq(5, 20, 50, 100, 200)),
     PosContextWindows(0 to 1, 0 to 1, 3),
     PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
