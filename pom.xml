@@ -105,7 +105,7 @@
 	<dependency>
 		<groupId>de.tudarmstadt.langtech</groupId>
 		<artifactId>scala-utilities</artifactId>
-		<version>0.1</version>
+		<version>0.1.1</version>
 	</dependency>
 	<dependency>
 		<groupId>org.yaml</groupId>

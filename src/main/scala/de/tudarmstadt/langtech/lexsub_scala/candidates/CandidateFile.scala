@@ -94,7 +94,7 @@ class CandidateFile(val filename: String, val semanticRelationColumn: Boolean = 
     val candidates = parsed.map { 
       case a :: b :: c :: rel :: rest if semanticRelationColumn => Candidate(a, b, c, rel.split(";").toSet)
       case a :: b :: c :: rest if !semanticRelationColumn => Candidate(a, b, c);
-      case _ => throw new Exception }
+      case line => throw new Exception("Illegal syntax parsing %s at %s".format(filename, line)) }
     candidates.toSeq.distinct.groupBy(_.word)
   }
   override def toString = getClass.getSimpleName + "(" + filename.split("/").last + ")"
