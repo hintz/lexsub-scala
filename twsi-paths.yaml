@@ -20,8 +20,8 @@ Embeddings:
     eigenwords: "..."
 
 DT:
-    firstOrder: "../AIPHES_Data/DT/en_lexsub/LMI_s_0_t_0
-    secondOrder: "../AIPHES_Data/DT/LMI_s_0_t_0_p_1000_l_200
+    firstOrder: "../AIPHES_Data/DT/en_lexsub/LMI_s_0_t_0"
+    secondOrder: "../AIPHES_Data/DT/LMI_s_0_t_0_p_1000_l_200"
 
 NGrams:
     web1t: "../AIPHES_Data/web1t/en"
