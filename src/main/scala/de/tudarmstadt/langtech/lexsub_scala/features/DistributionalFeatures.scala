@@ -8,7 +8,10 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 
 
-/** Utility wrapper for lookup-based DTs */
+/** Utility wrapper for lookup-based DTs 
+ *  The lookupFunction is used to look up DT entries based on a target token.
+ *  The equivalenceFunction is used to determine equivalence between an (arbitrary) DT context feature and a given token
+ *  Note: this allows to match e.g. only the lexical part of syntactic features, such as "-nsubj#throw" */
 case class DTLookup(val dtName: String, val dt: WordSimilarityFile[String], 
     lookupFunction: Token => String,  // determines how to map token to lookup string
     equivalenceFunction: (Token, String) => Boolean = // determines equivalence between candidate and DT item
@@ -23,13 +26,15 @@ case class DTLookup(val dtName: String, val dt: WordSimilarityFile[String],
   override def toString = "DT(%s)".format(dtName)
 }
 
-/** Looks up word similarity between target and substitute in a DT */
+/** Looks up word similarity between target and substitute in a DT.
+ *  Note: This requires the DT to contain second order features, aka similar words  */
 case class WordSimilarity(dt: DTLookup) extends LocalFeatureExtractor with NumericFeature  {
   val name = "Sim_" + dt.dtName
   def extract(item: SubstitutionItem): Seq[Feature] = dt.similarity(item.target, Token(item.substitution, item.target.pos, item.substitution))
 }
 
-/** Binary feature determining if substitution candidate is present in the DT features of target */
+/** Similar to WordSimilarity, but only a binary feature:
+ *  Determins if substitution candidate is present in the top k DT features of target */
 case class BinaryWordSimilarity(dt: DTLookup, k: Int) extends FeatureExtractor   {
   val name = "BinarySim_" + dt.dtName + "_" + k
   def extract(item: Substitutions): Vector[Seq[Feature]] = {
@@ -43,7 +48,10 @@ case class BinaryWordSimilarity(dt: DTLookup, k: Int) extends FeatureExtractor  
 }
 
 
-case class ThresholdedDTCache(val origSimilar: Seq[(String, Double)], val contextFilter: String => Boolean)
+
+/** Feature measuring the overlap between a target word and a substitute given a DT with arbitrary context features.
+ *  Note: This feature is "static" for any given pair, i.e. not based on sentence context!
+ */
 case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores: Boolean, useContextFilter: Boolean) 
 extends SmartFeature[ThresholdedDTCache] {  
   
@@ -88,7 +96,16 @@ extends SmartFeature[ThresholdedDTCache] {
     if (!value.isNaN && value > 0) Seq(new Feature(name, value)) else Seq.empty[Feature]
 }
 
-/** This feature is near-equivalent to the "Cooc" feature, except that a custom equivalence function is specified via the DTLookup */
+/** Helper class for ThresholdedDTOverlap */ 
+case class ThresholdedDTCache(val origSimilar: Seq[(String, Double)], val contextFilter: String => Boolean)
+
+/** Similarity based on "salient" DT features.
+ *  A DT-feature is salient if it occurs in the sentence context, based on the equivalence function in the given DTLookup
+ *  This feature simply aggregates the weights of all salient features and normalized over all candidates
+ * 
+ *  Note: 
+ *  This feature is near-equivalent to the "Cooc" feature, except that a custom equivalence function is specified via the DTLookup
+ */
 case class SalientDTFeatures(dt: DTLookup) extends FeatureExtractor {
   val name = dt.dtName + "_ctxSaliency"
   
@@ -113,6 +130,7 @@ case class SalientDTFeatures(dt: DTLookup) extends FeatureExtractor {
       if(!value.isNaN && value > 0) Seq(new Feature(name, value)) else Seq.empty[Feature]
 }
 
+/** Aggregates multiple ThresholdedDTOverlap features based on the given parameters */
 case class AllThresholdedDTFeatures(dts: Seq[DTLookup], thresholds: Seq[Int])
   extends Features((for (dt <- dts; useLMI <- Seq(true, false); useContext <- Seq(true, false))
     yield ThresholdedDTOverlap(dt, thresholds, useLMI, useContext)): _*)

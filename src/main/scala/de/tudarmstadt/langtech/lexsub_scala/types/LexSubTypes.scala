@@ -2,11 +2,6 @@ package de.tudarmstadt.langtech.lexsub_scala.types
 
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
 
-// General note for fans of NLP frameworks:
-// PLEASE don't try to use "universal" types for NLP stuff
-// Instead, use types tailored to YOUR application. This way, we get type safety on the level where we need it
-// (Types are there to help you, not get in your way)
-
 /** A pre-processed token within a sentence */
 case class Token(val word: String, val pos: String, val lemma: String)
 
@@ -14,9 +9,12 @@ case class Token(val word: String, val pos: String, val lemma: String)
 case class Sentence(val tokens: Vector[Token]) // val sent: String,
 
 /** A pre-processed item */
+@SerialVersionUID(1L)
 case class LexSubInstance(val sentence: Sentence, val headIndex: Int, gold: Option[SemEvalItem]){
   def head: Token = sentence.tokens(headIndex)
-  def getGold = gold.getOrElse(throw new RuntimeException("gold data was required but not supplied: " + this))
+  def id: String = gold.map(_.sentence.id) getOrElse noGold
+  def getGold = gold getOrElse noGold
+  private def noGold = throw new RuntimeException("gold data was required but not supplied: " + this)
 }
 
 /** A pair of (lexsubInstance, candidates) */
@@ -53,7 +51,6 @@ case class Outcome(val lexSubInstance: LexSubInstance, substitutes: Seq[(String,
     PRResult(tp, fp, fn, None)
   }
 }
-
 
 object Outcomes {
   def collect(items: Iterable[LexSubInstance], outcomes: Iterable[Seq[(String, Double)]]) = 
