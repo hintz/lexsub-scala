@@ -21,7 +21,7 @@ object CreateUBYCandidates extends App {
 
   for (lexiconName <- lexicons; val lexicon = uby.getLexiconByName(lexiconName)) {
     println("Processing lexicon " + lexiconName + "..")
-    val outputFile = "resources/candidates/twsi/uby_" + lexiconName + ".tsv"
+    val outputFile = "resources/twsi/candidates/uby_" + lexiconName + ".tsv"
     val lines = for ((lemma, pos) <- targets; (expansion, label) <- candidatesForLexicon(lemma, lexicon))
       yield Seq(lemma, pos, expansion.replace('\n', ' '), label).mkString("\t")
     if (lines.length > 1) // UBY might contain some useless dictionaries (wrong language, etc.)

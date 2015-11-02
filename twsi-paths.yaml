@@ -13,7 +13,8 @@ Preprocessing:
     opennlpTokenModel: "resources/models/opennlp/en-token.bin"
 
 Candidates:
-    masterlist: "resources/twsi/candidates/masterlist.tsv"
+    masterlist: "resources/twsi/candidates/twsi_masterlist.tsv"
+    wordnet: "resources/twsi/candidates/uby_WordNet.tsv"
 
 Embeddings:
     word2vec: "..."

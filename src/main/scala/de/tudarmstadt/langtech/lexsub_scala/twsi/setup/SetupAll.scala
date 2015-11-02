@@ -26,17 +26,17 @@ object SetupAll extends App {
   //CreateTargetList
   
   println("Creating a candidate masterlist..")  
-  val wordnet =  new CandidateFile("resources/candidates/twsi/uby_WordNet.tsv", true)
-  val ontoWiktionary =  new CandidateFile("resources/candidates/twsi/uby_OntoWiktionaryEN.tsv", true)
-  val omegaWiki =  new CandidateFile("resources/candidates/twsi/uby_OmegaWiki_eng.tsv", true)
+  val wordnet =  new CandidateFile("resources/twsi/candidates/uby_WordNet.tsv", true)
+  val ontoWiktionary =  new CandidateFile("resources/twsi/candidates/uby_OntoWiktionaryEN.tsv", true)
+  val omegaWiki =  new CandidateFile("resources/twsi/candidates/uby_OmegaWiki_eng.tsv", true)
   
   val masterlist = new JoinedCandidates(wordnet, omegaWiki, ontoWiktionary)
     //.filter(!_.replacement.contains(" ")) // removes Multi Word Expressions from the masterlist
   
   println("Creating vocab file")
-  io.write("vocab.txt", masterlist.allItems.mkString("\n"))
+  io.write("resources/twsi/vocab.txt", masterlist.allItems.mkString("\n"))
   
   println("Saving masterlist")
-  masterlist.save("resources/candidates/twsi/twsi_masterlist.tsv")
+  masterlist.save("resources/twsi/candidates/masterlist.tsv")
   
 }

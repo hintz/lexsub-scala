@@ -29,10 +29,10 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
   val instancesOutputFile = path("outputFile")
 
   // intermediate files
-  val targetsFile = "resources/targets.txt"
-  val targetsPosFile = "resources/targets-pos.txt"
-  val vocabFile = "resources/vocab.txt"
-  val coocFile = "resources/coocs/germeval_coocs.tsv" // (generated from vocabFile and cooccurence corpus)
+  val targetsFile = "resources/twsi/targets.txt"
+  val targetsPosFile = "resources/twsi/targets-pos.txt"
+  val vocabFile = "resources/twsi/vocab.txt"
+  val coocFile = "resources/twsi/coocs/coocs.tsv" // (generated from vocabFile and cooccurence corpus)
 
   // Defines complete processing
   implicit lazy val preprocessing = Preprocessing(
@@ -60,11 +60,12 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
 
   // Candidate lists
   object candidates {
+    lazy val wordnet = new CandidateFile(path("Candidates", "wordnet"), true)
     lazy val masterlist = new CandidateFile(path("Candidates", "masterlist"), true)
 
     // shortcut to select candidate lists
-    lazy val trainingList = masterlist
-    lazy val systemList = masterlist
+    lazy val trainingList = wordnet
+    lazy val systemList = wordnet
   }
 
   // N-gram counts
@@ -99,31 +100,33 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
   }
 
   // Co-occurence features
-  lazy val cooc = DTLookup("cooc", new WordSimilarityFile(coocFile, identity), token => token.word)
+  ////lazy val cooc = DTLookup("cooc", new WordSimilarityFile(coocFile, identity), token => token.word)
 
   lazy val ngramCounts = ngrams.web1t
 
   // setup features
   lazy val features = new FeatureAnnotator(
-    Cooc(cooc),
-    WordSimilarity(dts.mateSim),
-    WordSimilarity(dts.trigramSim),
-    SalientDTFeatures(dts.trigramBims),
-    SalientDTFeatures(dts.mateBims),
-    BinaryWordSimilarity(dts.mateSim, 100),
-    BinaryWordSimilarity(dts.trigramSim, 100),
-    AllThresholdedDTFeatures(
-      Seq(dts.mateBims, dts.mateSim, dts.trigramBims, dts.trigramSim),
-      Seq(5, 20, 50, 100, 200)),
+    //Cooc(cooc),
+    //WordSimilarity(dts.mateSim),
+    //WordSimilarity(dts.trigramSim),
+    //SalientDTFeatures(dts.trigramBims),
+    //SalientDTFeatures(dts.mateBims),
+    //BinaryWordSimilarity(dts.mateSim, 100),
+    //BinaryWordSimilarity(dts.trigramSim, 100),
+    //AllThresholdedDTFeatures(
+    //  Seq(dts.mateBims, dts.mateSim, dts.trigramBims, dts.trigramSim),
+    //  Seq(5, 20, 50, 100, 200)),
     PosContextWindows(0 to 1, 0 to 1, 3),
     PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
-    ConjunctionFreqRatio(ngramCounts, Seq("und", "oder", ","), 0, 0),
-    NumLexSemRelations(candidates.masterlist),
-    LexSemRelation(candidates.masterlist) //WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
-    //WordEmbeddingSimilarity(embeddings.word2vec)
+    ConjunctionFreqRatio(ngramCounts, Seq("and", "or", ","), 0, 0),
+    NumLexSemRelations(candidates.systemList),
+    LexSemRelation(candidates.systemList) 
     )
+  
   // Others:
+  // WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
+  // WordEmbeddingSimilarity(embeddings.word2vec)
   // WordEmbeddingDistance(embeddings.word2vec)
   // EditDistance
 }
