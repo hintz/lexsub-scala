@@ -12,13 +12,13 @@ SemanticResources:
     GermaNetFolder: "../AIPHES_Data/GermaNet/GN_V90/GN_V90_XML"
 
 Candidates:
-    germanet: "resources/candidates/germeval_germanet90.tsv"
-    duden: "resources/candidates/germeval_duden.tsv"  
-    masterlist: "resources/candidates/germeval_masterlist.tsv"
+    germanet: "resources/germeval/candidates/germeval_germanet90.tsv"
+    duden: "resources/germeval/candidates/germeval_duden.tsv"  
+    masterlist: "resources/germeval/candidates/germeval_masterlist.tsv"
 
 Embeddings:
-    word2vec: "../AIPHES_Data/WordEmbeddings/word2vec/denews-vectors.bin"
-    eigenwords: "../AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted"
+    word2vec: "../AIPHES_Data/WordEmbeddings/de/word2vec-denews-vectors.bin"
+    eigenwords: "../AIPHES_Data/WordEmbeddings/de/eigenwords.300k.200.de.sorted"
 
 DT:
     trigramBims: "../AIPHES_Data/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_filtered_g1_sorted"
@@ -27,7 +27,7 @@ DT:
     mateSim: "../AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub"
 
 NGrams:
-    web1t: "../AIPHES_Data/web1t/de"
+    web1t: "../AIPHES_Data/NGrams/web1t/de"
     germanWebCounts: "../AIPHES_Data/NGrams/GermanWebCounts"
 
 Preprocessing:

@@ -12,8 +12,8 @@ object CreateCandidateList extends App {
   val train = new SemEvalReader(Settings.germevalFolder, "train-dataset")
   val test = new SemEvalReader(Settings.germevalFolder, "test-dataset")
   val targets = extractLemmas(train.data) ++ extractLemmas(test.data)
-  io.write("resources/targets.txt", targets.map(_.lemma).distinct.mkString("\n"))
-  io.write("resources/targets-pos.txt", targets.map(t => t.lemma + "\t" + t.pos).distinct.mkString("\n"))
+  io.write("resources/germeval/targets.txt", targets.map(_.lemma).distinct.mkString("\n"))
+  io.write("resources/germeval/targets-pos.txt", targets.map(t => t.lemma + "\t" + t.pos).distinct.mkString("\n"))
   
   // also create candidate list from training gold, for evaluation purposes
   val goldCandidates = train.gold.items.flatMap { goldItem => 
@@ -21,5 +21,5 @@ object CreateCandidateList extends App {
     val candidates = goldItem.substitutionWordsWithoutMultiwords
     candidates.map(c => Seq(target.word, target.pos, c, "gold_candidate").mkString("\t"))
   }.sorted.distinct
-  io.write("resources/candidates/germeval_gold.tsv", goldCandidates.mkString("\n"))
+  io.write("resources/germeval/candidates/germeval_gold.tsv", goldCandidates.mkString("\n"))
 }

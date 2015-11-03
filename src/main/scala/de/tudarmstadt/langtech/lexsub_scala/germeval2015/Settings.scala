@@ -30,10 +30,10 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
   val germanetFolder = path("SemanticResources", "GermaNetFolder")
   
   // intermediate files
-  val targetsFile = "resources/targets.txt"
-  val targetsPosFile = "resources/targets-pos.txt"
-  val vocabFile = "resources/vocab.txt"
-  val coocFile = "resources/coocs/germeval_coocs.tsv" // (generated from vocabFile and cooccurence corpus)
+  val targetsFile = "resources/germeval/targets.txt"
+  val targetsPosFile = "resources/germeval/targets-pos.txt"
+  val vocabFile = "resources/germeval/vocab.txt"
+  val coocFile = "resources/germeval/coocs/germeval_coocs.tsv" // (generated from vocabFile and cooccurence corpus)
   
   // Defines complete processing
   implicit lazy val preprocessing = Preprocessing(
@@ -63,9 +63,9 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
     lazy val woxikon = new CandidateFile(path("Candidates", "woxikon"), true)
     lazy val wortschatz = new CandidateFile(path("Candidates", "wortschatz"), true)
     lazy val masterlist = new CandidateFile(path("Candidates", "masterlist")  , true)
-    lazy val wiktionary =  new CandidateFile("resources/candidates/germeval_uby_OntoWiktionaryDE.tsv")
-    lazy val ubyGermanet =  new CandidateFile("resources/candidates/germeval_uby_GermaNet.tsv")
-    lazy val goldCandidates = new CandidateFile("resources/candidates/germeval_gold.tsv" , true)
+    lazy val wiktionary =  new CandidateFile("resources/germeval/candidates/germeval_uby_OntoWiktionaryDE.tsv")
+    lazy val ubyGermanet =  new CandidateFile("resources/germeval/candidates/germeval_uby_GermaNet.tsv")
+    lazy val goldCandidates = new CandidateFile("resources/germeval/candidates/germeval_gold.tsv" , true)
     
     // shortcut to select candidate lists
     lazy val trainingList = germanet
