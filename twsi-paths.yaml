@@ -23,6 +23,7 @@ Embeddings:
 DT:
     firstOrder: "../AIPHES_Data/DT/en_lexsub/LMI_s_0_t_0"
     secondOrder: "../AIPHES_Data/DT/LMI_s_0_t_0_p_1000_l_200"
+    smallSecondOrder: "../AIPHES_Data/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
 
 NGrams:
-    web1t: "../AIPHES_Data/web1t/en"
+    web1t: "../AIPHES_Data/Ngrams/web1t/en"
