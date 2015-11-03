@@ -50,7 +50,7 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
     )
 
   val semevalData = io.lazySerialized("cache_twsi_data.ser") {
-    new SemEvalReader(twsiFolder, "twsi2.xml", "twsi2.gold").items
+    new SemEvalReader(twsiFolder, "twsi2_clean.xml", "twsi2.gold").items
   }
 
   // parse the data
