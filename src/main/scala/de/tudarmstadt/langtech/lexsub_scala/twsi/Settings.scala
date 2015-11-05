@@ -16,6 +16,8 @@ import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import opennlp.tools.tokenize.TokenizerME
 import opennlp.tools.tokenize.TokenizerModel
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
+import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import scala.util.Random
 
 /** Nearly all of lexsub-scala can be configured in this file */
 object Settings extends YamlSettings("twsi-paths.yaml") {
@@ -57,6 +59,16 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
   lazy val lexsubData = io.lazySerialized("cache_twsi_parsed.ser") {
     preprocessing.parseSemEval(semevalData)
   }
+  
+  // create training and held-out set:
+  lazy val (trainingData, heldOutData) = {
+    val random = new Random(12345)
+    val holdOutPercent = 0.2
+    val byTarget = lexsubData.groupBy(_.getGold.gold.targetWord)
+    val (trainingKeys, heldOutKeys) = Training.holdOut(random.shuffle(byTarget.keys).toSeq, holdOutPercent)
+    (trainingKeys.flatMap(byTarget), heldOutKeys.flatMap(byTarget))
+  }
+
 
   // Candidate lists
   object candidates {
