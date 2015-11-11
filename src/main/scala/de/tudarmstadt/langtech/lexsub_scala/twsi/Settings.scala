@@ -32,7 +32,6 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
   val targetsFile = "resources/twsi/targets.txt"
   val targetsPosFile = "resources/twsi/targets-pos.txt"
   val vocabFile = "resources/twsi/vocab.txt"
-  val coocFile = "resources/twsi/coocs/coocs.tsv" // (generated from vocabFile and cooccurence corpus)
 
   // Defines complete processing
   implicit lazy val preprocessing = Preprocessing(
@@ -104,7 +103,9 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
   }
 
   // Co-occurence features
-  ////lazy val cooc = DTLookup("cooc", new WordSimilarityFile(coocFile, identity), token => token.word)
+ lazy val cooc = DTLookup("cooc", 
+     new WordSimilarityFile(path("Coocs", "oldCoocs"), _.takeWhile(_ != '/')), 
+     lookupFunction = token => token.word)
 
   lazy val ngramCounts = ngrams.web1t
 
@@ -113,7 +114,7 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
     SentenceIDFeature,
     SubstitutionFeature,
     
-    //Cooc(cooc),
+    Cooc(cooc),
     //SalientDTFeatures(dts.firstOrder),
     WordSimilarity(dts.smallSecondOrder),
     BinaryWordSimilarity(dts.smallSecondOrder, 100),
