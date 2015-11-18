@@ -55,3 +55,4 @@ build.log
 /scripts/woxikon
 /arff
 twsi_training
+dependency-reduced-pom.xml
