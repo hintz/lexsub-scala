@@ -7,7 +7,6 @@ import de.tudarmstadt.langtech.lexsub_scala.reader._
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader._
 import de.tudarmstadt.langtech.lexsub_scala.features.{ Cooc, EditDistance, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity, Word2VecLookup }
-import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
 import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
@@ -16,6 +15,7 @@ import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import opennlp.tools.tokenize.TokenizerME
 import opennlp.tools.tokenize.TokenizerModel
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
+import de.tudarmstadt.langtech.lexsub_scala.types.SimpleProcessing
 
 /** Nearly all of lexsub-scala can be configured in this file */
 object Settings extends YamlSettings("twsi-paths.yaml") {
@@ -34,18 +34,18 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
   val vocabFile = "resources/twsi/vocab.txt"
 
   // Defines complete processing
-  implicit lazy val preprocessing = Preprocessing(
-    tokenizer = new Preprocessing.Tokenizer {
+  implicit lazy val preprocessing = SimpleProcessing(
+    tokenize = new SimpleProcessing.Tokenizer {
       lazy val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpTokenModel")))))
       def apply(sent: String) = model.tokenize(sent)
     },
 
-    posTagger = new Preprocessing.PosTagger {
+    posTag = new SimpleProcessing.PosTagger {
       lazy val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "opennlpPOSModel"))))
       def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
     },
 
-    lemmatizer = identity // no need
+    lemmatize = identity // no need
     )
 
   val semevalData = io.lazySerialized("cache_twsi_data.ser") {
@@ -56,8 +56,6 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
   lazy val lexsubData = io.lazySerialized("cache_twsi_parsed.ser") {
     preprocessing.parseSemEval(semevalData)
   }
-  
-
 
 
   // Candidate lists

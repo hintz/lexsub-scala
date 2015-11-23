@@ -7,7 +7,7 @@ import de.tudarmstadt.langtech.lexsub_scala.reader._
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader._
 import de.tudarmstadt.langtech.lexsub_scala.features.{ Cooc, EditDistance, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity, Word2VecLookup }
-import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
+import de.tudarmstadt.langtech.lexsub_scala.types.SimpleProcessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
 import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
@@ -31,18 +31,18 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
   val vocabFile = resourcesFolder + "/vocab.txt"
 
   // Defines complete processing
-  implicit lazy val preprocessing = Preprocessing(
-    tokenizer = new Preprocessing.Tokenizer {
+  implicit lazy val preprocessing = SimpleProcessing(
+    tokenize = new SimpleProcessing.Tokenizer {
       lazy val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpTokenModel")))))
       def apply(sent: String) = model.tokenize(sent)
     },
 
-    posTagger = new Preprocessing.PosTagger {
+    posTag = new SimpleProcessing.PosTagger {
       lazy val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "opennlpPOSModel"))))
       def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
     },
 
-    lemmatizer = identity // no need
+    lemmatize = identity // no need
     )
 
     

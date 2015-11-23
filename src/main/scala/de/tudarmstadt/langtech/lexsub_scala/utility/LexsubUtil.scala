@@ -5,15 +5,15 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.scala_utilities.io
 import scala.util.Try
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
-import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
+import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
 
 object LexsubUtil {
   
   /** Loads and preprocesses SemEval data and caches it in a temporary file */
   def preprocessSemEval(folder: String, datafile: String, goldfile: String)
-                       (implicit preprocessing: Preprocessing): Seq[LexSubInstance] = {
+                       (implicit preprocessing: LexSubProcessing): Seq[LexSubInstance] = {
      val cachefile = "cache_%s.ser".format((folder + "-" + datafile).replaceAll("""[\/\.]+""","-"))
      io.lazySerialized(cachefile){
       System.err.println("Cachefile does not exist, preprocessing SemEval data..")
@@ -26,7 +26,7 @@ object LexsubUtil {
    *  (default naming convention)
    */
   def preprocessSemEval(germevalFolder: String, filename: String)
-                       (implicit preprocessing: Preprocessing): Seq[LexSubInstance] = 
+                       (implicit preprocessing: LexSubProcessing): Seq[LexSubInstance] = 
     preprocessSemEval(germevalFolder, filename + ".xml", filename + ".gold")
 
 }

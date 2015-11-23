@@ -8,6 +8,9 @@ case class Token(val word: String, val pos: String, val lemma: String)
 /** A pre-processed sentence */
 case class Sentence(val tokens: Vector[Token]) // val sent: String,
 
+/** Dependency edges */
+case class DepEdge(label: String, from: Int, to: Int)
+
 /** A pre-processed item */
 @SerialVersionUID(1L)
 case class LexSubInstance(val sentence: Sentence, val headIndex: Int, gold: Option[SemEvalItem]){

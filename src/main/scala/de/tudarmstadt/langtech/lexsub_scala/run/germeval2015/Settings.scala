@@ -7,13 +7,13 @@ import de.tudarmstadt.langtech.lexsub_scala.reader._
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader._
 import de.tudarmstadt.langtech.lexsub_scala.features.{ Cooc, EditDistance, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity, Word2VecLookup}
-import de.tudarmstadt.langtech.lexsub_scala.types.Preprocessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
 import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
+import de.tudarmstadt.langtech.lexsub_scala.types.SimpleProcessing
 
 /** Nearly all of lexsub-scala can be configured in this file */
 object Settings extends YamlSettings("germeval2015-paths.yaml") {
@@ -36,20 +36,20 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
   val coocFile = "resources/germeval/coocs/germeval_coocs.tsv" // (generated from vocabFile and cooccurence corpus)
   
   // Defines complete processing
-  implicit lazy val preprocessing = Preprocessing(
+  implicit lazy val preprocessing = SimpleProcessing(
       /*tokenizer = new Preprocessing.Tokenizer {
         lazy val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpTokenModel"))))
         def apply(sent: String) = model.tokenize(sent)
       },*/
       
-      tokenizer = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector, // still works best for German
+      tokenize = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector, // still works best for German
       
-      posTagger = new Preprocessing.PosTagger {
+      posTag = new SimpleProcessing.PosTagger {
         lazy val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "opennlpPOSModel"))))
         def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
       },
       
-      lemmatizer = identity // no need
+      lemmatize = identity // no need
    )
    
   // load the germeval data (from cache, if available)
