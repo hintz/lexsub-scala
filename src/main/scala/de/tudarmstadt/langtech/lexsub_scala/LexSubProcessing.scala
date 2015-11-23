@@ -41,3 +41,8 @@ class LexSubProcessing(preprocessing: NLPPipeline) {
     LexSubInstance(sentence, headIndex, Some(goldItem))
   }
 }
+
+
+object LexSubProcessing {
+  implicit def withPipeline(pipeline: NLPPipeline): LexSubProcessing = new LexSubProcessing(pipeline)
+}
