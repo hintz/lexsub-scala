@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.twsi.setup
+package de.tudarmstadt.langtech.lexsub_scala.run.twsi.setup
 
 import de.tudarmstadt.langtech.scala_utilities.{ io, strings }
 import de.tudarmstadt.ukp.lmf.transform.DBConfig
@@ -7,7 +7,7 @@ import scala.collection.JavaConverters._
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon
 import de.tudarmstadt.langtech.lexsub_scala.utility.UBYUtil
 import de.tudarmstadt.langtech.lexsub_scala.utility.UBYUtil
-import de.tudarmstadt.langtech.lexsub_scala.twsi.Settings
+import de.tudarmstadt.langtech.lexsub_scala.run.twsi.Settings
 
 object CreateUBYCandidates extends App {
 	val ubyDatabase = "../AIPHES_Data/UBY/ubymedium070"

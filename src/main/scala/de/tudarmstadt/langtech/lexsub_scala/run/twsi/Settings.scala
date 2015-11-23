@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.twsi
+package de.tudarmstadt.langtech.lexsub_scala.run.twsi
 
 import java.io.File
 import de.tudarmstadt.langtech.scala_utilities.io

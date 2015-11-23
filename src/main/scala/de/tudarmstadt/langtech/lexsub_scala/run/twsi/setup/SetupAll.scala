@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.twsi.setup
+package de.tudarmstadt.langtech.lexsub_scala.run.twsi.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates

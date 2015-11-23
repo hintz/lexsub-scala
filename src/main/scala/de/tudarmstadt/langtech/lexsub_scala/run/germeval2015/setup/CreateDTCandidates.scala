@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.setup
+package de.tudarmstadt.langtech.lexsub_scala.run.germeval2015.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.lexsub_scala.filereader.WordSimilarityFile
@@ -6,7 +6,7 @@ import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
 import de.tudarmstadt.langtech.lexsub_scala.reader.LexItem
 import de.tudarmstadt.langtech.scala_utilities.io
 import org.apache.commons.lang.StringUtils
-import de.tudarmstadt.langtech.lexsub_scala.germeval2015.Settings
+import de.tudarmstadt.langtech.lexsub_scala.run.germeval2015.Settings
 
 object CreateDTCandidates extends App {
   

@@ -1,7 +1,7 @@
-package de.tudarmstadt.langtech.lexsub_scala.twsi.setup
+package de.tudarmstadt.langtech.lexsub_scala.run.twsi.setup
 
 import scala.util.Random
-import de.tudarmstadt.langtech.lexsub_scala.twsi.Settings
+import de.tudarmstadt.langtech.lexsub_scala.run.twsi.Settings
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
 
 object CreateHoldOutSplit {

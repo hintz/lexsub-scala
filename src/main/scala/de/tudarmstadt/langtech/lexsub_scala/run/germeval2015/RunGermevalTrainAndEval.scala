@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.germeval2015
+package de.tudarmstadt.langtech.lexsub_scala.run.germeval2015
 
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer

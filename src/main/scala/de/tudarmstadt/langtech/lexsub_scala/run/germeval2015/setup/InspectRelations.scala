@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.setup
+package de.tudarmstadt.langtech.lexsub_scala.run.germeval2015.setup
 
 import scala.collection.JavaConverters._
 import de.tuebingen.uni.sfs.germanet.api.GermaNet

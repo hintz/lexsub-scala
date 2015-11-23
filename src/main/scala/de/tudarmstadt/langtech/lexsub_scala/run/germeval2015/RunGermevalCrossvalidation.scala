@@ -1,11 +1,10 @@
-package de.tudarmstadt.langtech.lexsub_scala.twsi
+package de.tudarmstadt.langtech.lexsub_scala.run.germeval2015
 
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
 
-object RunTWSICrossvalidation extends App {
- 
-Training.crossvalidate(
-      Settings.lexsubData.take(100), 
+object RunGermevalCrossvalidation extends App {
+  Training.crossvalidate(
+      Settings.germevalTraining, 
       Settings.candidates.trainingList,
       Settings.candidates.systemList,
       Settings.features, 

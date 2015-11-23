@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.germeval2015.setup
+package de.tudarmstadt.langtech.lexsub_scala.run.germeval2015.setup
 
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
@@ -9,7 +9,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
 import de.tudarmstadt.langtech.lexsub_scala.types.PRResult
-import de.tudarmstadt.langtech.lexsub_scala.germeval2015.Settings
+import de.tudarmstadt.langtech.lexsub_scala.run.germeval2015.Settings
 
 
 
