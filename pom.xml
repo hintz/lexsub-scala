@@ -76,11 +76,6 @@
     	<artifactId>scala-xml</artifactId>
     	<version>2.11.0-M4</version>
     </dependency>
-    <dependency>
-    	<groupId>com.googlecode.mate-tools</groupId>
-    	<artifactId>anna</artifactId>
-    	<version>3.61</version>
-    </dependency>
 	<dependency>
 	  <groupId>org.apache.opennlp</groupId>
 	  <artifactId>opennlp-tools</artifactId>
@@ -134,6 +129,11 @@
 		<groupId>edu.stanford.nlp</groupId>
 		<artifactId>corenlp</artifactId>
 		<version>1.0.4.20110605</version>
+	</dependency>
+	<dependency>
+		<groupId>com.googlecode.mate-tools</groupId>
+		<artifactId>anna</artifactId>
+		<version>3.61</version>
 	</dependency>
   </dependencies>
 
