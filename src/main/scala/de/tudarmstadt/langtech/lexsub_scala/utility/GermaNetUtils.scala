@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.germanet
+package de.tudarmstadt.langtech.lexsub_scala.utility
 
 import de.tuebingen.uni.sfs.germanet.api.GermaNet
 import scala.collection.JavaConverters._

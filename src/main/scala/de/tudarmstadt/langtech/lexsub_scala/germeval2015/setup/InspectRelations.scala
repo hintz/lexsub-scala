@@ -3,7 +3,7 @@ package de.tudarmstadt.langtech.lexsub_scala.setup
 import scala.collection.JavaConverters._
 import de.tuebingen.uni.sfs.germanet.api.GermaNet
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalGold
-import de.tudarmstadt.langtech.lexsub_scala.germanet.GermaNetUtils
+import de.tudarmstadt.langtech.lexsub_scala.utility.GermaNetUtils
 
 object InspectRelations extends App {
 	val gn = new GermaNet("AIPHES_Data/GermaNet/GN_V90/GN_V90_XML")
