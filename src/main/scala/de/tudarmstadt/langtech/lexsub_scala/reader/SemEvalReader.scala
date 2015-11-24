@@ -28,6 +28,10 @@ class SemEvalGold(goldfile: String) {
       def warn(s: Any) = System.err.println("WARNING: Could not parse line '%s': %s".format(line, s))
       try {
         val Seq(item, solutions) = line.split("::").toSeq
+        if(solutions.trim.isEmpty){
+          System.err.println("WARNING: No gold items for " + item)
+          return None
+        }
         val Seq(lexItem, id) = item.split(" ", 2).toSeq
         val Seq(word, pos) = lexItem.split("\\.", 2).toSeq
         val parsedSolutions = solutions.split("(?<=\\d+);").map(parseSolution)
