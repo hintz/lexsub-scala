@@ -54,3 +54,5 @@ build.log
 /scripts/wortschatz
 /scripts/woxikon
 /arff
+twsi_training
+dependency-reduced-pom.xml

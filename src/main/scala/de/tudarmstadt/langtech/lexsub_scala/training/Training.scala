@@ -44,7 +44,6 @@ object Training {
     trainAndPackage(instances, trainingDir)
   }
   
-  
   /** Trains a classifier with the given training data in the directory given in trainingDir */
   def trainOnGold(data: Iterable[LexSubInstance], features: FeatureAnnotator, trainingFolder: String){
     
@@ -165,7 +164,7 @@ object Training {
   }
   
   
-  private def crossfold[A](items: Seq[A], folds: Int): Iterable[(Seq[A], Seq[A])] = {
+  def crossfold[A](items: Seq[A], folds: Int): Iterable[(Seq[A], Seq[A])] = {
     val heldOutSize = items.size / folds
     for(i <- 0 to folds) yield {
       val start = i * heldOutSize; val end = if(i == folds) items.size else start + heldOutSize
@@ -173,6 +172,11 @@ object Training {
       val rest = items.take(start) ++ items.drop(end)
       (heldOut, rest)
     }
+  }
+  
+  def holdOut[A](items: Seq[A], holdOutPercentage: Double): (Seq[A], Seq[A]) = {
+    val heldOutSize = (items.size * holdOutPercentage).toInt
+    items.splitAt(heldOutSize).swap
   }
   
  /** Calls the training algorithm of the ML backend */

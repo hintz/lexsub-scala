@@ -7,6 +7,11 @@ import de.tudarmstadt.langtech.lexsub_scala.filereader.WordSimilarityFile
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.scala_utilities._
 
+/**
+ * Given a co-occurence file *coocLookup* containing counts (or significance measures),
+ * computes a score for each candidate item, based on the cooc-count overlap with the
+ * context words of the sentence.
+ */
 case class Cooc(val coocLookup: DTLookup) extends FeatureExtractor with FeatureUtils {
   
   def extract(item: Substitutions): Vector[Seq[Feature]] = {

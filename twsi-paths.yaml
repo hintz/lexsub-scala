@@ -1,0 +1,33 @@
+## This is the paths file for lexsub resources. 
+## It should only contain file paths (so lexsub can be moved between different systems)
+## All other preferences should be controlled directly in Settings.scala
+## Please refer to http://yaml.org for syntax
+
+trainingFolder: "twsi_training"
+outputFile: "instances.out"
+
+twsiFolder: "/Users/gerold/AIPHES/Data/lexsub-small/TWSI2_complete/lexsub_task"
+
+Preprocessing:
+    opennlpPOSModel: "resources/models/opennlp/en-pos-perceptron.bin"
+    opennlpTokenModel: "resources/models/opennlp/en-token.bin"
+
+Candidates:
+    masterlist: "resources/twsi/candidates/twsi_masterlist.tsv"
+    wordnet: "resources/twsi/candidates/uby_WordNet.tsv"
+    gold: "resources/twsi/candidates/twsi_gold.tsv"
+
+Embeddings:
+    word2vec: "..."
+    eigenwords: "..."
+
+DT:
+    firstOrder: "../AIPHES_Data/DT/en_lexsub/LMI_s_0_t_0"
+    secondOrder: "../AIPHES_Data/DT/LMI_s_0_t_0_p_1000_l_200"
+    smallSecondOrder: "../AIPHES_Data/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
+
+Coocs:
+    oldCoocs: "../AIPHES_Data/coocs/twsi/cooc_twsi.sorted.txt"
+
+NGrams:
+    web1t: "../AIPHES_Data/Ngrams/web1t/en"

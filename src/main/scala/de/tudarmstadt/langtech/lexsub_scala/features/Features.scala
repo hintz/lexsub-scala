@@ -89,13 +89,3 @@ class AggregatedFeature(val name: String, inner: FeatureExtractor, f: Seq[Double
 case class PrecomputedFeatureExtractor(val cache: LexSubInstance => Vector[Seq[Feature]]) extends FeatureExtractor {
   def extract(item: Substitutions): Vector[Seq[Feature]] = cache(item.lexSubInstance)
 }
-
-/** Supplies the details of each item ("id=substitute") as a feature, useful for debugging */ 
-case object CheatFeature extends LocalFeatureExtractor {
-  def extract(item: SubstitutionItem): Seq[Feature] = {
-    val id = item.lexSubInstance.gold.map { g => g.gold.id}.getOrElse("no_id")
-    val subst = item.substitution
-    val value = id + "=" + subst
-    Seq(new Feature("CheatFeature", value))
-  }
-}
