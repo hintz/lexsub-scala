@@ -15,11 +15,13 @@ class MultiWordNetUtils(language: String) {
     val postag = POS.CATS.collectFirst { case p if p.getKey == pos => p }.get
     //val searchwords = dictionary.searchIndexWords(postag, word, language)
     
-    def aggregateLemmas(synset: Synset): List[String] = {
-      val words = Option(synset.getWords).getOrElse(Array.empty[Word])
-      words.map(_.getLemma).toList
+    def aggregateLemmas(target: PointerTarget) = target match {
+      case synset: Synset =>
+        val words = Option(synset.getWords).getOrElse(Array.empty[Word])
+        words.map(_.getLemma).toList
+      case word: Word => List(word.getLemma)
     }
-    
+
     def aggregateRelations(synset: Synset): List[(String, String)] = {
       def walk(pointer: Pointer): List[(String, String)] = {
           var result = List.empty[(String, String)]
@@ -29,7 +31,7 @@ class MultiWordNetUtils(language: String) {
             val (pointer, level) = todo.pop
             val target = pointer.getTarget
             val label = pointer.getType.getLabel + "_" + level
-            val words = aggregateLemmas(target.asInstanceOf[Synset])
+            val words = aggregateLemmas(target)
             val elements = words.zipAll(Seq.empty, null, label)
             result :::= elements
             if(level < relationDepth)
@@ -43,9 +45,11 @@ class MultiWordNetUtils(language: String) {
     }
     
     val maybeIndex = Option(dictionary.lookupIndexWord(postag, word, language))
+    val senses = maybeIndex.toSeq.flatMap { i =>
+      i.getSenses match { case null => Array.empty[Synset]; case a => a}
+    }
     val subst = for (
-       indexword <- maybeIndex.toSeq;
-       synset <- indexword.getSenses;
+       synset <- senses;
        val related = aggregateRelations(synset);
        val synonymous = aggregateLemmas(synset).zipAll(Seq.empty, null, "synonym");
        w: (String, String) <- synonymous ::: related) yield w
