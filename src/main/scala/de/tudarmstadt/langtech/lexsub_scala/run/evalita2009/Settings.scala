@@ -9,11 +9,12 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 object Settings extends YamlSettings("evalita2009-paths.yaml") {
   
   val evalitaFolder = path("evalitaFolder")
+  val resourcesFolder = path("resourcesFolder")
   
     // Defines complete processing
   implicit lazy val preprocessing = SimpleProcessing(
 
-      tokenize = (s: String) => "[àèéìòóùÀÈÉÌÒÓÙ\\w]+".r.findAllIn(s).toVector, // hopefully I got all here
+      tokenize = (s: String) => "[àèéìòóùÀÈÉÌÒÓÙ'\\w]+".r.findAllIn(s).toVector, // hopefully I got all here
       posTag = tokens => tokens.map(x => "?"),
       lemmatize = identity // no need
    )

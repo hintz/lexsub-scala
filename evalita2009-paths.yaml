@@ -7,29 +7,15 @@ trainingFolder: "training"
 outputFile: "instances.out"
 
 evalitaFolder: "../AIPHES_Data/Evalita2009"
+resourcesFolder: "resources/evalita2009"
 
-SemanticResources:
-    GermaNetFolder: "../AIPHES_Data/GermaNet/GN_V90/GN_V90_XML"
 
 Candidates:
-    germanet: "resources/candidates/germeval_germanet90.tsv"
-    duden: "resources/candidates/germeval_duden.tsv"  
-    masterlist: "resources/candidates/germeval_masterlist.tsv"
+    multiwordnet: ""
 
-Embeddings:
-    word2vec: "../AIPHES_Data/WordEmbeddings/word2vec/denews-vectors.bin"
-    eigenwords: "../AIPHES_Data/WordEmbeddings/eigenwords.300k.200.de.sorted"
 
 DT:
-    trigramBims: "../AIPHES_Data/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_filtered_g1_sorted"
-    trigramSim: "../AIPHES_Data/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_sorted"
-    mateBims: "../AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_BIM_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_sorted"
-    mateSim: "../AIPHES_Data/DT/de70M_mate_lemma/de70M_parsed_lemmatized_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_lexsub"
+    itWac: "todo"
 
 NGrams:
-    web1t: "../AIPHES_Data/web1t/de"
-    germanWebCounts: "../AIPHES_Data/NGrams/GermanWebCounts"
-
-Preprocessing:
-    opennlpPOSModel: "resources/models/opennlp/de-pos-perceptron.bin"
-    opennlpTokenModel: "resources/models/opennlp/de-token.bin"
+    web1t: "../AIPHES_Data/web1t/it"

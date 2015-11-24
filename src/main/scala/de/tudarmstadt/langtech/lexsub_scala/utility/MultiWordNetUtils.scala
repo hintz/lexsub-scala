@@ -1,4 +1,4 @@
-package de.tudarmstadt.langtech.lexsub_scala.multiwordnet
+package de.tudarmstadt.langtech.lexsub_scala.utility
 
 import org.itc.mwn._
 import java.util.Date
@@ -11,7 +11,7 @@ class MultiWordNetUtils(language: String) {
   // Load Dictionary
   val dictionary = new MysqlDictionary
 
-  def lookup(word: String, pos: String, relationDepth: Int = 10) {
+  def lookup(word: String, pos: String, relationDepth: Int = 10) =  {
     val postag = POS.CATS.collectFirst { case p if p.getKey == pos => p }.get
     //val searchwords = dictionary.searchIndexWords(postag, word, language)
     
@@ -50,14 +50,14 @@ class MultiWordNetUtils(language: String) {
        val synonymous = aggregateLemmas(synset).zipAll(Seq.empty, null, "synonym");
        w: (String, String) <- synonymous ::: related) yield w
        
-    println(subst)
+    subst
   }
   
 }
 
 // Example:
-/*
+
 object TestMWN extends App {
-  new MultiWordNetUtils("italian").lookup("parlare", "v")
+  new MultiWordNetUtils("italian").lookup("parlare", "v") foreach println
 }
-*/
+
