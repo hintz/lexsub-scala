@@ -6,13 +6,13 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
 case class Token(val word: String, val pos: String, val lemma: String)
 
 /** A pre-processed sentence */
-case class Sentence(val tokens: Vector[Token]) // val sent: String,
+case class Sentence(val tokens: Vector[Token], val edges: List[DepEdge] = List.empty)
 
 /** Dependency edges */
 case class DepEdge(label: String, from: Int, to: Int)
 
 /** A pre-processed item */
-@SerialVersionUID(1L)
+@SerialVersionUID(2L)
 case class LexSubInstance(val sentence: Sentence, val headIndex: Int, gold: Option[SemEvalItem]){
   def head: Token = sentence.tokens(headIndex)
   def id: String = gold.map(_.sentence.id) getOrElse noGold
