@@ -4,18 +4,16 @@
 ## Please refer to http://yaml.org for syntax
 
 trainingFolder: "training"
-outputFile: "instances.out"
-
-evalitaFolder: "../AIPHES_Data/Evalita2009"
 resourcesFolder: "resources/evalita2009"
-
+outputFile: "instances.out"
+evalitaFolder: "../AIPHES_Data/Evalita2009"
 
 Candidates:
-    multiwordnet: ""
-
+    multiwordnet: "resources/evalita2009/candidates/mwn.tsv"
 
 DT:
-    itWac: "todo"
+    itWac_1stOrder: "../AIPHES_Data/DT/itWac_trigram/FreqSigLMI_p_1000.sorted"
+    itWac_2ndOrder: "../AIPHES_Data/DT/itWac_trigram/FreqSigLMI_p_1000_SimSortlimit_50_minsim_2.sorted"
 
 NGrams:
     web1t: "../AIPHES_Data/web1t/it"
