@@ -43,14 +43,12 @@ case class MateProcessing(
         DepEdge(label, from - 1, to)
     }
 
-    println(deps.toVector)
-
-    Sentence(out.toVector)
+    Sentence(out.toVector, deps.toList)
   }
 
 }
 
-object MateToolsTest {
+object TestMateTools {
 
   val Models = Map(
     "en" -> Map(
@@ -63,14 +61,12 @@ object MateToolsTest {
 
   def main(args: Array[String]) {
 
-    val german = Array("<root>", "Peter", "hat", "eine", "Katze", ",", "die", "gerne", "Mäuse", "fängt", ".")
-
     val mate = MateProcessing(_.split(" "),
       taggerModel = Some(Models("en")("tagger")),
       lemmatizerModel = Some(Models("en")("lemmatizer")),
       parserModel = Some(Models("en")("parser")))
 
-    println(mate("Peter has a cat who like catching mice ."))
+    println(mate("Peter has a cat who likes catching mice ."))
 
   }
 }
