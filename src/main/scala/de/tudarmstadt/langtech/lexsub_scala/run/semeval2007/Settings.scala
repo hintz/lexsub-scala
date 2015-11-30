@@ -61,7 +61,7 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
     lazy val gold = new CandidateFile(path("Candidates", "gold"), true)
 
     // shortcut to select candidate lists
-    lazy val trainingList = gold
+    lazy val trainingList = wordnet
     lazy val systemList = wordnet
   }
 
@@ -105,11 +105,10 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
 
   // setup features
   lazy val features = new FeatureAnnotator(
-    SentenceIDFeature,
-    SubstitutionFeature,
-    
+    //SentenceIDFeature,
+    //SubstitutionFeature,
     //Cooc(cooc),
-    SalientDTFeatures(dts.smallFirstOrder),
+    SalientDTFeatures(dts.firstOrder),
     WordSimilarity(dts.secondOrder),
     BinaryWordSimilarity(dts.secondOrder, 100),
     AllThresholdedDTFeatures(
@@ -122,7 +121,6 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
     NumLexSemRelations(candidates.systemList),
     LexSemRelation(candidates.systemList) 
     )
-  
   // Others:
   // WordEmbeddingDistanceVectorsSet(embeddings.word2vec, 0 to 2, 0 to 2, 5),
   // WordEmbeddingSimilarity(embeddings.word2vec)
