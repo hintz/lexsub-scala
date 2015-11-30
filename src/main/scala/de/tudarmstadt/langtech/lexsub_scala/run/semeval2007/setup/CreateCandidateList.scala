@@ -6,8 +6,8 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.lexsub_scala.run.semeval2007.Settings
 
 object CreateCandidateList extends App {
-  val test = Settings.testData
-  val trial = Settings.trialData
+  val test = Settings.testReader
+  val trial = Settings.trialReader
   val allGold = test.gold.items ++ trial.gold.items
   
   def extractLemmas(data: SemEvalData) = data.sentences.map(_.target).distinct
@@ -21,5 +21,5 @@ object CreateCandidateList extends App {
     val candidates = goldItem.substitutionWordsWithoutMultiwords
     candidates.map(c => Seq(target.word, target.pos, c, "gold_candidate").mkString("\t"))
   }.sorted.distinct
-  io.write(Settings.resourcesFolder + "/candidates/semeval_gold.tsv", goldCandidates.mkString("\n"))
+  io.write(Settings.resourcesFolder + "/candidates/gold.tsv", goldCandidates.mkString("\n"))
 }

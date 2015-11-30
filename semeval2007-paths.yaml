@@ -14,13 +14,13 @@ Preprocessing:
     opennlpTokenModel: "resources/models/opennlp/en-token.bin"
 
 Candidates:
-    masterlist: "resources/semeval/candidates/masterlist.tsv"
-    wordnet: "resources/semeval/candidates/uby_WordNet.tsv"
-    gold: "resources/semeval/candidates/gold.tsv"
+    masterlist: "resources/semeval2007/candidates/masterlist.tsv"
+    wordnet: "resources/semeval2007/candidates/uby_WordNet.tsv"
+    gold: "resources/semeval2007/candidates/gold.tsv"
 
 Embeddings:
-    word2vec: "..."
-    eigenwords: "..."
+    levyWords: "../AIPHES_Data/WordEmbeddings/en/levy/lexsub_words.sorted"
+    levyContexts: "../AIPHES_Data/WordEmbeddings/en/levy/lexsub_contexts.sorted"
 
 DT:
     firstOrder: "../AIPHES_Data/DT/en_lexsub/LMI_s_0_t_0"

@@ -47,12 +47,12 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
 
     
   // plain data
-  val trialData = new SemEvalReader(semevalFolder, "trial/lexsub_trial.xml", "trial/gold.trial")
-  val testData = new SemEvalReader(semevalFolder, "test/lexsub_test.xml", "test/gold.gold")
+  val trialReader = new SemEvalReader(semevalFolder, "trial/lexsub_trial.xml", "trial/gold.trial")
+  val testReader = new SemEvalReader(semevalFolder, "test/lexsub_test.xml", "test/gold.gold")
   
   // parsed daat
-  val semevalTrial = io.lazySerialized("cache_semeval_trial.ser") { preprocessing.parseSemEval(trialData.items) }
-  val semevalTest = io.lazySerialized("cache_semeval_test.ser") { preprocessing.parseSemEval(testData.items) }
+  val semevalTrial = io.lazySerialized("cache/semeval_trial.ser") { preprocessing.parseSemEval(trialReader.items) }
+  val semevalTest = io.lazySerialized("cache/semeval_test.ser") { preprocessing.parseSemEval(testReader.items) }
   
   // Candidate lists
   object candidates {
@@ -73,8 +73,8 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
   // Word embeddings
   object embeddings {
     val word2vecPruning = Integer.MAX_VALUE
-    //lazy val word2vec = Word2VecLookup(path("Embeddings", "word2vec"), word2vecPruning)
-    //lazy val eigenword = WordVectorFileLookup(path("Embeddings", "eigenwords"))
+    lazy val levyWords = WordVectorFileLookup(path("Embeddings", "levyWords"))
+    lazy val levyContexts = WordVectorFileLookup(path("Embeddings", "levyContexts"))
   }
 
   // DTs

@@ -18,8 +18,8 @@ Candidates:
     gold: "resources/twsi/candidates/twsi_gold.tsv"
 
 Embeddings:
-    word2vec: "..."
-    eigenwords: "..."
+    levyWords: "../AIPHES_Data/WordEmbeddings/en/levy/lexsub_words.sorted"
+    levyContexts: "../AIPHES_Data/WordEmbeddings/en/levy/lexsub_contexts.sorted"
 
 DT:
     firstOrder: "../AIPHES_Data/DT/en_lexsub/LMI_s_0_t_0"

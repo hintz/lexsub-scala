@@ -48,12 +48,12 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
     lemmatize = identity // no need
     )
 
-  val semevalData = io.lazySerialized("cache_twsi_data.ser") {
+  val semevalData = io.lazySerialized("cache/twsi_data.ser") {
     new SemEvalReader(twsiFolder, "twsi2_clean.xml", "twsi2.gold").items
   }
 
   // parse the data
-  lazy val lexsubData = io.lazySerialized("cache_twsi_parsed.ser") {
+  lazy val lexsubData = io.lazySerialized("cache/twsi_parsed.ser") {
     preprocessing.parseSemEval(semevalData)
   }
 
