@@ -6,7 +6,7 @@
 trainingFolder: "semeval_training"
 outputFile: "instances.out"
 
-semevalFolder: "../AIPHES_Data/SemEval2007"
+semevalFolder: "../Tasks/SemEval2007"
 resourcesFolder: "resources/semeval2007"
 
 Preprocessing:
@@ -19,16 +19,16 @@ Candidates:
     gold: "resources/semeval2007/candidates/gold.tsv"
 
 Embeddings:
-    levyWords: "../AIPHES_Data/WordEmbeddings/en/levy/lexsub_words.sorted"
-    levyContexts: "../AIPHES_Data/WordEmbeddings/en/levy/lexsub_contexts.sorted"
+    levyWords: "resources/WordEmbeddings/en/levy/lexsub_words.sorted"
+    levyContexts: "resources/WordEmbeddings/en/levy/lexsub_contexts.sorted"
 
 DT:
-    firstOrder: "../AIPHES_Data/DT/en_lexsub/LMI_s_0_t_0"
-    secondOrder: "../AIPHES_Data/DT/LMI_s_0_t_0_p_1000_l_200"
-    smallSecondOrder: "../AIPHES_Data/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
+    firstOrder: "resources/DT/en_lexsub/LMI_s_0_t_0"
+    secondOrder: "resources/DT/LMI_s_0_t_0_p_1000_l_200"
+    smallSecondOrder: "resources/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
 
 Coocs:
-    oldCoocs: "../AIPHES_Data/coocs/twsi/cooc_twsi.sorted.txt"
+    coocs: "TODO"
 
 NGrams:
-    web1t: "../AIPHES_Data/Ngrams/web1t/en"
+    web1t: "resources/Ngrams/web1t/en"
