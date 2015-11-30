@@ -31,4 +31,4 @@ Coocs:
     semeval: "TODO"
 
 NGrams:
-    web1t: "resources/Ngrams/web1t/en"
+    web1t: "resources/NGrams/web1t/en"
