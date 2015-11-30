@@ -7,18 +7,12 @@ syntax: glob
 #*.off
 *.old
 
-
-
 # eclipse conf file
 .settings
 .classpath
 .project
 .manager
 .scala_dependencies
-
-# idea
-.idea
-*.iml
 
 # building
 target
@@ -35,13 +29,9 @@ build.log
 .CVS
 .hg*
 
-#SHITTY output not in target directory
-build.log
-
 # other stuff
 /AIPHES_Data
 /resources
-/training
 
 # switch to regexp syntax.
 #  syntax: regexp
@@ -54,5 +44,9 @@ build.log
 /scripts/wortschatz
 /scripts/woxikon
 /arff
+training
+semeval_training
+germeval_training
 twsi_training
 dependency-reduced-pom.xml
+semeval_training
