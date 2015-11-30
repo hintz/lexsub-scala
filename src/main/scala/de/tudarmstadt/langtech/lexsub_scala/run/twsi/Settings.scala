@@ -94,7 +94,7 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // how to define equivalence in this DT
       
       
-   lazy val smallSecondOrder = DTLookup("LMI_small2ndOrder", new WordSimilarityFile(path("DT", "smallSecondOrder"), identity, matchPrefix = true),
+   lazy val smallFirstOrder = DTLookup("LMI_small1stOrder", new WordSimilarityFile(path("DT", "smallFirstOrder"), identity, matchPrefix = true),
       token => token.lemma.toLowerCase + "#" + token.pos.take(1).toUpperCase, // how to look up token in this DT
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // how to define equivalence in this DT
 
@@ -113,11 +113,11 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
     SubstitutionFeature,
     
     Cooc(cooc),
-    //SalientDTFeatures(dts.firstOrder),
-    WordSimilarity(dts.smallSecondOrder),
-    BinaryWordSimilarity(dts.smallSecondOrder, 100),
+    SalientDTFeatures(dts.smallFirstOrder),
+    WordSimilarity(dts.secondOrder),
+    BinaryWordSimilarity(dts.secondOrder, 100),
     AllThresholdedDTFeatures(
-      Seq(dts.smallSecondOrder),
+      Seq(dts.secondOrder),
       Seq(5, 20, 50, 100, 200)),
     PosContextWindows(0 to 1, 0 to 1, 3),
     PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),

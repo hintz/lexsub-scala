@@ -24,11 +24,11 @@ Embeddings:
 
 DT:
     firstOrder: "resources/DT/en_lexsub/LMI_s_0_t_0"
-    secondOrder: "resources/DT/LMI_s_0_t_0_p_1000_l_200"
-    smallSecondOrder: "resources/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
+    secondOrder: "resources/DT/en_lexsub/LMI_s_0_t_0_p_1000_l_200"
+    smallFirstOrder: "resources/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
 
 Coocs:
-    coocs: "TODO"
+    semeval: "TODO"
 
 NGrams:
     web1t: "resources/Ngrams/web1t/en"

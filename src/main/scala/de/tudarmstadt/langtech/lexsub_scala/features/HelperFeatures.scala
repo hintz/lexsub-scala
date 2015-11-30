@@ -3,7 +3,7 @@ package de.tudarmstadt.langtech.lexsub_scala.features
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import org.cleartk.classifier.Feature
 
-/** Supplies the details of each item ("id=substitute") as a feature, useful for debugging */ 
+/** Supplies the id each item ("SentenceId=id") as a feature, useful for debugging */ 
 case object SentenceIDFeature extends LocalFeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature] = {
     val id = item.lexSubInstance.gold.map { g => g.gold.id}.getOrElse("no_id")
@@ -11,7 +11,7 @@ case object SentenceIDFeature extends LocalFeatureExtractor {
   }
 }
 
-/** Supplies the details of each item ("id=substitute") as a feature, useful for debugging */ 
+/** Supplies the substitution item ("SubstitutionItem=substitute") as a feature, useful for debugging */ 
 case object SubstitutionFeature extends LocalFeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature] = {
     val id = item.lexSubInstance.gold.map { g => g.gold.id}.getOrElse("no_id")
