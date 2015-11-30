@@ -50,3 +50,4 @@ germeval_training
 twsi_training
 dependency-reduced-pom.xml
 semeval_training
+instances.out
