@@ -105,19 +105,40 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
 
   // setup features
   lazy val features = new FeatureAnnotator(
-    //SentenceIDFeature,
-    //SubstitutionFeature,
-    //Cooc(cooc),
-    SalientDTFeatures(dts.firstOrder),
-    WordSimilarity(dts.secondOrder),
-    BinaryWordSimilarity(dts.secondOrder, 100),
+    ///SentenceIDFeature,
+    ///SubstitutionFeature,
+    ///Cooc(cooc),
+    
+    // to what extend the context characterizes the subst
+    SalientDTFeatures(dts.smallFirstOrder),
+    
+    // similarity between target and subst
+    /// WordSimilarity(dts.secondOrder),
+    
+    // top-k similar words
     AllThresholdedDTFeatures(
-      Seq(dts.secondOrder),
+      dts = Seq(dts.secondOrder),
+      restrictToContext = Seq(false),
       Seq(5, 20, 50, 100, 200)),
+      
+    // top-k similar context-features, with and without restriction to sent context
+    AllThresholdedDTFeatures(
+      dts = Seq(dts.firstOrder),
+      restrictToContext = Seq(true, false),
+      Seq(5, 20, 50, 100, 200)),
+      
+    // boolean feature if target/substitute are similar
+    BinaryWordSimilarity(dts.secondOrder, 100),
+      
+    // syntactic features
     PosContextWindows(0 to 1, 0 to 1, 3),
+    
+    // freq features
     PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     ConjunctionFreqRatio(ngramCounts, Seq("and", "or", ","), 0, 0),
+    
+    // lexical resource features
     NumLexSemRelations(candidates.systemList),
     LexSemRelation(candidates.systemList) 
     )

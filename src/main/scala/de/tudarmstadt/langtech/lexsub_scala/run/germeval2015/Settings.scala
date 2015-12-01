@@ -109,7 +109,7 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
   
   lazy val ngramCounts = ngrams.web1t
   
-  // setup features
+  // setup features // FIXME: Fix these features according to twsi/semeval
   lazy val features = new FeatureAnnotator(
       Cooc(cooc),
       WordSimilarity(dts.mateSim),
@@ -120,6 +120,7 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
       BinaryWordSimilarity(dts.trigramSim, 100),
       AllThresholdedDTFeatures(
           Seq(dts.mateBims, dts.mateSim,  dts.trigramBims, dts.trigramSim), 
+          Seq(true, false),
           Seq(5, 20, 50, 100, 200)),
       //ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false, false),
       //ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false, false),

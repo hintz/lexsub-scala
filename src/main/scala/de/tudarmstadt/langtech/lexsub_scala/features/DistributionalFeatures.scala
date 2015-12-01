@@ -50,7 +50,7 @@ case class BinaryWordSimilarity(dt: DTLookup, k: Int) extends FeatureExtractor  
 
 
 /** Feature measuring the overlap between a target word and a substitute given a DT with arbitrary context features.
- *  Note: This feature is "static" for any given pair, i.e. not based on sentence context!
+ *  @param useContextFilter: restricts the featureoverlap 
  */
 case class ThresholdedDTOverlap(dt: DTLookup, thresholds: Seq[Int], useLMIScores: Boolean, useContextFilter: Boolean) 
 extends SmartFeature[ThresholdedDTCache] {  
@@ -100,7 +100,7 @@ extends SmartFeature[ThresholdedDTCache] {
 case class ThresholdedDTCache(val origSimilar: Seq[(String, Double)], val contextFilter: String => Boolean)
 
 /** Similarity based on "salient" DT features.
- *  A DT-feature is salient if it occurs in the sentence context, based on the equivalence function in the given DTLookup
+ *  A DT-feature is salient if it occurs in the sentence context (based on the equivalence function in the given DTLookup)
  *  This feature simply aggregates the weights of all salient features and normalized over all candidates
  * 
  *  Note: 
@@ -131,6 +131,6 @@ case class SalientDTFeatures(dt: DTLookup) extends FeatureExtractor {
 }
 
 /** Aggregates multiple ThresholdedDTOverlap features based on the given parameters */
-case class AllThresholdedDTFeatures(dts: Seq[DTLookup], thresholds: Seq[Int])
-  extends Features((for (dt <- dts; useLMI <- Seq(true, false); useContext <- Seq(true, false))
+case class AllThresholdedDTFeatures(dts: Seq[DTLookup], restrictToContext: Seq[Boolean], thresholds: Seq[Int])
+  extends Features((for (dt <- dts; useLMI <- Seq(true, false); useContext <- restrictToContext)
     yield ThresholdedDTOverlap(dt, thresholds, useLMI, useContext)): _*)

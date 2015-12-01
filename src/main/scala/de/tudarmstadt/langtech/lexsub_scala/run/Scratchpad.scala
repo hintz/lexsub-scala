@@ -34,6 +34,9 @@ object Scratchpad extends App {
   val candidates = Vector("acquire", "purchase", "learn")
   val foo = Substitutions(item, candidates)
   
+  
+  println(Settings.features.extract(foo))
+  
   val levysFeature = SyntaxEmbeddingFeature(
       Settings.embeddings.levyWords, 
       Settings.embeddings.levyContexts,
@@ -41,5 +44,8 @@ object Scratchpad extends App {
  
   val output = levysFeature.extract(foo)
   println(output)
+  
+  
+
 
 }
