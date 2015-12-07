@@ -16,6 +16,8 @@ import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import opennlp.tools.tokenize.TokenizerME
 import opennlp.tools.tokenize.TokenizerModel
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
+import de.tudarmstadt.langtech.lexsub_scala.utility.MaltProcessing
+import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
 
 /** Nearly all of lexsub-scala can be configured in this file */
 object Settings extends YamlSettings("semeval2007-paths.yaml") {
@@ -30,21 +32,25 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
   val targetsPosFile = resourcesFolder + "/targets-pos.txt"
   val vocabFile = resourcesFolder + "/vocab.txt"
 
-  // Defines complete processing
-  implicit lazy val preprocessing = SimpleProcessing(
-    tokenize = new SimpleProcessing.Tokenizer {
-      lazy val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpTokenModel")))))
-      def apply(sent: String) = model.tokenize(sent)
-    },
+  lazy val tokenizer = new SimpleProcessing.Tokenizer {
+    lazy val model = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "opennlpTokenModel")))))
+    def apply(sent: String) = model.tokenize(sent)
+  }
 
-    posTag = new SimpleProcessing.PosTagger {
-      lazy val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "opennlpPOSModel"))))
-      def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
-    },
+  lazy val tagger = new SimpleProcessing.PosTagger {
+    lazy val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "opennlpPOSModel"))))
+    def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
+  }
 
-    lemmatize = identity // no need
-    )
+  // without parsing:
+  // implicit lazy val preprocessing = SimpleProcessing(tokenizer, tagger, identity)
 
+  // with parsing
+  implicit lazy val preprocessing: LexSubProcessing = MaltProcessing(
+    tokenizer = tokenizer,
+    tagger = tagger,
+    lemmatizer = identity,
+    maltModel = "resources/models/malt/engmalt.poly-1.7.mco")
     
   // plain data
   val trialReader = new SemEvalReader(semevalFolder, "trial/lexsub_trial.xml", "trial/gold.trial")
@@ -59,10 +65,11 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
     lazy val wordnet = new CandidateFile(path("Candidates", "wordnet"), true)
     lazy val masterlist = new CandidateFile(path("Candidates", "masterlist"), true)
     lazy val gold = new CandidateFile(path("Candidates", "gold"), true)
+    lazy val globalWordnetHyHo = new CandidateFile("resources/wordnet-hy-ho", true)
 
     // shortcut to select candidate lists
-    lazy val trainingList = wordnet
-    lazy val systemList = wordnet
+    lazy val trainingList = globalWordnetHyHo
+    lazy val systemList = globalWordnetHyHo
   }
 
   // N-gram counts
