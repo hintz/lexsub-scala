@@ -2,7 +2,7 @@ package de.tudarmstadt.langtech.lexsub_scala.run.semeval2007
 
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.features.SyntaxEmbeddingFeature
-import de.tudarmstadt.langtech.lexsub_scala.features.SyntacticEmbeddingCombinator.Add
+import de.tudarmstadt.langtech.lexsub_scala.features.SyntacticEmbeddingCombinator._
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
@@ -20,7 +20,7 @@ object RunMelamud extends App {
   val melamudsFeature = SyntaxEmbeddingFeature(
     Settings.embeddings.levyWords, 
     Settings.embeddings.levyContexts,
-    Add)
+    BalAdd)
   
    // define lexsub system
    val lexsub = LexSubExpander(

@@ -57,8 +57,8 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
   val testReader = new SemEvalReader(semevalFolder, "test/lexsub_test.xml", "test/gold.gold")
   
   // parsed daat
-  val semevalTrial = io.lazySerialized("cache/semeval_trial.ser") { preprocessing.parseSemEval(trialReader.items) }
-  val semevalTest = io.lazySerialized("cache/semeval_test.ser") { preprocessing.parseSemEval(testReader.items) }
+  lazy val semevalTrial = io.lazySerialized("cache/semeval_trial.ser"){ preprocessing.parseSemEval(trialReader.items) }
+  lazy val semevalTest = io.lazySerialized("cache/semeval_test.ser"){ preprocessing.parseSemEval(testReader.items) }
   
   // Candidate lists
   object candidates {
