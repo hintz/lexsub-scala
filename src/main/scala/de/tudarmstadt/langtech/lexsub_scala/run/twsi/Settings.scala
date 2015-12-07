@@ -9,7 +9,7 @@ import de.tudarmstadt.langtech.lexsub_scala.filereader._
 import de.tudarmstadt.langtech.lexsub_scala.features.{ Cooc, EditDistance, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity, Word2VecLookup }
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
-import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
+import de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import opennlp.tools.tokenize.TokenizerME

@@ -10,7 +10,7 @@ import de.tudarmstadt.langtech.lexsub_scala.features.{ Cooc, EditDistance, DTLoo
 import de.tudarmstadt.langtech.lexsub_scala.types.SimpleProcessing
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
-import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
+import de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import opennlp.tools.tokenize.TokenizerME
