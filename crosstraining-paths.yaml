@@ -7,7 +7,7 @@
 Tasks:
     twsiFolder: "../Tasks/TWSI2_complete/lexsub_task"
     semevalFolder: "../Tasks/SemEval2007"
-    germEvalFolder: "../Tasks/GermEval2015"
+    germevalFolder: "../Tasks/GermEval2015"
 
 Preprocessing:
     English:
