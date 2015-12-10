@@ -21,17 +21,7 @@ import opennlp.tools.tokenize.TokenizerModel
 
 object Settings extends YamlSettings("crosstraining-paths.yaml") {
   
-  object English {
-    lazy val data = EnglishData
-    lazy val features = mkFeatures(data)
-  }
-  
-  object German {
-    lazy val data = GermanData
-    lazy val features = mkFeatures(data)
-  }
-
-  object GermanData extends LanguageData {
+  object German extends LanguageData {
 
     implicit lazy val preprocessing = SimpleProcessing(
       tokenize = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector, // still works best for German
@@ -52,9 +42,11 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     def trainingData = germevalTraining
     
     val trainingFolder = "trainingGerman"
+    
+    lazy val features = mkFeatures(this)
   }
 
-  object EnglishData extends LanguageData {
+  object English extends LanguageData {
 
     lazy val tokenizer = new SimpleProcessing.Tokenizer {
       lazy val model: TokenizerME = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "English", "opennlpTokenModel")))))
@@ -78,6 +70,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     val conjunctions = Seq("and", "or", ",")
     
     val trainingFolder = "trainingEnglish"
+    
+    lazy val features = mkFeatures(this)
   }
 
   def mkFeatures(lang: LanguageData): FeatureAnnotator = {

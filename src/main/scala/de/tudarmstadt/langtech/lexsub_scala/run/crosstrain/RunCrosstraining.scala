@@ -11,52 +11,41 @@ import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.Scorer
 
 object RunCrosstraining extends App {
+ 
+  // train all languages on their own data
+  trainLanguage(Settings.English)
+  trainLanguage(Settings.German)
   
-  println("Training on German..")
-  Training.train(Settings.German.data.trainingData,
-    Settings.German.data.candidates,
-    Settings.German.features,
-    Settings.German.data.trainingFolder)
-
-  println("Training on English..")
-  Training.train(Settings.English.data.trainingData,
-    Settings.English.data.candidates,
-    Settings.English.features,
-    Settings.English.data.trainingFolder)
-
   // create lexsub systems
-  val englishFromEnglish = LexSubExpander(
-    Settings.English.data.candidates,
-    Settings.English.features,
-    ClassifierScorer(Settings.English.data.trainingFolder))
+  val englishFromEnglish = mkLexsub(Settings.English, Settings.English)
+  val germanFromEnglish = mkLexsub(Settings.German, Settings.English)
+  val englishFromGerman = mkLexsub(Settings.English, Settings.German)
+  val germanFromGerman = mkLexsub(Settings.German, Settings.German)
 
-  val germanFromEnglish = LexSubExpander(
-    Settings.German.data.candidates,
-    Settings.German.features,
-    ClassifierScorer(Settings.English.data.trainingFolder))
-
-  val englishFromGerman = LexSubExpander(
-    Settings.English.data.candidates,
-    Settings.English.features,
-    ClassifierScorer(Settings.German.data.trainingFolder))
-
-  val germanFromGerman = LexSubExpander(
-    Settings.German.data.candidates,
-    Settings.German.features,
-    ClassifierScorer(Settings.German.data.trainingFolder))
-
-  evaluate("English from English model", Settings.English.data.trainingData, englishFromEnglish)
-  evaluate("German from English model", Settings.German.data.trainingData, germanFromEnglish)
-  evaluate("German from German model", Settings.German.data.trainingData, germanFromGerman)
-  evaluate("English from German model", Settings.English.data.trainingData, englishFromGerman)
+  evaluate("English from English model", Settings.English.trainingData, englishFromEnglish)
+  evaluate("German from English model", Settings.German.trainingData, germanFromEnglish)
+  evaluate("German from German model", Settings.German.trainingData, germanFromGerman)
+  evaluate("English from German model", Settings.English.trainingData, englishFromGerman)
 
   println("Done.")
+  
+  def trainLanguage(language: LanguageData){
+    println("Training " + language + "..")
+    Training.train(
+      language.trainingData,
+      language.candidates,
+      language.features,
+      language.trainingFolder)
+  }
+  
+  def mkLexsub(targetLanguage: LanguageData, model: LanguageData): LexSub = 
+    LexSubExpander(targetLanguage.candidates, targetLanguage.features, ClassifierScorer(model.trainingFolder))
 
-  def evaluate(title: String, evalData: Seq[LexSubInstance], system: LexSub): String = {
+  def evaluate(title: String, evalData: Seq[LexSubInstance], system: LexSub) {
     val outcomes = system(evalData)
     val results = Outcomes.collect(evalData, outcomes)
     val oot = Outcomes.evaluate(results, 10)
     val best = Outcomes.evaluate(results, 1)
-    title + ": best=[%s] oot=[%s]".format(best, oot)
+    println(title + ": best=[%s] oot=[%s]".format(best, oot))
   }
 }
