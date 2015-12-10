@@ -1,6 +1,7 @@
 package de.tudarmstadt.langtech.lexsub_scala.filereader
 
 import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
+import de.tudarmstadt.langtech.scala_utilities.index_file.CachedPrefixIndexedFile
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.scala_utilities.{strings, io}
 import scalaz.Memo
@@ -18,7 +19,7 @@ class WordSimilarityFile[Elem](val dt_filename: String,
   val Splitter = "\t"
   
   // the file backing this DT
-  val file = new PrefixIndexedFile(dt_filename)
+  val file = new CachedPrefixIndexedFile(dt_filename)
   
   /** Yields similar words based on this DT */
   def similar(s: String) = sim(s)
