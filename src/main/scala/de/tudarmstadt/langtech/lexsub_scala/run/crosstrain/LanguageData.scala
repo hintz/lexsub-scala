@@ -22,7 +22,7 @@ trait LanguageData {
 
   // each language can supply a test and trainset
   def trainingData: Seq[LexSubInstance]
-  def testData: Seq[LexSubInstance] = Seq.empty
+  def testData: Seq[LexSubInstance]
   def allData: Seq[LexSubInstance] = trainingData ++ testData
   
   // folder where this language's model will be stored

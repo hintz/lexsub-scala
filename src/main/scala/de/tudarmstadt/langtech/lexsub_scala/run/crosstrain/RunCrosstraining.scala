@@ -22,10 +22,10 @@ object RunCrosstraining extends App {
   val englishFromGerman = mkLexsub(Settings.English, Settings.German)
   val germanFromGerman = mkLexsub(Settings.German, Settings.German)
 
-  evaluate("English from English model", Settings.English.trainingData, englishFromEnglish)
-  evaluate("German from English model", Settings.German.trainingData, germanFromEnglish)
-  evaluate("German from German model", Settings.German.trainingData, germanFromGerman)
-  evaluate("English from German model", Settings.English.trainingData, englishFromGerman)
+  evaluate("English from English model", Settings.English.testData, englishFromEnglish)
+  evaluate("German from English model", Settings.German.testData, germanFromEnglish)
+  evaluate("German from German model", Settings.German.testData, germanFromGerman)
+  evaluate("English from German model", Settings.English.testData, englishFromGerman)
 
   println("Done.")
   

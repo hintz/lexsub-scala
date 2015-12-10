@@ -38,8 +38,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
     lazy val germevalTraining = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "train-dataset")
     lazy val germevalTest = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "test-dataset")
-
     def trainingData = germevalTraining
+    def testData = germevalTest
     
     val trainingFolder = "trainingGerman"
     
@@ -60,9 +60,10 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
     implicit lazy val preprocessing = SimpleProcessing(tokenizer, tagger, identity)
     
-    lazy val semevalTraining = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "trial/lexsub_trial.xml", "trial/gold.trial")
+    lazy val semevalTrial = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "trial/lexsub_trial.xml", "trial/gold.trial")
     lazy val semevalTest = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "test/lexsub_test.xml", "test/gold.gold")
-    def trainingData = semevalTraining
+    def trainingData = semevalTest
+    def testData = semevalTrial
 
     lazy val globalWordnetHyHo = new CandidateFile("resources/wordnet-hy-ho", true)
     lazy val candidates = globalWordnetHyHo
