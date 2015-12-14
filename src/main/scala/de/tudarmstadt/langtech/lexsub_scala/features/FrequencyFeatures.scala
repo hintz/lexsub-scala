@@ -116,8 +116,13 @@ case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends Feat
   }
 }
 
-
-case class ConjunctionFreqRatio(nGrams: NGramLookup, conjunctions: Seq[String], left: Int, right: Int)
+/**
+ * @param the set of conjunctions to create features for
+ * @param left additional left tokens
+ * @param right additional right tokens
+ * @param includeConjuction if true, the language-dependant conjuction is added to the feature, if false only presence of conjuction is indicated
+ */
+case class ConjunctionFreqRatio(nGrams: NGramLookup, conjunctions: Seq[String], left: Int, right: Int, includeConjunction: Boolean = true)
   extends SmartFeature[Option[(Vector[String], Long)]] {
 
   def global(item: LexSubInstance): Option[(Vector[String], Long)] = {
@@ -146,7 +151,7 @@ case class ConjunctionFreqRatio(nGrams: NGramLookup, conjunctions: Seq[String], 
     yield {
       if (origFreq < 10e-10) return Seq.empty // if original not found, don't yield any feature
       val ratio = replacedFreq.toDouble / origFreq
-      val name = "ConjRatio_%d_%d_%s".format(left, right, conj)
+      val name = "ConjRatio_%d_%d%s".format(left, right, if(includeConjunction) "_" + conj else "")
       new Feature(name, ratio)
     }
     features
