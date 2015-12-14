@@ -7,6 +7,8 @@ import de.tudarmstadt.langtech.scala_utilities.{collections, compute}
 import java.util.logging.Logger
 import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
+import de.tudarmstadt.langtech.scala_utilities.cache.FileBackedCache
+import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 
 
 trait NGramLookup {
@@ -23,6 +25,8 @@ case class Web1TLookup(web1tFolder: String, maxN: Int = 5) extends NGramLookup {
   try { Logger.getLogger("com.googlecode.jweb1t.JWeb1TSearcher").setLevel(java.util.logging.Level.OFF) }
   catch { case e: Exception => System.err.println("Web1T logging could not be disabled") }
   
+  val cache = new FileBackedCache(lookup, LexsubUtil.getCachefile(web1tFolder))
+  
   val web1t: JWeb1TSearcher = {
     if(!new File(web1tFolder, "index-1gms").exists){
       System.err.printf("Web1T index in folder %s does not exist, creating..\n", web1tFolder)
@@ -32,7 +36,8 @@ case class Web1TLookup(web1tFolder: String, maxN: Int = 5) extends NGramLookup {
     new JWeb1TSearcher(new File(web1tFolder), 1, maxN)
   }
   
-  def apply(tokens: String*) = web1t.getFrequency(tokens :_*)
+  private def lookup(tokens: List[String]): java.lang.Long = web1t.getFrequency(tokens :_*)
+  def apply(tokens: String*) = cache(tokens.toList)
   
   override def toString = "Web1TLookup(%s)".format(web1tFolder.replaceAll("""[\/\\]+""", "_"))
 }

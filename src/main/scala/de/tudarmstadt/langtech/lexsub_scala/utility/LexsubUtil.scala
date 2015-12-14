@@ -11,12 +11,14 @@ import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
 
 object LexsubUtil {
   
+  def getCachefile(originalPath: String): String = "cache/%s.ser".format(originalPath.replaceAll("""[\/\.]+""","-"))
+  
   /** Loads and preprocesses SemEval data and caches it in a temporary file */
   def preprocessSemEval(folder: String, datafile: String, goldfile: String)
                        (implicit preprocessing: LexSubProcessing): Seq[LexSubInstance] = {
-     val cachefile = "cache/%s.ser".format((folder + "-" + datafile).replaceAll("""[\/\.]+""","-"))
+     val cachefile = getCachefile(folder + "/" + datafile)
      io.lazySerialized(cachefile){
-      System.err.println("Cachefile does not exist, preprocessing SemEval data..")
+      System.err.println("Cachefile %s does not exist, preprocessing SemEval data..".format(cachefile))
       val plainData = new SemEvalReader(folder, datafile, goldfile).items
       preprocessing.parseSemEval(plainData)
     }
