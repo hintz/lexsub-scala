@@ -36,10 +36,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     lazy val candidates = new CandidateFile(path("Candidates", "German", "GermEval2015", "masterlist"), true)
     val conjunctions = Seq("und", "oder", ",")
 
-    lazy val germevalTraining = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "train-dataset")
-    lazy val germevalTest = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "test-dataset")
-    def trainingData = germevalTraining
-    def testData = germevalTest
+    lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "train-dataset")
+    lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "test-dataset")
     
     val trainingFolder = "trainingGerman"
     
@@ -74,6 +72,30 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     
     lazy val features = mkFeatures(this)
   }
+
+  object Italian extends LanguageData {
+
+    // Defines complete processing
+    implicit lazy val preprocessing = SimpleProcessing(
+      tokenize = (s: String) => "[àèéìòóùÀÈÉÌÒÓÙ'\\w]+".r.findAllIn(s).toVector, // hopefully I got all here
+      posTag = tokens => tokens.map(x => "?"), // no need
+      lemmatize = identity // no need
+     )
+
+    // load the evalita data (from cache, if available)
+    lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "evalitaFolder"), "test/lexsub_test.xml", "test/gold.test")
+    lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "evalitaFolder"), "trial/lexsub_trial.xml", "trial/gold.trial")
+
+    lazy val multiwordnet = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "multiwordnet"), true)
+    lazy val candidates = multiwordnet
+    lazy val ngrams = Web1TLookup(path("NGrams", "Italian", "web1t"), 5)
+    val conjunctions = Seq("e", "ed", "o", "od", ",")
+
+    val trainingFolder = "italianTraining"
+    
+    lazy val features = mkFeatures(this)
+  }
+  
 
   def mkFeatures(lang: LanguageData): FeatureAnnotator = {
     new FeatureAnnotator(

@@ -8,6 +8,7 @@ Tasks:
     twsiFolder: "../Tasks/TWSI2_complete/lexsub_task"
     semevalFolder: "../Tasks/SemEval2007"
     germevalFolder: "../Tasks/GermEval2015"
+    evalitaFolder: "../Tasks/Evalita2009"
 
 Preprocessing:
     English:
@@ -26,9 +27,14 @@ Candidates:
             masterlist: "resources/semeval2007/candidates/masterlist.tsv"
             wordnet: "resources/semeval2007/candidates/uby_WordNet.tsv"
             gold: "resources/semeval2007/candidates/gold.tsv"
+    Italian:
+        Evalita2009:
+            multiwordnet: "resources/evalita2009/candidates/mwn.tsv"
 
 NGrams:
     English:
         web1t: "resources/NGrams/web1t/en"
     German:
         web1t: "resources/NGrams/web1t/de"
+    Italian:
+        web1t: "resources/NGrams/web1t/it"

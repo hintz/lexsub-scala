@@ -9,24 +9,25 @@ import de.tudarmstadt.langtech.lexsub_scala.LexSub
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.Scorer
+import de.tudarmstadt.langtech.lexsub_scala.run.crosstrain.Settings.{ English, German, Italian}
 
 object RunCrosstraining extends App {
- 
-  // train all languages on their own data
-  trainLanguage(Settings.English)
-  trainLanguage(Settings.German)
   
-  // create lexsub systems
-  val englishFromEnglish = mkLexsub(Settings.English, Settings.English)
-  val germanFromEnglish = mkLexsub(Settings.German, Settings.English)
-  val englishFromGerman = mkLexsub(Settings.English, Settings.German)
-  val germanFromGerman = mkLexsub(Settings.German, Settings.German)
-
-  evaluate("English from English model", Settings.English.testData, englishFromEnglish)
-  evaluate("German from English model", Settings.German.testData, germanFromEnglish)
-  evaluate("German from German model", Settings.German.testData, germanFromGerman)
-  evaluate("English from German model", Settings.English.testData, englishFromGerman)
-
+  val languages = List(English, German, Italian)
+  
+  // train all languages on their own data
+  languages foreach trainLanguage
+  
+  // evaluate all languages
+  for(evaluationLanguge <- languages){
+    println("Evaluating on " + evaluationLanguge + "..")
+    val testData = evaluationLanguge.testData
+    for(trainLanguage <- languages){
+      val lexsub = mkLexsub(evaluationLanguge, trainLanguage)
+      evaluate("> " + evaluationLanguge + " trained on " + trainLanguage, testData, lexsub)
+    }
+  }
+  
   println("Done.")
   
   def trainLanguage(language: LanguageData){
