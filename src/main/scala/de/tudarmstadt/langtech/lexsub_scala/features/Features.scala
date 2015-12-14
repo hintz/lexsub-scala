@@ -65,7 +65,19 @@ class Features(features: FeatureExtractor*) extends FeatureExtractor {
       //a.zip(b).map(comb.tupled)
       (a, b).zipped.map(_ ++ _) // every now and then, this refuses to compile
     }
-    val extracted = features.map(_.extract(item))
+    val extracted = { 
+      val report = new StringBuffer
+      val result = features.map { feature =>
+        val start = System.currentTimeMillis
+        val result = feature.extract(item)
+        val end = System.currentTimeMillis
+        val elapsed = end - start
+        report.append(feature.toString + ": " + elapsed + " ")
+        result
+      }
+      println(report)
+      result
+    }
     val combined = extracted.reduce(combine)
     combined
   }
