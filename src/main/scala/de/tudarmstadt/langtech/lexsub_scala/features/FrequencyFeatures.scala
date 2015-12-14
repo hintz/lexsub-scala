@@ -25,7 +25,7 @@ case class Web1TLookup(web1tFolder: String, maxN: Int = 5) extends NGramLookup {
   try { Logger.getLogger("com.googlecode.jweb1t.JWeb1TSearcher").setLevel(java.util.logging.Level.OFF) }
   catch { case e: Exception => System.err.println("Web1T logging could not be disabled") }
   
-  val cache = new FileBackedCache(lookup, LexsubUtil.getCachefile(web1tFolder))
+  val cache = FileBackedCache(lookup, LexsubUtil.getCachefile(web1tFolder))
   
   val web1t: JWeb1TSearcher = {
     if(!new File(web1tFolder, "index-1gms").exists){
