@@ -91,7 +91,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     lazy val ngrams = Web1TLookup(path("NGrams", "Italian", "web1t"), 5)
     val conjunctions = Seq("e", "ed", "o", "od", ",")
 
-    val trainingFolder = "italianTraining"
+    val trainingFolder = "trainingItalian"
     
     lazy val features = mkFeatures(this)
   }
@@ -105,6 +105,6 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       // freq features
       PairFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       SetFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
-      ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0))
+      ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0, false))
   }
 }
