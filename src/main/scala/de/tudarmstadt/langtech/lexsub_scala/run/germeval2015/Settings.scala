@@ -9,7 +9,7 @@ import de.tudarmstadt.langtech.lexsub_scala.filereader._
 import de.tudarmstadt.langtech.lexsub_scala.features.{ Cooc, EditDistance, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity, Word2VecLookup}
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
-import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
+import de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
@@ -109,7 +109,7 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
   
   lazy val ngramCounts = ngrams.web1t
   
-  // setup features
+  // setup features // FIXME: Fix these features according to twsi/semeval
   lazy val features = new FeatureAnnotator(
       Cooc(cooc),
       WordSimilarity(dts.mateSim),
@@ -120,6 +120,7 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
       BinaryWordSimilarity(dts.trigramSim, 100),
       AllThresholdedDTFeatures(
           Seq(dts.mateBims, dts.mateSim,  dts.trigramBims, dts.trigramSim), 
+          Seq(true, false),
           Seq(5, 20, 50, 100, 200)),
       //ThresholdedDTOverlap(dts.mateBims, Seq(5, 20, 50, 100, 200), false, false),
       //ThresholdedDTOverlap(dts.trigramBims, Seq(5, 20, 50, 100, 200), false, false),

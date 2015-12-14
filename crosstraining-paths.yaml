@@ -1,0 +1,34 @@
+## This is the paths file for lexsub resources. 
+## It should only contain file paths (so lexsub can be moved between different systems)
+## All other preferences should be controlled directly in Settings.scala
+## Please refer to http://yaml.org for syntax
+
+
+Tasks:
+    twsiFolder: "../Tasks/TWSI2_complete/lexsub_task"
+    semevalFolder: "../Tasks/SemEval2007"
+    germevalFolder: "../Tasks/GermEval2015"
+
+Preprocessing:
+    English:
+        opennlpPOSModel: "resources/models/opennlp/en-pos-perceptron.bin"
+        opennlpTokenModel: "resources/models/opennlp/en-token.bin"
+    German:
+        opennlpPOSModel: "resources/models/opennlp/de-pos-perceptron.bin"
+        opennlpTokenModel: "resources/models/opennlp/de-token.bin"
+
+Candidates:
+    German:
+        GermEval2015:
+            masterlist: "resources/germeval/candidates/germeval_masterlist.tsv"
+    English:
+        SemEval2007:
+            masterlist: "resources/semeval2007/candidates/masterlist.tsv"
+            wordnet: "resources/semeval2007/candidates/uby_WordNet.tsv"
+            gold: "resources/semeval2007/candidates/gold.tsv"
+
+NGrams:
+    English:
+        web1t: "resources/NGrams/web1t/en"
+    German:
+        web1t: "resources/NGrams/web1t/de"

@@ -6,7 +6,8 @@
 trainingFolder: "twsi_training"
 outputFile: "instances.out"
 
-twsiFolder: "/Users/gerold/AIPHES/Data/lexsub-small/TWSI2_complete/lexsub_task"
+twsiFolder: "../Tasks/TWSI2_complete/lexsub_task"
+resourcesFolder: "resources/twsi"
 
 Preprocessing:
     opennlpPOSModel: "resources/models/opennlp/en-pos-perceptron.bin"
@@ -18,16 +19,16 @@ Candidates:
     gold: "resources/twsi/candidates/twsi_gold.tsv"
 
 Embeddings:
-    word2vec: "..."
-    eigenwords: "..."
+    levyWords: "resources/WordEmbeddings/en/levy/lexsub_words.sorted"
+    levyContexts: "resources/WordEmbeddings/en/levy/lexsub_contexts.sorted"
 
 DT:
-    firstOrder: "../AIPHES_Data/DT/en_lexsub/LMI_s_0_t_0"
-    secondOrder: "../AIPHES_Data/DT/LMI_s_0_t_0_p_1000_l_200"
-    smallSecondOrder: "../AIPHES_Data/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
+    firstOrder: "resources/DT/en_lexsub/LMI_s_0_t_0"
+    secondOrder: "resources/DT/en_lexsub/LMI_s_0_t_0_p_1000_l_200"
+    smallFirstOrder: "resources/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
 
 Coocs:
-    oldCoocs: "../AIPHES_Data/coocs/twsi/cooc_twsi.sorted.txt"
+    oldCoocs: "resources/coocs/twsi/cooc_twsi.sorted.txt"
 
 NGrams:
-    web1t: "../AIPHES_Data/Ngrams/web1t/en"
+    web1t: "resources/NGrams/web1t/en"

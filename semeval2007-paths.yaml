@@ -6,7 +6,7 @@
 trainingFolder: "semeval_training"
 outputFile: "instances.out"
 
-semevalFolder: "../AIPHES_Data/SemEval2007"
+semevalFolder: "../Tasks/SemEval2007"
 resourcesFolder: "resources/semeval2007"
 
 Preprocessing:
@@ -14,21 +14,21 @@ Preprocessing:
     opennlpTokenModel: "resources/models/opennlp/en-token.bin"
 
 Candidates:
-    masterlist: "resources/semeval/candidates/masterlist.tsv"
-    wordnet: "resources/semeval/candidates/uby_WordNet.tsv"
-    gold: "resources/semeval/candidates/gold.tsv"
+    masterlist: "resources/semeval2007/candidates/masterlist.tsv"
+    wordnet: "resources/semeval2007/candidates/uby_WordNet.tsv"
+    gold: "resources/semeval2007/candidates/gold.tsv"
 
 Embeddings:
-    word2vec: "..."
-    eigenwords: "..."
+    levyWords: "resources/WordEmbeddings/en/levy/lexsub_words.sorted"
+    levyContexts: "resources/WordEmbeddings/en/levy/lexsub_contexts.sorted"
 
 DT:
-    firstOrder: "../AIPHES_Data/DT/en_lexsub/LMI_s_0_t_0"
-    secondOrder: "../AIPHES_Data/DT/LMI_s_0_t_0_p_1000_l_200"
-    smallSecondOrder: "../AIPHES_Data/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
+    firstOrder: "resources/DT/en_lexsub/LMI_s_0_t_0"
+    secondOrder: "resources/DT/en_lexsub/LMI_s_0_t_0_p_1000_l_200"
+    smallFirstOrder: "resources/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted"
 
 Coocs:
-    oldCoocs: "../AIPHES_Data/coocs/twsi/cooc_twsi.sorted.txt"
+    semeval: "TODO"
 
 NGrams:
-    web1t: "../AIPHES_Data/Ngrams/web1t/en"
+    web1t: "resources/NGrams/web1t/en"

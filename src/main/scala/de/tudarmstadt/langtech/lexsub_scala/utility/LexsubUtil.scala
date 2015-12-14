@@ -14,7 +14,7 @@ object LexsubUtil {
   /** Loads and preprocesses SemEval data and caches it in a temporary file */
   def preprocessSemEval(folder: String, datafile: String, goldfile: String)
                        (implicit preprocessing: LexSubProcessing): Seq[LexSubInstance] = {
-     val cachefile = "cache_%s.ser".format((folder + "-" + datafile).replaceAll("""[\/\.]+""","-"))
+     val cachefile = "cache/%s.ser".format((folder + "-" + datafile).replaceAll("""[\/\.]+""","-"))
      io.lazySerialized(cachefile){
       System.err.println("Cachefile does not exist, preprocessing SemEval data..")
       val plainData = new SemEvalReader(folder, datafile, goldfile).items

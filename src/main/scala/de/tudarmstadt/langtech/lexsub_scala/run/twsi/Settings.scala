@@ -9,7 +9,7 @@ import de.tudarmstadt.langtech.lexsub_scala.filereader._
 import de.tudarmstadt.langtech.lexsub_scala.features.{ Cooc, EditDistance, DTLookup, SalientDTFeatures, BinaryWordSimilarity, PosContextWindows, PairFreqRatios, LexSemRelation, WordEmbeddingDistanceVectors, WordEmbeddingSimilarity, Word2VecLookup }
 import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
-import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
+import de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import opennlp.tools.tokenize.TokenizerME
@@ -48,12 +48,12 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
     lemmatize = identity // no need
     )
 
-  val semevalData = io.lazySerialized("cache_twsi_data.ser") {
+  val semevalData = io.lazySerialized("cache/twsi_data.ser") {
     new SemEvalReader(twsiFolder, "twsi2_clean.xml", "twsi2.gold").items
   }
 
   // parse the data
-  lazy val lexsubData = io.lazySerialized("cache_twsi_parsed.ser") {
+  lazy val lexsubData = io.lazySerialized("cache/twsi_parsed.ser") {
     preprocessing.parseSemEval(semevalData)
   }
 
@@ -94,7 +94,7 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // how to define equivalence in this DT
       
       
-   lazy val smallSecondOrder = DTLookup("LMI_small2ndOrder", new WordSimilarityFile(path("DT", "smallSecondOrder"), identity, matchPrefix = true),
+   lazy val smallFirstOrder = DTLookup("LMI_small1stOrder", new WordSimilarityFile(path("DT", "smallFirstOrder"), identity, matchPrefix = true),
       token => token.lemma.toLowerCase + "#" + token.pos.take(1).toUpperCase, // how to look up token in this DT
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // how to define equivalence in this DT
 
@@ -109,20 +109,41 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
 
   // setup features
   lazy val features = new FeatureAnnotator(
-    SentenceIDFeature,
-    SubstitutionFeature,
+    ///SentenceIDFeature,
+    ///SubstitutionFeature,
     
     Cooc(cooc),
-    //SalientDTFeatures(dts.firstOrder),
-    WordSimilarity(dts.smallSecondOrder),
-    BinaryWordSimilarity(dts.smallSecondOrder, 100),
+    
+    // to what extend the context characterizes the subst
+    SalientDTFeatures(dts.smallFirstOrder),
+    
+    // similarity between target and subst
+    /// WordSimilarity(dts.secondOrder),
+    
+    // top-k similar words
     AllThresholdedDTFeatures(
-      Seq(dts.smallSecondOrder),
+      dts = Seq(dts.secondOrder),
+      restrictToContext = Seq(false),
       Seq(5, 20, 50, 100, 200)),
+      
+    // top-k similar context-features, with and without restriction to sent context
+    AllThresholdedDTFeatures(
+      dts = Seq(dts.firstOrder),
+      restrictToContext = Seq(true, false),
+      Seq(5, 20, 50, 100, 200)),
+      
+    // boolean feature if target/substitute are similar
+    BinaryWordSimilarity(dts.secondOrder, 100),
+      
+    // syntactic features
     PosContextWindows(0 to 1, 0 to 1, 3),
+    
+    // freq features
     PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     ConjunctionFreqRatio(ngramCounts, Seq("and", "or", ","), 0, 0),
+    
+    // lexical resource features
     NumLexSemRelations(candidates.systemList),
     LexSemRelation(candidates.systemList) 
     )

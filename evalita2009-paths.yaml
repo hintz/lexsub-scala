@@ -6,14 +6,14 @@
 trainingFolder: "training"
 resourcesFolder: "resources/evalita2009"
 outputFile: "instances.out"
-evalitaFolder: "../AIPHES_Data/Evalita2009"
+evalitaFolder: "../Tasks/Evalita2009"
 
 Candidates:
     multiwordnet: "resources/evalita2009/candidates/mwn.tsv"
 
 DT:
-    itWac_1stOrder: "../AIPHES_Data/DT/itWac_trigram/FreqSigLMI_p_1000.sorted"
-    itWac_2ndOrder: "../AIPHES_Data/DT/itWac_trigram/FreqSigLMI_p_1000_SimSortlimit_50_minsim_2.sorted"
+    itWac_1stOrder: "resources/DT/itWac_trigram/FreqSigLMI_p_1000.sorted"
+    itWac_2ndOrder: "resources/DT/itWac_trigram/FreqSigLMI_p_1000_SimSortlimit_50_minsim_2.sorted"
 
 NGrams:
-    web1t: "../AIPHES_Data/web1t/it"
+    web1t: "resources/NGrams/web1t/it"

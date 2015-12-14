@@ -6,7 +6,7 @@ import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader.WordSimilarityFile
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.lexsub_scala.types.SimpleProcessing
-import de.tudarmstadt.langtech.scala_utilities.formatting.de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
+import de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.scala_utilities.io
 import opennlp.tools.postag.POSModel
 import opennlp.tools.postag.POSTaggerME
@@ -36,6 +36,7 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
   // Candidate lists
   object candidates {
     lazy val multiwordnet = new CandidateFile(path("Candidates", "multiwordnet"), true)
+    lazy val systemList = multiwordnet
   }
 
   // N-gram counts
@@ -58,19 +59,39 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
 
   // setup features
   lazy val features = new FeatureAnnotator(
-    SentenceIDFeature,
-    SubstitutionFeature,
-    //SalientDTFeatures(dts.firstOrder),
-    WordSimilarity(dts.secondOrder),
-    BinaryWordSimilarity(dts.secondOrder, 100),
+     
+      // to what extend the context characterizes the subst
+    SalientDTFeatures(dts.firstOrder),
+    
+    // similarity between target and subst
+    /// WordSimilarity(dts.secondOrder),
+    
+    // top-k similar words
     AllThresholdedDTFeatures(
-      Seq(dts.secondOrder),
+      dts = Seq(dts.secondOrder),
+      restrictToContext = Seq(false),
       Seq(5, 20, 50, 100, 200)),
+      
+    // top-k similar context-features, with and without restriction to sent context
+    AllThresholdedDTFeatures(
+      dts = Seq(dts.firstOrder),
+      restrictToContext = Seq(true, false),
+      Seq(5, 20, 50, 100, 200)),
+      
+    // boolean feature if target/substitute are similar
+    BinaryWordSimilarity(dts.secondOrder, 100),
+      
+    // syntactic features
     PosContextWindows(0 to 1, 0 to 1, 3),
+    
+    // freq features
     PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     ConjunctionFreqRatio(ngramCounts, Seq("e", "ed", "o", "od", ","), 0, 0),
-    NumLexSemRelations(candidates.multiwordnet),
-    LexSemRelation(candidates.multiwordnet))
+    
+    // lexical resource features
+    NumLexSemRelations(candidates.systemList),
+    LexSemRelation(candidates.systemList)
+    )
 
 }

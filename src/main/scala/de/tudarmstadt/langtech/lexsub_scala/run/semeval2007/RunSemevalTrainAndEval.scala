@@ -1,31 +1,32 @@
-package de.tudarmstadt.langtech.lexsub_scala.run.evalita2009
+package de.tudarmstadt.langtech.lexsub_scala.run.semeval2007
 
-import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
-import de.tudarmstadt.langtech.lexsub_scala.run.twsi.setup.CreateHoldOutSplit
+import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.scala_utilities.io
 
-object RunEvalitaTrainAndEval extends App {
+object RunSemevalTrainAndEval extends App {
+ 
+  val trainingData = Settings.semevalTest
+  val evaluationData = Settings.semevalTrial
   
-  val trainingData = Settings.evalitaTest
-  val evaluationData = Settings.evalitaTrial
   printf("Will train on %d examples and then lex-expand %d instances\n", trainingData.size, evaluationData.size)
-  
-  // do training
-  Training.train(trainingData, 
-      Settings.candidates.systemList, 
-      Settings.features, 
-      Settings.trainingFolder)
-  
+    
+  Training.train(
+    Settings.semevalTest,
+    Settings.candidates.trainingList,
+    Settings.features,
+    Settings.trainingDir)
+    
   // load lexsub system
   val lexsub = LexSubExpander(
       Settings.candidates.systemList,
       Settings.features, 
-      ClassifierScorer(Settings.trainingFolder))
-
+      ClassifierScorer(Settings.trainingDir))
+      
   val outcomes = lexsub(evaluationData)
   
   // write results
@@ -38,5 +39,4 @@ object RunEvalitaTrainAndEval extends App {
   println("Evaluation: best=[%s] oot=[%s]".format(best, oot))
 
   println("Done.")
-
 }
