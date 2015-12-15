@@ -117,10 +117,10 @@ case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends Feat
 }
 
 /**
- * @param the set of conjunctions to create features for
+ * @param conjunctions the set of conjunctions to create features for
  * @param left additional left tokens
  * @param right additional right tokens
- * @param includeConjuction if true, the language-dependant conjuction is added to the feature, if false only presence of conjuction is indicated
+ * @param includeConjunction if true, the language-dependant conjuction is added to the feature, if false only presence of conjuction is indicated
  */
 case class ConjunctionFreqRatio(nGrams: NGramLookup, conjunctions: Seq[String], left: Int, right: Int, includeConjunction: Boolean = true)
   extends SmartFeature[Option[(Vector[String], Long)]] {
