@@ -2,7 +2,6 @@ package de.tudarmstadt.langtech.lexsub_scala.features
 
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
-import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.filereader.WordSimilarityFile
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.scala_utilities._
@@ -32,7 +31,7 @@ case class Cooc(val coocLookup: DTLookup) extends FeatureExtractor with FeatureU
     val counts = compute.normalize(overlapCounts.map(_.toDouble))
     val sums = compute.normalize(overlapSum)
     val features = (counts, sums).zipped.map { 
-      case (count, sum) if count > 0 => Seq(new Feature("Cooc_count", count), new Feature("Cooc_sum", sum))
+      case (count, sum) if count > 0 => Seq(NumericFeature("Cooc_count", count), NumericFeature("Cooc_sum", sum))
       case _ => Seq.empty
     }
     features

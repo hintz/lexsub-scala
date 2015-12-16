@@ -1,6 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
-import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.filereader.WordSimilarityFile
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
@@ -28,9 +27,13 @@ case class DTLookup(val dtName: String, val dt: WordSimilarityFile[String],
 
 /** Looks up word similarity between target and substitute in a DT.
  *  Note: This requires the DT to contain second order features, aka similar words  */
-case class WordSimilarity(dt: DTLookup) extends LocalFeatureExtractor with NumericFeature  {
+case class WordSimilarity(dt: DTLookup) extends LocalFeatureExtractor with FeatureUtils {
   val name = "Sim_" + dt.dtName
-  def extract(item: SubstitutionItem): Seq[Feature] = dt.similarity(item.target, Token(item.substitution, item.target.pos, item.substitution))
+  def extract(item: SubstitutionItem): Seq[Feature] = {
+    val token = Token(item.substitution, item.target.pos, item.substitution)
+    val s = dt.similarity(item.target, token)
+    asFeature(s)
+  }
 }
 
 /** Similar to WordSimilarity, but only a binary feature:
@@ -42,7 +45,7 @@ case class BinaryWordSimilarity(dt: DTLookup, k: Int) extends FeatureExtractor  
     item.candidates.map { c => 
       val candidate = Token(c, item.lexSubInstance.head.pos, c)
       val isContained = expansions.find { dtFeature => dt.equivalenceFunction(candidate, dtFeature) }.isDefined
-      if (isContained) Seq(new Feature(name, true)) else Seq.empty[Feature]
+      if (isContained) Seq(BinaryFeature(name, true)) else Seq.empty[Feature]
     }
   }
 }
@@ -93,7 +96,7 @@ extends SmartFeature[ThresholdedDTCache] {
   }
 
   private def mkFeature(name: String, value: Double) =
-    if (!value.isNaN && value > 0) Seq(new Feature(name, value)) else Seq.empty[Feature]
+    if (!value.isNaN && value > 0) Seq(NumericFeature(name, value)) else Seq.empty[Feature]
 }
 
 /** Helper class for ThresholdedDTOverlap */ 
@@ -127,7 +130,7 @@ case class SalientDTFeatures(dt: DTLookup) extends FeatureExtractor {
   }
   
   private def mkFeature(value: Double) = 
-      if(!value.isNaN && value > 0) Seq(new Feature(name, value)) else Seq.empty[Feature]
+      if(!value.isNaN && value > 0) Seq(NumericFeature(name, value)) else Seq.empty[Feature]
 }
 
 /** Aggregates multiple ThresholdedDTOverlap features based on the given parameters */

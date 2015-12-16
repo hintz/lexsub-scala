@@ -1,11 +1,27 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
-import org.cleartk.classifier.Feature
-import org.cleartk.classifier.Instance
-import scala.collection.JavaConversions._
 import de.tudarmstadt.langtech.lexsub_scala.types._
-import de.tudarmstadt.langtech.scala_utilities.processing.ReportingIterable._
-import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
+
+trait Feature {
+  def name: String
+  def value: AnyVal
+
+  /** Converts any feature into a numeric feature */
+  def asNumeric: NumericFeature = this match {
+    case numeric: NumericFeature => numeric
+    case NominalFeature(name, value) => NumericFeature(name + "_" + value, 1d)
+    case BinaryFeature(name, value) =>  NumericFeature(name + "_" + value, 1d)
+  }
+}
+
+object Feature {
+  /** Shorthand for empty list of features */
+  def nothing = Seq.empty[Feature]
+}
+
+case class NumericFeature(val name: String, val value: Double) extends Feature
+case class NominalFeature(val name: String, val value: String) extends Feature
+case class BinaryFeature(val name: String, val value: Boolean) extends Feature
 
 /** Abstract feature extraction for lexical substitution */
 abstract class FeatureExtractor {
@@ -42,20 +58,17 @@ abstract class SmartFeature[A] extends FeatureExtractor {
 
 /** Some utility mixins for defining features */
 trait FeatureUtils {
-  implicit def noFeatures(implicit item: Substitutions) = Vector.fill(item.candidates.length)(Seq.empty[Feature])
+  val name: String
+
+  implicit def noFeatures(implicit item: Substitutions) = Vector.fill(item.candidates.length)(Feature.nothing)
+
+  implicit def asFeature(v: Double): Seq[Feature] = Seq(NumericFeature(name, v))
+  def asFeature(v: Option[Double]): Seq[Feature] = v.toList.map(NumericFeature(name, _))
+
+  implicit def asFeature(a: String): Seq[Feature] = Seq(NominalFeature(name, a))
+  def asFeature(a: Option[String]): Seq[Feature] = a.toList.map(NominalFeature(name, _))
 }
 
-trait NumericFeature extends FeatureUtils {
-  val name: String
-  implicit def toFeatures(v: Double): Seq[Feature] = Seq(new Feature(name, v))
-  implicit def toFeatures(v: Option[Double]): Seq[Feature] = v.toList.map(new Feature(name, _))
-}
-
-trait NominalFeature[A] extends FeatureUtils {
-  val name: String
-  implicit def toFeatures(a: A): Seq[Feature] = Seq(new Feature(name, a))
-	implicit def toFeatures(a: Option[A]): Seq[Feature] = a.toList.map(new Feature(name, _))
-}
 
 /** Applies a collection of features */
 class Features(features: FeatureExtractor*) extends FeatureExtractor {
@@ -77,9 +90,9 @@ class AggregatedFeature(val name: String, inner: FeatureExtractor, f: Seq[Double
     inner.extract(item).map { innerFeatures =>
       if(innerFeatures.isEmpty) Seq.empty
       else {
-        val innerValues = innerFeatures.map(_.getValue.asInstanceOf[Double])
+        val innerValues = innerFeatures.map(_.asNumeric.value)
         val result = f(innerValues)
-        Seq(new Feature(name, result))
+        Seq(NumericFeature(name, result))
       }
      }
   }

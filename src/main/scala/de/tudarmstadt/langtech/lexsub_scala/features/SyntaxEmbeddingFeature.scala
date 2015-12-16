@@ -4,7 +4,6 @@ import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.DepEdge
-import org.cleartk.classifier.Feature
 
 
 trait SyntacticEmbeddingCombinator {
@@ -62,7 +61,7 @@ case class SyntaxEmbeddingFeature(
     contextEmbeddings: WordVectorLookup,
     combinator: SyntacticEmbeddingCombinator) 
     
-extends SmartFeature[SyntacticEmbedding] with NumericFeature {
+extends SmartFeature[SyntacticEmbedding] with FeatureUtils {
   val name = "SyntaxEmb"
 
   def global(item: LexSubInstance): SyntacticEmbedding = {

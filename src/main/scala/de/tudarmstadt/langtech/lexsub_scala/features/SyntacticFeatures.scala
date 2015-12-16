@@ -2,16 +2,15 @@ package de.tudarmstadt.langtech.lexsub_scala.features
 
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.scala_utilities._
-import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 
 /** The POS of the target */
-case object TargetPosValue extends GlobalFeatureExtractor with NominalFeature[String]  {
+case object TargetPosValue extends GlobalFeatureExtractor with FeatureUtils  {
   val name = "TypePath(PosPosValue)"
   def extract(item: LexSubInstance): Seq[Feature] = item.head.pos
 }
 
-case class PosContextWindow(left: Int, right: Int) extends GlobalFeatureExtractor with NominalFeature[String]  {
+case class PosContextWindow(left: Int, right: Int) extends GlobalFeatureExtractor with FeatureUtils  {
   val name = "POS_" + left + "_" + right
   val slicer = collections.context[String](left, right) _
   
@@ -29,8 +28,7 @@ case class PosContextWindows(leftRange: Range, rightRange: Range, maxSize: Int)
 extends Features((for(l <- leftRange; r <- rightRange; if l + r < maxSize) yield PosContextWindow(l, r)) :_*)
 
 
-
-case object EditDistance extends LocalFeatureExtractor with NumericFeature {
+case object EditDistance extends LocalFeatureExtractor with FeatureUtils {
   val name = getClass.getSimpleName
   val scorer = new edu.stanford.nlp.util.EditDistance
   def extract(item: SubstitutionItem): Seq[Feature] = scorer.score(item.targetLemma, item.substitution)

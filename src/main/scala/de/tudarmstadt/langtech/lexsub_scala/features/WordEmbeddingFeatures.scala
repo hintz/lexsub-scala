@@ -1,7 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
-import org.cleartk.classifier.Feature
-
 import breeze.linalg.DenseVector
 import breeze.linalg.Vector
 import de.tudarmstadt.langtech.lexsub_scala.filereader.WordVectorFile
@@ -49,25 +47,29 @@ case class Word2VecLookup(filename: String, limit: Integer = Integer.MAX_VALUE) 
 
 /** the negative cosine similarity in embedding space */
 case class WordEmbeddingSimilarity(val embedding: WordVectorLookup)
-  extends LocalFeatureExtractor with NumericFeature {
+  extends LocalFeatureExtractor with FeatureUtils {
   val name = "EmbeddingCosSim"
   
-  def extract(item: SubstitutionItem): Seq[Feature] =
-    embedding.similarity(LinAlgFunctions.cossim)(item.targetLemma, item.substitution).map(- _)
+  def extract(item: SubstitutionItem): Seq[Feature] = {
+    val s = embedding.similarity(LinAlgFunctions.cossim)(item.targetLemma, item.substitution).map(- _)
+    asFeature(s)
+  }
 }
 
 /** the negative distance in embedding space */
 case class WordEmbeddingDistance(val embedding: WordVectorLookup)
-  extends LocalFeatureExtractor with NumericFeature {
+  extends LocalFeatureExtractor with FeatureUtils {
   val name = "EmbeddingDist"
 
-  def extract(item: SubstitutionItem): Seq[Feature] =
-    embedding.similarity(LinAlgFunctions.distance)(item.targetLemma, item.substitution).map(- _)
+  def extract(item: SubstitutionItem): Seq[Feature] = {
+    val s = embedding.similarity(LinAlgFunctions.distance)(item.targetLemma, item.substitution).map(- _)
+    asFeature(s)
+  }
 }
 
 case class WordEmbeddingGlobalCache(originalHeadVector: Option[Vector[Double]], vectors: Seq[Option[Vector[Double]]])
 case class WordEmbeddingDistanceVectors(embedding: WordVectorLookup, leftContext: Int, rightContext: Int)
-  extends SmartFeature[WordEmbeddingGlobalCache] with NumericFeature {
+  extends SmartFeature[WordEmbeddingGlobalCache] with FeatureUtils {
 
   val name = "EmbeddingDist_" + leftContext + "_" + rightContext
   val slicer = collections.context[String](leftContext, rightContext) _
@@ -110,7 +112,7 @@ case class WordEmbeddingDistanceVectors(embedding: WordVectorLookup, leftContext
 
       case other =>
          // either head or target not in embedding file!
-        None
+        Feature.nothing
     }
   }
 }
