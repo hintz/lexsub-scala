@@ -148,16 +148,6 @@
 		<version>1.0.4.20110605</version>
 	</dependency>
 	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-		<version>5.1.8</version>
-	</dependency>
-	<dependency>
-		<groupId>org.itc</groupId>
-		<artifactId>org.itc.mwn</artifactId>
-		<version>1.0.0</version>
-	</dependency>
-	<dependency>
 		<groupId>org.maltparser</groupId>
 		<artifactId>maltparser</artifactId>
 		<version>1.8.1</version>
