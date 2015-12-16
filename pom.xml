@@ -4,11 +4,11 @@
   <artifactId>lexsub-scala</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>${project.artifactId}</name>
-  <description>My wonderfull scala app</description>
-  <inceptionYear>2010</inceptionYear>
+  <description>Scala implementation of LexSub</description>
+  <inceptionYear>2015</inceptionYear>
   <licenses>
     <license>
-      <name>My License</name>
+      <name>License TBD</name>
       <url>http://....</url>
       <distribution>repo</distribution>
     </license>
