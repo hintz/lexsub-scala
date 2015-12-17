@@ -39,9 +39,10 @@ case class LexSubExpander(
 	
 	/** Expands and ranks */
 	def apply(instance: LexSubInstance): Seq[(String, Double)] = {
-			val candidates = candidateList(instance.head.lemma).filter(_ != instance.head.lemma)
-					val substitutions = Substitutions(instance, candidates.toVector)
-					apply(substitutions)
+      // extract candidates from the candidateList and remove the target itself and all duplicates
+			val candidates = candidateList(instance.head.lemma).filter(_ != instance.head.lemma).distinct
+			val substitutions = Substitutions(instance, candidates.toVector)
+			apply(substitutions)
 	}
 	
 	/** Ranks predefined substitution candidates */
