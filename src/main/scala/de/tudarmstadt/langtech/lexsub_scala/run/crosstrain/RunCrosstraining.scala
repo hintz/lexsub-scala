@@ -10,6 +10,7 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.Scorer
 import de.tudarmstadt.langtech.lexsub_scala.run.crosstrain.Settings.{ English, German, Italian}
+import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 
 object RunCrosstraining extends App {
   
@@ -21,10 +22,15 @@ object RunCrosstraining extends App {
   // evaluate all languages
   for(evaluationLanguge <- languages){
     println("Evaluating on " + evaluationLanguge + "..")
-    val testData = evaluationLanguge.testData
+    val evalData = evaluationLanguge.testData
+    val goldFile = evaluationLanguge.testGoldfile
     for(trainLanguage <- languages){
       val lexsub = mkLexsub(evaluationLanguge, trainLanguage)
-      evaluate("> " + evaluationLanguge + " trained on " + trainLanguage, testData, lexsub)
+      val outcomes = lexsub(evalData)
+      val outFolder = evaluationLanguge + "-on-" + trainLanguage
+     
+      println( "> " + evaluationLanguge + " trained on " + trainLanguage)
+      SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
     }
   }
   
@@ -42,11 +48,4 @@ object RunCrosstraining extends App {
   def mkLexsub(targetLanguage: LanguageData, model: LanguageData): LexSub = 
     LexSubExpander(targetLanguage.candidates, targetLanguage.features, ClassifierScorer(model.trainingFolder))
 
-  def evaluate(title: String, evalData: Seq[LexSubInstance], system: LexSub) {
-    val outcomes = system(evalData)
-    val results = Outcomes.collect(evalData, outcomes)
-    val oot = Outcomes.evaluate(results, 10)
-    val best = Outcomes.evaluate(results, 1)
-    println(title + ": best=[%s] oot=[%s]".format(best, oot))
-  }
 }
