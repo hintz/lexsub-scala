@@ -38,7 +38,12 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     lazy val ngrams = Web1TLookup(path("NGrams", "German", "web1t"), 5)
     lazy val candidates = new CandidateFile(path("Candidates", "German", "GermEval2015", "masterlist"), true)
     val conjunctions = Seq("und", "oder", ",")
-
+    
+    lazy val dtFirstOrder = DTLookup("DT1st", new WordSimilarityFile(path("DT", "German", "firstOrder"), identity), 
+        token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
+    lazy val dtSecondOrder = DTLookup("DT2nd", new WordSimilarityFile(path("DT", "German", "secondOrder"), identity), 
+        token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
+    
     lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "train-dataset")
     lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "test-dataset")
     val testGoldfile = path("Tasks", "germevalFolder") + "/test-dataset.gold"
@@ -68,10 +73,19 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     def trainingData = semevalTest
     def testData = semevalTrial
 
-    lazy val globalWordnetHyHo = new CandidateFile("resources/wordnet-hy-ho", true)
+    lazy val globalWordnetHyHo = new CandidateFile(path("Candidates", "English", "wordnet-hy-ho"), true)
     lazy val candidates = globalWordnetHyHo
     lazy val ngrams = Web1TLookup(path("NGrams", "English", "web1t"), 5)
     val conjunctions = Seq("and", "or", ",")
+    
+    lazy val dtFirstOrder = DTLookup("DT1st", 
+      new WordSimilarityFile(path("DT", "English", "firstOrder"), identity, matchPrefix = true),
+      token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase,
+      (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#"))
+    lazy val dtSecondOrder =  DTLookup("DT2nd", 
+      new WordSimilarityFile(path("DT", "English", "secondOrder"), identity, matchPrefix = true),
+      token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase,
+      (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#"))
     
     val trainingFolder = "trainingEnglish"
     
@@ -96,6 +110,11 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     lazy val candidates = multiwordnet
     lazy val ngrams = Web1TLookup(path("NGrams", "Italian", "web1t"), 5)
     val conjunctions = Seq("e", "ed", "o", "od", ",")
+    
+    lazy val dtFirstOrder = DTLookup("DT1st", new WordSimilarityFile(path("DT", "Italian", "firstOrder"), identity), 
+        token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
+    lazy val dtSecondOrder = DTLookup("DT2nd", new WordSimilarityFile(path("DT", "Italian", "secondOrder"), identity), 
+        token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
 
     val trainingFolder = "trainingItalian"
     
@@ -107,10 +126,30 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     new FeatureAnnotator(
       // syntactic features
       PosContextWindows(0 to 1, 0 to 1, 3),
-
-      // freq features
+      
+      // to what extend the context characterizes the subst
+      SalientDTFeatures(lang.dtFirstOrder),
+      // similarity between target and subst
+      /// WordSimilarity(dts.secondOrder),
+      // top-k similar words
+      AllThresholdedDTFeatures(
+        dts = Seq(lang.dtSecondOrder),
+        restrictToContext = Seq(false),
+        Seq(5, 20, 50, 100, 200)),
+      // top-k similar context-features, with and without restriction to sent context
+      AllThresholdedDTFeatures(
+        dts = Seq(lang.dtFirstOrder),
+        restrictToContext = Seq(true, false),
+        Seq(5, 20, 50, 100, 200)),
+      // boolean feature if target/substitute are similar
+      BinaryWordSimilarity(lang.dtSecondOrder, 100),
+      
+      // frequency features
       PairFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       SetFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
-      ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0, false))
+      ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0, false),
+      // semantic relations
+      NumLexSemRelations(lang.candidates)
+    )
   }
 }

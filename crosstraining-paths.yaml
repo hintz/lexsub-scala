@@ -23,6 +23,7 @@ Candidates:
         GermEval2015:
             masterlist: "resources/germeval/candidates/germeval_masterlist.tsv"
     English:
+        wordnet-hy-ho: "resources/wordnet-hy-ho"
         SemEval2007:
             masterlist: "resources/semeval2007/candidates/masterlist.tsv"
             wordnet: "resources/semeval2007/candidates/uby_WordNet.tsv"
@@ -38,3 +39,14 @@ NGrams:
         web1t: "resources/NGrams/web1t/de"
     Italian:
         web1t: "resources/NGrams/web1t/it"
+
+DT:
+    English:
+        firstOrder: "resources/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted" ##small
+        secondOrder: "resources/DT/en_lexsub/LMI_s_0_t_0_p_1000_l_200"
+    German:
+        firstOrder: "resources/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_filtered_g1_sorted"
+        secondOrder: "resources/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_simsortlimit200_sorted"
+    Italian:
+        firstOrder: "resources/DT/itWac_trigram/FreqSigLMI_p_1000.sorted"
+        secondOrder: "resources/DT/itWac_trigram/FreqSigLMI_p_1000_SimSortlimit_50_minsim_2.sorted"

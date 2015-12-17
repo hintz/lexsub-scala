@@ -17,7 +17,7 @@ object RunCrosstraining extends App {
   val languages = List(English, German, Italian)
   
   // train all languages on their own data
-  // languages foreach trainLanguage
+  languages foreach trainLanguage
   
   // evaluate all languages
   for(evaluationLanguge <- languages){

@@ -5,8 +5,10 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
+import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
+import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
 
-/** interface to simplify cross-language training */
+/** simplify resource interface to do cross-language training */
 trait LanguageData {
   
   // a preprocessing pipeline for the language
@@ -18,7 +20,8 @@ trait LanguageData {
   // resources
   def ngrams: NGramLookup
   def conjunctions: Seq[String]
-  //..
+  def dtFirstOrder: DTLookup
+  def dtSecondOrder: DTLookup
 
   // each language can supply a test and trainset
   def trainingData: Seq[LexSubInstance]
