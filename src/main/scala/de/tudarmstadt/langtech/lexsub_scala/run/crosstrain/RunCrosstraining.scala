@@ -17,7 +17,7 @@ object RunCrosstraining extends App {
   val languages = List(English, German, Italian)
   
   // train all languages on their own data
-  languages foreach trainLanguage
+  // languages foreach trainLanguage
   
   // evaluate all languages
   for(evaluationLanguge <- languages){
@@ -27,10 +27,11 @@ object RunCrosstraining extends App {
     for(trainLanguage <- languages){
       val lexsub = mkLexsub(evaluationLanguge, trainLanguage)
       val outcomes = lexsub(evalData)
-      val outFolder = evaluationLanguge + "-on-" + trainLanguage
+      val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-" + trainLanguage
      
-      println( "> " + evaluationLanguge + " trained on " + trainLanguage)
-      SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
+      val eval = SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
+      val selection = eval.lines.toList.filter(_.startsWith("precision ="))(1) // hacky grep for one line in the output
+      println("> " + evaluationLanguge + " trained on " + trainLanguage + ": " + selection)
     }
   }
   

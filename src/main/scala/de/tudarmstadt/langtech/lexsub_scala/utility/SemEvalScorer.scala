@@ -36,7 +36,7 @@ object SemEvalScorer {
     outcomes: Iterable[Seq[(String, Double)]],
     scorerFolder: String,
     goldFile : String,
-    folder: String) {
+    folder: String): String = {
 
     val results = Outcomes.collect(evaluationData, outcomes)
     val instanceFilePrefix =  folder + "/instances.out"
@@ -50,7 +50,7 @@ object SemEvalScorer {
     val fullEval = Seq(myEval, perlEval).mkString("\n")
     
     io.write(folder + "/result.txt", fullEval)
-    println(fullEval)
+    fullEval
   }
 }
 

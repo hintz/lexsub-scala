@@ -44,6 +44,7 @@ build.log
 /scripts/wortschatz
 /scripts/woxikon
 /arff
+/crosstrainingResults
 training
 semeval_training
 germeval_training
@@ -55,3 +56,4 @@ trainingEnglish
 trainingGerman
 trainingItalian
 .idea
+
