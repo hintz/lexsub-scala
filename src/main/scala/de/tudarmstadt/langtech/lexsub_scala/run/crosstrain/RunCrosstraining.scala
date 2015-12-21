@@ -30,7 +30,7 @@ object RunCrosstraining extends App {
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-" + trainLanguage
      
       val eval = SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
-      val selection = eval.lines.toList.filter(_.startsWith("precision ="))(1) // hacky grep for one line in the output
+      val selection = eval.lines.toList.filter(_.startsWith("precision ="))(0) // hacky grep for one line in the output
       println("> " + evaluationLanguge + " trained on " + trainLanguage + ": " + selection)
     }
   }

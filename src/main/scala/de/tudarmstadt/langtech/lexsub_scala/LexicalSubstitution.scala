@@ -82,6 +82,8 @@ class FeatureAnnotator(val features: FeatureExtractor*)
   extends Features(features :_*)
   with BatchProcessing[Substitutions, Vector[Instance[String]]]
 {
+  
+  val useScores = true
 
   private val mkInstance = (features: Seq[Feature], outcome: String) => {
     val result = new Instance[String]
@@ -90,12 +92,27 @@ class FeatureAnnotator(val features: FeatureExtractor*)
     result
   }
   
+  private val mkNumericInstance = (features: Seq[Feature], outcome: Double) => {
+    val result = new Instance[Double]
+    result setOutcome outcome
+    result addAll features
+    result
+  }
+  
   def apply(item: Substitutions): Vector[Instance[String]] = {
     val features = extract(item)
+    
+    /*if(useScores) {
+      val outcomes = item.asItems.map(_.score.get)
+      val instances = features.zip(outcomes).map(mkNumericInstance.tupled)
+      return instances.asInstanceOf[Vector[Instance[Any]]]
+    }*/
+
     val gold = item.asItems.map(_.isGood.get)
     val outcomes = gold.map(if(_) FeatureAnnotator.Good else FeatureAnnotator.Bad)
     val instances = features.zip(outcomes).map(mkInstance.tupled)
     instances
+
   }
   
   override def toString = "FeatureAnnotator(%s)".format(features.mkString("\n", "\n", "\n"))
