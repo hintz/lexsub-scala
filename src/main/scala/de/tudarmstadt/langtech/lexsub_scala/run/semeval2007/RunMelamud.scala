@@ -7,6 +7,7 @@ import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.lexsub_scala.training.Training
 
 /**
  * Runs an implementation of 
@@ -21,16 +22,22 @@ object RunMelamud extends App {
     Settings.embeddings.levyWords, 
     Settings.embeddings.levyContexts,
     BalAdd)
+    
+  val features = new FeatureAnnotator(melamudsFeature)
+  
+  // this is not needed, just for debugging
+  //Training.train(evaluationData, Settings.candidates.wordnet, features, "trainingMelamud")
   
    // define lexsub system
    val lexsub = LexSubExpander(
       Settings.candidates.wordnet,
-      new FeatureAnnotator(melamudsFeature),
+      features,
       SingleFeatureScorer())
       
     // eval pipeline
     val outcomes = lexsub(evaluationData)
     val results = Outcomes.collect(evaluationData, outcomes)
+    
     SemEvalResultOutcomeWriter.save(results, "melamud.instances.out" )
     val best = Outcomes.evaluate(results, 1)
     val oot = Outcomes.evaluate(results, 10)

@@ -64,17 +64,20 @@ case class SyntaxEmbeddingFeature(
     
 extends SmartFeature[SyntacticEmbedding] with NumericFeature {
   val name = "SyntaxEmb"
-
+  
+  val INVERSE_MARKER = "I" // suffix added to depedge labels to denote inverse direction
+  
   def global(item: LexSubInstance): SyntacticEmbedding = {
     val lemmaEmbedding = wordEmbeddings(item.head.lemma)
     
     val targetTokenIdx = item.headIndex
     val syntaxElements = item.sentence.edges.collect {
       case DepEdge(label, `targetTokenIdx`, to) =>
-        label + "_" + item.sentence.tokens(to).lemma
+        val toToken = item.sentence.tokens(to).word.toLowerCase
+        label + "_" + toToken
       case DepEdge(label, from, `targetTokenIdx`) => 
-        // FIXME: do we really ignore the direction of edges?
-        label + "_" + item.sentence.tokens(from).lemma
+        val fromToken = item.sentence.tokens(from).word.toLowerCase
+        label + INVERSE_MARKER  + "_" + fromToken
     }
     
     val syntaxEmbeddings = syntaxElements.flatMap { nsubj_foo =>
@@ -100,6 +103,8 @@ extends SmartFeature[SyntacticEmbedding] with NumericFeature {
       LinAlgFunctions.cossim(substituteEmbedding, syntaxEmb)
     }
     
-    combinator(wordCossim, contextCossims)
+    val result = combinator(wordCossim, contextCossims)
+    //println(item.targetLemma + " -> " + item.substitution + ": wordsim=" + wordCossim + " ctxsims=" + contextCossims.mkString(", ") +" ==> " + combinator + " = " + result)
+    result
   }
 }
