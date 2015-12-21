@@ -1,7 +1,6 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
 import org.cleartk.classifier.Feature
-
 import breeze.linalg.DenseVector
 import breeze.linalg.Vector
 import de.tudarmstadt.langtech.lexsub_scala.filereader.WordVectorFile
@@ -11,6 +10,8 @@ import de.tudarmstadt.langtech.scala_utilities.collections
 import de.tudarmstadt.langtech.scala_utilities.compute
 import de.tudarmstadt.langtech.scala_utilities.formatting.Word2Vec
 import scalaz._
+import de.tudarmstadt.langtech.scala_utilities.cache.FileBackedCache
+import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 
 /** Slim interface for looking up a word vector */
 trait WordVectorLookup {
@@ -36,12 +37,12 @@ case class WordVectorFileLookup(filename: String) extends WordVectorFile(filenam
 /** WordVectorLookup based on Word2Vec binary data */
 case class Word2VecLookup(filename: String, limit: Integer = Integer.MAX_VALUE) extends WordVectorLookup {
   lazy val file = new Word2Vec(filename, limit)
+  lazy val cache = FileBackedCache(lookup, LexsubUtil.getCachefile(filename))
   
-  val cache: String => Option[Vector[Double]] = Memo.mutableHashMapMemo { word =>
+  private def lookup(word: String): Option[Vector[Double]] = {
     val vec = file.vector(word).map(_.toDouble)
     Some(DenseVector(vec)).filter(_.length > 0)
   }
-  
   def apply(word: String): Option[Vector[Double]] = cache(word)
   
   override def toString = "Word2VecLookup(%s)".format(filename.replaceAll("""[\/\\]+""", "_"))

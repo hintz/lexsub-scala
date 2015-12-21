@@ -5,6 +5,7 @@ import de.tudarmstadt.langtech.scala_utilities.index_file.CachedPrefixIndexedFil
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.scala_utilities.{strings, io}
 import scalaz.Memo
+import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 
 /** A simple reader for sorted files in the format [word] \t [somethingElse] \t [score].
  *  Internally uses PrefixIndexedFile which transparently builds an index */
@@ -19,7 +20,7 @@ class WordSimilarityFile[Elem](val dt_filename: String,
   val Splitter = "\t"
   
   // the file backing this DT
-  val file = new CachedPrefixIndexedFile(dt_filename)
+  val file = new CachedPrefixIndexedFile(dt_filename, cachefile = LexsubUtil.getCachefile(dt_filename))
   
   /** Yields similar words based on this DT */
   def similar(s: String) = sim(s)
