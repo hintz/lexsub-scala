@@ -110,3 +110,10 @@ extends SmartFeature[SyntacticEmbedding] with NumericFeature {
     result
   }
 }
+
+/** Utility feature generating multiple SyntaxEmbeddingFeatures from different combinators */
+case class SyntaxEmbeddingFeatures(
+    wordEmbeddings: WordVectorLookup, 
+    contextEmbeddings: WordVectorLookup,
+    combinators: SyntacticEmbeddingCombinator*)
+  extends Features((for (comb <- combinators) yield SyntaxEmbeddingFeature(wordEmbeddings, contextEmbeddings, comb)): _*)
