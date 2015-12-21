@@ -28,7 +28,7 @@ trait WordVectorLookup {
 // Some wrappers for breeze. Shouldn't be necessary if I understood the breeze typing system correctly..
 object LinAlgFunctions { 
   def distance(v1: Vector[Double], v2: Vector[Double]) = breeze.linalg.norm[Vector[Double], Double](v1 - v2)
-  def cossim(v1: Vector[Double], v2: Vector[Double]) = breeze.linalg.functions.cosineDistance(v1, v2)
+  def cossim(v1: Vector[Double], v2: Vector[Double]) = 1d - breeze.linalg.functions.cosineDistance(v1, v2)
 }
 
 /** WordVectorLookup based on a plaintext file */
