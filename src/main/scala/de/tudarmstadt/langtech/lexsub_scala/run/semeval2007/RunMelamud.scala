@@ -8,6 +8,7 @@ import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 
 /**
  * Runs an implementation of 
@@ -15,13 +16,13 @@ import de.tudarmstadt.langtech.lexsub_scala.training.Training
  */
 object RunMelamud extends App {
   
-  val evaluationData = Settings.semevalTrial
+  val (evaluationData, evalGoldfile) = (Settings.semevalTrial, Settings.trialReader.gold.file)
   
   // define feature
   val melamudsFeature = SyntaxEmbeddingFeature(
     Settings.embeddings.levyWords, 
     Settings.embeddings.levyContexts,
-    BalAdd)
+    BalMult)
     
   val features = new FeatureAnnotator(melamudsFeature)
   
@@ -37,9 +38,6 @@ object RunMelamud extends App {
     // eval pipeline
     val outcomes = lexsub(evaluationData)
     val results = Outcomes.collect(evaluationData, outcomes)
-    
-    SemEvalResultOutcomeWriter.save(results, "melamud.instances.out" )
-    val best = Outcomes.evaluate(results, 1)
-    val oot = Outcomes.evaluate(results, 10)
-    println("best = %s\noot = %s".format(best, oot))
+    val eval = SemEvalScorer.saveAndEvaluate(lexsub, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputMelamud")
+    println(eval)
 }

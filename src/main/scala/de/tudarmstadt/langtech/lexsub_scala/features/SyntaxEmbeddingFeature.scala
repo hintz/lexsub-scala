@@ -32,7 +32,8 @@ object SyntacticEmbeddingCombinator {
   case object BalAdd extends SyntacticEmbeddingCombinator {
     def apply(wordCossim: Option[Double], contextCossims: List[Double]): Double = {
       val c = contextCossims.length
-      (c * wordCossim.sum + contextCossims.sum) / (2 * c)
+      val norm = if(c > 0) 2 * c else 1
+      (c * wordCossim.sum + contextCossims.sum) / norm
     }
   }
   
@@ -45,9 +46,10 @@ object SyntacticEmbeddingCombinator {
   
    case object BalMult extends SyntacticEmbeddingCombinator {
     def apply(wordCossim: Option[Double], contextCossims: List[Double]): Double = {
-      val c = contextCossims.length
-      val mult = wordCossim.map(Math.pow(_, c)).getOrElse(1d) * contextCossims.map(pcos).product
-      Math.pow(mult, 1 / (2 * c))
+      val c = contextCossims.length + 1 // this works only reasonable with +1, but not in paper!
+      val left = wordCossim.map(pcos).map(Math.pow(_, c)).getOrElse(1d)
+      val right = contextCossims.map(pcos).product
+      Math.pow(left * right, 1d / (2 * c))
     }
   }
 }
