@@ -1,4 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.utility
+import de.tudarmstadt.langtech.scala_utilities.io
 
 import org.itc.mwn._
 import java.util.Date
@@ -9,9 +10,10 @@ import scala.collection.JavaConversions._
 class MultiWordNetUtils(language: String) {
   
   // Load Dictionary
+  MysqlDictionary.encoding = "UTF-8" // what an API..
   val dictionary = new MysqlDictionary
 
-  def lookup(word: String, pos: String, relationDepth: Int = 10) =  {
+  def lookup(word: String, pos: String, relationDepth: Int = 2) =  {
     val postag = POS.CATS.collectFirst { case p if p.getKey == pos => p }.get
     //val searchwords = dictionary.searchIndexWords(postag, word, language)
     
@@ -62,6 +64,6 @@ class MultiWordNetUtils(language: String) {
 // Example:
 
 object TestMWN extends App {
-  new MultiWordNetUtils("italian").lookup("parlare", "v") foreach println
+  new MultiWordNetUtils("italian").lookup("sostanza", "n") foreach println
 }
 
