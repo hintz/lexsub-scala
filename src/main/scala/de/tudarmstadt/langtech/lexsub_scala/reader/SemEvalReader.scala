@@ -15,7 +15,7 @@ case class GoldItem(val id: String, target: LexItem, val substitutions: List[(St
   def substitutionWordsWithoutMultiwords = substitutionWords.filter(!_.contains(" "))
 }
 
-class SemEvalGold(goldfile: String) {
+class SemEvalGold(val file: String) {
 
   lazy val items: List[GoldItem] = {
     
@@ -43,17 +43,17 @@ class SemEvalGold(goldfile: String) {
       }
     }
     
-    try { io.lines(goldfile).filter(_.length > 1).flatMap(parse).toList }
+    try { io.lines(file).filter(_.length > 1).flatMap(parse).toList }
     catch { case e: java.io.FileNotFoundException =>
-      System.err.println("WARNING: No gold file found: " + goldfile)
+      System.err.println("WARNING: No gold file found: " + file)
       List.empty
      }
   }
 }
 
-class SemEvalData(datafile: String) {
+class SemEvalData(val file: String) {
   lazy val sentences: Seq[Sentence] = {
-    val xml = XML.loadFile(datafile)
+    val xml = XML.loadFile(file)
     for (lexelt <- xml \\ "lexelt"; val lemmaPos = (lexelt \\ "@item").text;
         instance <- lexelt \\ "instance"; val id = (instance \\ "@id").text;
         context <- instance \\ "context"; val head = (context \\ "head").text.trim) yield {

@@ -32,7 +32,8 @@ object SyntacticEmbeddingCombinator {
   case object BalAdd extends SyntacticEmbeddingCombinator {
     def apply(wordCossim: Option[Double], contextCossims: List[Double]): Double = {
       val c = contextCossims.length
-      (c * wordCossim.sum + contextCossims.sum) / (2 * c)
+      val norm = if(c > 0) 2 * c else 1
+      (c * wordCossim.sum + contextCossims.sum) / norm
     }
   }
   
@@ -45,9 +46,10 @@ object SyntacticEmbeddingCombinator {
   
    case object BalMult extends SyntacticEmbeddingCombinator {
     def apply(wordCossim: Option[Double], contextCossims: List[Double]): Double = {
-      val c = contextCossims.length
-      val mult = wordCossim.map(Math.pow(_, c)).getOrElse(1d) * contextCossims.map(pcos).product
-      Math.pow(mult, 1 / (2 * c))
+      val c = contextCossims.length + 1 // this works only reasonable with +1, but not in paper!
+      val left = wordCossim.map(pcos).map(Math.pow(_, c)).getOrElse(1d)
+      val right = contextCossims.map(pcos).product
+      Math.pow(left * right, 1d / (2 * c))
     }
   }
 }
@@ -64,17 +66,20 @@ case class SyntaxEmbeddingFeature(
     
 extends SmartFeature[SyntacticEmbedding] with NumericFeature {
   val name = "SyntaxEmb"
-
+  
+  val INVERSE_MARKER = "I" // suffix added to depedge labels to denote inverse direction
+  
   def global(item: LexSubInstance): SyntacticEmbedding = {
     val lemmaEmbedding = wordEmbeddings(item.head.lemma)
     
     val targetTokenIdx = item.headIndex
     val syntaxElements = item.sentence.edges.collect {
       case DepEdge(label, `targetTokenIdx`, to) =>
-        label + "_" + item.sentence.tokens(to).lemma
+        val toToken = item.sentence.tokens(to).word.toLowerCase
+        label + "_" + toToken
       case DepEdge(label, from, `targetTokenIdx`) => 
-        // FIXME: do we really ignore the direction of edges?
-        label + "_" + item.sentence.tokens(from).lemma
+        val fromToken = item.sentence.tokens(from).word.toLowerCase
+        label + INVERSE_MARKER  + "_" + fromToken
     }
     
     val syntaxEmbeddings = syntaxElements.flatMap { nsubj_foo =>
@@ -100,6 +105,15 @@ extends SmartFeature[SyntacticEmbedding] with NumericFeature {
       LinAlgFunctions.cossim(substituteEmbedding, syntaxEmb)
     }
     
-    combinator(wordCossim, contextCossims)
+    val result = combinator(wordCossim, contextCossims)
+    //println(item.targetLemma + " -> " + item.substitution + ": wordsim=" + wordCossim + " ctxsims=" + contextCossims.mkString(", ") +" ==> " + combinator + " = " + result)
+    result
   }
 }
+
+/** Utility feature generating multiple SyntaxEmbeddingFeatures from different combinators */
+case class SyntaxEmbeddingFeatures(
+    wordEmbeddings: WordVectorLookup, 
+    contextEmbeddings: WordVectorLookup,
+    combinators: SyntacticEmbeddingCombinator*)
+  extends Features((for (comb <- combinators) yield SyntaxEmbeddingFeature(wordEmbeddings, contextEmbeddings, comb)): _*)

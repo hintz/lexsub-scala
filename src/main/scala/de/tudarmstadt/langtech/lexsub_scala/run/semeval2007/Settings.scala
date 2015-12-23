@@ -25,7 +25,7 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
   val semevalFolder = path("semevalFolder")
   val resourcesFolder = path("resourcesFolder")
   val trainingDir = path("trainingFolder")
-  val instancesOutputFile = path("outputFile")
+  val scorerFolder = path("scorerFolder")
 
   // intermediate files
   val targetsFile = resourcesFolder + "/targets.txt"

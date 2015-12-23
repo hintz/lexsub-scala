@@ -1,0 +1,60 @@
+package de.tudarmstadt.langtech.lexsub_scala.utility
+
+import scala.sys.process.ProcessBuilder
+import scala.sys.process.stringSeqToProcess
+
+import de.tudarmstadt.langtech.lexsub_scala.LexSub
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
+import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
+import de.tudarmstadt.langtech.scala_utilities.io
+
+class SemEvalScorer(val scriptFolder: String) {
+
+  def score(instancesFilePrefix: String, goldFile: String): String = {
+    import scala.sys.process._
+
+    val scorePL = scriptFolder + "/score.pl"
+    val bestInstances = instancesFilePrefix + ".best"
+    val ootInstances = instancesFilePrefix + ".oot"
+
+    val bestCmd: ProcessBuilder = Seq("perl", scorePL, bestInstances, goldFile, "-t", "best")
+    val ootCmd: ProcessBuilder = Seq("perl", scorePL, ootInstances, goldFile, "-t", "oot")
+    val best = bestCmd.lineStream_!
+    val oot = ootCmd.lineStream_!
+
+    (Seq("Best:") ++ best ++ Seq("OOT:") ++ oot).mkString("\n")
+  }
+}
+
+object SemEvalScorer {
+
+  /** Run full evaluation (all perl scripts & custom evaluation) */
+  def saveAndEvaluate(
+    lexsub: LexSub,
+    evaluationData: Iterable[LexSubInstance],
+    outcomes: Iterable[Seq[(String, Double)]],
+    scorerFolder: String,
+    goldFile : String,
+    folder: String): String = {
+
+    val results = Outcomes.collect(evaluationData, outcomes)
+    val instanceFilePrefix =  folder + "/instances.out"
+    SemEvalResultOutcomeWriter.save(results, instanceFilePrefix)
+    io.write(folder + "/system.txt", lexsub.toString)
+
+    val oot = Outcomes.evaluate(results, 10)
+    val best = Outcomes.evaluate(results, 1)
+    val myEval = "Evaluation: best=[%s] oot=[%s]".format(best, oot)
+    val perlEval = new SemEvalScorer(scorerFolder).score(instanceFilePrefix, goldFile)
+    val fullEval = Seq(myEval, perlEval).mkString("\n")
+    
+    io.write(folder + "/result.txt", fullEval)
+    fullEval
+  }
+}
+
+object Test extends App {
+  val score = new SemEvalScorer("../Tasks/GermEval2015/germeval2015-scorer").score("../Tasks/GermEval2015/germeval2015-scorer/0715-ref/instances.out", "../Tasks/GermEval2015/train-dataset.gold")
+  println(score)
+}

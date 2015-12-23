@@ -7,6 +7,11 @@ import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
+import de.tudarmstadt.langtech.lexsub_scala.features.SyntaxEmbeddingFeatures
+import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
+import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
 
 /**
  * Runs an implementation of 
@@ -14,25 +19,46 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
  */
 object RunMelamud extends App {
   
-  val evaluationData = Settings.semevalTrial
+  val (evaluationData, evalGoldfile) = (Settings.semevalTrial, Settings.trialReader.gold.file)
   
   // define feature
-  val melamudsFeature = SyntaxEmbeddingFeature(
+  val allFeatures = new FeatureAnnotator(SyntaxEmbeddingFeatures(
     Settings.embeddings.levyWords, 
     Settings.embeddings.levyContexts,
-    BalAdd)
+    Add, Mult, BalAdd, BalMult))
+  
+  val singleFeature = new FeatureAnnotator(SyntaxEmbeddingFeature(
+    Settings.embeddings.levyWords, 
+    Settings.embeddings.levyContexts,
+    BalMult))
+  
+  Training.train(evaluationData, Settings.candidates.wordnet, allFeatures, "trainingMelamud")
   
    // define lexsub system
-   val lexsub = LexSubExpander(
+   val trainedLexsub = LexSubExpander(
       Settings.candidates.wordnet,
-      new FeatureAnnotator(melamudsFeature),
+      allFeatures,
+      ClassifierScorer("trainingMelamud"))
+      
+      
+    val untrainedLexsub = LexSubExpander(
+      Settings.candidates.wordnet,
+      singleFeature,
       SingleFeatureScorer())
       
-    // eval pipeline
-    val outcomes = lexsub(evaluationData)
-    val results = Outcomes.collect(evaluationData, outcomes)
-    SemEvalResultOutcomeWriter.save(results, "melamud.instances.out" )
-    val best = Outcomes.evaluate(results, 1)
-    val oot = Outcomes.evaluate(results, 10)
-    println("best = %s\noot = %s".format(best, oot))
+    // eval untrained single feature:
+    {
+      val outcomes = untrainedLexsub(evaluationData)
+      val results = Outcomes.collect(evaluationData, outcomes)
+      val eval = SemEvalScorer.saveAndEvaluate(trainedLexsub, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputMelamud")
+      print("Untrained mode:\n" + eval)
+    }
+      
+    // eval trained pipeline
+    {
+      val outcomes = trainedLexsub(evaluationData)
+      val results = Outcomes.collect(evaluationData, outcomes)
+      val eval = SemEvalScorer.saveAndEvaluate(trainedLexsub, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputMelamud")
+      print("Trained mode:\n" + eval)
+    }
 }

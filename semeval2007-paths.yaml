@@ -4,10 +4,9 @@
 ## Please refer to http://yaml.org for syntax
 
 trainingFolder: "semeval_training"
-outputFile: "instances.out"
-
-semevalFolder: "../Tasks/SemEval2007"
 resourcesFolder: "resources/semeval2007"
+semevalFolder: "../Tasks/SemEval2007"
+scorerFolder: "../Tasks/GermEval2015/germeval2015-scorer" # use fixed scorer from GermEval
 
 Preprocessing:
     opennlpPOSModel: "resources/models/opennlp/en-pos-perceptron.bin"

@@ -5,12 +5,14 @@ import breeze.linalg.{Vector => Vector}
 import breeze.linalg.DenseVector
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.scala_utilities.index_file.PrefixIndexedFile
+import de.tudarmstadt.langtech.scala_utilities.index_file.CachedPrefixIndexedFile
+import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 
 /** A simple reader for word vector files in the format [word] [SPACE] [floating-point vector].
  *  Internally uses PrefixIndexedFile which transparently builds an index */
 class WordVectorFile(val embedding_file: String)  {
   
-  val file = new PrefixIndexedFile(embedding_file, 10)
+  val file = new CachedPrefixIndexedFile(embedding_file, 10, cachefile = LexsubUtil.getCachefile(embedding_file))
   
   /** Yields similar words based on this DT */
   def apply(word: String): Option[Vector[Double]] = repr(word)
