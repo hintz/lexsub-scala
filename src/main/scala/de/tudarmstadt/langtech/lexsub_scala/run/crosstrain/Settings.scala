@@ -43,6 +43,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
         token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
     lazy val dtSecondOrder = DTLookup("DT2nd", new WordSimilarityFile(path("DT", "German", "secondOrder"), identity), 
         token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
+        
+    lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "German", "germeval2015"), identity), token => token.word)
     
     lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "train-dataset")
     lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "test-dataset")
@@ -86,6 +88,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       new WordSimilarityFile(path("DT", "English", "secondOrder"), identity, matchPrefix = true),
       token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase,
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#"))
+      
+      
+    lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "English", "semeval2007"), identity), token => token.word)
     
     val trainingFolder = "trainingEnglish"
     
@@ -115,6 +120,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
         token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
     lazy val dtSecondOrder = DTLookup("DT2nd", new WordSimilarityFile(path("DT", "Italian", "secondOrder"), identity), 
         token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
+        
+        
+    lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "Italian", "evalita2009"), identity), token => token.word)
 
     val trainingFolder = "trainingItalian"
     
@@ -124,6 +132,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
   def mkFeatures(lang: LanguageData): FeatureAnnotator = {
     new FeatureAnnotator(
+      /*
       // syntactic features
       PosContextWindows(0 to 1, 0 to 1, 3),
       
@@ -143,13 +152,18 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
         Seq(5, 20, 50, 100, 200)),
       // boolean feature if target/substitute are similar
       BinaryWordSimilarity(lang.dtSecondOrder, 100),
-      
+      */
+      // co-occurence features
+      Cooc(lang.coocs)
+      /*
       // frequency features
       PairFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       SetFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0, false),
       // semantic relations
       NumLexSemRelations(lang.candidates)
+
+      */
     )
   }
 }

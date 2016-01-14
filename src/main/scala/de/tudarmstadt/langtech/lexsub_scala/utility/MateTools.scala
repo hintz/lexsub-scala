@@ -51,22 +51,21 @@ case class MateProcessing(
 object TestMateTools {
 
   val Models = Map(
-    "en" -> Map(
-      "tagger" -> "resources/models/mate/tagger-eng-4M-v36.mdl",
-      "lemmatizer" -> "resources/models/mate/lemmatizer-eng-4M-v36.mdl",
-      "parser" -> "resources/models/mate/parser-eng-12M-v36.mdl"),
-    "de" -> Map(
-      "lemmatizer" -> "resources/models/mate/lemma-ger-3.6.model",
-      "parser" -> "resources/models/mate/parser-ger-3.6.model"))
+    "it" -> Map(
+      "tagger" -> "resources/models/mate/tagger-it-3.6.model",
+      "lemmatizer" -> "resources/models/mate/lemmatizer-it-3.6.model",
+      "parser" -> "resources/models/mate/parser-it-3.6.model")
+  )
 
   def main(args: Array[String]) {
 
     val mate = MateProcessing(_.split(" "),
-      taggerModel = Some(Models("en")("tagger")),
-      lemmatizerModel = Some(Models("en")("lemmatizer")),
-      parserModel = Some(Models("en")("parser")))
+      taggerModel = Some(Models("it")("tagger")),
+      lemmatizerModel = Some(Models("it")("lemmatizer")),
+      parserModel = Some(Models("it")("parser")))
 
-    println(mate("Peter has a cat who likes catching mice ."))
+    //println(mate("Peter has a cat who likes catching mice ."))
+    println(mate("È stata la giornata di il doppio oro italiano a i Mondiali di atletica."))
 
   }
 }

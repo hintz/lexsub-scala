@@ -40,6 +40,14 @@ NGrams:
     Italian:
         web1t: "resources/NGrams/web1t/it"
 
+Coocs:
+    English:
+        semeval2007: "resources/semeval2007/coocs/semeval2007.coocs"
+    Italian:
+        evalita2009: "resources/evalita2009/coocs/evalita2009.coocs"
+    German:
+        germeval2015: "resources/germeval/coocs/germeval_coocs.tsv"
+
 DT:
     English:
         firstOrder: "resources/DT/en_lexsub_small/LMI_p200_all_sorted_uniq.sorted" ##small

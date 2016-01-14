@@ -22,6 +22,7 @@ trait LanguageData {
   def conjunctions: Seq[String]
   def dtFirstOrder: DTLookup
   def dtSecondOrder: DTLookup
+  val coocs: DTLookup
 
   // each language can supply a test and trainset
   def trainingData: Seq[LexSubInstance]
