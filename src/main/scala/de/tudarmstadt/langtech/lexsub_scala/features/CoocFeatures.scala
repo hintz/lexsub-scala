@@ -29,7 +29,7 @@ case class Cooc(val coocLookup: DTLookup) extends FeatureExtractor with FeatureU
     
     if(overlapCounts.forall(_ == 0)) return noFeatures // if no overlaps are present, don't yield anything
     
-    val counts = compute.normalize(overlapCounts.map(_.toDouble))
+    val counts = compute.absNormalize(overlapCounts.map(_.toDouble))
     val sums = compute.normalize(overlapSum)
     val features = (counts, sums).zipped.map { 
       case (count, sum) if count > 0 => Seq(new Feature("Cooc_count", count), new Feature("Cooc_sum", sum))
