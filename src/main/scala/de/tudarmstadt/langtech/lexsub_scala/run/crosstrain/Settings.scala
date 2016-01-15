@@ -46,6 +46,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
         
     lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "German", "germeval2015"), identity), token => token.word)
     
+    lazy val wordEmbeddings = Word2VecLookup(path("Embeddings", "German", "deNews70M"), Integer.MAX_VALUE)
+    
     lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "train-dataset")
     lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "test-dataset")
     val testGoldfile = path("Tasks", "germevalFolder") + "/test-dataset.gold"
@@ -89,8 +91,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase,
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#"))
       
-      
     lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "English", "semeval2007"), identity), token => token.word)
+    
+    lazy val wordEmbeddings = WordVectorFileLookup(path("Embeddings", "English", "levy"))
     
     val trainingFolder = "trainingEnglish"
     
@@ -123,6 +126,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
         
         
     lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "Italian", "evalita2009"), identity), token => token.word)
+    
+    lazy val wordEmbeddings = Word2VecLookup(path("Embeddings", "Italian", "itWac"), Integer.MAX_VALUE)
 
     val trainingFolder = "trainingItalian"
     
@@ -132,7 +137,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
   def mkFeatures(lang: LanguageData): FeatureAnnotator = {
     new FeatureAnnotator(
-      /*
+      
       // syntactic features
       PosContextWindows(0 to 1, 0 to 1, 3),
       
@@ -152,10 +157,13 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
         Seq(5, 20, 50, 100, 200)),
       // boolean feature if target/substitute are similar
       BinaryWordSimilarity(lang.dtSecondOrder, 100),
-      */
+      
       // co-occurence features
-      Cooc(lang.coocs)
-      /*
+      Cooc(lang.coocs),
+      
+      // embedding n-grams
+      WordEmbeddingDistanceVectorsSet(lang.wordEmbeddings, 0 to 2, 0 to 2, 5),
+      
       // frequency features
       PairFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       SetFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
@@ -163,7 +171,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       // semantic relations
       NumLexSemRelations(lang.candidates)
 
-      */
+      
     )
   }
 }

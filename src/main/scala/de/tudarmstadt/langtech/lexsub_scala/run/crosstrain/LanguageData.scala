@@ -7,6 +7,7 @@ import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
 import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
 import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
+import de.tudarmstadt.langtech.lexsub_scala.features.WordVectorLookup
 
 /** simplify resource interface to do cross-language training */
 trait LanguageData {
@@ -22,7 +23,8 @@ trait LanguageData {
   def conjunctions: Seq[String]
   def dtFirstOrder: DTLookup
   def dtSecondOrder: DTLookup
-  val coocs: DTLookup
+  def coocs: DTLookup
+  def wordEmbeddings: WordVectorLookup
 
   // each language can supply a test and trainset
   def trainingData: Seq[LexSubInstance]
