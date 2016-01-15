@@ -21,7 +21,7 @@ case class Cooc(val coocLookup: DTLookup) extends FeatureExtractor with FeatureU
     
     val (overlapCounts, overlapSum) = item.candidates.map { substitute =>
       val coocs = coocLookup.similar(Token(substitute, item.lexSubInstance.head.pos, substitute))
-      val coocValues = coocs.toMap //.mapValues(_.abs)
+      val coocValues = coocs.toMap.filter(kv => compute.isFinite(kv._2)) //.mapValues(_.abs)
       val overlaps: Set[Double] = contextTokens.flatMap(coocValues.get)
       val overlapValue = overlaps.size
       (overlapValue, overlaps.sum)
@@ -30,9 +30,11 @@ case class Cooc(val coocLookup: DTLookup) extends FeatureExtractor with FeatureU
     if(overlapCounts.forall(_ == 0)) return noFeatures // if no overlaps are present, don't yield anything
     
     val counts = compute.absNormalize(overlapCounts.map(_.toDouble))
-    val sums = compute.normalize(overlapSum)
-    val features = (counts, sums).zipped.map { 
-      case (count, sum) if count > 0 => Seq(new Feature("Cooc_count", count), new Feature("Cooc_sum", sum))
+    val sums = compute.absNormalize(overlapSum)
+    val sumsMax = compute.maxNormalize(overlapSum)
+    
+    val features = (counts, sums, sumsMax).zipped.map { 
+      case (count, sum, sumMax) if count > 0 => Seq(new Feature("Cooc_count", count), new Feature("Cooc_sum", sum), new Feature("Cooc_sumM", sumMax))
       case _ => Seq.empty
     }
     features
