@@ -8,7 +8,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon
 
 object CreateUBYCandidates extends App {
 
-  val targets = io.lines("resources/germeval/targets-pos.txt").map(strings.splitAssign('\t')).toList
+  val targets = io.lines("resources/germeval2015/targets-pos.txt").map(strings.splitAssign('\t')).toList
   val ubyDatabase = "../AIPHES_Data/UBY/ubyGermeval060"
 
   val uby = new Uby(new DBConfig(
@@ -18,7 +18,7 @@ object CreateUBYCandidates extends App {
   System.out.println("Creating candidates from UBY database with the following lexicons: " + uby.getLexiconNames);
 
   for (lexiconName <- uby.getLexiconNames.asScala; val lexicon = uby.getLexiconByName(lexiconName)) {
-    val outputFile = "resources/germeval/candidates/germeval_uby_" + lexiconName + ".tsv"
+    val outputFile = "resources/germeval2015/candidates/germeval_uby_" + lexiconName + ".tsv"
     val lines = for ((lemma, pos) <- targets; (expansion, label) <- candidatesForLexicon(lemma, lexicon))
       yield Seq(lemma, pos, expansion, label).mkString("\t")
     if(lines.length > 1) // UBY might contain some useless dictionaries (wrong language, etc.)

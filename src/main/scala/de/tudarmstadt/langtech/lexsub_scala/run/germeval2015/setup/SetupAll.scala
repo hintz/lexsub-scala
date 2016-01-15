@@ -31,10 +31,10 @@ object SetupAll extends App {
   
   
   println("Creating a candidate masterlist..")  
-  val germanet =  new CandidateFile("resources/germeval/candidates/germeval_germanet90.tsv", true)
-  val duden = new CandidateFile("resources/germeval/candidates/germeval_duden.tsv", true)
-  val woxikon = new CandidateFile("resources/germeval/candidates/germeval_woxikon.tsv", true)
-  val wortschatzSyn = new CandidateFile("resources/germeval/candidates/germeval_wortschatz.tsv", true)
+  val germanet =  new CandidateFile("resources/germeval2015/candidates/germeval_germanet90.tsv", true)
+  val duden = new CandidateFile("resources/germeval2015/candidates/germeval_duden.tsv", true)
+  val woxikon = new CandidateFile("resources/germeval2015/candidates/germeval_woxikon.tsv", true)
+  val wortschatzSyn = new CandidateFile("resources/germeval2015/candidates/germeval_wortschatz.tsv", true)
   val masterlist = new JoinedCandidates(germanet, duden , woxikon, wortschatzSyn)
   val masterlistNoMWE = masterlist.filter(!_.replacement.contains(" ")) // removes Multi Word Expressions from the masterlist
   
@@ -42,6 +42,6 @@ object SetupAll extends App {
   io.write("vocab.txt", masterlistNoMWE.allItems.mkString("\n"))
   
   println("Saving masterlist")
-  masterlistNoMWE.save("resources/germeval/candidates/germeval_masterlist.tsv")
+  masterlistNoMWE.save("resources/germeval2015/candidates/germeval_masterlist.tsv")
   
 }

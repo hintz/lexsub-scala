@@ -38,12 +38,12 @@ object EvaluateCandidates extends App {
   val germanetCandidatesHy = new CandidateFile("../AIPHES_Data/LexSub/candidates/germanet_candidates-hy")
   val germanetCandidatesHyHo = new CandidateFile("../AIPHES_Data/LexSub/candidates/germanet_candidates-hy-ho")
   val germanetGermevalAll = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_germanet.tsv", true)
-  val germanet80 = new CandidateFile("resources/germeval/candidates/germeval_germanet80.tsv", true)
-  val germanet90 = new CandidateFile("resources/germeval/candidates/germeval_germanet90.tsv", true)
+  val germanet80 = new CandidateFile("resources/germeval2015/candidates/germeval_germanet80.tsv", true)
+  val germanet90 = new CandidateFile("resources/germeval2015/candidates/germeval_germanet90.tsv", true)
 
-  val duden = new CandidateFile("resources/germeval/candidates/germeval_duden.tsv", true)
-  val woxikon = new CandidateFile("resources/germeval/candidates/germeval_woxikon.tsv", true)
-  val wortschatzSyn = new CandidateFile("resources/germeval/candidates/germeval_wortschatz.tsv", true)
+  val duden = new CandidateFile("resources/germeval2015/candidates/germeval_duden.tsv", true)
+  val woxikon = new CandidateFile("resources/germeval2015/candidates/germeval_woxikon.tsv", true)
+  val wortschatzSyn = new CandidateFile("resources/germeval2015/candidates/germeval_wortschatz.tsv", true)
   val wiktionary = Settings.candidates.wiktionary
   
   val dt70mMate = new CandidateFile("../AIPHES_Data/LexSub/candidates/germeval_DT_de_mate_lemma.tsv", true)

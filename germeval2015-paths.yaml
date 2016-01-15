@@ -7,15 +7,15 @@ trainingFolder: "germeval_training"
 outputFile: "instances.out"
 
 germEvalFolder: "../Tasks/GermEval2015"
-resourcesFolder: "resources/germeval"
+resourcesFolder: "resources/germeval2015"
 
 SemanticResources:
     GermaNetFolder: "resources/GermaNet/GN_V90/GN_V90_XML"
 
 Candidates:
-    germanet: "resources/germeval/candidates/germeval_germanet90.tsv"
-    duden: "resources/germeval/candidates/germeval_duden.tsv"  
-    masterlist: "resources/germeval/candidates/germeval_masterlist.tsv"
+    germanet: "resources/germeval2015/candidates/germeval_germanet90.tsv"
+    duden: "resources/germeval2015/candidates/germeval_duden.tsv"  
+    masterlist: "resources/germeval2015/candidates/germeval_masterlist.tsv"
 
 Embeddings:
     word2vec: "resources/WordEmbeddings/de/word2vec-denews-vectors.bin"

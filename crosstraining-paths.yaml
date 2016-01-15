@@ -21,7 +21,7 @@ Preprocessing:
 Candidates:
     German:
         GermEval2015:
-            masterlist: "resources/germeval/candidates/germeval_masterlist.tsv"
+            masterlist: "resources/germeval2015/candidates/germeval_masterlist.tsv"
     English:
         wordnet-hy-ho: "resources/wordnet-hy-ho"
         SemEval2007:
@@ -46,8 +46,8 @@ Coocs:
     Italian:
         evalita2009: "resources/evalita2009/coocs/evalita2009.coocs"
     German:
-        germeval2015: "resources/germeval/coocs/germeval2015.coocs"
-        old: "resources/germeval/coocs/germeval_coocs.tsv"
+        germeval2015: "resources/germeval2015/coocs/germeval2015.coocs"
+        old: "resources/germeval2015/coocs/germeval_coocs.tsv"
 
 Embeddings:
     English:
