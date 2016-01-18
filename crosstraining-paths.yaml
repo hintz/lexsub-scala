@@ -55,7 +55,7 @@ Embeddings:
     Italian:
         itWac: "resources/WordEmbeddings/it/it.vectors.bin"
     German:
-        deNews70M: "resources/WordEmbeddings/de/word2vec-denews-vectors.bin"
+        deNews70M: "resources/WordEmbeddings/de/word2vec/denews-vectors.bin"
 
 DT:
     English:

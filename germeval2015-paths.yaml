@@ -18,8 +18,8 @@ Candidates:
     masterlist: "resources/germeval2015/candidates/germeval_masterlist.tsv"
 
 Embeddings:
-    word2vec: "resources/WordEmbeddings/de/word2vec-denews-vectors.bin"
-    eigenwords: "resources/WordEmbeddings/de/eigenwords.300k.200.de.sorted"
+    word2vec: "resources/WordEmbeddings/de/word2vec/denews-vectors.bin"
+    eigenwords: "resources/WordEmbeddings/de/eigenwords/eigenwords.300k.200.de.sorted"
 
 DT:
     trigramBims: "resources/DT/de70M_trigram/de70M_trigram_LMI_s0.0_w2_f2_wf0_wpfmax1000_wpfmin2_p1000_filtered_g1_sorted"
