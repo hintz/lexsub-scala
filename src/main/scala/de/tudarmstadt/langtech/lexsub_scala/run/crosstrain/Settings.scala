@@ -18,6 +18,8 @@ import opennlp.tools.tokenize.TokenizerME
 import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
 import de.tudarmstadt.langtech.lexsub_scala.utility.MaltProcessing
 import opennlp.tools.tokenize.TokenizerModel
+import de.tudarmstadt.langtech.lexsub_scala.utility.MateProcessing
+import de.tudarmstadt.langtech.lexsub_scala.features.SyntacticEmbeddingCombinator._
 
 object Settings extends YamlSettings("crosstraining-paths.yaml") {
   
@@ -46,7 +48,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
         
     lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "German", "germeval2015"), identity), token => token.word)
     
-    lazy val wordEmbeddings = Word2VecLookup(path("Embeddings", "German", "deNews70M"), Integer.MAX_VALUE)
+    lazy val w2vEmbeddings = Word2VecLookup(path("Embeddings", "German", "deNews70M"), Integer.MAX_VALUE)
+    lazy val wordEmbeddings = WordVectorFileLookup(path("Embeddings", "German", "syntaxWords"))
+    lazy val contextEmbeddings = WordVectorFileLookup(path("Embeddings", "German", "syntaxContexts"))
     
     lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "train-dataset")
     lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "test-dataset")
@@ -69,7 +73,12 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
     }
 
-    implicit lazy val preprocessing = SimpleProcessing(tokenizer, tagger, identity)
+    // with parsing
+    implicit lazy val preprocessing: LexSubProcessing = MaltProcessing(
+      tokenizer = tokenizer,
+      tagger = tagger,
+      lemmatizer = identity,
+      maltModel = "resources/models/malt/engmalt.poly-1.7.mco")
     
     lazy val semevalTrial = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "trial/lexsub_trial.xml", "trial/gold.trial")
     lazy val semevalTest = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "test/lexsub_test.xml", "test/gold.gold")
@@ -93,7 +102,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       
     lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "English", "semeval2007"), identity), token => token.word)
     
-    lazy val wordEmbeddings = WordVectorFileLookup(path("Embeddings", "English", "levy"))
+    lazy val wordEmbeddings = WordVectorFileLookup(path("Embeddings", "English", "syntaxWords"))
+    lazy val contextEmbeddings = WordVectorFileLookup(path("Embeddings", "English", "syntaxContexts"))
+    lazy val w2vEmbeddings = wordEmbeddings
     
     val trainingFolder = "trainingEnglish"
     
@@ -103,11 +114,12 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
   object Italian extends LanguageData {
 
     // Defines complete processing
-    implicit lazy val preprocessing = SimpleProcessing(
-      tokenize = (s: String) => "[àèéìòóùÀÈÉÌÒÓÙ'\\w]+".r.findAllIn(s).toVector, // hopefully I got all here
-      posTag = tokens => tokens.map(x => "?"), // no need
-      lemmatize = identity // no need
-     )
+    implicit lazy val preprocessing: LexSubProcessing = MateProcessing(
+      tokenizer = (s: String) => "[àèéìòóùÀÈÉÌÒÓÙ'\\w]+".r.findAllIn(s).toVector,
+      taggerModel = Some("resources/models/mate/tagger-it.3.6.model"),
+      lemmatizerModel = Some("resources/models/mate/lemmatizer-it-3.6.model"),
+      parserModel = Some("resources/models/mate/parser-it.3.6.model")
+      )
 
     // load the evalita data (from cache, if available)
     lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "evalitaFolder"), "test/lexsub_test.xml", "test/gold.test")
@@ -127,7 +139,10 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
         
     lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "Italian", "evalita2009"), identity), token => token.word)
     
-    lazy val wordEmbeddings = Word2VecLookup(path("Embeddings", "Italian", "itWac"), Integer.MAX_VALUE)
+    lazy val w2vEmbeddings = Word2VecLookup(path("Embeddings", "Italian", "itWac"), Integer.MAX_VALUE)
+    lazy val wordEmbeddings = WordVectorFileLookup(path("Embeddings", "Italian", "syntaxWords"))
+    lazy val contextEmbeddings = WordVectorFileLookup(path("Embeddings", "Italian", "syntaxContexts"))
+
 
     val trainingFolder = "trainingItalian"
     
@@ -137,7 +152,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
   def mkFeatures(lang: LanguageData): FeatureAnnotator = {
     new FeatureAnnotator(
-      
+      /*
       // syntactic features
       PosContextWindows(0 to 1, 0 to 1, 3),
       
@@ -160,17 +175,22 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       
       // co-occurence features
       Cooc(lang.coocs),
-      
+     
       // embedding n-grams
-      WordEmbeddingDistanceVectorsSet(lang.wordEmbeddings, 0 to 2, 0 to 2, 5),
+      WordEmbeddingDistanceVectorsSet(lang.w2vEmbeddings, 0 to 2, 0 to 2, 5),
+       */
+        
+      // Melamud's features
+      SyntaxEmbeddingFeatures(lang.wordEmbeddings, lang.contextEmbeddings, Add, Mult, BalAdd, BalMult)
       
+      /*
       // frequency features
       PairFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       SetFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0, false),
       // semantic relations
       NumLexSemRelations(lang.candidates)
-
+     */
       
     )
   }

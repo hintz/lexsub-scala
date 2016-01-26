@@ -24,7 +24,9 @@ trait LanguageData {
   def dtFirstOrder: DTLookup
   def dtSecondOrder: DTLookup
   def coocs: DTLookup
+  def w2vEmbeddings: WordVectorLookup
   def wordEmbeddings: WordVectorLookup
+  def contextEmbeddings: WordVectorLookup
 
   // each language can supply a test and trainset
   def trainingData: Seq[LexSubInstance]

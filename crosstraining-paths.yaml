@@ -51,11 +51,16 @@ Coocs:
 
 Embeddings:
     English:
-        levy: "resources/WordEmbeddings/en/levy/lexsub_words.sorted"
+        syntaxWords: "resources/WordEmbeddings/en/levy/lexsub_words.sorted"
+        syntaxContexts: "resources/WordEmbeddings/en/levy/lexsub_contexts.sorted"
     Italian:
         itWac: "resources/WordEmbeddings/it/it.vectors.bin"
+        syntaxWords: "resources/WordEmbeddings/it/syntactic/dim200vecs"
+        syntaxContexts: "resources/WordEmbeddings/it/syntactic/dim200ctxs"
     German:
         deNews70M: "resources/WordEmbeddings/de/word2vec/denews-vectors.bin"
+        syntaxWords: "resources/WordEmbeddings/de/syntactic/dim200vecs"
+        syntaxContexts: "resources/WordEmbeddings/de/syntactic/dim200ctxs"
 
 DT:
     English:
