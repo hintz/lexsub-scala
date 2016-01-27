@@ -55,12 +55,12 @@ Embeddings:
         syntaxContexts: "resources/WordEmbeddings/en/levy/lexsub_contexts.sorted"
     Italian:
         itWac: "resources/WordEmbeddings/it/it.vectors.bin"
-        syntaxWords: "resources/WordEmbeddings/it/syntactic/dim200vecs"
-        syntaxContexts: "resources/WordEmbeddings/it/syntactic/dim200ctxs"
+        syntaxWords: "resources/WordEmbeddings/it/syntactic/dim200vecs.sorted"
+        syntaxContexts: "resources/WordEmbeddings/it/syntactic/dim200ctxs.sorted"
     German:
         deNews70M: "resources/WordEmbeddings/de/word2vec/denews-vectors.bin"
-        syntaxWords: "resources/WordEmbeddings/de/syntactic/dim200vecs"
-        syntaxContexts: "resources/WordEmbeddings/de/syntactic/dim200ctxs"
+        syntaxWords: "resources/WordEmbeddings/de/syntactic/dim200vecs.sorted"
+        syntaxContexts: "resources/WordEmbeddings/de/syntactic/dim200ctxs.sorted"
 
 DT:
     English:
