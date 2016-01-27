@@ -42,7 +42,8 @@ case class MaltProcessing(
   
   val malt = new MaltParser(new File(maltModel))
   
-  def apply(s: String): Sentence = {
+  def apply(sentence: String): Sentence = {
+    val s = sentence.replaceAll("--\\s+", "") // hotfix!
     val tokens = tokenizer(s)
     val pos = tagger(tokens)
     val lemmas = tokens map lemmatizer
@@ -69,8 +70,7 @@ object TestMalt extends App {
     lemmatizer = identity,
     maltModel = "resources/models/malt/engmalt.poly-1.7.mco")
     
-  println(malt("Peter has a cat who like to catch mice ."))
-
+    println(malt("Peter has a cat who like to catch mice ."))
   //val parser = new MaltParser(new File("resources/models/malt/engmalt.poly-1.7.mco"))
   //val tokens = Seq("Pierre", "Vinken", ",", "61", "years", "old", ",", "will", "join", "the", "board", "as", "a", "nonexecutive", "director", "Nov.", "29", ".")
   //val pos = Seq("NNP", "NNP", ",", "CD", "NNS", "JJ", ",", "MD", "VB", "DT", "NN", "IN", "DT", "JJ", "NN", "NNP", "CD", ".")

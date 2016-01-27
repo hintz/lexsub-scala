@@ -47,7 +47,7 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
 
   // with parsing
   implicit lazy val preprocessing: LexSubProcessing = MaltProcessing(
-    tokenizer = tokenizer,
+    tokenizer = _.split(" ").toVector, // SemEval data is pretokenized by space
     tagger = tagger,
     lemmatizer = identity,
     maltModel = "resources/models/malt/engmalt.poly-1.7.mco")
