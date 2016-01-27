@@ -28,13 +28,11 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
   
   object German extends LanguageData {
 
-    implicit lazy val preprocessing = SimpleProcessing(
-      tokenize = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector, // still works best for German
-      posTag = new SimpleProcessing.PosTagger {
-        lazy val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "German", "opennlpPOSModel"))))
-        def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
-      },
-      lemmatize = identity // no need
+    implicit lazy val preprocessing: LexSubProcessing = MateProcessing(
+      tokenizer = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector,
+      taggerModel = Some("resources/models/mate/tag-ger-3.6.model"),
+      lemmatizerModel = Some("resources/models/mate/lemma-ger-3.6.model"),
+      parserModel = Some("resources/models/mate/parser-ger.3.6.model")
       )
 
     lazy val ngrams = Web1TLookup(path("NGrams", "German", "web1t"), 5)
@@ -73,12 +71,19 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
     }
 
-    // with parsing
     implicit lazy val preprocessing: LexSubProcessing = MaltProcessing(
-      tokenizer = tokenizer,
+      tokenizer = _.split(" ").filter(_.nonEmpty).toVector, // SemEval data is pretokenized by space,
       tagger = tagger,
       lemmatizer = identity,
       maltModel = "resources/models/malt/engmalt.poly-1.7.mco")
+    
+    /*
+    implicit lazy val preprocessing: LexSubProcessing = MateProcessing(
+      tokenizer = tokenizer,
+      taggerModel = Some("resources/models/mate/tagger-eng-4M-v36.mdl"),
+      lemmatizerModel = Some("resources/models/mate/lemmatizer-eng-4M-v36.mdl"),
+      parserModel = Some("resources/models/mate/parser-eng-12M-v36.mdl")
+      )*/
     
     lazy val semevalTrial = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "trial/lexsub_trial.xml", "trial/gold.trial")
     lazy val semevalTest = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "test/lexsub_test.xml", "test/gold.gold")
