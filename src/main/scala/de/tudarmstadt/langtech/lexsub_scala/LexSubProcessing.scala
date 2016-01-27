@@ -4,15 +4,17 @@ import de.tudarmstadt.langtech.lexsub_scala.types.NLPPipeline
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
 import de.tudarmstadt.langtech.scala_utilities.io
+import de.tudarmstadt.langtech.scala_utilities.processing._
+import de.tudarmstadt.langtech.scala_utilities.processing.ReportingIterable._
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import scala.util.Try
 
-class LexSubProcessing(preprocessing: NLPPipeline) {
+class LexSubProcessing(preprocessing: NLPPipeline) extends BatchProcessing[SemEvalItem, LexSubInstance] {
   
   /** Parses SemEval data */
-  def parseSemEval(data: Seq[SemEvalItem]) = data.flatMap(tryApply)
+  def parseSemEval(data: Seq[SemEvalItem]) = data.reporting(report, 5000).flatMap(tryApply).toSeq
   
   /** Parses a single SemEvalItem wrapping any exceptions in Option */
   def tryApply(goldItem: SemEvalItem): Option[LexSubInstance] = {

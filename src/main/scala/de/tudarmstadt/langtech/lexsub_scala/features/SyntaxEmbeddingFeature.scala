@@ -74,10 +74,10 @@ extends SmartFeature[SyntacticEmbedding] with NumericFeature {
     
     val targetTokenIdx = item.headIndex
     val syntaxElements = item.sentence.edges.collect {
-      case DepEdge(label, `targetTokenIdx`, to) =>
+      case DepEdge(label, `targetTokenIdx`, to) if to >= 0 =>
         val toToken = item.sentence.tokens(to).word.toLowerCase
         label + "_" + toToken
-      case DepEdge(label, from, `targetTokenIdx`) => 
+      case DepEdge(label, from, `targetTokenIdx`) if from >= 0 => 
         val fromToken = item.sentence.tokens(from).word.toLowerCase
         label + INVERSE_MARKER  + "_" + fromToken
     }
