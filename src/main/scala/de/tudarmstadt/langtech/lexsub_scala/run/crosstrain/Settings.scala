@@ -157,7 +157,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
   def mkFeatures(lang: LanguageData): FeatureAnnotator = {
     new FeatureAnnotator(
-      /*
+      
       // syntactic features
       PosContextWindows(0 to 1, 0 to 1, 3),
       
@@ -183,20 +183,19 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
      
       // embedding n-grams
       WordEmbeddingDistanceVectorsSet(lang.w2vEmbeddings, 0 to 2, 0 to 2, 5),
-       */
+       
         
       // Melamud's features
-      SyntaxEmbeddingFeatures(lang.wordEmbeddings, lang.contextEmbeddings, Add, Mult, BalAdd, BalMult)
+      SyntaxEmbeddingFeatures(lang.wordEmbeddings, lang.contextEmbeddings, Add, Mult, BalAdd, BalMult),
       
-      /*
       // frequency features
       PairFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       SetFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0, false),
+      
+      
       // semantic relations
       NumLexSemRelations(lang.candidates)
-     */
-      
     )
   }
 }
