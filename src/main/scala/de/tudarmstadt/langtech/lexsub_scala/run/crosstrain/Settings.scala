@@ -121,9 +121,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     // Defines complete processing
     implicit lazy val preprocessing: LexSubProcessing = MateProcessing(
       tokenizer = (s: String) => "[àèéìòóùÀÈÉÌÒÓÙ'\\w]+".r.findAllIn(s).toVector,
-      taggerModel = Some("resources/models/mate/tagger-it.3.6.model"),
+      taggerModel = Some("resources/models/mate/tagger-it-3.6.model"),
       lemmatizerModel = Some("resources/models/mate/lemmatizer-it-3.6.model"),
-      parserModel = Some("resources/models/mate/parser-it.3.6.model")
+      parserModel = Some("resources/models/mate/parser-it-3.6.model")
       )
 
     // load the evalita data (from cache, if available)

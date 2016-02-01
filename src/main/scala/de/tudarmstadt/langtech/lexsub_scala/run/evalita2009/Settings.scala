@@ -13,6 +13,8 @@ import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.tokenize.TokenizerME
 import opennlp.tools.tokenize.TokenizerModel
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
+import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
+import de.tudarmstadt.langtech.lexsub_scala.utility.MateProcessing
 
 /** Nearly all of lexsub-scala can be configured in this file */
 object Settings extends YamlSettings("evalita2009-paths.yaml") {
@@ -22,11 +24,21 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
   val trainingFolder = path("trainingFolder")
   val instancesOutputFile = path("outputFile")
 
-  // Defines complete processing
+  // Alternative processing without preprocessing
+  /* 
   implicit lazy val preprocessing = SimpleProcessing(
     tokenize = (s: String) => "[àèéìòóùÀÈÉÌÒÓÙ'\\w]+".r.findAllIn(s).toVector, // hopefully I got all here
     posTag = tokens => tokens.map(x => "?"),  // no need
     lemmatize = identity // no need
+    )
+  */
+  
+  // Mate preprocessing
+  implicit lazy val preprocessing: LexSubProcessing = MateProcessing(
+      tokenizer = (s: String) => "[àèéìòóùÀÈÉÌÒÓÙ'\\w]+".r.findAllIn(s).toVector,
+      taggerModel = Some("resources/models/mate/tagger-it-3.6.model"),
+      lemmatizerModel = Some("resources/models/mate/lemmatizer-it-3.6.model"),
+      parserModel = Some("resources/models/mate/parser-it-3.6.model")
     )
 
   // load the evalita data (from cache, if available)
