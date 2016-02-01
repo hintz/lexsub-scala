@@ -47,12 +47,12 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
   // DTs
   object dts {
     lazy val firstOrder = DTLookup("DT_1st", new WordSimilarityFile(path("DT", "itWac_1stOrder"), identity, matchPrefix = true),
-      token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
-      (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // how to define equivalence in this DT
+      token => token.lemma, // how to look up token in this DT
+      (substitute, dtFeature) => dtFeature.contains(substitute.lemma)) // how to define equivalence in this DT
 
     lazy val secondOrder = DTLookup("DT_2nd", new WordSimilarityFile(path("DT", "itWac_2ndOrder"), identity, matchPrefix = true),
-      token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase, // how to look up token in this DT
-      (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#")) // how to define equivalence in this DT
+      token => token.lemma, // how to look up token in this DT
+      (substitute, dtFeature) => dtFeature.contains(substitute.lemma)) // how to define equivalence in this DT
   }
 
   lazy val ngramCounts = ngrams.web1t

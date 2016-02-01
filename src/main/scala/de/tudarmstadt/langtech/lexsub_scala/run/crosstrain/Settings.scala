@@ -137,9 +137,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     val conjunctions = Seq("e", "ed", "o", "od", ",")
     
     lazy val dtFirstOrder = DTLookup("DT1st", new WordSimilarityFile(path("DT", "Italian", "firstOrder"), identity), 
-        token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
+        token => token.lemma, (substitute, dtFeature) => dtFeature.contains(substitute.lemma))
     lazy val dtSecondOrder = DTLookup("DT2nd", new WordSimilarityFile(path("DT", "Italian", "secondOrder"), identity), 
-        token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
+        token => token.lemma, (substitute, dtFeature) => dtFeature.contains(substitute.lemma))
         
         
     lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "Italian", "evalita2009"), identity), token => token.word)
