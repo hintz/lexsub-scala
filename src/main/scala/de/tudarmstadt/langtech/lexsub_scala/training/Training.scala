@@ -28,23 +28,28 @@ object Training {
   val IncludeGoldNotInList = false // add gold items which are not in candidate list to training. Setting this to true drastically hurts performance!
   
   /** Trains a classifier with the given training data in the directory given in trainingDir */
-  def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator, trainingFolder: String){
+  def featurize(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator): Iterable[Instance[String]] = {
     
     // create training data
     val trainingData = createTrainingData(data, candidates)
     println("Using %d instances with candidates from %s created %d training examples".format(data.size, candidates, trainingData.map(_.candidates.size).sum))
     
     // write instances into a file, for later reference
-    val trainingDir = new java.io.File(trainingFolder)
-    writeInstances(trainingDir.getPath + "/" + InstanceDataWriter.INSTANCES_OUTPUT_FILENAME, trainingData)
+    // writeInstances(trainingDir.getPath + "/" + InstanceDataWriter.INSTANCES_OUTPUT_FILENAME, trainingData)
     
     // extract features
     val instances = features(trainingData).flatten
-    
-    trainAndPackage(instances, trainingDir)
+    instances
   }
   
   /** Trains a classifier with the given training data in the directory given in trainingDir */
+  def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: FeatureAnnotator, trainingFolder: String){
+    val instances = featurize(data, candidates, features)
+    trainAndPackage(instances, trainingFolder)
+  }
+  
+  /** Trains a classifier with the given training data in the directory given in trainingDir */
+  @Deprecated
   def trainOnGold(data: Iterable[LexSubInstance], features: FeatureAnnotator, trainingFolder: String){
     
     // create training data
@@ -62,6 +67,7 @@ object Training {
   }
   
   /** Performs crossvalidate, prints results to stdout and writes aggregated results to outputFile */
+  @Deprecated
   def crossvalidateOnGold(data: Iterable[LexSubInstance], features: FeatureAnnotator, 
       trainingRoot: String, outputFile: String, folds: Int = 10){
     
@@ -180,7 +186,7 @@ object Training {
   }
   
  /** Calls the training algorithm of the ML backend */
- private def trainAndPackage(instances: Iterable[Instance[String]], trainingDir: File){
+ def trainAndPackage(instances: Iterable[Instance[String]], trainingDir: File){
 
     println("Training on " + instances.size + " instances.. Writing training data to " + trainingDir)
     val dataWriter = new MalletStringOutcomeDataWriter(trainingDir)
@@ -193,6 +199,11 @@ object Training {
     
     println("Starting train & package..")
     JarClassifierBuilder.trainAndPackage(trainingDir, Classifier)
+  }
+ 
+  /** Calls the training algorithm of the ML backend */
+  def trainAndPackage(instances: Iterable[Instance[String]], trainingFolder: String) {
+    trainAndPackage(instances, new java.io.File(trainingFolder))
   }
  
  private def createTrainingDataFromGold(data: Iterable[LexSubInstance]): Iterable[Substitutions] = {

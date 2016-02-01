@@ -36,6 +36,7 @@ trait LanguageData {
   
   // folder where this language's model will be stored
   def trainingFolder: String
+  def trainingFolderOther: String = trainingFolder + "_other"
   
   // features. should be computed lazily
   def features: FeatureAnnotator
