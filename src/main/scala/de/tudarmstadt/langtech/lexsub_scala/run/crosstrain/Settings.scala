@@ -32,7 +32,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       tokenizer = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector,
       taggerModel = Some("resources/models/mate/tag-ger-3.6.model"),
       lemmatizerModel = Some("resources/models/mate/lemma-ger-3.6.model"),
-      parserModel = Some("resources/models/mate/parser-ger.3.6.model")
+      parserModel = Some("resources/models/mate/parser-ger-3.6.model")
       )
 
     lazy val ngrams = Web1TLookup(path("NGrams", "German", "web1t"), 5)
@@ -101,7 +101,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase,
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#"))
     lazy val dtSecondOrder =  DTLookup("DT2nd", 
-      new WordSimilarityFile(path("DT", "English", "secondOrder"), identity, matchPrefix = true),
+      new WordSimilarityFile(path("DT", "English", "secondOrder"), identity, matchPrefix = true, cacheResults = false /*file is huge, don't cache*/ ),
       token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase,
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#"))
       
