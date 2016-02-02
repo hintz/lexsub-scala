@@ -14,6 +14,8 @@ case class MateProcessing(
   taggerModel: Option[String],
   lemmatizerModel: Option[String],
   parserModel: Option[String]) extends NLPPipeline {
+  
+  val MaxParseTokens = 500
 
   @transient lazy val tagger = taggerModel.map(new Tagger(_))
   @transient lazy val lemmatizer = lemmatizerModel.map(new Lemmatizer(_))
@@ -22,15 +24,20 @@ case class MateProcessing(
   def apply(s: String): Sentence = {
 
     val tokens = Array("<root>") ++ tokenizer(s)
+    val length = tokens.length
 
     var i = new SentenceData09
     i.init(tokens)
 
     tagger.foreach { tagger => i = tagger(i) }
     lemmatizer.foreach { lemmatizer => i = lemmatizer(i) }
-    parser.foreach { parser => i = parser(i) }
-
-    //println(i)
+    
+    if(length > MaxParseTokens){
+      System.err.println("WARNING: Will not parse sentence with " + length + " tokens: " + s.take(20) + "..")
+    }
+    else {
+      parser.foreach { parser => i = parser(i) }
+    }
 
     val out = (i.forms, i.ppos, i.plemmas).zipped.map {
       case (form, pos, lemma) => Token(form, pos, lemma)
