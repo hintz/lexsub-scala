@@ -7,6 +7,7 @@ trainingFolder: "training"
 resourcesFolder: "resources/evalita2009"
 outputFile: "instances.out"
 evalitaFolder: "../Tasks/Evalita2009"
+scorerFolder: "../Tasks/GermEval2015/germeval2015-scorer"
 
 Candidates:
     multiwordnet: "resources/evalita2009/candidates/mwn.tsv"

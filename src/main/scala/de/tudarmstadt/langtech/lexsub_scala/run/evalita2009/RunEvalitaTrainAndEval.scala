@@ -7,6 +7,7 @@ import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 
 object RunEvalitaTrainAndEval extends App {
   
@@ -28,15 +29,17 @@ object RunEvalitaTrainAndEval extends App {
 
   val outcomes = lexsub(evaluationData)
   
-  // write results
-  val results = Outcomes.collect(evaluationData, outcomes)
-  SemEvalResultOutcomeWriter.save(results, Settings.instancesOutputFile)
-  io.write(Settings.instancesOutputFile + ".system.txt", lexsub.toString)
   
+  // my evaluation:
+  val results = Outcomes.collect(evaluationData, outcomes)
   val oot =  Outcomes.evaluate(results, 10)
   val best = Outcomes.evaluate(results, 1)
   println("Evaluation: best=[%s] oot=[%s]".format(best, oot))
+  
+  // perl script evaluation
+  val eval = SemEvalScorer.saveAndEvaluate(lexsub, evaluationData, outcomes, Settings.scorerFolder, Settings.trialGoldfile, Settings.instancesOutputFile)
+  val selection = eval.lines.toList.filter(_.startsWith("precision ="))(0) // hacky grep for one line in the output
+  println("> " + selection)
 
   println("Done.")
-
 }

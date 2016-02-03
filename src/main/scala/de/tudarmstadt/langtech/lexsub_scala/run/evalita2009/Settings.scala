@@ -22,6 +22,7 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
   val evalitaFolder = path("evalitaFolder")
   val resourcesFolder = path("resourcesFolder")
   val trainingFolder = path("trainingFolder")
+  val scorerFolder = path("scorerFolder")
   val instancesOutputFile = path("outputFile")
 
   // Alternative processing without preprocessing
@@ -44,6 +45,9 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
   // load the evalita data (from cache, if available)
   lazy val evalitaTest = LexsubUtil.preprocessSemEval(evalitaFolder, "test/lexsub_test.xml", "test/gold.test")
   lazy val evalitaTrial = LexsubUtil.preprocessSemEval(evalitaFolder, "trial/lexsub_trial.xml", "trial/gold.trial")
+  val testGoldfile = evalitaFolder + "/test/gold.test"
+  val trialGoldfile = evalitaFolder + "/trial/gold.test"
+  
 
   // Candidate lists
   object candidates {
