@@ -3,9 +3,9 @@
 ## All other preferences should be controlled directly in Settings.scala
 ## Please refer to http://yaml.org for syntax
 
-trainingFolder: "training"
+trainingFolder: "trainingEvalita"
+outputFolder: "outputEvalita"
 resourcesFolder: "resources/evalita2009"
-outputFile: "instances.out"
 evalitaFolder: "../Tasks/Evalita2009"
 scorerFolder: "../Tasks/GermEval2015/germeval2015-scorer"
 

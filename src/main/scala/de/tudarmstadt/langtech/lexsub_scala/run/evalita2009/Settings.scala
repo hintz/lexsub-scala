@@ -23,7 +23,7 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
   val resourcesFolder = path("resourcesFolder")
   val trainingFolder = path("trainingFolder")
   val scorerFolder = path("scorerFolder")
-  val instancesOutputFile = path("outputFile")
+  val outputFolder = path("outputFolder")
 
   // Alternative processing without preprocessing
   /* 

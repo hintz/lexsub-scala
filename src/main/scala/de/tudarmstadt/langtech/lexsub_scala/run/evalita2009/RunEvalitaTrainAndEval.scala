@@ -37,7 +37,7 @@ object RunEvalitaTrainAndEval extends App {
   println("Evaluation: best=[%s] oot=[%s]".format(best, oot))
   
   // perl script evaluation
-  val eval = SemEvalScorer.saveAndEvaluate(lexsub, evaluationData, outcomes, Settings.scorerFolder, Settings.trialGoldfile, Settings.instancesOutputFile)
+  val eval = SemEvalScorer.saveAndEvaluate(lexsub, evaluationData, outcomes, Settings.scorerFolder, Settings.trialGoldfile, Settings.outputFolder)
   val selection = eval.lines.toList.filter(_.startsWith("precision ="))(0) // hacky grep for one line in the output
   println("> " + selection)
 
