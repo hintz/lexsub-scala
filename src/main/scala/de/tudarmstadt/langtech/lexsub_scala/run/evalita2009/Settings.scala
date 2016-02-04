@@ -15,6 +15,7 @@ import opennlp.tools.tokenize.TokenizerModel
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
 import de.tudarmstadt.langtech.lexsub_scala.utility.MateProcessing
+import de.tudarmstadt.langtech.lexsub_scala.features.SyntacticEmbeddingCombinator._
 
 /** Nearly all of lexsub-scala can be configured in this file */
 object Settings extends YamlSettings("evalita2009-paths.yaml") {
@@ -70,8 +71,14 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
       token => token.lemma, // how to look up token in this DT
       (substitute, dtFeature) => dtFeature.contains(substitute.lemma)) // how to define equivalence in this DT
   }
-
+  
+  // N-grams
   lazy val ngramCounts = ngrams.web1t
+  
+  // Embeddings
+  lazy val w2vEmbeddings = Word2VecLookup(path("Embeddings", "itWac"), Integer.MAX_VALUE)
+  lazy val wordEmbeddings = WordVectorFileLookup(path("Embeddings", "syntaxWords"))
+  lazy val contextEmbeddings = WordVectorFileLookup(path("Embeddings", "syntaxContexts"))
 
   // setup features
   lazy val features = new FeatureAnnotator(
@@ -104,6 +111,10 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
     PairFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     ConjunctionFreqRatio(ngramCounts, Seq("e", "ed", "o", "od", ","), 0, 0),
+    
+    
+    // Melamud's features
+    SyntaxEmbeddingFeatures(wordEmbeddings, contextEmbeddings, Add, Mult, BalAdd, BalMult),
     
     // lexical resource features
     NumLexSemRelations(candidates.systemList),

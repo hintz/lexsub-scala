@@ -16,6 +16,7 @@ import org.cleartk.classifier.Instance
 object RunCrosstraining extends App {
   
   val languages: List[LanguageData] = List(English, German, Italian)
+  println("Performing crosstraining experiments with " + languages.mkString(", "))
   
   // featurize all data
   val features = languages map featurize
@@ -58,8 +59,7 @@ object RunCrosstraining extends App {
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-" + trainLanguage
      
       val eval = SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
-      val selection = eval.lines.toList.filter(_.startsWith("precision ="))(0) // hacky grep for one line in the output
-      println("> " + evaluationLanguge + " trained on " + trainLanguage + ": " + selection)
+      println("> " + evaluationLanguge + " trained on " + trainLanguage + ": " + SemEvalScorer.singleLine(eval))
     }
     
     // evaluate on all other languages
@@ -69,8 +69,7 @@ object RunCrosstraining extends App {
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-others"
      
       val eval = SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
-      val selection = eval.lines.toList.filter(_.startsWith("precision ="))(0) // hacky grep for one line in the output
-      println("> " + evaluationLanguge + " trained on other languages:" + selection)
+      println("> " + evaluationLanguge + " trained on other languages:" + SemEvalScorer.singleLine(eval))
     }
     
     // evaluate on all languages
@@ -80,8 +79,7 @@ object RunCrosstraining extends App {
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-all"
      
       val eval = SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
-      val selection = eval.lines.toList.filter(_.startsWith("precision ="))(0) // hacky grep for one line in the output
-      println("> " + evaluationLanguge + " trained on all:"  + selection)
+      println("> " + evaluationLanguge + " trained on all: "  + SemEvalScorer.singleLine(eval))
     }
   }
   

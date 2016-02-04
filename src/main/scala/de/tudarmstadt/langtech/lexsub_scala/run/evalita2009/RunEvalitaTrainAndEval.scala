@@ -27,19 +27,18 @@ object RunEvalitaTrainAndEval extends App {
       Settings.features, 
       ClassifierScorer(Settings.trainingFolder))
 
+  // process evaluation items
   val outcomes = lexsub(evaluationData)
-  
   
   // my evaluation:
   val results = Outcomes.collect(evaluationData, outcomes)
   val oot =  Outcomes.evaluate(results, 10)
   val best = Outcomes.evaluate(results, 1)
-  println("Evaluation: best=[%s] oot=[%s]".format(best, oot))
   
   // perl script evaluation
   val eval = SemEvalScorer.saveAndEvaluate(lexsub, evaluationData, outcomes, Settings.scorerFolder, Settings.trialGoldfile, Settings.outputFolder)
-  val selection = eval.lines.toList.filter(_.startsWith("precision =")).applyOrElse(0, (_: Int) => "ERROR") // hacky grep for one line in the output
-  println("> " + selection)
-
-  println("Done.")
+  
+  println("Evalita: best=[%s] oot=[%s]".format(best, oot)) // my format
+  println("> " + SemEvalScorer.singleLine(eval)) // semeval scorer main metric
+  println(eval) // full semeval scorer output
 }

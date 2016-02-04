@@ -18,3 +18,8 @@ DT:
 
 NGrams:
     web1t: "resources/NGrams/web1t/it"
+
+Embeddings:
+    itWac: "resources/WordEmbeddings/it/it.vectors.bin"
+    syntaxWords: "resources/WordEmbeddings/it/syntactic/dim200vecs.sorted"
+    syntaxContexts: "resources/WordEmbeddings/it/syntactic/dim200ctxs.sorted"

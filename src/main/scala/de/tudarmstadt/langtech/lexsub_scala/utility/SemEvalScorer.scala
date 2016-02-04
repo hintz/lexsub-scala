@@ -54,4 +54,9 @@ object SemEvalScorer {
     io.write(folder + "/result.txt", fullEval)
     fullEval
   }
+  
+  def singleLine(evalOutput: String): String = {
+    // hacky grep for one line in the output
+    evalOutput.lines.filter(_.startsWith("precision =")).toList.applyOrElse(0, (_: Int) => "ERROR")
+  }
 }
