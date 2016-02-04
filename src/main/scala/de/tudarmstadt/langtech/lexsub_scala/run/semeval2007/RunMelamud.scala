@@ -19,6 +19,7 @@ import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
  */
 object RunMelamud extends App {
   
+  val trainingData = Settings.semevalTest
   val (evaluationData, evalGoldfile) = (Settings.semevalTrial, Settings.trialReader.gold.file)
   
   // define feature
@@ -32,7 +33,7 @@ object RunMelamud extends App {
     Settings.embeddings.levyContexts,
     BalMult))
   
-  Training.train(evaluationData, Settings.candidates.wordnet, allFeatures, "trainingMelamud")
+  Training.train(trainingData, Settings.candidates.wordnet, allFeatures, "trainingMelamud")
   
    // define lexsub system
    val trainedLexsub = LexSubExpander(

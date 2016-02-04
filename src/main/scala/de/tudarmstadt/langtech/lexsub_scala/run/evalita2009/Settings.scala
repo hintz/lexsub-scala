@@ -46,7 +46,7 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
   lazy val evalitaTest = LexsubUtil.preprocessSemEval(evalitaFolder, "test/lexsub_test.xml", "test/gold.test")
   lazy val evalitaTrial = LexsubUtil.preprocessSemEval(evalitaFolder, "trial/lexsub_trial.xml", "trial/gold.trial")
   val testGoldfile = evalitaFolder + "/test/gold.test"
-  val trialGoldfile = evalitaFolder + "/trial/gold.test"
+  val trialGoldfile = evalitaFolder + "/trial/gold.trial"
   
 
   // Candidate lists

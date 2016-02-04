@@ -9,6 +9,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.scala_utilities.io
 
+/** Commandline wrapper for semeval perl score script */
 class SemEvalScorer(val scriptFolder: String) {
 
   def score(instancesFilePrefix: String, goldFile: String): String = {
@@ -20,6 +21,7 @@ class SemEvalScorer(val scriptFolder: String) {
 
     val bestCmd: ProcessBuilder = Seq("perl", scorePL, bestInstances, goldFile, "-t", "best")
     val ootCmd: ProcessBuilder = Seq("perl", scorePL, ootInstances, goldFile, "-t", "oot")
+    
     val best = bestCmd.lineStream_!
     val oot = ootCmd.lineStream_!
 
@@ -52,9 +54,4 @@ object SemEvalScorer {
     io.write(folder + "/result.txt", fullEval)
     fullEval
   }
-}
-
-object Test extends App {
-  val score = new SemEvalScorer("../Tasks/GermEval2015/germeval2015-scorer").score("../Tasks/GermEval2015/germeval2015-scorer/0715-ref/instances.out", "../Tasks/GermEval2015/train-dataset.gold")
-  println(score)
 }
