@@ -72,7 +72,7 @@ extends SmartFeature[SyntacticEmbedding] with NumericFeature {
   val INVERSE_MARKER = "I" 
     
   // support for lowercased / non-lowercased embedding files, based on flag in WordVectorLookup
-  val targetLemma: Token => String = if(wordEmbeddings.isLowercased) _.lemma else _.lemma.toLowerCase
+  val targetLemma: Token => String = if(wordEmbeddings.isLowercased) _.lemma.toLowerCase else _.lemma
   val lexicalPart: Token => String = if(contextEmbeddings.isLowercased) _.word.toLowerCase else _.word
   
   def global(item: LexSubInstance): SyntacticEmbedding = {
