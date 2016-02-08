@@ -82,8 +82,8 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
 
   // setup features
   lazy val features = new FeatureAnnotator(
-     
-      // to what extend the context characterizes the subst
+
+    // to what extend the context characterizes the subst
     SalientDTFeatures(dts.firstOrder),
     
     // similarity between target and subst
@@ -112,6 +112,8 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
     SetFreqRatios(ngramCounts, 0 to 2, 0 to 2, 5),
     ConjunctionFreqRatio(ngramCounts, Seq("e", "ed", "o", "od", ","), 0, 0),
     
+    // Germeval-style embeddings
+    WordEmbeddingDistanceVectorsSet(w2vEmbeddings, 0 to 2, 0 to 2, 5),
     
     // Melamud's features
     SyntaxEmbeddingFeatures(wordEmbeddings, contextEmbeddings, Add, Mult, BalAdd, BalMult),

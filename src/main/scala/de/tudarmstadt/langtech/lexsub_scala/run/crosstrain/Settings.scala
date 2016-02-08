@@ -30,9 +30,10 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
     implicit lazy val preprocessing: LexSubProcessing = MateProcessing(
       tokenizer = (s: String) => "[äöüÄÖÜß\\w]+".r.findAllIn(s).toVector,
-      taggerModel = Some("resources/models/mate/tag-ger-3.6.model"),
       lemmatizerModel = Some("resources/models/mate/lemma-ger-3.6.model"),
-      parserModel = Some("resources/models/mate/parser-ger-3.6.model")
+      // these are some custom trained models on universal deps:
+      taggerModel = Some("resources/models/mate/tagger-de-3.6.model"),
+      parserModel = Some("resources/models/mate/parser-de-3.6.model")
       )
 
     lazy val ngrams = Web1TLookup(path("NGrams", "German", "web1t"), 5)
@@ -61,11 +62,6 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
   object English extends LanguageData {
 
-    lazy val tokenizer = new SimpleProcessing.Tokenizer {
-      lazy val model: TokenizerME = new TokenizerME(new TokenizerModel(new File((path("Preprocessing", "English", "opennlpTokenModel")))))
-      def apply(sent: String) = model.tokenize(sent)
-    }
-
     lazy val tagger = new SimpleProcessing.PosTagger {
       lazy val tagger = new POSTaggerME(new POSModel(new File(path("Preprocessing", "English", "opennlpPOSModel"))))
       def apply(tokens: Iterable[String]) = tagger.tag(tokens.toArray)
@@ -79,7 +75,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     
     /*
     implicit lazy val preprocessing: LexSubProcessing = MateProcessing(
-      tokenizer = tokenizer,
+      tokenizer = _.split(" ").filter(_.nonEmpty).toVector, // SemEval data is pretokenized by space,
       taggerModel = Some("resources/models/mate/tagger-eng-4M-v36.mdl"),
       lemmatizerModel = Some("resources/models/mate/lemmatizer-eng-4M-v36.mdl"),
       parserModel = Some("resources/models/mate/parser-eng-12M-v36.mdl")
@@ -183,16 +179,14 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
      
       // embedding n-grams
       WordEmbeddingDistanceVectorsSet(lang.w2vEmbeddings, 0 to 2, 0 to 2, 5),
-       
         
       // Melamud's features
       SyntaxEmbeddingFeatures(lang.wordEmbeddings, lang.contextEmbeddings, Add, Mult, BalAdd, BalMult),
-      
+
       // frequency features
       PairFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       SetFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0, false),
-      
       
       // semantic relations
       NumLexSemRelations(lang.candidates)
