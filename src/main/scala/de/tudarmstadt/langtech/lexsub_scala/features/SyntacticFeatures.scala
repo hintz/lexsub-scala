@@ -19,7 +19,7 @@ case class PosContextWindow(left: Int, right: Int) extends GlobalFeatureExtracto
     val sentence = item.sentence
     val posTokens = sentence.tokens.map(_.pos)
     val posWindow = slicer(posTokens, item.headIndex)
-    val posWindow2 = posWindow.map { case Some(pos) => pos.substring(0, 1); case None => "x"}
+    val posWindow2 = posWindow.map { case Some(pos) => pos.substring(0, 1).toUpperCase; case None => "x"}
     val value = posWindow2.mkString
     value
   }
