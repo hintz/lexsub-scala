@@ -5,6 +5,7 @@ import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.DepEdge
 import org.cleartk.classifier.Feature
+import de.tudarmstadt.langtech.lexsub_scala.types.Token
 
 
 trait SyntacticEmbeddingCombinator {
@@ -67,18 +68,24 @@ case class SyntaxEmbeddingFeature(
 extends SmartFeature[SyntacticEmbedding] with NumericFeature {
   val name = "SyntaxEmb"
   
-  val INVERSE_MARKER = "I" // suffix added to depedge labels to denote inverse direction
+  // suffix added to depedge labels to denote inverse direction
+  val INVERSE_MARKER = "I" 
+    
+  // support for lowercased / non-lowercased embedding files, based on flag in WordVectorLookup
+  val targetLemma: Token => String = if(wordEmbeddings.isLowercased) _.lemma else _.lemma.toLowerCase
+  val lexicalPart: Token => String = if(contextEmbeddings.isLowercased) _.word.toLowerCase else _.word
   
   def global(item: LexSubInstance): SyntacticEmbedding = {
-    val lemmaEmbedding = wordEmbeddings(item.head.lemma)
+    val lemma = targetLemma(item.head)
+    val lemmaEmbedding = wordEmbeddings(lemma)
     
     val targetTokenIdx = item.headIndex
     val syntaxElements = item.sentence.edges.collect {
       case DepEdge(label, `targetTokenIdx`, to) if to >= 0 =>
-        val toToken = item.sentence.tokens(to).word.toLowerCase
+        val toToken = lexicalPart(item.sentence.tokens(to))
         label + "_" + toToken
       case DepEdge(label, from, `targetTokenIdx`) if from >= 0 => 
-        val fromToken = item.sentence.tokens(from).word.toLowerCase
+        val fromToken = lexicalPart(item.sentence.tokens(from))
         label + INVERSE_MARKER  + "_" + fromToken
     }
     

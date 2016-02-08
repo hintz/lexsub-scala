@@ -23,6 +23,7 @@ trait WordVectorLookup {
       case _ => None
     }
   }
+  def isLowercased: Boolean
 }
 
 // Some wrappers for breeze. Shouldn't be necessary if I understood the breeze typing system correctly..
@@ -32,10 +33,12 @@ object LinAlgFunctions {
 }
 
 /** WordVectorLookup based on a plaintext file */
-case class WordVectorFileLookup(filename: String) extends WordVectorFile(filename) with WordVectorLookup
+case class WordVectorFileLookup(filename: String, isLowercased: Boolean = false) 
+  extends WordVectorFile(filename) with WordVectorLookup
 
 /** WordVectorLookup based on Word2Vec binary data */
-case class Word2VecLookup(filename: String, limit: Integer = Integer.MAX_VALUE) extends WordVectorLookup {
+case class Word2VecLookup(filename: String, limit: Integer = Integer.MAX_VALUE, isLowercased: Boolean = false) 
+  extends WordVectorLookup {
   lazy val file = new Word2Vec(filename, limit)
   lazy val cache = FileBackedCache(lookup, LexsubUtil.getCachefile(filename))
   
