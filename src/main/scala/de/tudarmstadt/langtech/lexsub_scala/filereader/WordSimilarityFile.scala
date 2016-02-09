@@ -30,8 +30,10 @@ class WordSimilarityFile[Elem](val dt_filename: String,
   /** Yields similar words based on this DT */
   def similar(s: String) = sim(s)
   val sim: String => Result = Memo.mutableHashMapMemo { prefix =>
-    val lines = file.search(prefix)
-    val processed = lines.map(_.split("\t")).flatMap {
+    // make sure word is terminated if not looking up by prefix
+    val lookupPrefix = if(matchPrefix) prefix else prefix + Splitter
+    val lines = file.search(lookupPrefix)
+    val processed = lines.map(_.split(Splitter)).flatMap {
       case Array(elem, other, score) if matchPrefix || elem == prefix => 
         Seq((extractor(other), score.toDouble))
       case Array(_, _, _) => Seq.empty

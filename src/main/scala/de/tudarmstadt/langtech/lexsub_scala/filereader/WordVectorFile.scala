@@ -16,7 +16,7 @@ class WordVectorFile(val embedding_file: String, useCache: Boolean = true)  {
   val file = new PrefixIndexedFile(embedding_file, 10)
 
   val lookup: String => Option[Vector[Double]] = Memo.mutableHashMapMemo { word =>
-    val lines = file.search(word)
+    val lines = file.search(word + " ") // make sure word is terminated by space!
     val v = lines.map(_.split(" ").toList).collectFirst {
       case `word` :: vector => vector.map(_.toDouble).toArray
     }
