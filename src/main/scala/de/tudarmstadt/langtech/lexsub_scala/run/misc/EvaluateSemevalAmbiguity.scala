@@ -16,13 +16,14 @@ object EvaluateSemevalAmbiguity extends App {
     ("GermEvalTest", Settings.German.testData),
     ("GermEvalTrain", Settings.German.trainingData),
     ("EvalitaTrain", Settings.Italian.testData),
-    ("EvalitaTest", Settings.Italian.trainingData)
+    ("EvalitaTest", Settings.Italian.trainingData),
+    ("All-Training", Seq(Settings.English, Settings.German, Settings.Italian).map(_.trainingData).flatten)
    )
     
   for((name, data) <- goldData){
     val gold = data.map(_.getGold.gold)
-    val md = meanDice(gold)
-    val byPos = meanDiceByPos(gold)
+    val md = 1 - meanDice(gold)
+    val byPos = meanDiceByPos(gold).mapValues(1 - _)
     println(s"$name: meanDice = $md%2.2f byPos=$byPos")
   }
   
