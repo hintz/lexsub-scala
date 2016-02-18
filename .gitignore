@@ -7,6 +7,9 @@ syntax: glob
 #*.off
 *.old
 
+# idea stuff
+.idea
+
 # eclipse conf file
 .settings
 .classpath
@@ -37,25 +40,17 @@ build.log
 #  syntax: regexp
 #  ^\.pc/
 
-/crawling/woxikon
-/crawling/duden
-/crawling/wortschatz
-/scripts/duden
-/scripts/wortschatz
-/scripts/woxikon
+/crawling/*
+/scripts/*
 /arff
 /crosstrainingResults
-training
+
 semeval_training
 germeval_training
 twsi_training
 dependency-reduced-pom.xml
-semeval_training
 instances.out
-trainingEnglish
-trainingGerman
-trainingItalian
-.idea
-
-trainingMelamud
-outputMelamud
+training
+training*
+output*
+cache
