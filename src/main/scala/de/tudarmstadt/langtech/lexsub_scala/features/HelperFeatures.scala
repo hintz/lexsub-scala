@@ -28,3 +28,10 @@ case object CheatFeature extends LocalFeatureExtractor {
     Seq(new Feature("CheatFeature", value))
   }
 }
+
+/** Supplies a constant feature */ 
+case class ConstantFeature(name: String, value: String) extends LocalFeatureExtractor {
+  def extract(item: SubstitutionItem): Seq[Feature] = {
+    Seq(new Feature(name, value))
+  }
+}

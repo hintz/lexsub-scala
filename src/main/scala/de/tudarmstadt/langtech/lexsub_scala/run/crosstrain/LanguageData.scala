@@ -41,5 +41,5 @@ trait LanguageData {
   // features. should be computed lazily
   def features: FeatureAnnotator
   
-  override def toString = getClass.getSimpleName
+  override def toString = getClass.getSimpleName.takeWhile(_.isLetterOrDigit)
 }

@@ -153,6 +153,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
   def mkFeatures(lang: LanguageData): FeatureAnnotator = {
     new FeatureAnnotator(
+        
+      // supply source language as constant feature
+      ConstantFeature("SourceLanguage", lang.toString),
       
       // syntactic features
       PosContextWindows(0 to 1, 0 to 1, 3),
@@ -189,7 +192,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0, false),
       
       // semantic relations
-      NumLexSemRelations(lang.candidates)
+      NumLexSemRelations(lang.candidates),
+      LexSemRelation(lang.candidates, simplifyLabels = true)
     )
   }
 }
