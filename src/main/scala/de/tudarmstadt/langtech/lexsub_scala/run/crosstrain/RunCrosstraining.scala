@@ -12,8 +12,11 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import org.cleartk.classifier.Instance
 import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
 
 object RunCrosstraining extends App {
+  
+  val Model = ClearTKModel
   
   val languages: List[LanguageData] = List(English, German, Italian)
   println("Performing crosstraining experiments with " + languages.mkString(", "))

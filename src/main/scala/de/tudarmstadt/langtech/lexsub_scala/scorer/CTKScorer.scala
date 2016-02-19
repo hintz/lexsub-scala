@@ -27,15 +27,14 @@ case class CTKScorer(val trainingDiretory: String) extends PointwiseScorer {
   
   def apply(features: Seq[Feature]): Double = {
     val outcomes = classifier.score(features, 2)
-    val goodScore = outcomes.collectFirst { case o if o.getOutcome == CTKBinaryFeatureAnnotator.Good => o.getScore }
+    val goodScore = outcomes.collectFirst { case o if o.getOutcome == CTKInstanceBuilder.Good => o.getScore }
     goodScore.getOrElse(throw new IllegalStateException)
   }
 }
 
 
 /** Creates instances for training a ClearTK classifier */
-class CTKBinaryFeatureAnnotator(val features: Features) extends BatchProcessing[Substitutions, Vector[Instance[String]]]
-{
+class CTKInstanceBuilder(val features: Features) extends BatchProcessing[Substitutions, Vector[Instance[String]]] {
   val useScores = true
 
   private val mkInstance = (features: Seq[Feature], outcome: String) => {
@@ -62,7 +61,7 @@ class CTKBinaryFeatureAnnotator(val features: Features) extends BatchProcessing[
     }*/
 
     val gold = item.asItems.map(_.isGood.get)
-    val outcomes = gold.map(if(_) CTKBinaryFeatureAnnotator.Good else CTKBinaryFeatureAnnotator.Bad)
+    val outcomes = gold.map(if(_) CTKInstanceBuilder.Good else CTKInstanceBuilder.Bad)
     val instances = feats.zip(outcomes).map(mkInstance.tupled)
     instances
 
@@ -71,7 +70,7 @@ class CTKBinaryFeatureAnnotator(val features: Features) extends BatchProcessing[
   override def toString = "CTKBinaryFeatureAnnotator(%s)".format(features.extractors.mkString("\n", "\n", "\n"))
 }
 
-object CTKBinaryFeatureAnnotator {
+object CTKInstanceBuilder {
   // some arbitrary labels for good and bad instances
   val Good = "GOOD"
   val Bad = "BAD"

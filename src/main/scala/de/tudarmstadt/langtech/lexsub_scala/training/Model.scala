@@ -9,6 +9,10 @@ import de.tudarmstadt.langtech.lexsub_scala.Scorer
 trait Model {
   
   def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: Features, trainingFolder: String)
-  def getScorer(trainingFolder: String): Scorer
   
+  def trainOnFeaturizedData(dataWithFeatures: Iterable[LexSubInstance], trainingFolder: String){
+    
+  }
+  
+  def getScorer(trainingFolder: String): Scorer
 }

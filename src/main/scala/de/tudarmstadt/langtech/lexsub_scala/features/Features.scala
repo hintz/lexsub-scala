@@ -11,6 +11,9 @@ import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 abstract class FeatureExtractor {
   /** Yield a vector of multiple feature vectors for each substitute */
   def extract(item: Substitutions): Vector[Seq[Feature]]
+  
+  /** Featurize all data */
+  def featurizeData(data: Iterable[Substitutions]) = data.zip(data.map(extract))
 }
 
 /** Features working only on lexical substitution instances */
@@ -56,6 +59,7 @@ trait NominalFeature[A] extends FeatureUtils {
   implicit def toFeatures(a: A): Seq[Feature] = Seq(new Feature(name, a))
 	implicit def toFeatures(a: Option[A]): Seq[Feature] = a.toList.map(new Feature(name, _))
 }
+
 
 /** Applies a collection of features */
 class Features(val extractors: FeatureExtractor*) extends FeatureExtractor {
