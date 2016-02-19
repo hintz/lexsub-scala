@@ -1,13 +1,13 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.semeval2007
 
-import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
-import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
+import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 
 object RunSemevalTrainAndEval extends App {
  
@@ -16,7 +16,7 @@ object RunSemevalTrainAndEval extends App {
   
   printf("Will train on %d examples and then lex-expand %d instances\n", trainingData.size, evaluationData.size)
     
-  Training.train(
+  CTKTraining.train(
     Settings.semevalTest,
     Settings.candidates.trainingList,
     Settings.features,
@@ -26,7 +26,7 @@ object RunSemevalTrainAndEval extends App {
   val lexsub = LexSubExpander(
       Settings.candidates.systemList,
       Settings.features, 
-      ClassifierScorer(Settings.trainingDir))
+      CTKScorer(Settings.trainingDir))
       
   // run system
   val outcomes = lexsub(evaluationData)

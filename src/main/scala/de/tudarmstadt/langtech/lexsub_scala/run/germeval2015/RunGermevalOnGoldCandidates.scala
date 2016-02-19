@@ -1,18 +1,19 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.germeval2015
 
-import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 
 object RunGermevalOnGoldCandidates extends App {
-  
+ 
+ /*
  Training.crossvalidateOnGold(
       Settings.germevalTraining, 
       Settings.features, 
       Settings.trainingDir, 
       Settings.instancesOutputFile,
       folds = 10)
-  
+  */
   /*
    * val data = Settings.germevalTraining
   printf("Will train on %d examples with gold candidates..\n", data.size)
@@ -22,7 +23,7 @@ object RunGermevalOnGoldCandidates extends App {
   
   val lexsub = GoldCandidatesRanker(
       Settings.features, 
-      ClassifierScorer(Settings.trainingDir))
+      CTKScorer(Settings.trainingDir))
 
   val outcomes = lexsub(data)
   

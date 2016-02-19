@@ -11,7 +11,6 @@ import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
 import de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
-import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 import de.tudarmstadt.langtech.lexsub_scala.types.SimpleProcessing
 
@@ -110,7 +109,7 @@ object Settings extends YamlSettings("germeval2015-paths.yaml") {
   lazy val ngramCounts = ngrams.web1t
   
   // setup features // FIXME: Fix these features according to twsi/semeval
-  lazy val features = new FeatureAnnotator(
+  lazy val features = new Features(
       Cooc(cooc),
       WordSimilarity(dts.mateSim),
       WordSimilarity(dts.trigramSim),

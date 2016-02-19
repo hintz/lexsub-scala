@@ -11,7 +11,6 @@ import opennlp.tools.postag.POSTaggerME
 import opennlp.tools.postag.POSModel
 import de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
-import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import opennlp.tools.tokenize.TokenizerME
 import opennlp.tools.tokenize.TokenizerModel
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
@@ -108,7 +107,7 @@ object Settings extends YamlSettings("twsi-paths.yaml") {
   lazy val ngramCounts = ngrams.web1t
 
   // setup features
-  lazy val features = new FeatureAnnotator(
+  lazy val features = new Features(
     ///SentenceIDFeature,
     ///SubstitutionFeature,
     

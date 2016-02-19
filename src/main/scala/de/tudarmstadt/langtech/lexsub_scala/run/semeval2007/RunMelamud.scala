@@ -3,15 +3,15 @@ package de.tudarmstadt.langtech.lexsub_scala.run.semeval2007
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.features.SyntaxEmbeddingFeature
 import de.tudarmstadt.langtech.lexsub_scala.features.SyntacticEmbeddingCombinator._
-import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
-import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import de.tudarmstadt.langtech.lexsub_scala.features.SyntaxEmbeddingFeatures
-import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
+import de.tudarmstadt.langtech.lexsub_scala.features.Features
+import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 
 /**
  * Runs an implementation of 
@@ -23,23 +23,23 @@ object RunMelamud extends App {
   val (evaluationData, evalGoldfile) = (Settings.semevalTrial, Settings.trialReader.gold.file)
   
   // define feature
-  val allFeatures = new FeatureAnnotator(SyntaxEmbeddingFeatures(
+  val allFeatures = new Features(SyntaxEmbeddingFeatures(
     Settings.embeddings.levyWords, 
     Settings.embeddings.levyContexts,
     Add, Mult, BalAdd, BalMult))
   
-  val singleFeature = new FeatureAnnotator(SyntaxEmbeddingFeature(
+  val singleFeature = new Features(SyntaxEmbeddingFeature(
     Settings.embeddings.levyWords, 
     Settings.embeddings.levyContexts,
     BalMult))
   
-  Training.train(trainingData, Settings.candidates.wordnet, allFeatures, "trainingMelamud")
+  CTKTraining.train(trainingData, Settings.candidates.wordnet, allFeatures, "trainingMelamud")
   
    // define lexsub system
    val trainedLexsub = LexSubExpander(
       Settings.candidates.wordnet,
       allFeatures,
-      ClassifierScorer("trainingMelamud"))
+      CTKScorer("trainingMelamud"))
       
       
     val untrainedLexsub = LexSubExpander(

@@ -1,6 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.evalita2009
 
-import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.filereader.WordSimilarityFile
@@ -81,7 +80,7 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
   lazy val contextEmbeddings = WordVectorFileLookup(path("Embeddings", "syntaxContexts"))
 
   // setup features
-  lazy val features = new FeatureAnnotator(
+  lazy val features = new Features(
 
     // to what extend the context characterizes the subst
     SalientDTFeatures(dts.firstOrder),

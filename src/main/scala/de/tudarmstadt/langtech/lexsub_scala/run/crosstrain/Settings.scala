@@ -11,7 +11,6 @@ import de.tudarmstadt.langtech.lexsub_scala.filereader._
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.scala_utilities.formatting.YamlSettings
 import de.tudarmstadt.langtech.lexsub_scala.candidates.JoinedCandidates
-import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 import de.tudarmstadt.langtech.lexsub_scala.types.SimpleProcessing
 import opennlp.tools.tokenize.TokenizerME
@@ -151,8 +150,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
   }
   
 
-  def mkFeatures(lang: LanguageData): FeatureAnnotator = {
-    new FeatureAnnotator(
+  def mkFeatures(lang: LanguageData): Features = {
+    new Features(
         
       // supply source language as constant feature
       ConstantFeature("SourceLanguage", lang.toString),

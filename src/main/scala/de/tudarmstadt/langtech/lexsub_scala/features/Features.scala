@@ -58,14 +58,14 @@ trait NominalFeature[A] extends FeatureUtils {
 }
 
 /** Applies a collection of features */
-class Features(features: FeatureExtractor*) extends FeatureExtractor {
+class Features(val extractors: FeatureExtractor*) extends FeatureExtractor {
   def extract(item: Substitutions): Vector[Seq[Feature]] = {
     def combine(a: Vector[Seq[Feature]], b: Vector[Seq[Feature]]): Vector[Seq[Feature]] = {
       //val comb: (Seq[Feature], Seq[Feature]) => Seq[Feature] = _ ++ _
       //a.zip(b).map(comb.tupled)
       (a, b).zipped.map(_ ++ _) // every now and then, this refuses to compile
     }
-    val extracted = features.map(_.extract(item))
+    val extracted = extractors.map(_.extract(item))
     val combined = extracted.reduce(combine)
     combined
   }

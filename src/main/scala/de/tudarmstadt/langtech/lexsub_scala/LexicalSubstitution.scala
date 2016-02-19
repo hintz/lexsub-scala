@@ -82,54 +82,6 @@ case class GoldCandidatesRanker(
   }
 }
 
-
-/** Enhances Features with the option to create training instances */
-class FeatureAnnotator(val features: FeatureExtractor*) 
-  extends Features(features :_*)
-  with BatchProcessing[Substitutions, Vector[Instance[String]]]
-{
-  
-  val useScores = true
-
-  private val mkInstance = (features: Seq[Feature], outcome: String) => {
-    val result = new Instance[String]
-    result setOutcome outcome
-    result addAll features
-    result
-  }
-  
-  private val mkNumericInstance = (features: Seq[Feature], outcome: Double) => {
-    val result = new Instance[Double]
-    result setOutcome outcome
-    result addAll features
-    result
-  }
-  
-  def apply(item: Substitutions): Vector[Instance[String]] = {
-    val features = extract(item)
-    
-    /*if(useScores) {
-      val outcomes = item.asItems.map(_.score.get)
-      val instances = features.zip(outcomes).map(mkNumericInstance.tupled)
-      return instances.asInstanceOf[Vector[Instance[Any]]]
-    }*/
-
-    val gold = item.asItems.map(_.isGood.get)
-    val outcomes = gold.map(if(_) FeatureAnnotator.Good else FeatureAnnotator.Bad)
-    val instances = features.zip(outcomes).map(mkInstance.tupled)
-    instances
-
-  }
-  
-  override def toString = "FeatureAnnotator(%s)".format(features.mkString("\n", "\n", "\n"))
-}
-
-object FeatureAnnotator {
-  // some arbitrary labels for good and bad instances
-  val Good = "GOOD"
-  val Bad = "BAD"
-}
-
 /** A scorer extracting the value of an only feature */
 case class SingleFeatureScorer(val fallback: Double = Double.NaN) extends PointwiseScorer {
   def apply(features: Seq[Feature]): Double = {
@@ -138,23 +90,5 @@ case class SingleFeatureScorer(val fallback: Double = Double.NaN) extends Pointw
       case Seq() => fallback
       case _ => throw new RuntimeException("requires at most one feature per item!")
     }
-  }
-}
-
-/** A scorer based on a ClearTK classifier trained in trainingDirectory */
-case class ClassifierScorer(val trainingDiretory: String) extends PointwiseScorer {
-  import org.cleartk.classifier.mallet.MalletStringOutcomeClassifierBuilder
-  import org.cleartk.classifier.Classifier
-  import org.cleartk.classifier.Feature
-    
-  val classifier = JarClassifierBuilder
-    .fromTrainingDirectory(new File(trainingDiretory))
-    .loadClassifierFromTrainingDirectory(new File(trainingDiretory))
-    .asInstanceOf[Classifier[String]]
-  
-  def apply(features: Seq[Feature]): Double = {
-    val outcomes = classifier.score(features, 2)
-    val goodScore = outcomes.collectFirst { case o if o.getOutcome == FeatureAnnotator.Good => o.getScore }
-    goodScore.getOrElse(throw new IllegalStateException)
   }
 }

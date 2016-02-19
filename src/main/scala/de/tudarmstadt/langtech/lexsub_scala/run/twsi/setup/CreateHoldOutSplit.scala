@@ -2,7 +2,7 @@ package de.tudarmstadt.langtech.lexsub_scala.run.twsi.setup
 
 import scala.util.Random
 import de.tudarmstadt.langtech.lexsub_scala.run.twsi.Settings
-import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 
 object CreateHoldOutSplit {
   
@@ -11,8 +11,8 @@ object CreateHoldOutSplit {
   val samplePercent = 0.2 // sample 0.2 from the training data
   
   val byTarget = Settings.semevalData.groupBy { x => x.gold.targetWord }
-  val (trainingTargets, heldOutTargets) = Training.holdOut(random.shuffle(byTarget.keys).toSeq, holdOutPercent)
-  val (_, sampleTargets) = Training.holdOut(trainingTargets, samplePercent) 
+  val (trainingTargets, heldOutTargets) = CTKTraining.holdOut(random.shuffle(byTarget.keys).toSeq, holdOutPercent)
+  val (_, sampleTargets) = CTKTraining.holdOut(trainingTargets, samplePercent) 
   
   val trainingIds = trainingTargets.flatMap(byTarget).map(_.gold.id).distinct
   val heldOutIds = heldOutTargets.flatMap(byTarget).map(_.gold.id).distinct

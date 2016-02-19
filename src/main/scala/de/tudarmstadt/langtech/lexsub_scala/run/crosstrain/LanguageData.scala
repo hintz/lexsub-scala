@@ -4,10 +4,10 @@ import de.tudarmstadt.langtech.lexsub_scala.features.NGramLookup
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
-import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
 import de.tudarmstadt.langtech.lexsub_scala.features.DTLookup
 import de.tudarmstadt.langtech.lexsub_scala.features.WordVectorLookup
+import de.tudarmstadt.langtech.lexsub_scala.features.Features
 
 /** simplify resource interface to do cross-language training */
 trait LanguageData {
@@ -39,7 +39,7 @@ trait LanguageData {
   def trainingFolderOther: String = trainingFolder + "_other"
   
   // features. should be computed lazily
-  def features: FeatureAnnotator
+  def features: Features
   
   override def toString = getClass.getSimpleName.takeWhile(_.isLetterOrDigit)
 }

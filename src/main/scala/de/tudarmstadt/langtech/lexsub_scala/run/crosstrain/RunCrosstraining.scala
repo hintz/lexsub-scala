@@ -1,17 +1,17 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.crosstrain
 
-import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
-import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.LexSub
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
-import de.tudarmstadt.langtech.lexsub_scala.FeatureAnnotator
 import de.tudarmstadt.langtech.lexsub_scala.Scorer
 import de.tudarmstadt.langtech.lexsub_scala.run.crosstrain.Settings.{ English, German, Italian}
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import org.cleartk.classifier.Instance
+import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 
 object RunCrosstraining extends App {
   
@@ -25,7 +25,7 @@ object RunCrosstraining extends App {
   // train all languages on their own data
   for((language, features) <- languagesWithTrainingData){
     println("Training " + language + "..")
-    Training.trainAndPackage(features, language.trainingFolder)
+    CTKTraining.trainAndPackage(features, language.trainingFolder)
   }
   
   // train on other languages
@@ -37,14 +37,14 @@ object RunCrosstraining extends App {
     val combinedInstances = otherInstances.flatten
     val combinedFolder = lang.trainingFolderOther
     println("Training on combined set " + otherLangs.mkString("-") + " writing to " + combinedFolder)
-    Training.trainAndPackage(combinedInstances, combinedFolder)
+    CTKTraining.trainAndPackage(combinedInstances, combinedFolder)
   }
   
   // train on all data
   println("Training on all languages combined..")
   val allLanguagesFolder = "trainingAllLanguages"
   val allFeatures = features.flatten
-  Training.trainAndPackage(allFeatures, allLanguagesFolder)
+  CTKTraining.trainAndPackage(allFeatures, allLanguagesFolder)
   
   // evaluate all languages
   for(evaluationLanguge <- languages){
@@ -87,10 +87,10 @@ object RunCrosstraining extends App {
   
   def featurize(language: LanguageData) = {
     println("Featurizing " + language + "..")
-    Training.featurize(language.trainingData, language.candidates, language.features)
+    CTKTraining.featurize(language.trainingData, language.candidates, language.features)
   }
 
   def mkLexsub(targetLanguage: LanguageData, modelFolder: String): LexSub = 
-    LexSubExpander(targetLanguage.candidates, targetLanguage.features, ClassifierScorer(modelFolder))
+    LexSubExpander(targetLanguage.candidates, targetLanguage.features, CTKScorer(modelFolder))
 
 }

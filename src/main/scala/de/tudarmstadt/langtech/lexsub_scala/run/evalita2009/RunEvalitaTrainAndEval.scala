@@ -1,13 +1,13 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.evalita2009
 
 import de.tudarmstadt.langtech.scala_utilities.io
-import de.tudarmstadt.langtech.lexsub_scala.training.Training
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.run.twsi.setup.CreateHoldOutSplit
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
-import de.tudarmstadt.langtech.lexsub_scala.ClassifierScorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
+import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 
 object RunEvalitaTrainAndEval extends App {
   
@@ -16,7 +16,7 @@ object RunEvalitaTrainAndEval extends App {
   printf("Will train on %d examples and then lex-expand %d instances\n", trainingData.size, evaluationData.size)
   
   // do training
-  Training.train(trainingData, 
+  CTKTraining.train(trainingData, 
       Settings.candidates.systemList, 
       Settings.features, 
       Settings.trainingFolder)
@@ -25,7 +25,7 @@ object RunEvalitaTrainAndEval extends App {
   val lexsub = LexSubExpander(
       Settings.candidates.systemList,
       Settings.features, 
-      ClassifierScorer(Settings.trainingFolder))
+      CTKScorer(Settings.trainingFolder))
 
   // process evaluation items
   val outcomes = lexsub(evaluationData)

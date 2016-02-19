@@ -1,8 +1,10 @@
-package de.tudarmstadt.langtech.lexsub_scala.utility
+package de.tudarmstadt.langtech.lexsub_scala.scorer
 
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.Scorer
 import org.cleartk.classifier.Feature
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankEntry
 
 class RankLibScorer(val trainingDirectory: String) extends Scorer {
   
