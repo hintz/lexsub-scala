@@ -13,9 +13,15 @@ import de.tudarmstadt.langtech.lexsub_scala.features.Features
 import de.tudarmstadt.langtech.lexsub_scala.features.FeatureExtractor
 import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 
-/** A scorer scores a given instance's features */
+/** A ranker, which given a feature vector of all substitutes, scores them */
 trait Scorer {
+  def apply(featureVector: Vector[Seq[Feature]]): Vector[Double]
+}
+
+/** A scorer scores a given instance's features */
+trait PointwiseScorer extends Scorer {
   def apply(features: Seq[Feature]): Double
+  def apply(featureVector: Vector[Seq[Feature]]): Vector[Double] = featureVector.map(apply)
 }
 
 /** Interface for LexSub systems */
@@ -48,7 +54,7 @@ case class LexSubExpander(
 	/** Ranks predefined substitution candidates */
 	def apply(item: Substitutions): Seq[(String, Double)] = {
 			val instances = features.extract(item)
-			val scores = instances.map(scorer.apply)
+			val scores = scorer(instances)
 			val scored = item.candidates.zip(scores)
 			scored.sortBy(- _._2).take(maxItems)
 	}
@@ -56,7 +62,7 @@ case class LexSubExpander(
 
 case class GoldCandidatesRanker(
     val features: Features,
-    val scorer: Scorer,
+    val scorer: PointwiseScorer,
     val maxItems: Int = Integer.MAX_VALUE) 
     extends LexSub {
   
@@ -124,22 +130,19 @@ object FeatureAnnotator {
   val Bad = "BAD"
 }
 
-/** A scorer extracting the value of a single named feature */
-case class SingleFeatureScorer(/*val featureName: String, */val fallback: Double = Double.NaN) extends Scorer {
+/** A scorer extracting the value of an only feature */
+case class SingleFeatureScorer(val fallback: Double = Double.NaN) extends PointwiseScorer {
   def apply(features: Seq[Feature]): Double = {
-    //val v = features.collectFirst { case f: Feature if f.getName == featureName => f.getValue.asInstanceOf[Double]}
-    // v getOrElse fallback
     features match {
       case Seq(f) => f.getValue.asInstanceOf[Double]
       case Seq() => fallback
       case _ => throw new RuntimeException("requires at most one feature per item!")
     }
-    
   }
 }
 
 /** A scorer based on a ClearTK classifier trained in trainingDirectory */
-case class ClassifierScorer(val trainingDiretory: String) extends Scorer {
+case class ClassifierScorer(val trainingDiretory: String) extends PointwiseScorer {
   import org.cleartk.classifier.mallet.MalletStringOutcomeClassifierBuilder
   import org.cleartk.classifier.Classifier
   import org.cleartk.classifier.Feature
