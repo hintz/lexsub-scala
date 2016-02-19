@@ -19,7 +19,7 @@ class RankLibWrapper(val modelFile: String){
     println("Done training ranker in " + modelFile)
   }
   
-  def rank(data: List[RankEntry]): Map[Int, List[RankResult]] = {
+  def rank(data: List[RankEntry]): Map[Int, List[Double]] = {
     val tmpOutFile = File.createTempFile(modelFile, ".rank.tmp")
     val tmpOutPath = tmpOutFile.getAbsolutePath
     val tmpDataFile = File.createTempFile("data", ".tmp")
@@ -35,12 +35,14 @@ class RankLibWrapper(val modelFile: String){
       case Array(queryId, docId, score) => (queryId.toInt, docId.toInt, score.toDouble)
     }.toList
     
-    val rankingsPerQuery = output.groupBy(_._1).mapValues { unsorted =>
-      unsorted.map(x => RankResult(x._2, x._3)).sortBy(- _.score)
-    }
+    //val rankingsPerQuery = output.groupBy(_._1).mapValues { unsorted =>
+    //  unsorted.map(x => RankResult(x._2, x._3)).sortBy(- _.score)
+    //}
+    
+    val scoresPerQuery = output.groupBy(_._1).mapValues { ordered => ordered.map(x => x._3) }
     tmpOutFile.delete
-
-    rankingsPerQuery
+    tmpDataFile.delete
+    scoresPerQuery
   }
 }
 
