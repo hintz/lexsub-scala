@@ -1,7 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
-import org.cleartk.classifier.Feature
-import org.cleartk.classifier.Instance
 import scala.collection.JavaConversions._
 import de.tudarmstadt.langtech.lexsub_scala.types._
 import de.tudarmstadt.langtech.scala_utilities.processing.ReportingIterable._
@@ -40,24 +38,6 @@ abstract class SmartFeature[A] extends FeatureExtractor {
   }
 }
 
-/** Some utility mixins for defining features */
-trait FeatureUtils {
-  implicit def noFeatures(implicit item: Substitutions) = Vector.fill(item.candidates.length)(Seq.empty[Feature])
-}
-
-trait NumericFeature extends FeatureUtils {
-  val name: String
-  implicit def toFeatures(v: Double): Seq[Feature] = Seq(new Feature(name, v))
-  implicit def toFeatures(v: Option[Double]): Seq[Feature] = v.toList.map(new Feature(name, _))
-}
-
-trait NominalFeature[A] extends FeatureUtils {
-  val name: String
-  implicit def toFeatures(a: A): Seq[Feature] = Seq(new Feature(name + "_" + a, 1d))
-	implicit def toFeatures(a: Option[A]): Seq[Feature] = a.toList.map(a => new Feature(name + "_" + a, 1d))
-}
-
-
 /** Applies a collection of features */
 class Features(val extractors: FeatureExtractor*) extends FeatureExtractor {
   def extract(item: Substitutions): Vector[Seq[Feature]] = {
@@ -78,9 +58,9 @@ class AggregatedFeature(val name: String, inner: FeatureExtractor, f: Seq[Double
     inner.extract(item).map { innerFeatures =>
       if(innerFeatures.isEmpty) Seq.empty
       else {
-        val innerValues = innerFeatures.map(_.getValue.asInstanceOf[Double])
+        val innerValues = innerFeatures.map(_.asNumeric.value)
         val result = f(innerValues)
-        Seq(new Feature(name, result))
+        Seq(NumericFeature(name, result))
       }
      }
   }

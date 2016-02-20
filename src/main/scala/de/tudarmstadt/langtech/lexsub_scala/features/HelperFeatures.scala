@@ -1,11 +1,10 @@
 package de.tudarmstadt.langtech.lexsub_scala.features
 
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
-import org.cleartk.classifier.Feature
 
 /** Supplies the id each item ("SentenceId=id") as a feature, useful for debugging */ 
-case object SentenceIDFeature extends LocalFeatureExtractor with NominalFeature[String] {
-  val name = "SentenceId"
+case object SentenceIDFeature extends LocalFeatureExtractor with FeatureUtils {
+  implicit val name = "SentenceId"
   def extract(item: SubstitutionItem): Seq[Feature] = {
     val id = item.lexSubInstance.gold.map { g => g.gold.id}.getOrElse("no_id")
     id
@@ -16,7 +15,7 @@ case object SentenceIDFeature extends LocalFeatureExtractor with NominalFeature[
 case object SubstitutionFeature extends LocalFeatureExtractor {
   def extract(item: SubstitutionItem): Seq[Feature] = {
     val id = item.lexSubInstance.gold.map { g => g.gold.id}.getOrElse("no_id")
-    Seq(new Feature("SubstitutionItem", item.substitution))
+    Seq(NominalFeature("SubstitutionItem", item.substitution))
   }
 }
 
@@ -26,11 +25,11 @@ case object CheatFeature extends LocalFeatureExtractor {
     val id = item.lexSubInstance.gold.map { g => g.gold.id}.getOrElse("no_id")
     val subst = item.substitution
     val value = id + "=" + subst
-    Seq(new Feature("CheatFeature", value))
+    Seq(NominalFeature("CheatFeature", value))
   }
 }
 
 /** Supplies a constant feature */ 
-case class ConstantFeature(name: String, value: String) extends LocalFeatureExtractor with NominalFeature[String] {
-  def extract(item: SubstitutionItem): Seq[Feature] = value
+case class ConstantFeature(name: String, value: String) extends LocalFeatureExtractor {
+  def extract(item: SubstitutionItem): Seq[Feature] = Seq(NominalFeature(name, value))
 }

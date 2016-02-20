@@ -3,15 +3,12 @@ package de.tudarmstadt.langtech.lexsub_scala
 import java.io.File
 import scala.collection.JavaConversions.asScalaBuffer
 import scala.collection.JavaConversions.seqAsJavaList
-import org.cleartk.classifier.Classifier
-import org.cleartk.classifier.Instance
-import org.cleartk.classifier.Feature
-import org.cleartk.classifier.jar.JarClassifierBuilder
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types._
 import de.tudarmstadt.langtech.lexsub_scala.features.Features
 import de.tudarmstadt.langtech.lexsub_scala.features.FeatureExtractor
 import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
+import de.tudarmstadt.langtech.lexsub_scala.features.Feature
 
 /** A ranker, which given a feature vector of all substitutes, scores them */
 trait Scorer {
@@ -86,7 +83,7 @@ case class GoldCandidatesRanker(
 case class SingleFeatureScorer(val fallback: Double = Double.NaN) extends PointwiseScorer {
   def apply(features: Seq[Feature]): Double = {
     features match {
-      case Seq(f) => f.getValue.asInstanceOf[Double]
+      case Seq(f) => f.asNumeric.value
       case Seq() => fallback
       case _ => throw new RuntimeException("requires at most one feature per item!")
     }

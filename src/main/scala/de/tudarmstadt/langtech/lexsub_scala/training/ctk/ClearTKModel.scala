@@ -1,16 +1,21 @@
 package de.tudarmstadt.langtech.lexsub_scala.training.ctk
 
 import java.io.File
+
 import scala.collection.JavaConversions.seqAsJavaList
-import org.cleartk.classifier.Feature
+
+import org.cleartk.classifier.{Feature => CTKFeature}
 import org.cleartk.classifier.Instance
-import org.cleartk.classifier.feature.transform.InstanceDataWriter
 import org.cleartk.classifier.jar.JarClassifierBuilder
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter
+
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
+import de.tudarmstadt.langtech.lexsub_scala.features.Feature
 import de.tudarmstadt.langtech.lexsub_scala.features.Features
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
+import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
+import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
@@ -18,9 +23,6 @@ import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.scala_utilities.collections
 import de.tudarmstadt.langtech.scala_utilities.io
-import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
-import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
-import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 
 /**
  * A ClearTK model building a classifier for pointwise ranking
@@ -126,14 +128,14 @@ object DeprecatedTraining extends ClearTKModel() {
 /** Creates instances for training a ClearTK classifier */
 class CTKInstanceBuilder(val useScores: Boolean) {
 
-  private val mkInstance = (features: Seq[Feature], outcome: String) => {
+  private val mkInstance = (features: Seq[CTKFeature], outcome: String) => {
     val result = new Instance[String]
     result setOutcome outcome
     result addAll features
     result
   }
 
-  private val mkNumericInstance = (features: Seq[Feature], outcome: Double) => {
+  private val mkNumericInstance = (features: Seq[CTKFeature], outcome: Double) => {
     val result = new Instance[Double]
     result setOutcome outcome
     result addAll features
@@ -149,9 +151,9 @@ class CTKInstanceBuilder(val useScores: Boolean) {
 
     val gold = item.asItems.map(_.isGood.get)
     val outcomes = gold.map(if (_) CTKInstanceBuilder.Good else CTKInstanceBuilder.Bad)
-    val instances = features.zip(outcomes).map(mkInstance.tupled)
+    val translatedFeatures = features.map(CTKInstanceBuilder.translate)
+    val instances = translatedFeatures.zip(outcomes).map(mkInstance.tupled)
     instances
-
   }
   
   def apply(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])]): Iterable[Instance[String]] = {
@@ -165,4 +167,12 @@ object CTKInstanceBuilder {
   // some arbitrary labels for good and bad instances
   val Good = "GOOD"
   val Bad = "BAD"
+  
+  def asCTKFeature(feature: Feature): CTKFeature = {
+    val numericFeature = feature.asNumeric
+    new org.cleartk.classifier.Feature(numericFeature.name, numericFeature.value)
+  }
+  
+  /** translates a Seq[Feature] to a collection of org.cleartk.classifier.Feature */
+  def translate(features: Seq[Feature]): Seq[CTKFeature] = features.map(asCTKFeature)
 }

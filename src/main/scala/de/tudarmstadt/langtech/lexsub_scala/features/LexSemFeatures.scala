@@ -4,7 +4,6 @@ import de.tudarmstadt.langtech.scala_utilities.compute
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
-import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 
@@ -30,17 +29,17 @@ case class LexSemRelation(candidates: CandidateList, simplifyLabels: Boolean = f
      features.toSeq
    }
   
-  private def mkFeature(rel: String) = new Feature( "SemRel_" + rel, 1d)
+  private def mkFeature(rel: String) = NominalFeature( "SemRel", rel)
 }
 
 /** Extracts te number of lexical semantic relations from candidate list */
-case class NumLexSemRelations(candidates: CandidateList) extends FeatureExtractor with NumericFeature { 
-  val name = "NumRelations"
+case class NumLexSemRelations(candidates: CandidateList) extends FeatureExtractor with FeatureUtils { 
+  implicit val name = "NumRelations"
   val inner = LexSemRelation(candidates)
 
   def extract(item: Substitutions): Vector[Seq[Feature]] = {
      val numRelations = inner.extract(item).map(_.length.toDouble)
      val result = compute.normalize(numRelations)
-     result.map(toFeatures)
+     result.map(asFeature)
    }
 }

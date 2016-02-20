@@ -4,7 +4,6 @@ import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.DepEdge
-import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 
 
@@ -65,8 +64,8 @@ case class SyntaxEmbeddingFeature(
     contextEmbeddings: WordVectorLookup,
     combinator: SyntacticEmbeddingCombinator) 
     
-extends SmartFeature[SyntacticEmbedding] with NumericFeature {
-  val name = "SyntaxEmb"
+extends SmartFeature[SyntacticEmbedding] with FeatureUtils {
+  implicit val name = "SyntaxEmb"
   
   // suffix added to depedge labels to denote inverse direction
   val INVERSE_MARKER = "I" 

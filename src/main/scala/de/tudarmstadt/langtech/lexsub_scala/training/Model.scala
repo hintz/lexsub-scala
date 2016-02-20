@@ -5,11 +5,11 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.features.Features
 import de.tudarmstadt.langtech.lexsub_scala.Scorer
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
-import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 import de.tudarmstadt.langtech.lexsub_scala.features.FeatureExtractor
 import de.tudarmstadt.langtech.lexsub_scala.LexSub
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
+import de.tudarmstadt.langtech.lexsub_scala.features.Feature
 
 /** A machine learning backend model. This interface just asks the backend to do training, and yield a final scorer for lexsub */
 trait Model {

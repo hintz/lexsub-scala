@@ -2,11 +2,11 @@ package de.tudarmstadt.langtech.lexsub_scala.scorer
 
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.Scorer
-import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankEntry
 import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
 import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibMapper
+import de.tudarmstadt.langtech.lexsub_scala.features.Feature
 
 class RankLibScorer(val modelFolder: String) extends Scorer {
   

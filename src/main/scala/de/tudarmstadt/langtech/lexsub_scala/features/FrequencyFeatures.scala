@@ -5,7 +5,6 @@ import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.scala_utilities.{collections, compute}
 import java.util.logging.Logger
-import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.scala_utilities.cache.FileBackedCache
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
@@ -52,9 +51,9 @@ case class SetFreqRatios(nGrams: NGramLookup, leftRange: Range, rightRange: Rang
 
 case class PairFreqRatio(nGrams: NGramLookup, left: Int, right: Int)
   extends SmartFeature[Option[(Vector[String], Long)]]
-  with NumericFeature {
+  with FeatureUtils {
   
-  val name = "PairFreqRatio_" + left + "_" + right
+  implicit val name = "PairFreqRatio_" + left + "_" + right
   val slicer = collections.context[String](left, right) _
 
   def global(item: LexSubInstance): Option[(Vector[String], Long)] = {
@@ -88,9 +87,9 @@ case class PairFreqRatio(nGrams: NGramLookup, left: Int, right: Int)
 }
 
 
-case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends FeatureExtractor with NumericFeature {
+case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends FeatureExtractor with FeatureUtils {
   val slicer = collections.context[String](left, right) _
-	val name = "SetFreqRatio_" + left + "_" + right
+	implicit val name = "SetFreqRatio_" + left + "_" + right
 
   def extract(substitutions: Substitutions): Vector[Seq[Feature]] = {
     implicit val item = substitutions
@@ -112,7 +111,7 @@ case class SetFreqRatio(nGrams: NGramLookup, left: Int, right: Int) extends Feat
     val normalized = compute.normalize(replacementFreqs)
     // yield only positive scores as feature
     val features = normalized.map(Some(_).filter(_ > 0))
-    features.map(toFeatures)
+    features.map(asFeature)
   }
 }
 
@@ -152,7 +151,7 @@ case class ConjunctionFreqRatio(nGrams: NGramLookup, conjunctions: Seq[String], 
       if (origFreq < 10e-10) return Seq.empty // if original not found, don't yield any feature
       val ratio = replacedFreq.toDouble / origFreq
       val name = "ConjRatio_%d_%d%s".format(left, right, if(includeConjunction) "_" + conj else "")
-      new Feature(name, ratio)
+      NumericFeature(name, ratio)
     }
     features
   }

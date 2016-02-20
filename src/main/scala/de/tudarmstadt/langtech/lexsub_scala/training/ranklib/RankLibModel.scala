@@ -1,19 +1,15 @@
 package de.tudarmstadt.langtech.lexsub_scala.training.ranklib
 
-import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
-import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
-import de.tudarmstadt.langtech.lexsub_scala.features.Features
+import scala.collection.mutable.ListBuffer
+
+import de.tudarmstadt.langtech.lexsub_scala.features.Feature
 import de.tudarmstadt.langtech.lexsub_scala.scorer.RankLibScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
-import de.tudarmstadt.langtech.scala_utilities.io
-import org.cleartk.classifier.Feature
-import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankEntry
-import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
-import de.tudarmstadt.langtech.lexsub_scala.utility.RankEntry
-import scala.collection.mutable.ListBuffer
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibConfig
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
+import de.tudarmstadt.langtech.scala_utilities.io
 
 case class RankLibModel(rankLibConfig: RankLibConfig) extends Model {
 
@@ -52,9 +48,10 @@ class RankLibMapper(featureMapping: Map[String, Int], maxIndex: Int) extends Ser
 
     val errorList = new ListBuffer[String]
     def translate(feature: Feature): Option[(Int, Double)] = {
-      val featureId = featureMapping.get(feature.getName)
-      if (featureId.isEmpty) errorList.append(feature.getName)
-      featureId.map { (_, feature.getValue.asInstanceOf[Double]) }
+      val numericFeature = feature.asNumeric
+      val featureId = featureMapping.get(numericFeature.name)
+      if (featureId.isEmpty) errorList.append(feature.name)
+      featureId.map { (_, numericFeature.value) }
     }
     val tmpLookupMap = features.flatMap(translate).toMap
     val denseFeatureList = for (i <- 1 to maxIndex) yield {
@@ -86,7 +83,7 @@ class RankLibMapper(featureMapping: Map[String, Int], maxIndex: Int) extends Ser
 object RankLibMapper {
   def build(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])]): RankLibMapper = {
     val allFeatures = featurizedData.flatMap(_._2.flatten)
-    val uniqueFeatureNames = allFeatures.map(_.getName).toSet
+    val uniqueFeatureNames = allFeatures.map(_.name).toSet
     val maxFeatureId = uniqueFeatureNames.size
     val mapping = uniqueFeatureNames.zipWithIndex.map { case (fName, i) => (fName, i + 1) }
     new RankLibMapper(mapping.toMap, maxFeatureId)
