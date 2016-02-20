@@ -6,6 +6,9 @@ import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
+import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
+import de.tudarmstadt.langtech.scala_utilities.cache.FileBackedCache
+import de.tudarmstadt.langtech.scala_utilities.cache.FileBackedCache
 
 
 /** Utility wrapper for lookup-based DTs 
@@ -15,8 +18,14 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Token
 case class DTLookup(val dtName: String, val dt: WordSimilarityFile[String], 
     lookupFunction: Token => String,  // determines how to map token to lookup string
     equivalenceFunction: (Token, String) => Boolean = // determines equivalence between candidate and DT item
-      (substitute, other) => substitute.lemma == other) {
-  def similar(token: Token): Seq[(String, Double)] = (lookupFunction andThen dt.sim)(token)
+      (substitute, other) => substitute.lemma == other,
+      cacheResults: Boolean = true) {
+  
+  private def fromFile(s: String): List[(String, Double)] =  dt.similar(s).toList
+  private lazy val cache = FileBackedCache[String, List[(String, Double)]](fromFile, LexsubUtil.getCachefile(dt.dt_filename))
+  private lazy val lookup = if(cacheResults) cache.apply _ else fromFile _
+
+  def similar(token: Token): Seq[(String, Double)] = (lookupFunction andThen lookup)(token)
   def similarity(token: Token, substitute: Token): Option[Double] = {
     val expansions = similar(token)
     val sim = expansions.collectFirst { case (other, score) if equivalenceFunction(substitute, other) => score }

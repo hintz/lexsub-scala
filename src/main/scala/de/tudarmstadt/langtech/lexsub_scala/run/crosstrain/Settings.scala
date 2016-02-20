@@ -96,7 +96,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase,
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#"))
     lazy val dtSecondOrder =  DTLookup("DT2nd", 
-      new WordSimilarityFile(path("DT", "English", "secondOrder"), identity, matchPrefix = true, cacheResults = false /*file is huge, don't cache*/ ),
+      new WordSimilarityFile(path("DT", "English", "secondOrder"), identity, matchPrefix = true ),
       token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase,
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#"))
       
@@ -158,7 +158,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       
       // syntactic features
       PosContextWindows(0 to 1, 0 to 1, 3),
-      
+
       // to what extend the context characterizes the subst
       SalientDTFeatures(lang.dtFirstOrder),
       // similarity between target and subst
@@ -193,6 +193,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       // semantic relations
       NumLexSemRelations(lang.candidates),
       LexSemRelation(lang.candidates, simplifyLabels = true)
+
     )
   }
 }

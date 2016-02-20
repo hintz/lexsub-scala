@@ -102,7 +102,7 @@ object Settings extends YamlSettings("evalita2009-paths.yaml") {
       
     // boolean feature if target/substitute are similar
     BinaryWordSimilarity(dts.secondOrder, 100),
-      
+
     // syntactic features
     PosContextWindows(0 to 1, 0 to 1, 3),
     
