@@ -1,7 +1,6 @@
 package de.tudarmstadt.langtech.lexsub_scala.training.ranklib
 
 import scala.collection.mutable.ListBuffer
-
 import de.tudarmstadt.langtech.lexsub_scala.features.Feature
 import de.tudarmstadt.langtech.lexsub_scala.scorer.RankLibScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
@@ -10,6 +9,7 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.RankEntry
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibConfig
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
 import de.tudarmstadt.langtech.scala_utilities.io
+import de.tudarmstadt.langtech.lexsub_scala.features.NumericFeature
 
 case class RankLibModel(rankLibConfig: RankLibConfig) extends Model {
 
@@ -47,13 +47,12 @@ class RankLibMapper(featureMapping: Map[String, Int], maxIndex: Int) extends Ser
   def toDenseFeatureVector(features: Seq[Feature]): List[(Int, Double)] = {
 
     val errorList = new ListBuffer[String]
-    def translate(feature: Feature): Option[(Int, Double)] = {
-      val numericFeature = feature.asNumeric
-      val featureId = featureMapping.get(numericFeature.name)
+    def translate(feature: NumericFeature): Option[(Int, Double)] = {
+      val featureId = featureMapping.get(feature.name)
       if (featureId.isEmpty) errorList.append(feature.name)
-      featureId.map { (_, numericFeature.value) }
+      featureId.map { (_, feature.value) }
     }
-    val tmpLookupMap = features.flatMap(translate).toMap
+    val tmpLookupMap = features.map(_.asNumeric).flatMap(translate).toMap
     val denseFeatureList = for (i <- 1 to maxIndex) yield {
       (i, tmpLookupMap.getOrElse(i, 0d))
     }

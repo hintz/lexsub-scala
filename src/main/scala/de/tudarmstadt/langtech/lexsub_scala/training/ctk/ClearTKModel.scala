@@ -169,8 +169,7 @@ object CTKInstanceBuilder {
   val Bad = "BAD"
   
   def asCTKFeature(feature: Feature): CTKFeature = {
-    val numericFeature = feature.asNumeric
-    new org.cleartk.classifier.Feature(numericFeature.name, numericFeature.value)
+    new org.cleartk.classifier.Feature(feature.name, feature.value)
   }
   
   /** translates a Seq[Feature] to a collection of org.cleartk.classifier.Feature */
