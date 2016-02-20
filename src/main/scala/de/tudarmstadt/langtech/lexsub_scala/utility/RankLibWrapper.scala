@@ -10,12 +10,11 @@ case class RankResult(val docID: Int, val score: Double)
 
 class RankLibWrapper(val modelFile: String){
   
-  def retrain(data: Iterable[RankEntry]){
-    val tmpDataFile = File.createTempFile("data", ".tmp")
+  def retrain(data: Iterable[RankEntry], trainingFilename: String){
     // write LETOR FORMAT to tmpDataFile
-    io.write(tmpDataFile.getAbsolutePath, RankLibWrapper.toLetorFormat(data))
-    println("Wrote temp data in " + tmpDataFile)
-    RankLibWrapper.train(modelFile, tmpDataFile.getAbsolutePath)
+    io.write(trainingFilename, RankLibWrapper.toLetorFormat(data))
+    println("Wrote ranklib training data data in " + trainingFilename)
+    RankLibWrapper.train(modelFile, trainingFilename)
     println("Done training ranker in " + modelFile)
   }
   
@@ -48,8 +47,15 @@ class RankLibWrapper(val modelFile: String){
 
 object RankLibWrapper {
   
-  val DisableStdout = false
-  def withTmpFile = {} // TODO
+  val DisableStdout = true
+  
+  /** Exectues a block with a temporary file, which is then deleted */
+  def withTmpFile(block: String => Unit) = {
+    val tmpFile = File.createTempFile("temporary", "tmp")
+    val tmpPath = tmpFile.getAbsolutePath
+    block(tmpPath)
+    tmpFile.delete
+  }
   
   def noOutput(block: => Unit){
     if(DisableStdout){
@@ -62,13 +68,15 @@ object RankLibWrapper {
     else block
   }
   
-  def train(modelFile: String, trainingFile: String) = noOutput {
+  def train(modelFile: String, trainingFile: String) = {
       /* example params:
        * -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt 
        * -ranker 6 -metric2t NDCG@10 -metric2T ERR@10 -save mymodel.txt
        */
       Evaluator.main(Seq(
           "-train", trainingFile, 
+          "-tree", "10",
+          "-validate", trainingFile, // specify training as validation, so we get early stopping!
           "-ranker", "6",
           "-metric2t", "NDCG@10",
           "-save", modelFile).toArray)
@@ -111,7 +119,9 @@ object TestRankLibWrapper extends App {
   )
       
   val ranker = new RankLibWrapper("test.ranker.txt")
-  ranker.retrain(data)
+  RankLibWrapper.withTmpFile { tmp => 
+    ranker.retrain(data, tmp)
+  }
   println("ranking..")
   println(ranker.rank(data))
 }
