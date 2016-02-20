@@ -1,9 +1,10 @@
 package de.tudarmstadt.langtech.lexsub_scala.utility
 
-import ciir.umass.edu.eval.Evaluator
 import java.io.PrintStream
 import java.io.File
 import de.tudarmstadt.langtech.scala_utilities.io
+import scala.sys.process.ProcessBuilder
+import scala.sys.process.stringSeqToProcess
 
 
 trait RankLibConfig {
@@ -56,7 +57,16 @@ class RankLibWrapper(val modelFile: String){
 
 object RankLibWrapper {
   
-  val DisableStdout = true
+  def runJava(params: Seq[String], printOutput: Boolean = false){
+      val mainClassName =  "ciir.umass.edu.eval.Evaluator"
+      val currentJar = System.getProperty("java.class.path")
+      val command: ProcessBuilder = Seq("java", "-cp", currentJar, mainClassName) ++ params
+      
+      if(printOutput)
+        command.!
+      else
+        command.!!
+  }
   
   /** Exectues a block with a temporary file, which is then deleted */
   def withTmpFile(block: String => Unit) = {
@@ -66,34 +76,34 @@ object RankLibWrapper {
     tmpFile.delete
   }
   
+  /** Exectues a block without printing stdout to console */
   def noOutput(block: => Unit){
-    if(DisableStdout){
       val original = System.out
       val nullStream = new PrintStream(new java.io.OutputStream { def write(b: Int) {} })
       System.setOut(nullStream)
       block
       System.setOut(original)
-    }
-    else block
   }
   
   def train(modelFile: String, trainingFile: String, config: RankLibConfig) = {
       /* example params:
        * -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt 
        * -ranker 6 -metric2t NDCG@10 -metric2T ERR@10 -save mymodel.txt
+       * 
+       * 
        */
-      Evaluator.main((Seq(
+      RankLibWrapper.runJava(Seq(
           "-train", trainingFile, 
           "-validate", trainingFile, // specify training as validation, so we get early stopping!
-          "-save", modelFile) ++ config.asArguments).toArray)
+          "-save", modelFile) ++ config.asArguments, printOutput = true)
   }
   
   def rank(modelFile: String, dataFile: String, outFile: String, metric: String = "ERR@10") = noOutput {
-    Evaluator.main(Seq(
+    RankLibWrapper.runJava(Seq(
         "-load", modelFile, 
         "-rank", dataFile, 
         //"-metric2T", metric
-        "-score", outFile).toArray)
+        "-score", outFile))
   }
   
 
@@ -114,8 +124,13 @@ object RankLibWrapper {
 
 
 object TestRankLibWrapper extends App {
+  
+
+  RankLibWrapper.train("foo.txt", "training.txt", LambdaMart(NDCG(10), 10))  
+  
   //RankLibWrapper.train("mymodel.txt", "MQ2008/Fold1/train.txt")
   //RankLibWrapper.rank("mymodel.txt", "MQ2008/Fold2/train.txt", "out.tmp")
+  
   
   val data = List(
 		  RankEntry(1, "42", 0, List((0, 0.5), (1, 1.0))),
