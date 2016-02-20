@@ -7,16 +7,33 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.RankEntry
 import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
 import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibMapper
 import de.tudarmstadt.langtech.lexsub_scala.features.Feature
+import ciir.umass.edu.learning.RankerFactory
+import ciir.umass.edu.learning.Ranker
+import ciir.umass.edu.learning.SparseDataPoint
+import ciir.umass.edu.learning.DataPoint
+import ciir.umass.edu.learning.RankList
 
 class RankLibScorer(val modelFolder: String) extends Scorer {
   
   val featureMapping = io.deserialize[RankLibMapper](RankLibModel.getFeatureMappingFile(modelFolder))
-  val ranker = new RankLibWrapper(RankLibModel.getModelFile(modelFolder))
+  val ranklibWrapper = new RankLibWrapper(RankLibModel.getModelFile(modelFolder))
+  
+  val rankerFactory = new RankerFactory
+  lazy val ranker: Ranker = rankerFactory.loadRanker(RankLibModel.getModelFile(modelFolder))
   
   def apply(featureVector: Vector[Seq[Feature]]): Vector[Double] = {
+    if(featureVector.isEmpty) return Vector.empty
+    DataPoint.MAX_FEATURE = featureMapping.maxIndex // RankLib is SO ugly, this hack is needed
+    
+    val datapoints = featureVector.map(toDataPoint)
+    val result = datapoints.map(ranker.eval)
+    result
+    
+    /* Old version using system call:
+
     val queryId = 1000 // arbitrary
     val data = featureVector.map { features => featureMapping.toRankEntry(features, 0, queryId)}
-    val output = ranker.rank(data)
+    val output = ranklibWrapper.rank(data)
     
     if(!output.isDefinedAt(queryId)){
       System.err.println(s"WARNING: RankLib ($modelFolder) failed for item with ${featureVector.size} substitutes")
@@ -24,5 +41,16 @@ class RankLibScorer(val modelFolder: String) extends Scorer {
     }
     val scores = output(queryId).toVector
     scores
+    * 
+    */
+  }
+
+  
+  def toDataPoint(features: Seq[Feature]): DataPoint = {
+    val rankEntry = featureMapping.toRankEntry(features, 0, 1000)
+    val asText = RankLibWrapper.toLetorLine(rankEntry)
+    val datapoint = new SparseDataPoint(asText)
+    datapoint
   }
 }
+

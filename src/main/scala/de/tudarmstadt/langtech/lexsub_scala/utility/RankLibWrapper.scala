@@ -5,6 +5,8 @@ import java.io.File
 import de.tudarmstadt.langtech.scala_utilities.io
 import scala.sys.process.ProcessBuilder
 import scala.sys.process.stringSeqToProcess
+import ciir.umass.edu.learning.RankerFactory
+import ciir.umass.edu.learning.Ranker
 
 
 trait RankLibConfig {
@@ -106,18 +108,22 @@ object RankLibWrapper {
         "-score", outFile))
   }
   
+  
 
   def toLetorFormat(data: Iterable[RankEntry]): String = {
     /* LETOR format: 
      * Each row is a query-document pair. 
      * The first column is relevance label of this pair, the second column is query id, the following columns
      * are features, and the end of the row is comment about the pair, including id of the document. */  
-    val lines = data.map { case RankEntry(queryId, docID, relevanceScore, features) =>
-      val featurePairs = features.toList.map { case (featureName, value) => featureName + ":" + value }
-      s"$relevanceScore qid:$queryId ${featurePairs.mkString(" ")} # docId:$docID"
-    }
+    val lines = data.map(toLetorLine)
     lines.mkString("\n")
   }
+  
+  def toLetorLine(rankEntry: RankEntry): String = rankEntry match {
+    case RankEntry(queryId, docID, relevanceScore, features) =>
+      val featurePairs = features.toList.map { case (featureName, value) => featureName + ":" + value }
+      s"$relevanceScore qid:$queryId ${featurePairs.mkString(" ")} # docId:$docID"
+   }
 }
 
 
@@ -125,6 +131,8 @@ object RankLibWrapper {
 
 object TestRankLibWrapper extends App {
   
+  //val rFact = new RankerFactory
+  //val r: Ranker = rFact.loadRanker("foo.txt")
 
   RankLibWrapper.train("foo.txt", "training.txt", LambdaMart(NDCG(10), 10))  
   
