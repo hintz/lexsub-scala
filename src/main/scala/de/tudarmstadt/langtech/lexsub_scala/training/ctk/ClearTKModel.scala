@@ -1,17 +1,14 @@
 package de.tudarmstadt.langtech.lexsub_scala.training.ctk
 
 import java.io.File
-
 import org.cleartk.classifier.Instance
 import org.cleartk.classifier.feature.transform.InstanceDataWriter
 import org.cleartk.classifier.jar.JarClassifierBuilder
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter
-
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.features.Features
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
-import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKInstanceBuilder
 import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
@@ -19,6 +16,10 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.scala_utilities.io
+import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
+import scala.collection.JavaConversions.asScalaBuffer
+import scala.collection.JavaConversions.seqAsJavaList
+import org.cleartk.classifier.Feature
 
 object ClearTKModel extends Model {
   
@@ -197,4 +198,49 @@ object CTKTraining {
     io.write(filename, lines.mkString("\n"))
   }
   
+}
+
+
+
+/** Creates instances for training a ClearTK classifier */
+class CTKInstanceBuilder(val features: Features) extends BatchProcessing[Substitutions, Vector[Instance[String]]] {
+  val useScores = true
+
+  private val mkInstance = (features: Seq[Feature], outcome: String) => {
+    val result = new Instance[String]
+    result setOutcome outcome
+    result addAll features
+    result
+  }
+  
+  private val mkNumericInstance = (features: Seq[Feature], outcome: Double) => {
+    val result = new Instance[Double]
+    result setOutcome outcome
+    result addAll features
+    result
+  }
+  
+  def apply(item: Substitutions): Vector[Instance[String]] = {
+    val feats = features.extract(item)
+    
+    /*if(useScores) {
+      val outcomes = item.asItems.map(_.score.get)
+      val instances = features.zip(outcomes).map(mkNumericInstance.tupled)
+      return instances.asInstanceOf[Vector[Instance[Any]]]
+    }*/
+
+    val gold = item.asItems.map(_.isGood.get)
+    val outcomes = gold.map(if(_) CTKInstanceBuilder.Good else CTKInstanceBuilder.Bad)
+    val instances = feats.zip(outcomes).map(mkInstance.tupled)
+    instances
+
+  }
+  
+  override def toString = "CTKBinaryFeatureAnnotator(%s)".format(features.extractors.mkString("\n", "\n", "\n"))
+}
+
+object CTKInstanceBuilder {
+  // some arbitrary labels for good and bad instances
+  val Good = "GOOD"
+  val Bad = "BAD"
 }
