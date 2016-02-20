@@ -11,9 +11,6 @@ import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 abstract class FeatureExtractor {
   /** Yield a vector of multiple feature vectors for each substitute */
   def extract(item: Substitutions): Vector[Seq[Feature]]
-  
-  /** Featurize all data */
-  def featurizeData(data: Iterable[Substitutions]) = data.zip(data.map(extract))
 }
 
 /** Features working only on lexical substitution instances */
@@ -87,9 +84,4 @@ class AggregatedFeature(val name: String, inner: FeatureExtractor, f: Seq[Double
       }
      }
   }
-}
-
-/** Convenience class to load features from a pre-computed cache by supplying the instance object */
-case class PrecomputedFeatureExtractor(val cache: LexSubInstance => Vector[Seq[Feature]]) extends FeatureExtractor {
-  def extract(item: Substitutions): Vector[Seq[Feature]] = cache(item.lexSubInstance)
 }

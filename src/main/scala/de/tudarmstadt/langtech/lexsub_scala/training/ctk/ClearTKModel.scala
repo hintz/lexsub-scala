@@ -1,15 +1,12 @@
 package de.tudarmstadt.langtech.lexsub_scala.training.ctk
 
 import java.io.File
-
 import scala.collection.JavaConversions.seqAsJavaList
-
 import org.cleartk.classifier.Feature
 import org.cleartk.classifier.Instance
 import org.cleartk.classifier.feature.transform.InstanceDataWriter
 import org.cleartk.classifier.jar.JarClassifierBuilder
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter
-
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.features.Features
@@ -23,6 +20,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.scala_utilities.collections
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
+import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
 
 /**
  * A ClearTK model building a classifier for pointwise ranking
@@ -30,29 +28,12 @@ import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
  */
 class ClearTKModel(val classifier: String = "MaxEnt") extends Model {
 
-  /** Trains a classifier with the given training data in the directory given in trainingDir */
-  def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: Features, trainingFolder: String) {
-    val instances = featurize(data, candidates, features)
+  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String){
+    val instances = new CTKInstanceBuilder(useScores = false)(featurizedData)
     trainAndPackage(instances, trainingFolder)
   }
 
   def getScorer(trainingFolder: String) = CTKScorer(trainingFolder)
-
-  /** Trains a classifier with the given training data in the directory given in trainingDir */
-  def featurize(data: Iterable[LexSubInstance], candidates: CandidateList, features: Features): Iterable[Instance[String]] = {
-
-    // create training data
-    val trainingData = createTrainingData(data, candidates)
-    println("Using %d instances with candidates from %s created %d training examples".format(data.size, candidates, trainingData.map(_.candidates.size).sum))
-
-    // write instances into a file, for later reference
-    // writeInstances(trainingDir.getPath + "/" + InstanceDataWriter.INSTANCES_OUTPUT_FILENAME, trainingData)
-
-    // extract features
-    val instanceMaker = new CTKInstanceBuilder(features)
-    val instances = instanceMaker(trainingData).flatten
-    instances
-  }
 
   /** Calls the training algorithm of CTK */
   def trainAndPackage(instances: Iterable[Instance[String]], trainingDir: File) {
@@ -88,25 +69,6 @@ class ClearTKModel(val classifier: String = "MaxEnt") extends Model {
 /** helper object for training a ClearTK classifier */
 object CTKTraining extends ClearTKModel() {
 
-  /** Trains a classifier with the given training data in the directory given in trainingDir */
-  @Deprecated
-  def trainOnGold(data: Iterable[LexSubInstance], features: Features, trainingFolder: String) {
-
-    // create training data
-    val trainingData = createTrainingDataFromGold(data)
-    println("Using %d instances with candidates from gold created %d training examples".format(data.size, trainingData.map(_.candidates.size).sum))
-
-    // write instances into a file, for later reference
-    val trainingDir = new java.io.File(trainingFolder)
-    writeInstances(trainingDir.getPath + "/" + InstanceDataWriter.INSTANCES_OUTPUT_FILENAME, trainingData)
-
-    // extract features
-    val instanceMaker = new CTKInstanceBuilder(features)
-    val instances = instanceMaker(trainingData).flatten
-
-    trainAndPackage(instances, trainingDir)
-  }
-
   /** Performs crossvalidate, prints results to stdout and writes aggregated results to outputFile */
   @Deprecated
   def crossvalidate(data: Iterable[LexSubInstance],
@@ -115,15 +77,16 @@ object CTKTraining extends ClearTKModel() {
 
     println("Starting crossvalidation on " + data.size + " instances")
 
-    val trainingData = createTrainingData(data, trainingList)
+    val trainingData = Model.createTrainingData(data, trainingList)
     println("Using %d instances with candidates from %s created %d training examples".format(data.size, trainingList, trainingData.map(_.candidates.size).sum))
 
     println("Extracting features..")
-    val instanceMaker = new CTKInstanceBuilder(features)
-    val feats = instanceMaker(trainingData)
+    val featurizedData = Featurizer(features)(trainingData)
+    
+    val instanceMaker = new CTKInstanceBuilder(useScores = false)
+    val instances = instanceMaker(featurizedData)
 
-    val dataWithFeatures = trainingData.zip(feats)
-    println("Writing " + dataWithFeatures.size + " items into feature cache..")
+    val dataWithFeatures = trainingData.zip(instances)
 
     println("Grouping data and creating folds..")
     val grouping = (instance: LexSubInstance) => instance.gold.get.sentence.target.lemma
@@ -134,8 +97,8 @@ object CTKTraining extends ClearTKModel() {
       val trainingFolder = trainingRoot + "/fold" + i
       val folder = new File(trainingFolder); folder.mkdir
       println("Fold %d (items %s)".format(i + 1, heldOutItems.mkString(", ")))
-      val trainingData: Iterable[Instance[String]] = trainingItems.flatMap(grouped.apply).flatMap(_._2)
-      trainAndPackage(trainingData, folder)
+      val trainingData: Iterable[Instance[String]] = trainingItems.flatMap(grouped.apply).map(_._2)
+      trainAndPackage(instances, folder)
 
       val testData: Seq[Substitutions] = heldOutItems.flatMap(grouped.apply).map(_._1)
       val testInstaces = testData.map(_.lexSubInstance)
@@ -160,8 +123,7 @@ object CTKTraining extends ClearTKModel() {
 }
 
 /** Creates instances for training a ClearTK classifier */
-class CTKInstanceBuilder(val features: Features) extends BatchProcessing[Substitutions, Vector[Instance[String]]] {
-  val useScores = true
+class CTKInstanceBuilder(val useScores: Boolean) {
 
   private val mkInstance = (features: Seq[Feature], outcome: String) => {
     val result = new Instance[String]
@@ -177,9 +139,7 @@ class CTKInstanceBuilder(val features: Features) extends BatchProcessing[Substit
     result
   }
 
-  def apply(item: Substitutions): Vector[Instance[String]] = {
-    val feats = features.extract(item)
-
+  def process(item: Substitutions, features: Vector[Seq[Feature]]): Vector[Instance[String]] = {
     /*if(useScores) {
       val outcomes = item.asItems.map(_.score.get)
       val instances = features.zip(outcomes).map(mkNumericInstance.tupled)
@@ -188,12 +148,16 @@ class CTKInstanceBuilder(val features: Features) extends BatchProcessing[Substit
 
     val gold = item.asItems.map(_.isGood.get)
     val outcomes = gold.map(if (_) CTKInstanceBuilder.Good else CTKInstanceBuilder.Bad)
-    val instances = feats.zip(outcomes).map(mkInstance.tupled)
+    val instances = features.zip(outcomes).map(mkInstance.tupled)
     instances
 
   }
+  
+  def apply(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])]): Iterable[Instance[String]] = {
+    featurizedData.map((process _).tupled).flatten
+  }
 
-  override def toString = "CTKBinaryFeatureAnnotator(%s)".format(features.extractors.mkString("\n", "\n", "\n"))
+  override def toString = s"CTKBinaryFeatureAnnotator(useScores=$useScores)"
 }
 
 object CTKInstanceBuilder {

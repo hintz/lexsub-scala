@@ -13,10 +13,13 @@ import org.cleartk.classifier.Instance
 import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
+import de.tudarmstadt.langtech.lexsub_scala.training.Model
+import de.tudarmstadt.langtech.lexsub_scala.training.Model
+import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
 
 object RunCrosstraining extends App {
   
-  val Model = ClearTKModel
+  val model: Model = CTKTraining
   
   val languages: List[LanguageData] = List(English, German, Italian)
   println("Performing crosstraining experiments with " + languages.mkString(", "))
@@ -26,9 +29,9 @@ object RunCrosstraining extends App {
   val languagesWithTrainingData = languages.zip(features)
   
   // train all languages on their own data
-  for((language, features) <- languagesWithTrainingData){
+  for((language, featurized) <- languagesWithTrainingData){
     println("Training " + language + "..")
-    CTKTraining.trainAndPackage(features, language.trainingFolder)
+    model.train(featurized, language.trainingFolder)
   }
   
   // train on other languages
@@ -40,14 +43,14 @@ object RunCrosstraining extends App {
     val combinedInstances = otherInstances.flatten
     val combinedFolder = lang.trainingFolderOther
     println("Training on combined set " + otherLangs.mkString("-") + " writing to " + combinedFolder)
-    CTKTraining.trainAndPackage(combinedInstances, combinedFolder)
+    model.train(combinedInstances, combinedFolder)
   }
   
   // train on all data
   println("Training on all languages combined..")
   val allLanguagesFolder = "trainingAllLanguages"
   val allFeatures = features.flatten
-  CTKTraining.trainAndPackage(allFeatures, allLanguagesFolder)
+  model.train(allFeatures, allLanguagesFolder)
   
   // evaluate all languages
   for(evaluationLanguge <- languages){
@@ -90,7 +93,8 @@ object RunCrosstraining extends App {
   
   def featurize(language: LanguageData) = {
     println("Featurizing " + language + "..")
-    CTKTraining.featurize(language.trainingData, language.candidates, language.features)
+    val data = Model.createTrainingData(language.trainingData, language.candidates)
+    Featurizer(language.features)(data)
   }
 
   def mkLexsub(targetLanguage: LanguageData, modelFolder: String): LexSub = 
