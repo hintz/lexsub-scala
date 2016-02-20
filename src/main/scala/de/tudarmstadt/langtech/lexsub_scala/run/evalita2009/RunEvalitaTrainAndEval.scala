@@ -7,10 +7,13 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
+import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
+import de.tudarmstadt.langtech.lexsub_scala.utility.LambdaMart
+import de.tudarmstadt.langtech.lexsub_scala.utility.NDCG
 
 object RunEvalitaTrainAndEval extends App {
   
-  val model = new ClearTKModel("MaxEnt")
+  val model = new ClearTKModel("MaxEnt") //RankLibModel(LambdaMart(NDCG(10), 100))
   val trainingData = Settings.evalitaTest
   val evaluationData = Settings.evalitaTrial
   printf("Will train on %d examples and then lex-expand %d instances\n", trainingData.size, evaluationData.size)

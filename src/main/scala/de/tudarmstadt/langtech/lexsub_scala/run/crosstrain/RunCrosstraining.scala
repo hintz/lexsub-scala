@@ -1,5 +1,6 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.crosstrain
 
+import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
@@ -27,7 +28,9 @@ object RunCrosstraining extends App {
   println("Performing crosstraining experiments with " + languages.mkString(", "))
   
   // featurize all data
-  val features = languages map featurize
+  val features = io.lazySerialized("cache/CROSSTRAINING_FEATURES.ser"){
+    languages map featurize
+  }
   val languagesWithTrainingData = languages.zip(features)
   
   // train all languages on their own data
