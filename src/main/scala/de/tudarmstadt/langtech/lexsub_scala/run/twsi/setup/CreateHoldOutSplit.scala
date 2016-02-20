@@ -2,8 +2,8 @@ package de.tudarmstadt.langtech.lexsub_scala.run.twsi.setup
 
 import scala.util.Random
 import de.tudarmstadt.langtech.lexsub_scala.run.twsi.Settings
-import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.scala_utilities.collections
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
 
 object CreateHoldOutSplit {
   

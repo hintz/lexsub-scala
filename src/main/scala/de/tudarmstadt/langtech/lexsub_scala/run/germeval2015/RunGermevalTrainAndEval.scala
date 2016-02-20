@@ -1,21 +1,22 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.germeval2015
 
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
-import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
 
 object RunGermevalTrainingAndEval extends App {
   
+  val model = new ClearTKModel("MaxEnt")
   val trainingData = Settings.germevalTraining
   val evaluationData = Settings.germevalTest
   
   printf("Will train on %d examples and then lex-expand %d instances\n", trainingData.size, evaluationData.size)
   
   // do training
-  CTKTraining.train(trainingData, 
+  model.train(trainingData, 
       Settings.candidates.trainingList, 
       Settings.features, 
       Settings.trainingDir)
@@ -24,7 +25,7 @@ object RunGermevalTrainingAndEval extends App {
   val lexsub = LexSubExpander(
       Settings.candidates.systemList,
       Settings.features, 
-      CTKScorer(Settings.trainingDir))
+      model.getScorer(Settings.trainingDir))
 
   val outcomes = lexsub(evaluationData)
   

@@ -1,9 +1,10 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.germeval2015
 
-import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.DeprecatedTraining
+
 
 object RunGermevalCrossvalidation extends App {
-  CTKTraining.crossvalidate(
+  DeprecatedTraining.crossvalidate(
       Settings.germevalTraining, 
       Settings.candidates.trainingList,
       Settings.candidates.systemList,

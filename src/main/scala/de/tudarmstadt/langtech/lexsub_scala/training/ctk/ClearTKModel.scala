@@ -11,7 +11,6 @@ import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.features.Features
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
-import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
@@ -21,6 +20,7 @@ import de.tudarmstadt.langtech.scala_utilities.collections
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
+import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 
 /**
  * A ClearTK model building a classifier for pointwise ranking
@@ -66,8 +66,9 @@ class ClearTKModel(val classifier: String = "MaxEnt") extends Model {
   }
 }
 
-/** helper object for training a ClearTK classifier */
-object CTKTraining extends ClearTKModel() {
+/** (deprecated) Legacy interface for ClearTK crossvalidation */
+@Deprecated
+object DeprecatedTraining extends ClearTKModel() {
 
   /** Performs crossvalidate, prints results to stdout and writes aggregated results to outputFile */
   @Deprecated
@@ -103,7 +104,7 @@ object CTKTraining extends ClearTKModel() {
       val testData: Seq[Substitutions] = heldOutItems.flatMap(grouped.apply).map(_._1)
       val testInstaces = testData.map(_.lexSubInstance)
 
-      val lexsub = LexSubExpander(systemList, features, CTKScorer(trainingFolder), maxItems = maxItems)
+      val lexsub = LexSubExpander(systemList, features, getScorer(trainingFolder), maxItems = maxItems)
       val ranked = lexsub(testInstaces)
       val results = Outcomes.collect(testInstaces, ranked)
       val oot = Outcomes.evaluate(results, 10)

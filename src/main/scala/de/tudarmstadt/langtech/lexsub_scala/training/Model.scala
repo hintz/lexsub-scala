@@ -8,6 +8,8 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import org.cleartk.classifier.Feature
 import de.tudarmstadt.langtech.scala_utilities.processing.BatchProcessing
 import de.tudarmstadt.langtech.lexsub_scala.features.FeatureExtractor
+import de.tudarmstadt.langtech.lexsub_scala.LexSub
+import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 
 /** A machine learning backend model. This interface just asks the backend to do training, and yield a final scorer for lexsub */
 trait Model {
@@ -18,16 +20,17 @@ trait Model {
   /** Yield a scorer given a folder with a trained model */
   def getScorer(trainingFolder: String): Scorer
 
-  /** Train using candidate list (generate candidates, featurize, train model) */
-  def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: Features, trainingFolder: String) {
-    val trainingInstances = Model.createTrainingData(data, candidates)
-    train(trainingInstances, features, trainingFolder)
-  }
-
   /** Train from training instances (featurize, train model) */
   def train(trainingInstances: Iterable[Substitutions], features: Features, trainingFolder: String) {
     val featurizedData = Featurizer(features)(trainingInstances)
     train(featurizedData, trainingFolder)
+  }
+  
+  /** Train using candidate list (generate candidates, featurize, train model). Also yields resulting lexsub system */
+  def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: Features, trainingFolder: String): LexSubExpander = {
+    val trainingInstances = Model.createTrainingData(data, candidates)
+    train(trainingInstances, features, trainingFolder)
+    LexSubExpander(candidates, features, getScorer(trainingFolder))
   }
 }
 

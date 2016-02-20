@@ -1,6 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.crosstrain
 
-import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
@@ -11,7 +10,7 @@ import de.tudarmstadt.langtech.lexsub_scala.run.crosstrain.Settings.{ English, G
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import org.cleartk.classifier.Instance
 import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
-import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.DeprecatedTraining
 import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
@@ -19,7 +18,7 @@ import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
 
 object RunCrosstraining extends App {
   
-  val model: Model = CTKTraining
+  val model: Model = new ClearTKModel("MaxEnt")
   
   val languages: List[LanguageData] = List(English, German, Italian)
   println("Performing crosstraining experiments with " + languages.mkString(", "))

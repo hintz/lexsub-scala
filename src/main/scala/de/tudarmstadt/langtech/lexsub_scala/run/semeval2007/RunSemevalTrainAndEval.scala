@@ -1,6 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.semeval2007
 
-import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
@@ -8,15 +7,17 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
+import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
 
 object RunSemevalTrainAndEval extends App {
  
+  val model = new ClearTKModel("MaxEnt")
   val trainingData = Settings.semevalTest
   val (evaluationData, evalGoldfile) = (Settings.semevalTrial, Settings.trialReader.gold.file)
   
   printf("Will train on %d examples and then lex-expand %d instances\n", trainingData.size, evaluationData.size)
     
-  CTKTraining.train(
+  model.train(
     Settings.semevalTest,
     Settings.candidates.trainingList,
     Settings.features,
@@ -26,7 +27,7 @@ object RunSemevalTrainAndEval extends App {
   val lexsub = LexSubExpander(
       Settings.candidates.systemList,
       Settings.features, 
-      CTKScorer(Settings.trainingDir))
+      model.getScorer(Settings.trainingDir))
       
   // run system
   val outcomes = lexsub(evaluationData)

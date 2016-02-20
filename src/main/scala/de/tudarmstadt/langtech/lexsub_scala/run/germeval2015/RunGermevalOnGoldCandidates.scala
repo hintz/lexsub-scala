@@ -1,6 +1,5 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.germeval2015
 
-import de.tudarmstadt.langtech.lexsub_scala.training.ctk.CTKTraining
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 
