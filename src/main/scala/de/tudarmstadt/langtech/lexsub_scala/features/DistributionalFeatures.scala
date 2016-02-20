@@ -51,7 +51,7 @@ case class BinaryWordSimilarity(dt: DTLookup, k: Int) extends FeatureExtractor  
     item.candidates.map { c => 
       val candidate = Token(c, item.lexSubInstance.head.pos, c)
       val isContained = expansions.find { dtFeature => dt.equivalenceFunction(candidate, dtFeature) }.isDefined
-      if (isContained) Seq(new Feature(name, true)) else Seq.empty[Feature]
+      if (isContained) Seq(new Feature(name, 1d)) else Seq.empty[Feature]
     }
   }
 }
