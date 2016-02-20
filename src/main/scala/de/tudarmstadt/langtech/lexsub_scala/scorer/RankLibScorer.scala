@@ -19,7 +19,7 @@ class RankLibScorer(val modelFolder: String) extends Scorer {
     val output = ranker.rank(data)
     
     if(!output.isDefinedAt(queryId)){
-      System.err.println(s"WARNING: RankLib ($modelFolder) failed, can't rank!")
+      System.err.println(s"WARNING: RankLib ($modelFolder) failed for item with ${featureVector.size} substitutes")
       return featureVector.map(_ => 0d)
     }
     val scores = output(queryId).toVector

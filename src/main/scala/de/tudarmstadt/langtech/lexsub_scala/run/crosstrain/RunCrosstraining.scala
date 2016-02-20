@@ -15,10 +15,13 @@ import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
+import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
+import de.tudarmstadt.langtech.lexsub_scala.utility.LambdaMart
+import de.tudarmstadt.langtech.lexsub_scala.utility.NDCG
 
 object RunCrosstraining extends App {
   
-  val model: Model = new ClearTKModel("MaxEnt")
+  val model: Model = RankLibModel(LambdaMart(NDCG(10), 500)) // new ClearTKModel("MaxEnt")
   
   val languages: List[LanguageData] = List(English, German, Italian)
   println("Performing crosstraining experiments with " + languages.mkString(", "))

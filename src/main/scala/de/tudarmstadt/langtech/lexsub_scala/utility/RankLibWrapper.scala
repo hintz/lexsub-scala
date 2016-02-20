@@ -5,16 +5,29 @@ import java.io.PrintStream
 import java.io.File
 import de.tudarmstadt.langtech.scala_utilities.io
 
+
+trait RankLibConfig {
+  def asArguments: Seq[String]
+}
+
+trait Metric
+case class NDCG(n: Int) extends Metric { override def toString = "NDCG@" + n }
+case class ERR(n: Int) extends Metric { override def toString = "ERR@" + n }
+
+case class LambdaMart(metric: Metric, numIterations: Int) extends RankLibConfig {
+  def asArguments = Seq("-ranker", "6", "-tree", numIterations.toString, "-metric2t", metric.toString)
+}
+
 case class RankEntry(val queryId: Int, val docID: String, val relevanceScore: Int, val features: List[(Int, Double)])
 case class RankResult(val docID: Int, val score: Double)
 
 class RankLibWrapper(val modelFile: String){
   
-  def retrain(data: Iterable[RankEntry], trainingFilename: String){
+  def retrain(data: Iterable[RankEntry], config: RankLibConfig, trainingFilename: String){
     // write LETOR FORMAT to tmpDataFile
     io.write(trainingFilename, RankLibWrapper.toLetorFormat(data))
     println("Wrote ranklib training data data in " + trainingFilename)
-    RankLibWrapper.train(modelFile, trainingFilename)
+    RankLibWrapper.train(modelFile, trainingFilename, config)
     println("Done training ranker in " + modelFile)
   }
   
@@ -25,7 +38,7 @@ class RankLibWrapper(val modelFile: String){
     
     // write LETOR FORMAT to tmpDataFile
     io.write(tmpDataFile.getAbsolutePath, RankLibWrapper.toLetorFormat(data))
-    println("letor data written to " + tmpDataFile)
+    System.err.println("Wrote temporary LETOR ranking data to " + tmpDataFile)
     
     // call ranking with temporary files
     RankLibWrapper.rank(modelFile, tmpDataFile.getAbsolutePath, tmpOutPath)
@@ -33,10 +46,6 @@ class RankLibWrapper(val modelFile: String){
     val output = io.lines(tmpOutPath).map(_.split("\t")).map { 
       case Array(queryId, docId, score) => (queryId.toInt, docId.toInt, score.toDouble)
     }.toList
-    
-    //val rankingsPerQuery = output.groupBy(_._1).mapValues { unsorted =>
-    //  unsorted.map(x => RankResult(x._2, x._3)).sortBy(- _.score)
-    //}
     
     val scoresPerQuery = output.groupBy(_._1).mapValues { ordered => ordered.map(x => x._3) }
     tmpOutFile.delete
@@ -68,26 +77,23 @@ object RankLibWrapper {
     else block
   }
   
-  def train(modelFile: String, trainingFile: String) = {
+  def train(modelFile: String, trainingFile: String, config: RankLibConfig) = {
       /* example params:
        * -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt 
        * -ranker 6 -metric2t NDCG@10 -metric2T ERR@10 -save mymodel.txt
        */
-      Evaluator.main(Seq(
+      Evaluator.main((Seq(
           "-train", trainingFile, 
-          "-tree", "10",
           "-validate", trainingFile, // specify training as validation, so we get early stopping!
-          "-ranker", "6",
-          "-metric2t", "NDCG@10",
-          "-save", modelFile).toArray)
+          "-save", modelFile) ++ config.asArguments).toArray)
   }
   
   def rank(modelFile: String, dataFile: String, outFile: String, metric: String = "ERR@10") = noOutput {
     Evaluator.main(Seq(
         "-load", modelFile, 
         "-rank", dataFile, 
-        "-score", outFile,
-        "-metric2T", metric).toArray)
+        //"-metric2T", metric
+        "-score", outFile).toArray)
   }
   
 
@@ -120,7 +126,7 @@ object TestRankLibWrapper extends App {
       
   val ranker = new RankLibWrapper("test.ranker.txt")
   RankLibWrapper.withTmpFile { tmp => 
-    ranker.retrain(data, tmp)
+    ranker.retrain(data, LambdaMart(NDCG(10), 10), tmp)
   }
   println("ranking..")
   println(ranker.rank(data))

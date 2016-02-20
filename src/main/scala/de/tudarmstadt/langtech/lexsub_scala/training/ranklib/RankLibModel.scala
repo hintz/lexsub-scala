@@ -13,14 +13,15 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.RankEntry
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankEntry
 import scala.collection.mutable.ListBuffer
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibConfig
 
-object RankLibModel extends Model {
+case class RankLibModel(rankLibConfig: RankLibConfig) extends Model {
 
   def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String) {
     // determine final files for model
-    val featureMappingFile = getFeatureMappingFile(trainingFolder)
-    val modelFile = getModelFile(trainingFolder)
-    val trainingFile = getTrainingFile(trainingFolder)
+    val featureMappingFile = RankLibModel.getFeatureMappingFile(trainingFolder)
+    val modelFile = RankLibModel.getModelFile(trainingFolder)
+    val trainingFile = RankLibModel.getTrainingFile(trainingFolder)
 
     // build feature mapping
     val featureMapping = RankLibMapper.build(featurizedData)
@@ -29,17 +30,19 @@ object RankLibModel extends Model {
     val trainingInstances = featureMapping.createTrainingData(featurizedData)
 
     println(s"Training RankLib model: writing to $modelFile, serializing feature mapping to $featureMappingFile")
-    rankLib.retrain(trainingInstances, trainingFile)
+    rankLib.retrain(trainingInstances, rankLibConfig, trainingFile)
     io.serialize(featureMapping, featureMappingFile)
     println(s"Done training RankLib model in $trainingFolder.")
   }
 
   def getScorer(trainingFolder: String) = new RankLibScorer(trainingFolder)
 
+}
+
+object RankLibModel {
   def getFeatureMappingFile(trainingFolder: String): String = trainingFolder + "/mapping.ser"
   def getModelFile(trainingFolder: String): String = trainingFolder + "/model.txt"
   def getTrainingFile(trainingFolder: String): String = trainingFolder + "/training.txt"
-
 }
 
 /** Utility class for mapping sparse features to RankLib-internal dense reperesentation */
