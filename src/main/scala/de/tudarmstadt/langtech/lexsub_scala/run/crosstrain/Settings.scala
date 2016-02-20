@@ -44,7 +44,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     lazy val dtSecondOrder = DTLookup("DT2nd", new WordSimilarityFile(path("DT", "German", "secondOrder"), identity), 
         token => token.lemma, (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma))
         
-    lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "German", "germeval2015"), identity), token => token.word, cacheResults = false)
+    lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "German", "germeval2015"), identity), token => token.word, cacheResults = true)
     
     lazy val w2vEmbeddings = Word2VecLookup(path("Embeddings", "German", "deNews70M"), Integer.MAX_VALUE, isLowercased = false)
     lazy val wordEmbeddings = WordVectorFileLookup(path("Embeddings", "German", "syntaxWords"), isLowercased = false)
@@ -100,7 +100,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       token => token.lemma.toLowerCase + "#" + token.pos.take(2).toUpperCase,
       (substitute, dtFeature) => dtFeature.startsWith(substitute.lemma.toLowerCase + "#"))
       
-    lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "English", "semeval2007"), identity), token => token.word, cacheResults = false)
+    lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "English", "semeval2007"), identity), token => token.word, cacheResults = true)
     
     lazy val wordEmbeddings = WordVectorFileLookup(path("Embeddings", "English", "syntaxWords"), isLowercased = true)
     lazy val contextEmbeddings = WordVectorFileLookup(path("Embeddings", "English", "syntaxContexts"), isLowercased = true)
@@ -137,7 +137,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
         token => token.lemma, (substitute, dtFeature) => dtFeature.contains(substitute.lemma))
         
         
-    lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "Italian", "evalita2009"), identity), token => token.word, cacheResults = false)
+    lazy val coocs = DTLookup("cooc", new WordSimilarityFile(path("Coocs", "Italian", "evalita2009"), identity), token => token.word, cacheResults = true)
     
     lazy val w2vEmbeddings = Word2VecLookup(path("Embeddings", "Italian", "itWac"), Integer.MAX_VALUE, isLowercased = true) // TODO: check if these embeddings are really lowercase
     lazy val wordEmbeddings = WordVectorFileLookup(path("Embeddings", "Italian", "syntaxWords"), isLowercased = true)
