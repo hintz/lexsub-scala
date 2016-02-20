@@ -30,7 +30,7 @@ case class LexSemRelation(candidates: CandidateList, simplifyLabels: Boolean = f
      features.toSeq
    }
   
-  private def mkFeature(rel: String) = new Feature( "SemRel_" + rel, 1f)
+  private def mkFeature(rel: String) = new Feature( "SemRel_" + rel, 1d)
 }
 
 /** Extracts te number of lexical semantic relations from candidate list */
