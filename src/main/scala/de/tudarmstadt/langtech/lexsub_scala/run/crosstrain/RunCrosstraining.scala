@@ -103,6 +103,6 @@ object RunCrosstraining extends App {
   }
 
   def mkLexsub(targetLanguage: LanguageData, modelFolder: String): LexSub = 
-    LexSubExpander(targetLanguage.candidates, targetLanguage.features, CTKScorer(modelFolder))
+    LexSubExpander(targetLanguage.candidates, targetLanguage.features, model.getScorer(modelFolder))
 
 }
