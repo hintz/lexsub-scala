@@ -5,12 +5,12 @@ import java.io.PrintStream
 import java.io.File
 import de.tudarmstadt.langtech.scala_utilities.io
 
-case class RankEntry(val queryId: Int, val docID: Int, val relevanceScore: Int, val features: List[(Int, Double)])
+case class RankEntry(val queryId: Int, val docID: String, val relevanceScore: Int, val features: List[(Int, Double)])
 case class RankResult(val docID: Int, val score: Double)
 
 class RankLibWrapper(val modelFile: String){
   
-  def retrain(data: List[RankEntry]){
+  def retrain(data: Iterable[RankEntry]){
     val tmpDataFile = File.createTempFile("data", ".tmp")
     // write LETOR FORMAT to tmpDataFile
     io.write(tmpDataFile.getAbsolutePath, RankLibWrapper.toLetorFormat(data))
@@ -19,7 +19,7 @@ class RankLibWrapper(val modelFile: String){
     println("Done training ranker in " + modelFile)
   }
   
-  def rank(data: List[RankEntry]): Map[Int, List[Double]] = {
+  def rank(data: Iterable[RankEntry]): Map[Int, List[Double]] = {
     val tmpOutFile = File.createTempFile(modelFile, ".rank.tmp")
     val tmpOutPath = tmpOutFile.getAbsolutePath
     val tmpDataFile = File.createTempFile("data", ".tmp")
@@ -83,7 +83,7 @@ object RankLibWrapper {
   }
   
 
-  def toLetorFormat(data: List[RankEntry]): String = {
+  def toLetorFormat(data: Iterable[RankEntry]): String = {
     /* LETOR format: 
      * Each row is a query-document pair. 
      * The first column is relevance label of this pair, the second column is query id, the following columns
@@ -104,10 +104,10 @@ object TestRankLibWrapper extends App {
   //RankLibWrapper.rank("mymodel.txt", "MQ2008/Fold2/train.txt", "out.tmp")
   
   val data = List(
-		  RankEntry(1, 42, 0, List((0, 0.5), (1, 1.0))),
-		  RankEntry(1, 43, 1, List((0, 0.3), (1, 0.1))),
-		  RankEntry(1, 44, 3, List((0, 1.0), (1, 1.0))),
-		  RankEntry(1, 45, 4, List((0, 1.5), (1, 0.2)))
+		  RankEntry(1, "42", 0, List((0, 0.5), (1, 1.0))),
+		  RankEntry(1, "43", 1, List((0, 0.3), (1, 0.1))),
+		  RankEntry(1, "44", 3, List((0, 1.0), (1, 1.0))),
+		  RankEntry(1, "45", 4, List((0, 1.5), (1, 0.2)))
   )
       
   val ranker = new RankLibWrapper("test.ranker.txt")

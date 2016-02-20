@@ -53,8 +53,8 @@ trait NumericFeature extends FeatureUtils {
 
 trait NominalFeature[A] extends FeatureUtils {
   val name: String
-  implicit def toFeatures(a: A): Seq[Feature] = Seq(new Feature(name, a))
-	implicit def toFeatures(a: Option[A]): Seq[Feature] = a.toList.map(new Feature(name, _))
+  implicit def toFeatures(a: A): Seq[Feature] = Seq(new Feature(name + "_" + a, 1d))
+	implicit def toFeatures(a: Option[A]): Seq[Feature] = a.toList.map(a => new Feature(name + "_" + a, 1d))
 }
 
 
