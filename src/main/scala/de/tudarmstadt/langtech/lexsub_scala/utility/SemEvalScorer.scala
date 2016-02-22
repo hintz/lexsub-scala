@@ -51,7 +51,8 @@ object SemEvalScorer {
 
     val oot = Outcomes.evaluate(results, 10)
     val best = Outcomes.evaluate(results, 1)
-    val myEval = "Evaluation: best=[%s] oot=[%s]".format(best, oot)
+    val gap = Outcomes.meanGAP(results)
+    val myEval = "Evaluation: best=[%s] oot=[%s] gap=[%f.4]".format(best, oot, gap)
     val perlEval = new SemEvalScorer(scorerFolder).score(instanceFilePrefix, goldFile)
     val fullEval = Seq(myEval, perlEval).mkString("\n")
     
