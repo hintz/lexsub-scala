@@ -36,7 +36,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       )
 
     lazy val ngrams = Web1TLookup(path("NGrams", "German", "web1t"), 5)
-    lazy val candidates = new CandidateFile(path("Candidates", "German", "GermEval2015", "masterlist"), true)
+    lazy val candidates = new CandidateFile(path("Candidates", "German", "GermEval2015", "masterlist"), true).filter(!_.replacement.contains(" "))
     val conjunctions = Seq("und", "oder", ",")
     
     lazy val dtFirstOrder = DTLookup("DT1st", new WordSimilarityFile(path("DT", "German", "firstOrder"), identity), 
@@ -86,7 +86,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     def trainingData = semevalTest
     def testData = semevalTrial
 
-    lazy val candidates = new CandidateFile(path("Candidates", "English", "SemEval2007", "wordnet"), true)
+    lazy val candidates = new CandidateFile(path("Candidates", "English", "SemEval2007", "wordnet"), true).filter(!_.replacement.contains(" "))
     lazy val ngrams = Web1TLookup(path("NGrams", "English", "web1t"), 5)
     val conjunctions = Seq("and", "or", ",")
     
@@ -126,7 +126,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     val testGoldfile = path("Tasks", "evalitaFolder") + "/trial/gold.trial"
 
     lazy val multiwordnet = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "multiwordnet"), true)
-    lazy val candidates = multiwordnet
+    lazy val candidates = multiwordnet.filter(!_.replacement.contains(" "))
     lazy val ngrams = Web1TLookup(path("NGrams", "Italian", "web1t"), 5)
     val conjunctions = Seq("e", "ed", "o", "od", ",")
     
