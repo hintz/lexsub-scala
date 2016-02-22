@@ -86,8 +86,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     def trainingData = semevalTest
     def testData = semevalTrial
 
-    lazy val globalWordnetHyHo = new CandidateFile(path("Candidates", "English", "wordnet-hy-ho"), true)
-    lazy val candidates = globalWordnetHyHo
+    lazy val candidates = new CandidateFile(path("Candidates", "English", "SemEval2007", "wordnet"), true)
     lazy val ngrams = Web1TLookup(path("NGrams", "English", "web1t"), 5)
     val conjunctions = Seq("and", "or", ",")
     

@@ -25,8 +25,9 @@ Candidates:
     English:
         wordnet-hy-ho: "resources/wordnet-hy-ho"
         SemEval2007:
-            masterlist: "resources/semeval2007/candidates/masterlist.tsv"
             wordnet: "resources/semeval2007/candidates/uby_WordNet.tsv"
+            ontoWiktionary: "resources/semeval2007/candidates/uby_OntoWiktionaryEN.tsv"
+            omegaWiki: "resources/semeval2007/candidates/uby_OmegaWiki_eng.tsv"
             gold: "resources/semeval2007/candidates/gold.tsv"
     Italian:
         Evalita2009:
