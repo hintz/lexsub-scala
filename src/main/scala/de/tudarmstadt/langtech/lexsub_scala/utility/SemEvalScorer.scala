@@ -16,16 +16,20 @@ class SemEvalScorer(val scriptFolder: String) {
     import scala.sys.process._
 
     val scorePL = scriptFolder + "/score.pl"
+    val scoreGAPpl = scriptFolder + "/scoreGAP.pl"
     val bestInstances = instancesFilePrefix + ".best"
     val ootInstances = instancesFilePrefix + ".oot"
+    val rankInstances = instancesFilePrefix + ".rank"
 
     val bestCmd: ProcessBuilder = Seq("perl", scorePL, bestInstances, goldFile, "-t", "best")
     val ootCmd: ProcessBuilder = Seq("perl", scorePL, ootInstances, goldFile, "-t", "oot")
+    val gapCmd: ProcessBuilder = Seq("perl", scoreGAPpl, rankInstances, goldFile)
     
     val best = bestCmd.lineStream_!
     val oot = ootCmd.lineStream_!
+    val gap = gapCmd.lineStream_!
 
-    (Seq("Best:") ++ best ++ Seq("OOT:") ++ oot).mkString("\n")
+    (Seq("Best:") ++ best ++ Seq("OOT:") ++ oot ++ Seq("GAP:") ++ gap).mkString("\n")
   }
 }
 
@@ -57,6 +61,8 @@ object SemEvalScorer {
   
   def singleLine(evalOutput: String): String = {
     // hacky grep for one line in the output
-    evalOutput.lines.filter(_.startsWith("precision =")).toList.applyOrElse(0, (_: Int) => "ERROR")
+    val gapLine =  evalOutput.lines.filter(_.contains("GAP score:")).toList.applyOrElse(0, (_: Int) => "ERROR")
+    val pBestLine = evalOutput.lines.filter(_.startsWith("precision =")).toList.applyOrElse(0, (_: Int) => "ERROR")
+    pBestLine + gapLine
   }
 }
