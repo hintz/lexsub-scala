@@ -10,6 +10,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Token
 trait SyntacticEmbeddingCombinator {
   def apply(wordCossim: Option[Double], contextCossims: List[Double]): Double
   def pcos(cossim: Double): Double = (cossim + 1) / 2d
+  def name: String = getClass.getSimpleName.takeWhile(_.isLetterOrDigit)
 }
 
 object SyntacticEmbeddingCombinator {
@@ -64,8 +65,7 @@ case class SyntaxEmbeddingFeature(
     contextEmbeddings: WordVectorLookup,
     combinator: SyntacticEmbeddingCombinator) 
     
-extends SmartFeature[SyntacticEmbedding] with FeatureUtils {
-  implicit val name = "SyntaxEmb"
+extends SmartFeature[SyntacticEmbedding] {
   
   // suffix added to depedge labels to denote inverse direction
   val INVERSE_MARKER = "I" 
@@ -113,7 +113,7 @@ extends SmartFeature[SyntacticEmbedding] with FeatureUtils {
     
     val result = combinator(wordCossim, contextCossims)
     //println(item.targetLemma + " -> " + item.substitution + ": wordsim=" + wordCossim + " ctxsims=" + contextCossims.mkString(", ") +" ==> " + combinator + " = " + result)
-    result
+    Seq(NumericFeature("SyntaxEmb" + combinator.name, result))
   }
 }
 
