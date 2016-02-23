@@ -28,8 +28,8 @@ object RunCrosstraining extends App {
   println("Performing crosstraining experiments with " + languages.mkString(", "))
   
   // featurize all data
-  val features = io.lazySerialized("cache/CROSSTRAINING_FEATURES.ser"){
-    languages map featurize
+  val features = languages map { language =>
+    io.lazySerialized("cache/" + language.toString + "-training-featurized.ser" )(featurize(language))
   }
   val languagesWithTrainingData = languages.zip(features)
   
