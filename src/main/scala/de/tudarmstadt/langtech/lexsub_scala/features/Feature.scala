@@ -12,6 +12,8 @@ trait Feature extends Serializable {
     case NominalFeature(name, value) => NumericFeature(name + "_" + value, 1d)
     case BinaryFeature(name, value) =>  NumericFeature(name + "_" + value, 1d)
   }
+  
+  override def toString: String = name + "=" + value
 }
 
 object Feature {
