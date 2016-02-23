@@ -50,11 +50,17 @@ case class LexSubExpander(
 	
 	/** Ranks predefined substitution candidates */
 	def apply(item: Substitutions): Seq[(String, Double)] = {
-			val instances = features.extract(item)
-			val scores = scorer(instances)
-			val scored = item.candidates.zip(scores)
-			scored.sortBy(- _._2).take(maxItems)
+			val featurized = features.extract(item)
+      apply(item, featurized)
 	}
+  
+  /** Ranks pre-featurized instance */
+  def apply(featurizedInstance: (Substitutions, Vector[Seq[Feature]])): Seq[(String, Double)] = {
+    val (item, features) = featurizedInstance
+    val scores = scorer(features)
+    val scored = item.candidates.zip(scores)
+    scored.sortBy(- _._2).take(maxItems)
+  }
 }
 
 case class GoldCandidatesRanker(

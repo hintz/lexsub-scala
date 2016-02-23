@@ -96,7 +96,7 @@ object RankLibWrapper {
        */
       RankLibWrapper.runJava(Seq(
           "-train", trainingFile, 
-          "-validate", trainingFile, // specify training as validation, so we get early stopping!
+          //"-validate", trainingFile, // specify training as validation, so we get early stopping!
           "-save", modelFile) ++ config.asArguments, printOutput = true)
   }
   

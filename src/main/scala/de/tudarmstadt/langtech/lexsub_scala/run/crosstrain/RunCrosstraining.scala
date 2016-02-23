@@ -22,7 +22,7 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.NDCG
 
 object RunCrosstraining extends App {
   
-  val model: Model = RankLibModel(LambdaMart(NDCG(10), 500)) // new ClearTKModel("MaxEnt")
+  val model: Model = RankLibModel(LambdaMart(NDCG(10), 1000)) // new ClearTKModel("MaxEnt")
   
   val languages: List[LanguageData] = List(English, German, Italian)
   println("Performing crosstraining experiments with " + languages.mkString(", "))
