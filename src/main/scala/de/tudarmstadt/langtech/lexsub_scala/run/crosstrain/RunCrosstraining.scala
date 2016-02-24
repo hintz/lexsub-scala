@@ -17,15 +17,14 @@ import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
 import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
-import de.tudarmstadt.langtech.lexsub_scala.utility.LambdaMart
-import de.tudarmstadt.langtech.lexsub_scala.utility.NDCG
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib._
 import scala.concurrent.Future
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 object RunCrosstraining extends App {
   
-  val model: Model = RankLibModel(LambdaMart(NDCG(10), 1000)) // new ClearTKModel("MaxEnt")
+  val model: Model = RankLibModel(LambdaMart(NDCG(10), 10)) // new ClearTKModel("MaxEnt")
   
   val languages: List[LanguageData] = List(English, German, Italian)
   println("Performing crosstraining experiments with " + languages.mkString(", "))

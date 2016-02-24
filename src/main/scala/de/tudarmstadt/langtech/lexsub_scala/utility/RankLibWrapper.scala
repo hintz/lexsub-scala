@@ -22,24 +22,28 @@ import scala.sys.process.FileProcessLogger
  */
 
 /** Helper DSL for command line parameters to RankLib */
-trait RankLibConfig {
-  def asArguments: Seq[String]
+object RankLib {
+  trait Config {
+    def asArguments: Seq[String]
+  }
+  
+  trait Metric
+  case class NDCG(n: Int) extends Metric { override def toString = "NDCG@" + n }
+  case class ERR(n: Int) extends Metric { override def toString = "ERR@" + n }
+  
+  case class LambdaMart(metric: Metric, numIterations: Int) extends Config {
+    def asArguments = Seq("-ranker", "6", "-tree", numIterations.toString, "-metric2t", metric.toString)
+  }
 }
 
-trait Metric
-case class NDCG(n: Int) extends Metric { override def toString = "NDCG@" + n }
-case class ERR(n: Int) extends Metric { override def toString = "ERR@" + n }
 
-case class LambdaMart(metric: Metric, numIterations: Int) extends RankLibConfig {
-  def asArguments = Seq("-ranker", "6", "-tree", numIterations.toString, "-metric2t", metric.toString)
-}
 
 case class RankEntry(val queryId: Int, val docID: String, val relevanceScore: Int, val features: List[(Int, Double)])
 case class RankResult(val docID: Int, val score: Double)
 
 class RankLibWrapper(val modelFile: String){
   
-  def retrain(data: Iterable[RankEntry], config: RankLibConfig, trainingFilename: String): Future[Unit] = {
+  def retrain(data: Iterable[RankEntry], config: RankLib.Config, trainingFilename: String): Future[Unit] = {
     // write LETOR FORMAT to tmpDataFile
     io.write(trainingFilename, RankLibWrapper.toLetorFormat(data))
     println("Wrote ranklib training data data in " + trainingFilename)
@@ -85,7 +89,7 @@ object RankLibWrapper {
 	def runJava(params: Seq[String], logfile: Option[String] = None): Future[Int] = {
 			val mainClassName =  "ciir.umass.edu.eval.Evaluator"
 			val currentJar = System.getProperty("java.class.path")
-			val command: ProcessBuilder = Seq("java", "-cp", currentJar, mainClassName) ++ params
+			val command: ProcessBuilder = Seq("java", "-Xmx6g", "-cp", currentJar, mainClassName) ++ params
       val logger = logfile.map(file => new FileProcessLogger(new File(file))).getOrElse(new NullLogger)
 			val procFuture: Future[Int] = Future {      
         command.run(logger).exitValue
@@ -94,7 +98,7 @@ object RankLibWrapper {
 	}
 
   /** Trains a model with the given config, yields model file path as future */
-  def train(modelFile: String, trainingFile: String, config: RankLibConfig): Future[Unit] = {
+  def train(modelFile: String, trainingFile: String, config: RankLib.Config): Future[Unit] = {
 
 		  /* example params:
 		   * -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt 
@@ -140,7 +144,8 @@ object RankLibWrapper {
 
 
 object TestRankLibWrapper extends App {
-  
+  import RankLib._
+
   //val rFact = new RankerFactory
   //val r: Ranker = rFact.loadRanker("foo.txt")
 

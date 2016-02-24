@@ -6,13 +6,14 @@ import de.tudarmstadt.langtech.lexsub_scala.scorer.RankLibScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.Model
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankEntry
-import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibConfig
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib.Config
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.features.NumericFeature
 import scala.concurrent.Future
 
-case class RankLibModel(rankLibConfig: RankLibConfig) extends Model {
+case class RankLibModel(rankLibConfig: RankLib.Config) extends Model {
 
   def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Unit] = {
     // determine final files for model
