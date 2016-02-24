@@ -1,14 +1,11 @@
 package de.tudarmstadt.langtech.lexsub_scala.training.ctk
 
 import java.io.File
-
 import scala.collection.JavaConversions.seqAsJavaList
-
 import org.cleartk.classifier.{Feature => CTKFeature}
 import org.cleartk.classifier.Instance
 import org.cleartk.classifier.jar.JarClassifierBuilder
 import org.cleartk.classifier.mallet.MalletStringOutcomeDataWriter
-
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 import de.tudarmstadt.langtech.lexsub_scala.features.Feature
@@ -23,6 +20,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.SubstitutionItem
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import de.tudarmstadt.langtech.scala_utilities.collections
 import de.tudarmstadt.langtech.scala_utilities.io
+import scala.concurrent.Future
 
 /**
  * A ClearTK model building a classifier for pointwise ranking
@@ -30,9 +28,10 @@ import de.tudarmstadt.langtech.scala_utilities.io
  */
 class ClearTKModel(val classifier: String = "MaxEnt") extends Model {
 
-  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String){
+  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Unit] = {
     val instances = new CTKInstanceBuilder(useScores = false)(featurizedData)
     trainAndPackage(instances, trainingFolder)
+    Future.successful(()) // no multithreading for now
   }
 
   def getScorer(trainingFolder: String) = CTKScorer(trainingFolder)
@@ -72,57 +71,6 @@ class ClearTKModel(val classifier: String = "MaxEnt") extends Model {
 @Deprecated
 object DeprecatedTraining extends ClearTKModel() {
 
-  /** Performs crossvalidate, prints results to stdout and writes aggregated results to outputFile */
-  @Deprecated
-  def crossvalidate(data: Iterable[LexSubInstance],
-                    trainingList: CandidateList, systemList: CandidateList, features: Features,
-                    trainingRoot: String, outputFile: String, folds: Int = 10, maxItems: Int = 20) {
-
-    println("Starting crossvalidation on " + data.size + " instances")
-
-    val trainingData = Model.createTrainingData(data, trainingList)
-    println("Using %d instances with candidates from %s created %d training examples".format(data.size, trainingList, trainingData.map(_.candidates.size).sum))
-
-    println("Extracting features..")
-    val featurizedData = Featurizer(features)(trainingData)
-    
-    val instanceMaker = new CTKInstanceBuilder(useScores = false)
-    val instances = instanceMaker(featurizedData)
-
-    val dataWithFeatures = trainingData.zip(instances)
-
-    println("Grouping data and creating folds..")
-    val grouping = (instance: LexSubInstance) => instance.gold.get.sentence.target.lemma
-    val grouped = dataWithFeatures.groupBy(x => grouping(x._1.lexSubInstance))
-    val folded = collections.crossfold(grouped.keys.toSeq, folds)
-
-    val outcomes = for (((heldOutItems, trainingItems), i) <- folded.zipWithIndex) yield {
-      val trainingFolder = trainingRoot + "/fold" + i
-      val folder = new File(trainingFolder); folder.mkdir
-      println("Fold %d (items %s)".format(i + 1, heldOutItems.mkString(", ")))
-      val trainingData: Iterable[Instance[String]] = trainingItems.flatMap(grouped.apply).map(_._2)
-      trainAndPackage(instances, folder)
-
-      val testData: Seq[Substitutions] = heldOutItems.flatMap(grouped.apply).map(_._1)
-      val testInstaces = testData.map(_.lexSubInstance)
-
-      val lexsub = LexSubExpander(systemList, features, getScorer(trainingFolder), maxItems = maxItems)
-      val ranked = lexsub(testInstaces)
-      val results = Outcomes.collect(testInstaces, ranked)
-      val oot = Outcomes.evaluate(results, 10)
-      val best = Outcomes.evaluate(results, 1)
-      println("Fold %d: best=%s oot=%s".format(i + 1, best, oot))
-      results
-    }
-
-    SemEvalResultOutcomeWriter.save(outcomes.flatten, outputFile)
-    io.write(outputFile + ".system.txt", LexSubExpander(systemList, features, null, maxItems = maxItems).toString)
-
-    val results = outcomes.flatten
-    val oot = Outcomes.evaluate(results, 10)
-    val best = Outcomes.evaluate(results, 1)
-    println("Overall best=[%s] oot=[%s]".format(best, oot))
-  }
 }
 
 /** Creates instances for training a ClearTK classifier */

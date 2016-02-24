@@ -19,6 +19,9 @@ import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
 import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
 import de.tudarmstadt.langtech.lexsub_scala.utility.LambdaMart
 import de.tudarmstadt.langtech.lexsub_scala.utility.NDCG
+import scala.concurrent.Future
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 object RunCrosstraining extends App {
   
@@ -34,14 +37,14 @@ object RunCrosstraining extends App {
   val languagesWithTrainingData = languages.zip(features)
   
   // train all languages on their own data
-  for((language, featurized) <- languagesWithTrainingData){
+  val training1 = for((language, featurized) <- languagesWithTrainingData) yield {
     println("Training " + language + "..")
     model.train(featurized, language.trainingFolder)
   }
   
   // train on other languages
   println("Training on combined other languages..")
-  for(i <- languages.indices){
+  val training2 = for(i <- languages.indices) yield {
     val lang = languages(i)
     val otherData = languages.indices.diff(Seq(i)).map(languagesWithTrainingData)
     val (otherLangs, otherInstances) = otherData.unzip
@@ -55,7 +58,13 @@ object RunCrosstraining extends App {
   println("Training on all languages combined..")
   val allLanguagesFolder = "trainingAllLanguages"
   val allFeatures = features.flatten
-  model.train(allFeatures, allLanguagesFolder)
+  val training3 = model.train(allFeatures, allLanguagesFolder)
+  
+  
+  println("Waiting for all training to complete..")
+  implicit val ec = scala.concurrent.ExecutionContext.global
+  val allTraining = Future.sequence(training1 ++ training2 ++ Seq(training3))
+  Await.result(allTraining, Duration.Inf)
   
   // evaluate all languages
   for(evaluationLanguge <- languages){

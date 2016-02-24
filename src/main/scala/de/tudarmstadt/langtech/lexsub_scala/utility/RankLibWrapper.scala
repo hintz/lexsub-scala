@@ -7,8 +7,19 @@ import scala.sys.process.ProcessBuilder
 import scala.sys.process.stringSeqToProcess
 import ciir.umass.edu.learning.RankerFactory
 import ciir.umass.edu.learning.Ranker
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
+/***
+ *  This is a minimal command-line wrapper for RankLib
+ *  As RankLib uses persistant state between calls, it is really best to "sandbox" it in its own process.
+ *  
+ *  As another benefit you get thread-safety when training multiple models in parallel
+ */
 
+/** Helper DSL for command line parameters to RankLib */
 trait RankLibConfig {
   def asArguments: Seq[String]
 }
@@ -26,12 +37,11 @@ case class RankResult(val docID: Int, val score: Double)
 
 class RankLibWrapper(val modelFile: String){
   
-  def retrain(data: Iterable[RankEntry], config: RankLibConfig, trainingFilename: String){
+  def retrain(data: Iterable[RankEntry], config: RankLibConfig, trainingFilename: String): Future[Unit] = {
     // write LETOR FORMAT to tmpDataFile
     io.write(trainingFilename, RankLibWrapper.toLetorFormat(data))
     println("Wrote ranklib training data data in " + trainingFilename)
     RankLibWrapper.train(modelFile, trainingFilename, config)
-    println("Done training ranker in " + modelFile)
   }
   
   def rank(data: Iterable[RankEntry]): Map[Int, List[Double]] = {
@@ -59,56 +69,49 @@ class RankLibWrapper(val modelFile: String){
 
 object RankLibWrapper {
   
-  def runJava(params: Seq[String], printOutput: Boolean = false){
-      val mainClassName =  "ciir.umass.edu.eval.Evaluator"
-      val currentJar = System.getProperty("java.class.path")
-      val command: ProcessBuilder = Seq("java", "-cp", currentJar, mainClassName) ++ params
-      
-      if(printOutput)
-        command.!
-      else
-        command.!!
+  implicit val ec = ExecutionContext.global
+
+  /** Runs RankLib as a seperate java process. Yields the output of RankLib as Future[String]
+   *  @param printOutput if true, prints output to console rather than yielding it.
+   */
+	def runJava(params: Seq[String], printOutput: Boolean = false): Future[String] = {
+			val mainClassName =  "ciir.umass.edu.eval.Evaluator"
+					val currentJar = System.getProperty("java.class.path")
+					val command: ProcessBuilder = Seq("java", "-cp", currentJar, mainClassName) ++ params
+					
+					val procFuture: Future[String] = Future {      
+						if(printOutput)
+							command.!.toString
+						else
+							command.!!
+					}
+          procFuture
+	}
+
+  /** Trains a model with the given config, yields model file path as future */
+  def train(modelFile: String, trainingFile: String, config: RankLibConfig): Future[Unit] = {
+		  /* example params:
+		   * -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt 
+		   * -ranker 6 -metric2t NDCG@10 -metric2T ERR@10 -save mymodel.txt o*/
+		  val procFuture = RankLibWrapper.runJava(Seq(
+				  "-train", trainingFile, 
+				  //"-validate", trainingFile, // specify training as validation, so we get early stopping!
+				  "-save", modelFile) ++ config.asArguments, printOutput = true)
+
+				  procFuture.onSuccess { case _ =>
+				    println(s"Completed training RankLib on $trainingFile, wrote to $modelFile")
+		      }
+		  procFuture.map(_ => ())
   }
   
-  /** Exectues a block with a temporary file, which is then deleted */
-  def withTmpFile(block: String => Unit) = {
-    val tmpFile = File.createTempFile("temporary", "tmp")
-    val tmpPath = tmpFile.getAbsolutePath
-    block(tmpPath)
-    tmpFile.delete
-  }
-  
-  /** Exectues a block without printing stdout to console */
-  def noOutput(block: => Unit){
-      val original = System.out
-      val nullStream = new PrintStream(new java.io.OutputStream { def write(b: Int) {} })
-      System.setOut(nullStream)
-      block
-      System.setOut(original)
-  }
-  
-  def train(modelFile: String, trainingFile: String, config: RankLibConfig) = {
-      /* example params:
-       * -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt 
-       * -ranker 6 -metric2t NDCG@10 -metric2T ERR@10 -save mymodel.txt
-       * 
-       * 
-       */
-      RankLibWrapper.runJava(Seq(
-          "-train", trainingFile, 
-          //"-validate", trainingFile, // specify training as validation, so we get early stopping!
-          "-save", modelFile) ++ config.asArguments, printOutput = true)
-  }
-  
-  def rank(modelFile: String, dataFile: String, outFile: String, metric: String = "ERR@10") = noOutput {
-    RankLibWrapper.runJava(Seq(
+  def rank(modelFile: String, dataFile: String, outFile: String, metric: String = "ERR@10") {
+    val f = RankLibWrapper.runJava(Seq(
         "-load", modelFile, 
         "-rank", dataFile, 
         //"-metric2T", metric
-        "-score", outFile))
+        "-score", outFile), printOutput = false)
+     Await.result(f, Duration.Inf)
   }
-  
-  
 
   def toLetorFormat(data: Iterable[RankEntry]): String = {
     /* LETOR format: 
@@ -148,7 +151,7 @@ object TestRankLibWrapper extends App {
   )
       
   val ranker = new RankLibWrapper("test.ranker.txt")
-  RankLibWrapper.withTmpFile { tmp => 
+  io.withTmpFile { tmp => 
     ranker.retrain(data, LambdaMart(NDCG(10), 10), tmp)
   }
   println("ranking..")

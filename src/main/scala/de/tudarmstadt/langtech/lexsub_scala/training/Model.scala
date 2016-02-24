@@ -10,30 +10,41 @@ import de.tudarmstadt.langtech.lexsub_scala.features.FeatureExtractor
 import de.tudarmstadt.langtech.lexsub_scala.LexSub
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.features.Feature
+import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import scala.concurrent.Await
 
 /** A machine learning backend model. This interface just asks the backend to do training, and yield a final scorer for lexsub */
 trait Model {
 
   /** Train from featurized data (train model only) */
-  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String)
+  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Unit]
 
   /** Yield a scorer given a folder with a trained model */
   def getScorer(trainingFolder: String): Scorer
 
   /** Train from training instances (featurize, train model) */
-  def train(trainingInstances: Iterable[Substitutions], features: Features, trainingFolder: String) {
+  def train(trainingInstances: Iterable[Substitutions], features: Features, trainingFolder: String): Future[Unit] = {
     val featurizedData = Featurizer(features)(trainingInstances)
     train(featurizedData, trainingFolder)
   }
   
   /** Train using candidate list (generate candidates, featurize, train model). Also yields resulting lexsub system */
   def train(data: Iterable[LexSubInstance], candidates: CandidateList, features: Features, trainingFolder: String): LexSubExpander = {
+    val ft = trainFt(data, candidates, features, trainingFolder)
+    Await.result(ft, Duration.Inf)
+  }
+
+  /** Train using candidate list (generate candidates, featurize, train model). Also yields resulting lexsub system as a future */
+  def trainFt(data: Iterable[LexSubInstance], candidates: CandidateList, features: Features, trainingFolder: String): Future[LexSubExpander] = {
     val trainingInstances = Model.createTrainingData(data, candidates)
-    train(trainingInstances, features, trainingFolder)
-    LexSubExpander(candidates, features, getScorer(trainingFolder))
+    val ft = train(trainingInstances, features, trainingFolder)
+    implicit val ec = scala.concurrent.ExecutionContext.global
+    ft.map { case _ =>
+        LexSubExpander(candidates, features, getScorer(trainingFolder))
+    }
   }
 }
-
 
 object Model {
 

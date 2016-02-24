@@ -10,10 +10,11 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibConfig
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.features.NumericFeature
+import scala.concurrent.Future
 
 case class RankLibModel(rankLibConfig: RankLibConfig) extends Model {
 
-  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String) {
+  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Unit] = {
     // determine final files for model
     val featureMappingFile = RankLibModel.getFeatureMappingFile(trainingFolder)
     val modelFile = RankLibModel.getModelFile(trainingFolder)
@@ -26,9 +27,8 @@ case class RankLibModel(rankLibConfig: RankLibConfig) extends Model {
     val trainingInstances = featureMapping.createTrainingData(featurizedData)
 
     println(s"Training RankLib model: writing to $modelFile, serializing feature mapping to $featureMappingFile")
-    rankLib.retrain(trainingInstances, rankLibConfig, trainingFile)
     io.serialize(featureMapping, featureMappingFile)
-    println(s"Done training RankLib model in $trainingFolder.")
+    rankLib.retrain(trainingInstances, rankLibConfig, trainingFile)
   }
 
   def getScorer(trainingFolder: String) = new RankLibScorer(trainingFolder)
