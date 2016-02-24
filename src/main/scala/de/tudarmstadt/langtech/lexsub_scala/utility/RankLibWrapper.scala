@@ -11,6 +11,8 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import scala.sys.process.ProcessLogger
+import scala.sys.process.FileProcessLogger
 
 /***
  *  This is a minimal command-line wrapper for RankLib
@@ -67,36 +69,41 @@ class RankLibWrapper(val modelFile: String){
   }
 }
 
+class NullLogger extends ProcessLogger {
+  def err(s: => String): Unit = {}
+  def out(s: => String): Unit = {}
+  def buffer[T](f: => T): T = { f }
+}
+
 object RankLibWrapper {
   
   implicit val ec = ExecutionContext.global
 
   /** Runs RankLib as a seperate java process. Yields the output of RankLib as Future[String]
-   *  @param printOutput if true, prints output to console rather than yielding it.
+   *  @param logfile if Some(path) writes stdout to path
    */
-	def runJava(params: Seq[String], printOutput: Boolean = false): Future[String] = {
+	def runJava(params: Seq[String], logfile: Option[String] = None): Future[Int] = {
 			val mainClassName =  "ciir.umass.edu.eval.Evaluator"
-					val currentJar = System.getProperty("java.class.path")
-					val command: ProcessBuilder = Seq("java", "-cp", currentJar, mainClassName) ++ params
-					
-					val procFuture: Future[String] = Future {      
-						if(printOutput)
-							command.!.toString
-						else
-							command.!!
-					}
-          procFuture
+			val currentJar = System.getProperty("java.class.path")
+			val command: ProcessBuilder = Seq("java", "-cp", currentJar, mainClassName) ++ params
+      val logger = logfile.map(file => new FileProcessLogger(new File(file))).getOrElse(new NullLogger)
+			val procFuture: Future[Int] = Future {      
+        command.run(logger).exitValue
+			}
+      procFuture
 	}
 
   /** Trains a model with the given config, yields model file path as future */
   def train(modelFile: String, trainingFile: String, config: RankLibConfig): Future[Unit] = {
+
 		  /* example params:
 		   * -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt 
 		   * -ranker 6 -metric2t NDCG@10 -metric2T ERR@10 -save mymodel.txt o*/
+      
 		  val procFuture = RankLibWrapper.runJava(Seq(
 				  "-train", trainingFile, 
 				  //"-validate", trainingFile, // specify training as validation, so we get early stopping!
-				  "-save", modelFile) ++ config.asArguments, printOutput = true)
+				  "-save", modelFile) ++ config.asArguments, logfile = Some(modelFile + ".log"))
 
 				  procFuture.onSuccess { case _ =>
 				    println(s"Completed training RankLib on $trainingFile, wrote to $modelFile")
@@ -109,7 +116,7 @@ object RankLibWrapper {
         "-load", modelFile, 
         "-rank", dataFile, 
         //"-metric2T", metric
-        "-score", outFile), printOutput = false)
+        "-score", outFile))
      Await.result(f, Duration.Inf)
   }
 
