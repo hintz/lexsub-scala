@@ -83,17 +83,18 @@ object RankLibWrapper {
   
   implicit val ec = ExecutionContext.global
 
-  /** Runs RankLib as a seperate java process. Yields the output of RankLib as Future[String]
+  /** Runs RankLib as a seperate java process. Yields the return value of RankLib as Future[Int]
    *  @param logfile if Some(path) writes stdout to path
    */
 	def runJava(params: Seq[String], logfile: Option[String] = None): Future[Int] = {
 			val mainClassName =  "ciir.umass.edu.eval.Evaluator"
 			val currentJar = System.getProperty("java.class.path")
-			val command: ProcessBuilder = Seq("java", "-Xmx6g", "-cp", currentJar, mainClassName) ++ params
+			val command: ProcessBuilder = Seq("java", /*"-Xmx6g",*/ "-cp", currentJar, mainClassName) ++ params
       val logger = logfile.map(file => new FileProcessLogger(new File(file))).getOrElse(new NullLogger)
 			val procFuture: Future[Int] = Future {      
         command.run(logger).exitValue
 			}
+      
       procFuture
 	}
 
