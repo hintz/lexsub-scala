@@ -8,8 +8,6 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
 import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
-import de.tudarmstadt.langtech.lexsub_scala.utility.LambdaMart
-import de.tudarmstadt.langtech.lexsub_scala.utility.NDCG
 
 object RunEvalitaTrainAndEval extends App {
   
