@@ -8,6 +8,10 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
 import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
+import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
+import de.tudarmstadt.langtech.lexsub_scala.reader.LexItem
+import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
+import de.tudarmstadt.langtech.lexsub_scala.candidates.FixedCandidateList
 
 object LexsubUtil {
   
@@ -30,5 +34,21 @@ object LexsubUtil {
   def preprocessSemEval(germevalFolder: String, filename: String)
                        (implicit preprocessing: LexSubProcessing): Seq[LexSubInstance] = 
     preprocessSemEval(germevalFolder, filename + ".xml", filename + ".gold")
+    
+  /** Pools gold candidates from instances */
+  def poolGoldCandidatesFromInstances(data: Seq[LexSubInstance]): CandidateList = 
+    poolGoldCandidates(data.map(_.getGold))
+    
+  /** Pools gold candidate file from semeval data */
+  def poolGoldCandidates(data: Seq[SemEvalItem]): CandidateList = {
+    val goldItems = data.map(_.gold)
+    val byTarget = goldItems.groupBy(_.target)
+    val result = byTarget.map { case (LexItem(word, pos), goldItems) => 
+      val substitutes = goldItems.flatMap(_.substitutionWords).distinct
+      val candidates = substitutes.map { s => Candidate(word, pos, s) }
+      (word, candidates)
+    }
+    new FixedCandidateList(result)
+  }
 
 }

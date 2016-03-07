@@ -22,6 +22,7 @@ Candidates:
     German:
         GermEval2015:
             masterlist: "resources/germeval2015/candidates/germeval_masterlist.tsv"
+            gold: "resources/germeval2015/candidates/gold.tsv"
     English:
         wordnet-hy-ho: "resources/wordnet-hy-ho"
         SemEval2007:
@@ -31,6 +32,7 @@ Candidates:
             gold: "resources/semeval2007/candidates/gold.tsv"
     Italian:
         Evalita2009:
+            gold: "resources/evalita2009/candidates/gold.tsv"
             multiwordnet: "resources/evalita2009/candidates/mwn.tsv"
 
 NGrams:

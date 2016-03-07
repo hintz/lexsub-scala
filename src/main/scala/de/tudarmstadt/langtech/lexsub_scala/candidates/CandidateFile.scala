@@ -51,12 +51,11 @@ class FilteredCandidateList(val original: CandidateList, f: Candidate => Boolean
   
   override def toString = getClass.getSimpleName + "(" + original + ", filter:" + f + ")"
 }
-/*
+
 /** A fixed (in-memory) candidate list. Currently not needed. */
 class FixedCandidateList(override val items: Map[String, Seq[Candidate]], name: String = "") extends CandidateList {
   override def toString = getClass.getSimpleName + "(" + name + ")"
 }
-*/
 
 /** Used to join multiple candidate set. Works lazy (creation is lightweight) */
 class JoinedCandidates(union: CandidateList*) extends CandidateList {
