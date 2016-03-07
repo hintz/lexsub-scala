@@ -100,13 +100,12 @@ object RunCrosstraining extends App {
     model.train(featurized, language.trainingFolder)
   }
   
-  /*
+
   // train on all data
   println("Training on all languages combined..")
   val allLanguagesFolder = "trainingAllLanguages"
-  val allFeatures = features.flatten
-  val training3 = model.train(allFeatures, allLanguagesFolder)
-  */
+  val training4 = model.train(featuresAll.flatten, allLanguagesFolder)
+
   
   
   // Wait for training to complete
@@ -131,9 +130,10 @@ object RunCrosstraining extends App {
       val lexsub = mkLexsub(evaluationLanguge, trainLanguage.trainingFolder)
       val outcomes = lexsub(evalData)
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-" + trainLanguage
-     
       val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + " trained on " + trainLanguage + ": " + SemEvalScorer.singleLine(eval))
+      
+      // TODO: cross-CV for identity
     }
     
     // evaluate on all other languages
@@ -146,7 +146,7 @@ object RunCrosstraining extends App {
       println("> " + evaluationLanguge + " trained on other languages:" + SemEvalScorer.singleLine(eval))
     }
     
-    /*
+
     // evaluate on all languages
     {
       val lexsub = mkLexsub(evaluationLanguge, allLanguagesFolder)
@@ -156,7 +156,7 @@ object RunCrosstraining extends App {
       val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + " trained on all: "  + SemEvalScorer.singleLine(eval))
     }
-    */
+
   }
   
   println("Done.")
