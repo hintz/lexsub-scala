@@ -45,7 +45,7 @@ object LexsubUtil {
     val byTarget = goldItems.groupBy(_.target)
     val result = byTarget.map { case (LexItem(word, pos), goldItems) => 
       val substitutes = goldItems.flatMap(_.substitutionWords).distinct
-      val candidates = substitutes.map { s => Candidate(word, pos, s) }
+      val candidates = substitutes.map { s => Candidate(word, pos, s, Set("gold_candidate")) }
       (word, candidates)
     }
     new FixedCandidateList(result)
