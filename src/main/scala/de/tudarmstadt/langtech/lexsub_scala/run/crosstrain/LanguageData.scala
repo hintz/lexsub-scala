@@ -38,6 +38,8 @@ trait LanguageData {
   // folder where this language's model will be stored
   def trainingFolder: String
   def trainingFolderOther: String = trainingFolder + "_other"
+  def trainingOnlyFold(i: Int): String = trainingFolder + "/only-fold-" + i
+  def trainingAllFold(i: Int): String = trainingFolder + "/all-fold-" + i
   
   // features. should be computed lazily
   def features: Features

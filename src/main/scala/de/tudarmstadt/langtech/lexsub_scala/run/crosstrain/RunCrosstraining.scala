@@ -31,13 +31,11 @@ object RunCrosstraining extends App {
   val cvFolds = 10
   val model: Model = RankLibModel(LambdaMart(NDCG(10), 500, 16)) // new ClearTKModel("MaxEnt")
   val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
-  
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
   
-  
   // featurize all data no folds
-  val features = languages map { language =>
+  val featuresAll = languages map { language =>
     val candidates = trainingCandidateSelector(language)
     println(s"Featurizing $language (all data) with candiates from $candidates..")
     io.lazySerialized("cache/" + language.toString + "-all-featurized.ser" ){
@@ -49,9 +47,9 @@ object RunCrosstraining extends App {
   val crossfoldData = languages.map { lang => LexsubUtil.createCVFolds(lang.allData, cvFolds) }
   val heldoutData = crossfoldData.map { cvData => cvData.map(_._1) }
   val cvTrainingData = crossfoldData.map { cvData => cvData.map(_._2) }
-  val cvFeatures = languages.zip(cvTrainingData).map { case (language, foldData) =>
+  val cvFeaturized = languages.zip(cvTrainingData).map { case (language, foldData) =>
     val candidates = trainingCandidateSelector(language)
-    for ((foldTrainingData, foldIdx) <- foldData.zipWithIndex){
+    for ((foldTrainingData, foldIdx) <- foldData.zipWithIndex) yield {
           println(s"Featurizing $language fold $foldIdx (${foldTrainingData.length} instances)")
           io.lazySerialized("cache/" + language.toString + "-fold-" + foldIdx + "featurized.ser" ){
             featurize(language, foldTrainingData, candidates)
@@ -59,23 +57,35 @@ object RunCrosstraining extends App {
     }
   }
   
-  val languagesWithTrainingData = languages.zip(features)
+  val languagesWithAllTrainingData = languages.zip(featuresAll)
+  val languagesWithTrainingFolds = languages.zip(cvFeaturized)
   
-  
-  // TODO: train crossfold models for identity entries (languages on their own data)
-  
-  
-  // train all languages on their own data
-  val training1 = for((language, featurized) <- languagesWithTrainingData) yield {
-    println("Training " + language + "..")
-    model.train(featurized, language.trainingFolder)
+  // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
+  val training1tmp = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
+    // train only-within-language CV data
+    val modelFolder = language.trainingOnlyFold(foldIdx)
+    println(s"Training $language fold $foldIdx (only self): " + modelFolder)
+    val train1 = model.train(fold, modelFolder)
+    
+    // train merged-with-all CV data
+    val otherData = languagesWithAllTrainingData.flatMap { 
+      case (otherLang, data) if otherLang != language => data 
+      case (`language`, _) => List.empty
+    } 
+    val mergedData = otherData ++ fold
+    val mergedFolder = language.trainingAllFold(foldIdx)
+    println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
+    val train2 = model.train(mergedData, mergedFolder)
+    
+    Seq(train1, train2)
   }
-  
+  val training1 = training1tmp.flatten
+
   // train on other languages
   println("Training on combined other languages..")
   val training2 = for(i <- languages.indices) yield {
     val lang = languages(i)
-    val otherData = languages.indices.diff(Seq(i)).map(languagesWithTrainingData)
+    val otherData = languages.indices.diff(Seq(i)).map(languagesWithAllTrainingData)
     val (otherLangs, otherInstances) = otherData.unzip
     val combinedInstances = otherInstances.flatten
     val combinedFolder = lang.trainingFolderOther
@@ -83,23 +93,32 @@ object RunCrosstraining extends App {
     model.train(combinedInstances, combinedFolder)
   }
   
+
+  // train all languages on their full data
+  val training3 = for((language, featurized) <- languagesWithAllTrainingData) yield {
+    println("Training " + language + "..")
+    model.train(featurized, language.trainingFolder)
+  }
+  
+  /*
   // train on all data
   println("Training on all languages combined..")
   val allLanguagesFolder = "trainingAllLanguages"
   val allFeatures = features.flatten
   val training3 = model.train(allFeatures, allLanguagesFolder)
-  
-  // TODO: all all other data to CV held-out data
-  
+  */
   
   
+  // Wait for training to complete
   println("Waiting for all training to complete..")
   implicit val ec = scala.concurrent.ExecutionContext.global
-  val allTraining = Future.sequence(training1 ++ training2 ++ Seq(training3))
+  val allTraining = Future.sequence(training1 ++ training2 ++ training3)
   val exitCodes = Await.result(allTraining, Duration.Inf)
   println("Completed all training jobs with return values " + exitCodes)
   if(exitCodes.exists(_ != 0))
     throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
+  
+  /// --- Training complete. Start eval ---
   
   // evaluate all languages
   for(evaluationLanguge <- languages){
@@ -127,6 +146,7 @@ object RunCrosstraining extends App {
       println("> " + evaluationLanguge + " trained on other languages:" + SemEvalScorer.singleLine(eval))
     }
     
+    /*
     // evaluate on all languages
     {
       val lexsub = mkLexsub(evaluationLanguge, allLanguagesFolder)
@@ -136,6 +156,7 @@ object RunCrosstraining extends App {
       val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + " trained on all: "  + SemEvalScorer.singleLine(eval))
     }
+    */
   }
   
   println("Done.")
