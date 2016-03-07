@@ -91,10 +91,12 @@ object RankLibWrapper {
 			val mainClassName =  "ciir.umass.edu.eval.Evaluator"
 			val currentJar = System.getProperty("java.class.path")
 			val command: ProcessBuilder = Seq("java", /*"-Xmx6g",*/ "-cp", currentJar, mainClassName) ++ params
-      val logger = logfile.map(file => new FileProcessLogger(new File(file))).getOrElse(new NullLogger)
-			val procFuture: Future[Int] = Future {      
-        command.run(logger).exitValue
-			}
+      val filelogger = logfile.map(file => new FileProcessLogger(new File(file)))
+      val logger = filelogger.getOrElse(new NullLogger)
+			val procFuture: Future[Int] = Future {  command.run(logger).exitValue }
+      
+      // close filelogger when done
+      procFuture.onSuccess { case _ => filelogger.foreach(_.close) }
       
       procFuture
 	}
@@ -114,7 +116,7 @@ object RankLibWrapper {
 				  procFuture.onSuccess { case exitCode =>
             if(exitCode == 0)
 				      println(s"Completed training RankLib on $trainingFile, wrote to $modelFile")
-            else throw new RuntimeException("Error calling RankLib on $trainingFile")
+            else throw new RuntimeException(s"Error calling RankLib on $trainingFile, exit code = $exitCode")
 		      }
 		  procFuture
   }
