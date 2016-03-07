@@ -15,7 +15,7 @@ import scala.concurrent.Future
 
 case class RankLibModel(rankLibConfig: RankLib.Config) extends Model {
 
-  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Unit] = {
+  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Int] = {
     // determine final files for model
     val featureMappingFile = RankLibModel.getFeatureMappingFile(trainingFolder)
     val modelFile = RankLibModel.getModelFile(trainingFolder)

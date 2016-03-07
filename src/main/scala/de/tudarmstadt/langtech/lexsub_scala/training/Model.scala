@@ -18,13 +18,13 @@ import scala.concurrent.Await
 trait Model {
 
   /** Train from featurized data (train model only) */
-  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Unit]
+  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Int]
 
   /** Yield a scorer given a folder with a trained model */
   def getScorer(trainingFolder: String): Scorer
 
   /** Train from training instances (featurize, train model) */
-  def train(trainingInstances: Iterable[Substitutions], features: Features, trainingFolder: String): Future[Unit] = {
+  def train(trainingInstances: Iterable[Substitutions], features: Features, trainingFolder: String): Future[Int] = {
     val featurizedData = Featurizer(features)(trainingInstances)
     train(featurizedData, trainingFolder)
   }

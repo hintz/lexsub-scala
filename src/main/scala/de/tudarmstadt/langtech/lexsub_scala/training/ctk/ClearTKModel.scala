@@ -28,10 +28,10 @@ import scala.concurrent.Future
  */
 class ClearTKModel(val classifier: String = "MaxEnt") extends Model {
 
-  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Unit] = {
+  def train(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])], trainingFolder: String): Future[Int] = {
     val instances = new CTKInstanceBuilder(useScores = false)(featurizedData)
     trainAndPackage(instances, trainingFolder)
-    Future.successful(()) // no multithreading for now
+    Future.successful(0) // no multithreading for now
   }
 
   def getScorer(trainingFolder: String) = CTKScorer(trainingFolder)

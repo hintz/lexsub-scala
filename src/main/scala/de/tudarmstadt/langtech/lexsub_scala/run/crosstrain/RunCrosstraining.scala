@@ -24,7 +24,7 @@ import scala.concurrent.duration.Duration
 
 object RunCrosstraining extends App {
   
-  val model: Model = RankLibModel(LambdaMart(NDCG(10), 1000)) // new ClearTKModel("MaxEnt")
+  val model: Model = RankLibModel(LambdaMart(GAP, 500, 16)) // new ClearTKModel("MaxEnt")
   
   val languages: List[LanguageData] = List(English, German, Italian)
   println("Performing crosstraining experiments with " + languages.mkString(", "))
@@ -63,6 +63,7 @@ object RunCrosstraining extends App {
   println("Waiting for all training to complete..")
   implicit val ec = scala.concurrent.ExecutionContext.global
   val allTraining = Future.sequence(training1 ++ training2 ++ Seq(training3))
+  allTraining.onSuccess { case results => println("Completed all training jobs with return values " + results) }
   Await.result(allTraining, Duration.Inf)
   
   // evaluate all languages
@@ -106,7 +107,7 @@ object RunCrosstraining extends App {
   
   def featurize(language: LanguageData) = {
     println("Featurizing " + language + "..")
-    val data = Model.createTrainingData(language.trainingData, language.candidates)
+    val data = Model.createTrainingData(language.trainingData, language.goldCandidates)
     Featurizer(language.features)(data)
   }
 

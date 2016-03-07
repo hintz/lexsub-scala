@@ -28,11 +28,12 @@ object RankLib {
   }
   
   trait Metric
+  case object GAP extends Metric { override def toString = "GAP" }
   case class NDCG(n: Int) extends Metric { override def toString = "NDCG@" + n }
   case class ERR(n: Int) extends Metric { override def toString = "ERR@" + n }
   
-  case class LambdaMart(metric: Metric, numIterations: Int) extends Config {
-    def asArguments = Seq("-ranker", "6", "-tree", numIterations.toString, "-metric2t", metric.toString)
+  case class LambdaMart(metric: Metric, numIterations: Int, numLeaves: Int) extends Config {
+    def asArguments = Seq("-ranker", "6", "-tree", numIterations.toString, "-leaf", numLeaves.toString, "-metric2t", metric.toString)
   }
 }
 
@@ -43,7 +44,7 @@ case class RankResult(val docID: Int, val score: Double)
 
 class RankLibWrapper(val modelFile: String){
   
-  def retrain(data: Iterable[RankEntry], config: RankLib.Config, trainingFilename: String): Future[Unit] = {
+  def retrain(data: Iterable[RankEntry], config: RankLib.Config, trainingFilename: String): Future[Int] = {
     // write LETOR FORMAT to tmpDataFile
     io.write(trainingFilename, RankLibWrapper.toLetorFormat(data))
     println("Wrote ranklib training data data in " + trainingFilename)
@@ -99,7 +100,7 @@ object RankLibWrapper {
 	}
 
   /** Trains a model with the given config, yields model file path as future */
-  def train(modelFile: String, trainingFile: String, config: RankLib.Config): Future[Unit] = {
+  def train(modelFile: String, trainingFile: String, config: RankLib.Config): Future[Int] = {
 
 		  /* example params:
 		   * -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt 
@@ -110,10 +111,12 @@ object RankLibWrapper {
 				  //"-validate", trainingFile, // specify training as validation, so we get early stopping!
 				  "-save", modelFile) ++ config.asArguments, logfile = Some(modelFile + ".log"))
 
-				  procFuture.onSuccess { case _ =>
-				    println(s"Completed training RankLib on $trainingFile, wrote to $modelFile")
+				  procFuture.onSuccess { case exitCode =>
+            if(exitCode == 0)
+				      println(s"Completed training RankLib on $trainingFile, wrote to $modelFile")
+            else throw new RuntimeException("Error calling RankLib on $trainingFile")
 		      }
-		  procFuture.map(_ => ())
+		  procFuture
   }
   
   def rank(modelFile: String, dataFile: String, outFile: String, metric: String = "ERR@10") {
@@ -150,7 +153,7 @@ object TestRankLibWrapper extends App {
   //val rFact = new RankerFactory
   //val r: Ranker = rFact.loadRanker("foo.txt")
 
-  RankLibWrapper.train("foo.txt", "training.txt", LambdaMart(NDCG(10), 10))  
+  RankLibWrapper.train("foo.txt", "training.txt", LambdaMart(NDCG(10), 10, 10))  
   
   //RankLibWrapper.train("mymodel.txt", "MQ2008/Fold1/train.txt")
   //RankLibWrapper.rank("mymodel.txt", "MQ2008/Fold2/train.txt", "out.tmp")
@@ -165,7 +168,7 @@ object TestRankLibWrapper extends App {
       
   val ranker = new RankLibWrapper("test.ranker.txt")
   io.withTmpFile { tmp => 
-    ranker.retrain(data, LambdaMart(NDCG(10), 10), tmp)
+    ranker.retrain(data, LambdaMart(NDCG(10), 10, 10), tmp)
   }
   println("ranking..")
   println(ranker.rank(data))
