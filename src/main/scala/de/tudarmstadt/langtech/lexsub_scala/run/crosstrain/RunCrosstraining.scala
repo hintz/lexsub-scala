@@ -21,19 +21,49 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib._
 import scala.concurrent.Future
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
+import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 
 object RunCrosstraining extends App {
   
-  val model: Model = RankLibModel(LambdaMart(GAP, 500, 16)) // new ClearTKModel("MaxEnt")
-  
   val languages: List[LanguageData] = List(English, German, Italian)
+  
+  val cvFolds = 10
+  val model: Model = RankLibModel(LambdaMart(NDCG(10), 500, 16)) // new ClearTKModel("MaxEnt")
+  val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
+  
+
   println("Performing crosstraining experiments with " + languages.mkString(", "))
   
-  // featurize all data
+  
+  // featurize all data no folds
   val features = languages map { language =>
-    io.lazySerialized("cache/" + language.toString + "-training-featurized.ser" )(featurize(language))
+    val candidates = trainingCandidateSelector(language)
+    println(s"Featurizing $language (all data) with candiates from $candidates..")
+    io.lazySerialized("cache/" + language.toString + "-all-featurized.ser" ){
+      featurize(language, language.allData, candidates)
+    }
   }
+  
+  // crossfold, and featurize all training sets for all folds
+  val crossfoldData = languages.map { lang => LexsubUtil.createCVFolds(lang.allData, cvFolds) }
+  val heldoutData = crossfoldData.map { cvData => cvData.map(_._1) }
+  val cvTrainingData = crossfoldData.map { cvData => cvData.map(_._2) }
+  val cvFeatures = languages.zip(cvTrainingData).map { case (language, foldData) =>
+    val candidates = trainingCandidateSelector(language)
+    for ((foldTrainingData, foldIdx) <- foldData.zipWithIndex){
+          println(s"Featurizing $language fold $foldIdx (${foldTrainingData.length} instances)")
+          io.lazySerialized("cache/" + language.toString + "-fold-" + foldIdx + "featurized.ser" ){
+            featurize(language, foldTrainingData, candidates)
+          }
+    }
+  }
+  
   val languagesWithTrainingData = languages.zip(features)
+  
+  
+  // TODO: train crossfold models for identity entries (languages on their own data)
+  
   
   // train all languages on their own data
   val training1 = for((language, featurized) <- languagesWithTrainingData) yield {
@@ -59,12 +89,17 @@ object RunCrosstraining extends App {
   val allFeatures = features.flatten
   val training3 = model.train(allFeatures, allLanguagesFolder)
   
+  // TODO: all all other data to CV held-out data
+  
+  
   
   println("Waiting for all training to complete..")
   implicit val ec = scala.concurrent.ExecutionContext.global
   val allTraining = Future.sequence(training1 ++ training2 ++ Seq(training3))
-  allTraining.onSuccess { case results => println("Completed all training jobs with return values " + results) }
-  Await.result(allTraining, Duration.Inf)
+  val exitCodes = Await.result(allTraining, Duration.Inf)
+  println("Completed all training jobs with return values " + exitCodes)
+  if(exitCodes.exists(_ != 0))
+    throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
   
   // evaluate all languages
   for(evaluationLanguge <- languages){
@@ -78,7 +113,7 @@ object RunCrosstraining extends App {
       val outcomes = lexsub(evalData)
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-" + trainLanguage
      
-      val eval = SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
+      val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + " trained on " + trainLanguage + ": " + SemEvalScorer.singleLine(eval))
     }
     
@@ -88,7 +123,7 @@ object RunCrosstraining extends App {
       val outcomes = lexsub(evalData)
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-others"
      
-      val eval = SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
+      val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + " trained on other languages:" + SemEvalScorer.singleLine(eval))
     }
     
@@ -98,17 +133,16 @@ object RunCrosstraining extends App {
       val outcomes = lexsub(evalData)
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-all"
      
-      val eval = SemEvalScorer.saveAndEvaluate(lexsub, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
+      val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + " trained on all: "  + SemEvalScorer.singleLine(eval))
     }
   }
   
   println("Done.")
   
-  def featurize(language: LanguageData) = {
-    println("Featurizing " + language + "..")
-    val data = Model.createTrainingData(language.trainingData, language.goldCandidates)
-    Featurizer(language.features)(data)
+  def featurize(language: LanguageData, data: Seq[LexSubInstance], candidates: CandidateList) = {
+    val instances = Model.createTrainingData(data, candidates)
+    Featurizer(language.features)(instances)
   }
 
   def mkLexsub(targetLanguage: LanguageData, modelFolder: String): LexSub = 

@@ -2,12 +2,12 @@ package de.tudarmstadt.langtech.lexsub_scala.utility
 
 import scala.sys.process.ProcessBuilder
 import scala.sys.process.stringSeqToProcess
-
 import de.tudarmstadt.langtech.lexsub_scala.LexSub
 import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalResultOutcomeWriter
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.scala_utilities.io
+import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
 
 /** Commandline wrapper for semeval perl score script */
 class SemEvalScorer(val scriptFolder: String) {
@@ -34,20 +34,30 @@ class SemEvalScorer(val scriptFolder: String) {
 }
 
 object SemEvalScorer {
-
+  
   /** Run full evaluation (all perl scripts & custom evaluation) */
   def saveAndEvaluate(
-    lexsub: LexSub,
+    runInfo: String,
     evaluationData: Iterable[LexSubInstance],
     outcomes: Iterable[Seq[(String, Double)]],
     scorerFolder: String,
     goldFile : String,
     folder: String): String = {
-
     val results = Outcomes.collect(evaluationData, outcomes)
+    saveAndEvaluate(runInfo, results, scorerFolder, goldFile, folder)
+  }
+  
+  /** Run full evaluation (all perl scripts & custom evaluation) */
+  def saveAndEvaluate(
+    runInfo: String,
+    results: Iterable[Outcome],
+    scorerFolder: String,
+    goldFile : String,
+    folder: String): String = {
+
     val instanceFilePrefix =  folder + "/instances.out"
     SemEvalResultOutcomeWriter.save(results, instanceFilePrefix)
-    io.write(folder + "/system.txt", lexsub.toString)
+    io.write(folder + "/system.txt", runInfo)
 
     val oot = Outcomes.evaluate(results, 10)
     val best = Outcomes.evaluate(results, 1)

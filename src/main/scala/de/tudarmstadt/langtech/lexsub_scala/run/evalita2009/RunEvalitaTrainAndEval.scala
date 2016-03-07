@@ -37,7 +37,7 @@ object RunEvalitaTrainAndEval extends App {
   val best = Outcomes.evaluate(results, 1)
   
   // perl script evaluation
-  val eval = SemEvalScorer.saveAndEvaluate(lexsub, evaluationData, outcomes, Settings.scorerFolder, Settings.trialGoldfile, Settings.outputFolder)
+  val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evaluationData, outcomes, Settings.scorerFolder, Settings.trialGoldfile, Settings.outputFolder)
   
   println("Evalita: best=[%s] oot=[%s]".format(best, oot)) // my format
   println("> " + SemEvalScorer.singleLine(eval)) // semeval scorer main metric

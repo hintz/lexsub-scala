@@ -46,7 +46,7 @@ object RunMelamud extends App {
   {
     val outcomes = untrainedLexsub(evaluationData)
     val results = Outcomes.collect(evaluationData, outcomes)
-    val eval = SemEvalScorer.saveAndEvaluate(trainedLexsub, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputMelamud")
+    val eval = SemEvalScorer.saveAndEvaluate(trainedLexsub.toString, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputMelamud")
     print("Untrained mode:\n" + eval)
   }
     
@@ -54,7 +54,7 @@ object RunMelamud extends App {
   {
     val outcomes = trainedLexsub(evaluationData)
     val results = Outcomes.collect(evaluationData, outcomes)
-    val eval = SemEvalScorer.saveAndEvaluate(trainedLexsub, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputMelamud")
+    val eval = SemEvalScorer.saveAndEvaluate(trainedLexsub.toString, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputMelamud")
     print("Trained mode:\n" + eval)
   }
 }

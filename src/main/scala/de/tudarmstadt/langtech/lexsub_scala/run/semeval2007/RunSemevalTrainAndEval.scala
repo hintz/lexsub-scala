@@ -34,6 +34,6 @@ object RunSemevalTrainAndEval extends App {
   
   // eval and write results
   val results = Outcomes.collect(evaluationData, outcomes)
-  val eval = SemEvalScorer.saveAndEvaluate(lexsub, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputSemeval")
+  val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputSemeval")
   println(eval)
 }
