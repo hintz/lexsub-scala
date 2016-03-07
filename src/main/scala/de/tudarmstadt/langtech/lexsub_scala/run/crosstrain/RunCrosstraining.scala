@@ -24,7 +24,7 @@ import scala.concurrent.duration.Duration
 
 object RunCrosstraining extends App {
   
-  val model: Model = RankLibModel(LambdaMart(NDCG(10), 2000)) // new ClearTKModel("MaxEnt")
+  val model: Model = RankLibModel(LambdaMart(NDCG(10), 1000)) // new ClearTKModel("MaxEnt")
   
   val languages: List[LanguageData] = List(English, German, Italian)
   println("Performing crosstraining experiments with " + languages.mkString(", "))
@@ -111,6 +111,6 @@ object RunCrosstraining extends App {
   }
 
   def mkLexsub(targetLanguage: LanguageData, modelFolder: String): LexSub = 
-    LexSubExpander(targetLanguage.candidates, targetLanguage.features, model.getScorer(modelFolder))
+    LexSubExpander(targetLanguage.goldCandidates, targetLanguage.features, model.getScorer(modelFolder))
 
 }

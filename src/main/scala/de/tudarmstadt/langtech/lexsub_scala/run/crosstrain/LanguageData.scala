@@ -17,6 +17,7 @@ trait LanguageData {
 
   // a single candidate list
   def candidates: CandidateList
+  def goldCandidates: CandidateList
   
   // resources
   def ngrams: NGramLookup
