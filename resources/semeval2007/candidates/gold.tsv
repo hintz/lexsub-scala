@@ -1,3475 +1,4067 @@
-about	r	approximately	gold_candidate
-about	r	arise	gold_candidate
-about	r	around	gold_candidate
-about	r	concerning	gold_candidate
-about	r	consider	gold_candidate
-about	r	discussed	gold_candidate
-about	r	happen	gold_candidate
-about	r	nearly	gold_candidate
-about	r	occur	gold_candidate
-about	r	of	gold_candidate
-about	r	regarding	gold_candidate
-about	r	roughly	gold_candidate
-about	r	round	gold_candidate
-about	r	somewhat	gold_candidate
-account	n	access	gold_candidate
-account	n	asset	gold_candidate
-account	n	balance	gold_candidate
-account	n	chronicle	gold_candidate
-account	n	consideration	gold_candidate
-account	n	description	gold_candidate
-account	n	explanation	gold_candidate
-account	n	facility	gold_candidate
-account	n	finance	gold_candidate
-account	n	fund	gold_candidate
-account	n	ledger	gold_candidate
-account	n	logon	gold_candidate
-account	n	narrative	gold_candidate
-account	n	report	gold_candidate
-account	n	statement	gold_candidate
-account	n	subscriber	gold_candidate
-account	n	subscription	gold_candidate
-account	n	synopsis	gold_candidate
-acquire	v	achieve	gold_candidate
-acquire	v	amass	gold_candidate
-acquire	v	buy	gold_candidate
-acquire	v	collect	gold_candidate
-acquire	v	find	gold_candidate
-acquire	v	gain	gold_candidate
-acquire	v	gather	gold_candidate
-acquire	v	get	gold_candidate
-acquire	v	learn	gold_candidate
-acquire	v	obtain	gold_candidate
-acquire	v	procure	gold_candidate
-acquire	v	purchase	gold_candidate
-acquire	v	receive	gold_candidate
-acquire	v	secure	gold_candidate
-acute	a	critical	gold_candidate
-acute	a	emergency	gold_candidate
-acute	a	grave	gold_candidate
-acute	a	heightened	gold_candidate
-acute	a	intense	gold_candidate
-acute	a	keen	gold_candidate
-acute	a	pn	gold_candidate
-acute	a	sensitive	gold_candidate
-acute	a	serious	gold_candidate
-acute	a	severe	gold_candidate
-acute	a	sharp	gold_candidate
-acute	a	sudden	gold_candidate
-acute	a	urgent	gold_candidate
-apparently	r	clearly	gold_candidate
-apparently	r	evidently	gold_candidate
-apparently	r	looking	gold_candidate
-apparently	r	manifestly	gold_candidate
-apparently	r	obviously	gold_candidate
-apparently	r	ostensibly	gold_candidate
-apparently	r	palpably	gold_candidate
-apparently	r	plainly	gold_candidate
-apparently	r	seemingly	gold_candidate
-apparently	r	supposedly	gold_candidate
-around	r	about	gold_candidate
-around	r	alive	gold_candidate
-around	r	approximately	gold_candidate
-around	r	encircling	gold_candidate
-around	r	everywhere	gold_candidate
-around	r	here	gold_candidate
-around	r	living	gold_candidate
-around	r	over	gold_candidate
-around	r	roughly	gold_candidate
-around	r	round	gold_candidate
-around	r	surrounding	gold_candidate
-around	r	there	gold_candidate
-away	r	absent	gold_candidate
-away	r	afar	gold_candidate
-away	r	ahead	gold_candidate
-away	r	along	gold_candidate
-away	r	apart	gold_candidate
-away	r	aside	gold_candidate
-away	r	confiscate	gold_candidate
-away	r	continuously	gold_candidate
-away	r	depart	gold_candidate
-away	r	distance	gold_candidate
-away	r	distant	gold_candidate
-away	r	elsewhere	gold_candidate
-away	r	go	gold_candidate
-away	r	gone	gold_candidate
-away	r	hence	gold_candidate
-away	r	leave	gold_candidate
-away	r	off	gold_candidate
-away	r	out	gold_candidate
-away	r	rebuff	gold_candidate
-away	r	removing	gold_candidate
-away	r	repeatedly	gold_candidate
-away	r	repel	gold_candidate
-away	r	seizing	gold_candidate
-away	r	stealing	gold_candidate
-bar	n	apparatus	gold_candidate
-bar	n	ban	gold_candidate
-bar	n	banner	gold_candidate
-bar	n	barrier	gold_candidate
-bar	n	biscuit	gold_candidate
-bar	n	block	gold_candidate
-bar	n	crossbar	gold_candidate
-bar	n	exclusion	gold_candidate
-bar	n	handlebar	gold_candidate
-bar	n	hostelry	gold_candidate
-bar	n	hurdle	gold_candidate
-bar	n	indicator	gold_candidate
-bar	n	level	gold_candidate
-bar	n	lounge	gold_candidate
-bar	n	marker	gold_candidate
-bar	n	menu	gold_candidate
-bar	n	metal	gold_candidate
-bar	n	obstruction	gold_candidate
-bar	n	pole	gold_candidate
-bar	n	prohibition	gold_candidate
-bar	n	pub	gold_candidate
-bar	n	restriction	gold_candidate
-bar	n	rod	gold_candidate
-bar	n	saloon	gold_candidate
-bar	n	slab	gold_candidate
-bar	n	snack	gold_candidate
-bar	n.v	block	gold_candidate
-bar	n.v	exclude	gold_candidate
-bar	n.v	obstruct	gold_candidate
-bar	n.v	prevent	gold_candidate
-below	r	attached	gold_candidate
-below	r	beneath	gold_candidate
-below	r	following	gold_candidate
-below	r	included	gold_candidate
-below	r	later	gold_candidate
-below	r	underneath	gold_candidate
-blow	n	air	gold_candidate
-blow	n	attack	gold_candidate
-blow	n	clout	gold_candidate
-blow	n	criticism	gold_candidate
-blow	n	disaster	gold_candidate
-blow	n	hair	gold_candidate
-blow	n	hit	gold_candidate
-blow	n	knock	gold_candidate
-blow	n	knockback	gold_candidate
-blow	n	movement	gold_candidate
-blow	n	punch	gold_candidate
-blow	n	rebuff	gold_candidate
-blow	n	reverse	gold_candidate
-blow	n	setback	gold_candidate
-blow	n	shock	gold_candidate
-blow	n	strike	gold_candidate
-blow	n	thrust	gold_candidate
-blow	n	thump	gold_candidate
-blow	n	wind	gold_candidate
-blue	a	azure	gold_candidate
-blue	a	cobalt	gold_candidate
-blue	a	conservative	gold_candidate
-blue	a	depressed	gold_candidate
-blue	a	down	gold_candidate
-blue	a	grey	gold_candidate
-blue	a	indecent	gold_candidate
-blue	a	melancholy	gold_candidate
-blue	a	naughty	gold_candidate
-blue	a	pn	gold_candidate
-blue	a	pornographic	gold_candidate
-blue	a	purple	gold_candidate
-blue	a	sad	gold_candidate
-blue	a	sapphire	gold_candidate
-blue	a	shady	gold_candidate
-blue	a	speculative	gold_candidate
-blue	a	unhappy	gold_candidate
-board	n	administration	gold_candidate
-board	n	blackboard	gold_candidate
-board	n	card	gold_candidate
-board	n	committee	gold_candidate
-board	n	directorate	gold_candidate
-board	n	display	gold_candidate
-board	n	executive	gold_candidate
-board	n	forum	gold_candidate
-board	n	game	gold_candidate
-board	n	group	gold_candidate
-board	n	management	gold_candidate
-board	n	motherboard	gold_candidate
-board	n	organisation	gold_candidate
-board	n	panel	gold_candidate
-board	n	screen	gold_candidate
-board	n	site	gold_candidate
-board	n	table	gold_candidate
-board	n	whiteboard	gold_candidate
-board	n	wipeboard	gold_candidate
-bright	a	alight	gold_candidate
-bright	a	brilliant	gold_candidate
-bright	a	capable	gold_candidate
-bright	a	clear	gold_candidate
-bright	a	clever	gold_candidate
-bright	a	colourful	gold_candidate
-bright	a	deep	gold_candidate
-bright	a	gifted	gold_candidate
-bright	a	gleam	gold_candidate
-bright	a	good	gold_candidate
-bright	a	great	gold_candidate
-bright	a	hopeful	gold_candidate
-bright	a	intelligent	gold_candidate
-bright	a	light	gold_candidate
-bright	a	luminous	gold_candidate
-bright	a	motivated	gold_candidate
-bright	a	optimisitc	gold_candidate
-bright	a	positive	gold_candidate
-bright	a	promising	gold_candidate
-bright	a	sharp	gold_candidate
-bright	a	shining	gold_candidate
-bright	a	skilled	gold_candidate
-bright	a	smart	gold_candidate
-bright	a	talented	gold_candidate
-bright	a	up-and-coming	gold_candidate
-bright	a	vibrant	gold_candidate
-bright	a	vivid	gold_candidate
-bright	a	well-lit	gold_candidate
-bring	v	attract	gold_candidate
-bring	v	bore	gold_candidate
-bring	v	call	gold_candidate
-bring	v	carry	gold_candidate
-bring	v	contribute	gold_candidate
-bring	v	convey	gold_candidate
-bring	v	create	gold_candidate
-bring	v	deliver	gold_candidate
-bring	v	depress	gold_candidate
-bring	v	draw	gold_candidate
-bring	v	file	gold_candidate
-bring	v	force	gold_candidate
-bring	v	gather	gold_candidate
-bring	v	generate	gold_candidate
-bring	v	get	gold_candidate
-bring	v	guide	gold_candidate
-bring	v	incorporate	gold_candidate
-bring	v	initiate	gold_candidate
-bring	v	instigate	gold_candidate
-bring	v	institute	gold_candidate
-bring	v	introduce	gold_candidate
-bring	v	make	gold_candidate
-bring	v	move	gold_candidate
-bring	v	present	gold_candidate
-bring	v	produce	gold_candidate
-bring	v	put	gold_candidate
-bring	v	realise	gold_candidate
-bring	v	return	gold_candidate
-bring	v	ruin	gold_candidate
-bring	v	shoot	gold_candidate
-bring	v	start	gold_candidate
-bring	v	take	gold_candidate
-bring	v	topple	gold_candidate
-bring	v	transport	gold_candidate
-bug	n	addiction	gold_candidate
-bug	n	craze	gold_candidate
-bug	n	defect	gold_candidate
-bug	n	error	gold_candidate
-bug	n	fault	gold_candidate
-bug	n	fever	gold_candidate
-bug	n	germ	gold_candidate
-bug	n	gremlin	gold_candidate
-bug	n	infection	gold_candidate
-bug	n	insect	gold_candidate
-bug	n	obsession	gold_candidate
-bug	n	problem	gold_candidate
-bug	n	surveillance	gold_candidate
-bug	n	tap	gold_candidate
-bug	n	virus	gold_candidate
-bull	n	animal	gold_candidate
-bull	n	booming	gold_candidate
-bull	n	centre	gold_candidate
-bull	n	cow	gold_candidate
-bull	n	crap	gold_candidate
-bull	n	document	gold_candidate
-bull	n	edict	gold_candidate
-bull	n	growing	gold_candidate
-bull	n	male	gold_candidate
-bull	n	nonsense	gold_candidate
-bull	n	rising	gold_candidate
-bull	n	rubbish	gold_candidate
-bull	n	stag	gold_candidate
-bull	n	stud	gold_candidate
-bull	n	suitor	gold_candidate
-bull	n	target	gold_candidate
-bull	n	warrant	gold_candidate
-burst	v	barge	gold_candidate
-burst	v	bounce	gold_candidate
-burst	v	bound	gold_candidate
-burst	v	break	gold_candidate
-burst	v	bristle	gold_candidate
-burst	v	burgeon	gold_candidate
-burst	v	cover	gold_candidate
-burst	v	deflate	gold_candidate
-burst	v	descend	gold_candidate
-burst	v	end	gold_candidate
-burst	v	enthusiastic	gold_candidate
-burst	v	erupt	gold_candidate
-burst	v	explode	gold_candidate
-burst	v	fracture	gold_candidate
-burst	v	laden	gold_candidate
-burst	v	leap	gold_candidate
-burst	v	overflow	gold_candidate
-burst	v	pop	gold_candidate
-burst	v	push	gold_candidate
-burst	v	run	gold_candidate
-burst	v	rupture	gold_candidate
-burst	v	rush	gold_candidate
-burst	v	split	gold_candidate
-burst	v	surprise	gold_candidate
-call	v	address	gold_candidate
-call	v	contact	gold_candidate
-call	v	describe	gold_candidate
-call	v	designate	gold_candidate
-call	v	dial	gold_candidate
-call	v	dub	gold_candidate
-call	v	entitle	gold_candidate
-call	v	label	gold_candidate
-call	v	name	gold_candidate
-call	v	phone	gold_candidate
-call	v	request	gold_candidate
-call	v	ring	gold_candidate
-call	v	summon	gold_candidate
-call	v	telephone	gold_candidate
-call	v	term	gold_candidate
-can	n	bin	gold_candidate
-can	n	cannister	gold_candidate
-can	n	container	gold_candidate
-can	n	disposal	gold_candidate
-can	n	receptacle	gold_candidate
-can	n	tin	gold_candidate
-cap	n	capital	gold_candidate
-cap	n	ceiling	gold_candidate
-cap	n	hat	gold_candidate
-cap	n	headdress	gold_candidate
-cap	n	lid	gold_candidate
-cap	n	limit	gold_candidate
-cap	n	nozzle	gold_candidate
-cap	n	pileus	gold_candidate
-cap	n	pn	gold_candidate
-cap	n	restriction	gold_candidate
-cap	n	tip	gold_candidate
-cap	n	top	gold_candidate
-caravan	n	band	gold_candidate
-caravan	n	camper	gold_candidate
-caravan	n	camping	gold_candidate
-caravan	n	cavalcade	gold_candidate
-caravan	n	company	gold_candidate
-caravan	n	convey	gold_candidate
-caravan	n	convoy	gold_candidate
-caravan	n	crocodile	gold_candidate
-caravan	n	group	gold_candidate
-caravan	n	party	gold_candidate
-caravan	n	roadshow	gold_candidate
-caravan	n	trailer	gold_candidate
-caravan	n	train	gold_candidate
-caravan	n	traveller	gold_candidate
-caravan	n	troop	gold_candidate
-caravan	n	vehicle	gold_candidate
-carry	v	accomplish	gold_candidate
-carry	v	bear	gold_candidate
-carry	v	bring	gold_candidate
-carry	v	clutch	gold_candidate
-carry	v	complete	gold_candidate
-carry	v	conclude	gold_candidate
-carry	v	contain	gold_candidate
-carry	v	convey	gold_candidate
-carry	v	deploy	gold_candidate
-carry	v	do	gold_candidate
-carry	v	drag	gold_candidate
-carry	v	execute	gold_candidate
-carry	v	fulfil	gold_candidate
-carry	v	hold	gold_candidate
-carry	v	lug	gold_candidate
-carry	v	pack	gold_candidate
-carry	v	perform	gold_candidate
-carry	v	send	gold_candidate
-carry	v	take	gold_candidate
-carry	v	transmit	gold_candidate
-carry	v	transport	gold_candidate
-carry	v	undertake	gold_candidate
-carry	v	use	gold_candidate
-change	v	adjust	gold_candidate
-change	v	alter	gold_candidate
-change	v	amend	gold_candidate
-change	v	evolve	gold_candidate
-change	v	modify	gold_candidate
-change	v	move	gold_candidate
-change	v	shift	gold_candidate
-change	v	switch	gold_candidate
-change	v	transform	gold_candidate
-change	v	update	gold_candidate
-change	v	vary	gold_candidate
-charge	n	accusation	gold_candidate
-charge	n	allegation	gold_candidate
-charge	n	authority	gold_candidate
-charge	n	command	gold_candidate
-charge	n	control	gold_candidate
-charge	n	cost	gold_candidate
-charge	n	criticism	gold_candidate
-charge	n	expense	gold_candidate
-charge	n	fee	gold_candidate
-charge	n	indictment	gold_candidate
-charge	n	issue	gold_candidate
-charge	n	offence	gold_candidate
-charge	n	payment	gold_candidate
-charge	n	power	gold_candidate
-charge	n	prosecution	gold_candidate
-charge	n	tariff	gold_candidate
-charge	v	accuse	gold_candidate
-charge	v	ask	gold_candidate
-charge	v	attack	gold_candidate
-charge	v	cost	gold_candidate
-charge	v	dash	gold_candidate
-charge	v	demand	gold_candidate
-charge	v	fly	gold_candidate
-charge	v	impose	gold_candidate
-charge	v	indict	gold_candidate
-charge	v	levy	gold_candidate
-charge	v	recharge	gold_candidate
-charge	v	require	gold_candidate
-charge	v	run	gold_candidate
-charge	v	rush	gold_candidate
-charge	v	storm	gold_candidate
-charge	v	take	gold_candidate
-check	v	admit	gold_candidate
-check	v	confirm	gold_candidate
-check	v	examine	gold_candidate
-check	v	inspect	gold_candidate
-check	v	investigate	gold_candidate
-check	v	mark	gold_candidate
-check	v	note	gold_candidate
-check	v	put	gold_candidate
-check	v	register	gold_candidate
-check	v	report	gold_candidate
-check	v	scrutinise	gold_candidate
-check	v	search	gold_candidate
-check	v	select	gold_candidate
-check	v	submit	gold_candidate
-check	v	survey	gold_candidate
-check	v	test	gold_candidate
-check	v	tick	gold_candidate
-check	v	verify	gold_candidate
-civil	a	benevolent	gold_candidate
-civil	a	citizen	gold_candidate
-civil	a	citizens'	gold_candidate
-civil	a	civic	gold_candidate
-civil	a	community	gold_candidate
-civil	a	cordial	gold_candidate
-civil	a	courteous	gold_candidate
-civil	a	cultured	gold_candidate
-civil	a	domestic	gold_candidate
-civil	a	elected	gold_candidate
-civil	a	friendly	gold_candidate
-civil	a	general	gold_candidate
-civil	a	individual	gold_candidate
-civil	a	inoffensive	gold_candidate
-civil	a	internal	gold_candidate
-civil	a	noncriminal	gold_candidate
-civil	a	nongovernmental	gold_candidate
-civil	a	ordinary	gold_candidate
-civil	a	people's	gold_candidate
-civil	a	personal	gold_candidate
-civil	a	polite	gold_candidate
-civil	a	private	gold_candidate
-civil	a	public	gold_candidate
-civil	a	social	gold_candidate
-civil	a	state	gold_candidate
-civil	a	thoughtful	gold_candidate
-clean	v	accumulate	gold_candidate
-clean	v	cleanse	gold_candidate
-clean	v	clear	gold_candidate
-clean	v	complete	gold_candidate
-clean	v	correct	gold_candidate
-clean	v	disinfect	gold_candidate
-clean	v	empty	gold_candidate
-clean	v	finish	gold_candidate
-clean	v	fix	gold_candidate
-clean	v	mend	gold_candidate
-clean	v	prosper	gold_candidate
-clean	v	purge	gold_candidate
-clean	v	purify	gold_candidate
-clean	v	rectify	gold_candidate
-clean	v	remedy	gold_candidate
-clean	v	remove	gold_candidate
-clean	v	repair	gold_candidate
-clean	v	restore	gold_candidate
-clean	v	scrape	gold_candidate
-clean	v	tidy	gold_candidate
-clean	v	wash	gold_candidate
-clean	v	win	gold_candidate
-clean	v	wipe	gold_candidate
-clear	a	apparent	gold_candidate
-clear	a	certain	gold_candidate
-clear	a	clean	gold_candidate
-clear	a	definite	gold_candidate
-clear	a	distinct	gold_candidate
-clear	a	distinctly	gold_candidate
-clear	a	evident	gold_candidate
-clear	a	fresh	gold_candidate
-clear	a	lucid	gold_candidate
-clear	a	obvious	gold_candidate
-clear	a	patent	gold_candidate
-clear	a	plain	gold_candidate
-clear	a	pure	gold_candidate
-clear	a	sharp	gold_candidate
-clear	a	transparent	gold_candidate
-clear	a	true	gold_candidate
-clear	a	unambiguous	gold_candidate
-clear	a	unblurred	gold_candidate
-clear	a	understandable	gold_candidate
-clear	a	unmistakable	gold_candidate
-clear	a	unobscured	gold_candidate
-clear	v	above	gold_candidate
-clear	v	absolve	gold_candidate
-clear	v	acquit	gold_candidate
-clear	v	authorise	gold_candidate
-clear	v	brighten	gold_candidate
-clear	v	cash	gold_candidate
-clear	v	change	gold_candidate
-clear	v	eliminate	gold_candidate
-clear	v	empty	gold_candidate
-clear	v	exonerate	gold_candidate
-clear	v	free	gold_candidate
-clear	v	improve	gold_candidate
-clear	v	move	gold_candidate
-clear	v	over	gold_candidate
-clear	v	pardon	gold_candidate
-clear	v	pass	gold_candidate
-clear	v	process	gold_candidate
-clear	v	release	gold_candidate
-clear	v	remove	gold_candidate
-clear	v	skim	gold_candidate
-clear	v	sort	gold_candidate
-clear	v	take	gold_candidate
-clear	v	tidy	gold_candidate
-clear	v	unblock	gold_candidate
-clear	v	unobstruct	gold_candidate
-clear	v	vindicate	gold_candidate
-close	n	conclusion	gold_candidate
-close	n	end	gold_candidate
-close	n	ending	gold_candidate
-close	n	finale	gold_candidate
-close	n	finish	gold_candidate
-close	n	free	gold_candidate
-close	n	shut	gold_candidate
-close	n	shutdown	gold_candidate
-close	r	about	gold_candidate
-close	r	adjacent	gold_candidate
-close	r	almost	gold_candidate
-close	r	contiguous	gold_candidate
-close	r	local	gold_candidate
-close	r	near	gold_candidate
-close	r	neighbouring	gold_candidate
-close	r	next	gold_candidate
-close	r	proximate	gold_candidate
-closely	r	alongside	gold_candidate
-closely	r	approximately	gold_candidate
-closely	r	attentively	gold_candidate
-closely	r	carefully	gold_candidate
-closely	r	collectively	gold_candidate
-closely	r	directly	gold_candidate
-closely	r	intently	gold_candidate
-closely	r	intimately	gold_candidate
-closely	r	jointly	gold_candidate
-closely	r	narrowly	gold_candidate
-closely	r	nearly	gold_candidate
-closely	r	neatly	gold_candidate
-closely	r	scrupulously	gold_candidate
-closely	r	strongly	gold_candidate
-closely	r	together	gold_candidate
-coach	n	bus	gold_candidate
-coach	n	car	gold_candidate
-coach	n	carriage	gold_candidate
-coach	n	counsellor	gold_candidate
-coach	n	instructor	gold_candidate
-coach	n	teacher	gold_candidate
-coach	n	trainer	gold_candidate
-coach	n	transport	gold_candidate
-coach	n	tutor	gold_candidate
-come	v	appear	gold_candidate
-come	v	arrive	gold_candidate
-come	v	combine	gold_candidate
-come	v	concern	gold_candidate
-come	v	considering	gold_candidate
-come	v	encounter	gold_candidate
-come	v	fall	gold_candidate
-come	v	find	gold_candidate
-come	v	gather	gold_candidate
-come	v	get	gold_candidate
-come	v	happen	gold_candidate
-come	v	join	gold_candidate
-come	v	leave	gold_candidate
-come	v	lever	gold_candidate
-come	v	notice	gold_candidate
-come	v	occur	gold_candidate
-come	v	originate	gold_candidate
-come	v	rally	gold_candidate
-come	v	reach	gold_candidate
-come	v	report	gold_candidate
-come	v	return	gold_candidate
-come	v	spring	gold_candidate
-come	v	unite	gold_candidate
-cross	n	crucifix	gold_candidate
-cross	n	hybrid	gold_candidate
-cross	n	mixture	gold_candidate
-cross	n	sample	gold_candidate
-cross	n	segment	gold_candidate
-cross	n	sequence	gold_candidate
-cross	n	transverse	gold_candidate
-cross	n	x	gold_candidate
-cross	n.a	angry	gold_candidate
-cross	n.a	annoyed	gold_candidate
-cross	n.a	irate	gold_candidate
-cross	n.a	irritated	gold_candidate
-cry	v	bawl	gold_candidate
-cry	v	call	gold_candidate
-cry	v	complain	gold_candidate
-cry	v	demand	gold_candidate
-cry	v	exclaim	gold_candidate
-cry	v	shout	gold_candidate
-cry	v	shriek	gold_candidate
-cry	v	snivel	gold_candidate
-cry	v	sob	gold_candidate
-cry	v	tear	gold_candidate
-cry	v	utter	gold_candidate
-cry	v	wail	gold_candidate
-cry	v	weep	gold_candidate
-cry	v	yell	gold_candidate
-dark	n	black	gold_candidate
-dark	n	darkness	gold_candidate
-dark	n	dimness	gold_candidate
-dark	n	dusk	gold_candidate
-dark	n	gloom	gold_candidate
-dark	n	ignorance	gold_candidate
-dark	n	ignorant	gold_candidate
-dark	n	ininformed	gold_candidate
-dark	n	mystery	gold_candidate
-dark	n	night	gold_candidate
-dark	n	nightfall	gold_candidate
-dark	n	oblivion	gold_candidate
-dark	n	oblivious	gold_candidate
-dark	n	secret	gold_candidate
-dark	n	shade	gold_candidate
-dark	n	shadow	gold_candidate
-dark	n	sombre	gold_candidate
-dark	n	sunset	gold_candidate
-dark	n	unaware	gold_candidate
-dark	n	uncertain	gold_candidate
-dark	n	unclear	gold_candidate
-dark	n	unilluminated	gold_candidate
-dark	n	uninformed	gold_candidate
-dark	n	unsure	gold_candidate
-decline	v	decrease	gold_candidate
-decline	v	deteriorate	gold_candidate
-decline	v	drop	gold_candidate
-decline	v	fall	gold_candidate
-decline	v	lessen	gold_candidate
-decline	v	reduce	gold_candidate
-decline	v	refuse	gold_candidate
-decline	v	reject	gold_candidate
-decline	v	weaken	gold_candidate
-dismiss	v	banish	gold_candidate
-dismiss	v	deride	gold_candidate
-dismiss	v	discard	gold_candidate
-dismiss	v	discharge	gold_candidate
-dismiss	v	dispatch	gold_candidate
-dismiss	v	excuse	gold_candidate
-dismiss	v	fire	gold_candidate
-dismiss	v	ignore	gold_candidate
-dismiss	v	reject	gold_candidate
-dismiss	v	release	gold_candidate
-dismiss	v	remove	gold_candidate
-dismiss	v	sack	gold_candidate
-dismiss	v	see	gold_candidate
-draw	v	acquire	gold_candidate
-draw	v	attract	gold_candidate
-draw	v	bring	gold_candidate
-draw	v	call	gold_candidate
-draw	v	choose	gold_candidate
-draw	v	claim	gold_candidate
-draw	v	consider	gold_candidate
-draw	v	consult	gold_candidate
-draw	v	depict	gold_candidate
-draw	v	derive	gold_candidate
-draw	v	drag	gold_candidate
-draw	v	earn	gold_candidate
-draw	v	employ	gold_candidate
-draw	v	exploit	gold_candidate
-draw	v	extract	gold_candidate
-draw	v	focus	gold_candidate
-draw	v	gather	gold_candidate
-draw	v	get	gold_candidate
-draw	v	haul	gold_candidate
-draw	v	make	gold_candidate
-draw	v	obtain	gold_candidate
-draw	v	paint	gold_candidate
-draw	v	pit	gold_candidate
-draw	v	play	gold_candidate
-draw	v	portray	gold_candidate
-draw	v	pull	gold_candidate
-draw	v	receive	gold_candidate
-draw	v	rely	gold_candidate
-draw	v	remove	gold_candidate
-draw	v	schedule	gold_candidate
-draw	v	select	gold_candidate
-draw	v	set	gold_candidate
-draw	v	sketch	gold_candidate
-draw	v	summon	gold_candidate
-draw	v	take	gold_candidate
-draw	v	tie	gold_candidate
-draw	v	use	gold_candidate
-draw	v	withdraw	gold_candidate
-drop	v	abandon	gold_candidate
-drop	v	decline	gold_candidate
-drop	v	deliver	gold_candidate
-drop	v	deselect	gold_candidate
-drop	v	discontinue	gold_candidate
-drop	v	ditch	gold_candidate
-drop	v	dump	gold_candidate
-drop	v	email	gold_candidate
-drop	v	fall	gold_candidate
-drop	v	leave	gold_candidate
-drop	v	lower	gold_candidate
-drop	v	omit	gold_candidate
-drop	v	pause	gold_candidate
-drop	v	release	gold_candidate
-drop	v	relinquish	gold_candidate
-drop	v	send	gold_candidate
-drop	v	stop	gold_candidate
-drop	v	terminate	gold_candidate
-drop	v	text	gold_candidate
-drop	v	throw	gold_candidate
-drop	v	unload	gold_candidate
-drop	v	weigh	gold_candidate
-drop	v	write	gold_candidate
-dry	a	arid	gold_candidate
-dry	a	boring	gold_candidate
-dry	a	deadpan	gold_candidate
-dry	a	desiccated	gold_candidate
-dry	a	droll	gold_candidate
-dry	a	drought	gold_candidate
-dry	a	dull	gold_candidate
-dry	a	empty	gold_candidate
-dry	a	evaporate	gold_candidate
-dry	a	facetious	gold_candidate
-dry	a	flat	gold_candidate
-dry	a	impassive	gold_candidate
-dry	a	out	gold_candidate
-dry	a	parched	gold_candidate
-dry	a	rainless	gold_candidate
-dry	a	soulless	gold_candidate
-dry	a	stodgy	gold_candidate
-dry	a	teetotal	gold_candidate
-dry	a	understated	gold_candidate
-dry	a	uninteresting	gold_candidate
-dry	a	unmoistened	gold_candidate
-dry	a	unsympathetic	gold_candidate
-dry	a	waterless	gold_candidate
-dry	a	wry	gold_candidate
-earlier	r	before	gold_candidate
-earlier	r	beforehand	gold_candidate
-earlier	r	formerly	gold_candidate
-earlier	r	initially	gold_candidate
-earlier	r	previously	gold_candidate
-earlier	r	sooner	gold_candidate
-easy	a	accessible	gold_candidate
-easy	a	carefree	gold_candidate
-easy	a	common	gold_candidate
-easy	a	convenient	gold_candidate
-easy	a	less	gold_candidate
-easy	a	possible	gold_candidate
-easy	a	simple	gold_candidate
-easy	a	straightforward	gold_candidate
-easy	a	uncomplicated	gold_candidate
-easy	a	undemanding	gold_candidate
-education	n	college	gold_candidate
-education	n	educated	gold_candidate
-education	n	erudition	gold_candidate
-education	n	instruction	gold_candidate
-education	n	intellect	gold_candidate
-education	n	knowledge	gold_candidate
-education	n	learning	gold_candidate
-education	n	place	gold_candidate
-education	n	schooling	gold_candidate
-education	n	study	gold_candidate
-education	n	teaching	gold_candidate
-education	n	training	gold_candidate
-education	n	tuition	gold_candidate
-endure	v	bear	gold_candidate
-endure	v	continue	gold_candidate
-endure	v	experience	gold_candidate
-endure	v	have	gold_candidate
-endure	v	last	gold_candidate
-endure	v	persist	gold_candidate
-endure	v	suffer	gold_candidate
-endure	v	tolerate	gold_candidate
-endure	v	undergo	gold_candidate
-entirely	r	altogether	gold_candidate
-entirely	r	completely	gold_candidate
-entirely	r	continuously	gold_candidate
-entirely	r	exclusively	gold_candidate
-entirely	r	fully	gold_candidate
-entirely	r	totally	gold_candidate
-entirely	r	utterly	gold_candidate
-entirely	r	wholly	gold_candidate
-examination	n	analysis	gold_candidate
-examination	n	assesment	gold_candidate
-examination	n	assessment	gold_candidate
-examination	n	consultation	gold_candidate
-examination	n	enquiry	gold_candidate
-examination	n	exam	gold_candidate
-examination	n	inspection	gold_candidate
-examination	n	investigation	gold_candidate
-examination	n	scrutiny	gold_candidate
-examination	n	study	gold_candidate
-examination	n	test	gold_candidate
-execution	n	actualisation	gold_candidate
-execution	n	administration	gold_candidate
-execution	n	application	gold_candidate
-execution	n	completion	gold_candidate
-execution	n	death	gold_candidate
-execution	n	discharge	gold_candidate
-execution	n	enforcement	gold_candidate
-execution	n	fulfilment	gold_candidate
-execution	n	implementation	gold_candidate
-execution	n	killing	gold_candidate
-execution	n	method	gold_candidate
-execution	n	performance	gold_candidate
-execution	n	production	gold_candidate
-execution	n	running	gold_candidate
-execution	n	transaction	gold_candidate
-extended	a	additional	gold_candidate
-extended	a	augmented	gold_candidate
-extended	a	broad	gold_candidate
-extended	a	comprehensive	gold_candidate
-extended	a	elongated	gold_candidate
-extended	a	enlarged	gold_candidate
-extended	a	expanded	gold_candidate
-extended	a	expansive	gold_candidate
-extended	a	extensive	gold_candidate
-extended	a	increased	gold_candidate
-extended	a	lengthened	gold_candidate
-extended	a	lengthy	gold_candidate
-extended	a	long	gold_candidate
-extended	a	prolonged	gold_candidate
-extended	a	protracted	gold_candidate
-extended	a	wide	gold_candidate
-external	a	exterior	gold_candidate
-external	a	foreign	gold_candidate
-external	a	link	gold_candidate
-external	a	nonlocal	gold_candidate
-external	a	outer	gold_candidate
-external	a	outside	gold_candidate
-external	a	outward	gold_candidate
-fall	v	become	gold_candidate
-fall	v	come	gold_candidate
-fall	v	descend	gold_candidate
-fall	v	disappoint	gold_candidate
-fall	v	drop	gold_candidate
-fall	v	fail	gold_candidate
-fall	v	land	gold_candidate
-fall	v	plunge	gold_candidate
-fall	v	slip	gold_candidate
-fall	v	take	gold_candidate
-fall	v	tumble	gold_candidate
-fall	v	undershoot	gold_candidate
-fear	v	anticipate	gold_candidate
-fear	v	believe	gold_candidate
-fear	v	dread	gold_candidate
-fear	v	expect	gold_candidate
-fear	v	scare	gold_candidate
-fear	v	suspect	gold_candidate
-fear	v	unfortunately	gold_candidate
-fear	v	worry	gold_candidate
-field	n	acreage	gold_candidate
-field	n	activity	gold_candidate
-field	n	area	gold_candidate
-field	n	battleground	gold_candidate
-field	n	box	gold_candidate
-field	n	community	gold_candidate
-field	n	discipline	gold_candidate
-field	n	domain	gold_candidate
-field	n	environment	gold_candidate
-field	n	geographical	gold_candidate
-field	n	ground	gold_candidate
-field	n	holder	gold_candidate
-field	n	investigative	gold_candidate
-field	n	land	gold_candidate
-field	n	licence	gold_candidate
-field	n	pitch	gold_candidate
-field	n	province	gold_candidate
-field	n	region	gold_candidate
-field	n	resource	gold_candidate
-field	n	section	gold_candidate
-field	n	speciality	gold_candidate
-field	n	sphere	gold_candidate
-field	n	subject	gold_candidate
-figure	n	account	gold_candidate
-figure	n	amount	gold_candidate
-figure	n	calculation	gold_candidate
-figure	n	character	gold_candidate
-figure	n	data	gold_candidate
-figure	n	diagram	gold_candidate
-figure	n	entity	gold_candidate
-figure	n	illustration	gold_candidate
-figure	n	image	gold_candidate
-figure	n	individual	gold_candidate
-figure	n	leader	gold_candidate
-figure	n	number	gold_candidate
-figure	n	numeral	gold_candidate
-figure	n	organisation	gold_candidate
-figure	n	people	gold_candidate
-figure	n	person	gold_candidate
-figure	n	personage	gold_candidate
-figure	n	picture	gold_candidate
-figure	n	representative	gold_candidate
-figure	n	statistic	gold_candidate
-figure	n	total	gold_candidate
-figure	n	value	gold_candidate
-film	n	documentary	gold_candidate
-film	n	movie	gold_candidate
-film	n	picture	gold_candidate
-film	n	production	gold_candidate
-finally	r	also	gold_candidate
-finally	r	eventually	gold_candidate
-finally	r	lastly	gold_candidate
-finally	r	ultimately	gold_candidate
-find	v	ascertail	gold_candidate
-find	v	believe	gold_candidate
-find	v	buy	gold_candidate
-find	v	calculate	gold_candidate
-find	v	consider	gold_candidate
-find	v	detect	gold_candidate
-find	v	determine	gold_candidate
-find	v	discover	gold_candidate
-find	v	evident	gold_candidate
-find	v	exist	gold_candidate
-find	v	feel	gold_candidate
-find	v	felt	gold_candidate
-find	v	get	gold_candidate
-find	v	invent	gold_candidate
-find	v	locate	gold_candidate
-find	v	obtain	gold_candidate
-find	v	present	gold_candidate
-find	v	realise	gold_candidate
-find	v	see	gold_candidate
-find	v	seek	gold_candidate
-find	v	show	gold_candidate
-find	v	think	gold_candidate
-find	v	write	gold_candidate
-fire	v	discharge	gold_candidate
-fire	v	dismiss	gold_candidate
-fire	v	launch	gold_candidate
-fire	v	sack	gold_candidate
-fire	v	shoot	gold_candidate
-fix	v	correct	gold_candidate
-fix	v	cure	gold_candidate
-fix	v	determine	gold_candidate
-fix	v	do	gold_candidate
-fix	v	heal	gold_candidate
-fix	v	improve	gold_candidate
-fix	v	intent	gold_candidate
-fix	v	mend	gold_candidate
-fix	v	patch	gold_candidate
-fix	v	repair	gold_candidate
-fix	v	resolve	gold_candidate
-fix	v	set	gold_candidate
-fix	v	solve	gold_candidate
-fix	v	stick	gold_candidate
-flat	a	absolute	gold_candidate
-flat	a	categoric	gold_candidate
-flat	a	deflated	gold_candidate
-flat	a	downright	gold_candidate
-flat	a	even	gold_candidate
-flat	a	fixed	gold_candidate
-flat	a	flush	gold_candidate
-flat	a	gently	gold_candidate
-flat	a	horizontal	gold_candidate
-flat	a	level	gold_candidate
-flat	a	lifeless	gold_candidate
-flat	a	outright	gold_candidate
-flat	a	plain	gold_candidate
-flat	a	plane	gold_candidate
-flat	a	shallow	gold_candidate
-flat	a	smooth	gold_candidate
-flat	a	straight	gold_candidate
-flat	a	thin	gold_candidate
-flat	a	total	gold_candidate
-flat	a	uniform	gold_candidate
-forget	v	disregard	gold_candidate
-forget	v	fail	gold_candidate
-forget	v	ignore	gold_candidate
-forget	v	lose	gold_candidate
-forget	v	neglect	gold_candidate
-forget	v	omit	gold_candidate
-forget	v	overlook	gold_candidate
-forget	v	remember	gold_candidate
-forth	r	about	gold_candidate
-forth	r	across	gold_candidate
-forth	r	advance	gold_candidate
-forth	r	depart	gold_candidate
-forth	r	etcetera	gold_candidate
-forth	r	express	gold_candidate
-forth	r	extract	gold_candidate
-forth	r	forward	gold_candidate
-forth	r	forwards	gold_candidate
-forth	r	leave	gold_candidate
-forth	r	on	gold_candidate
-forth	r	onward	gold_candidate
-forth	r	onwards	gold_candidate
-forth	r	out	gold_candidate
-forth	r	outward	gold_candidate
-forth	r	phrase	gold_candidate
-forth	r	show	gold_candidate
-forward	r	advance	gold_candidate
-forward	r	ahead	gold_candidate
-forward	r	along	gold_candidate
-forward	r	anticipate	gold_candidate
-forward	r	anticipative	gold_candidate
-forward	r	earlier	gold_candidate
-forward	r	expect	gold_candidate
-forward	r	forth	gold_candidate
-forward	r	front	gold_candidate
-forward	r	frontward	gold_candidate
-forward	r	on	gold_candidate
-forward	r	onward	gold_candidate
-forward	r	out	gold_candidate
-forward	r	over	gold_candidate
-fresh	a	airy	gold_candidate
-fresh	a	another	gold_candidate
-fresh	a	bright	gold_candidate
-fresh	a	clean	gold_candidate
-fresh	a	clear	gold_candidate
-fresh	a	different	gold_candidate
-fresh	a	forward	gold_candidate
-fresh	a	impertinent	gold_candidate
-fresh	a	modern	gold_candidate
-fresh	a	new	gold_candidate
-fresh	a	nonfrozen	gold_candidate
-fresh	a	novel	gold_candidate
-fresh	a	original	gold_candidate
-fresh	a	pure	gold_candidate
-fresh	a	raw	gold_candidate
-fresh	a	recent	gold_candidate
-fresh	a	refreshing	gold_candidate
-fresh	a	relevant	gold_candidate
-fresh	a	uncanned	gold_candidate
-fresh	a	uncontaminated	gold_candidate
-fresh	a	undimmed	gold_candidate
-fresh	a	unprocessed	gold_candidate
-fresh	a	vivid	gold_candidate
-full	a	abundant	gold_candidate
-full	a	ample	gold_candidate
-full	a	big	gold_candidate
-full	a	complete	gold_candidate
-full	a	entire	gold_candidate
-full	a	filled	gold_candidate
-full	a	gathered	gold_candidate
-full	a	generous	gold_candidate
-full	a	highest	gold_candidate
-full	a	maximum	gold_candidate
-full	a	overflowing	gold_candidate
-full	a	ruched	gold_candidate
-full	a	top	gold_candidate
-full	a	total	gold_candidate
-full	a	voluminous	gold_candidate
-full	a	whole	gold_candidate
-function	n	activity	gold_candidate
-function	n	calculation	gold_candidate
-function	n	correspondence	gold_candidate
-function	n	equation	gold_candidate
-function	n	feature	gold_candidate
-function	n	job	gold_candidate
-function	n	mapping	gold_candidate
-function	n	operation	gold_candidate
-function	n	performance	gold_candidate
-function	n	phenomenon	gold_candidate
-function	n	purpose	gold_candidate
-function	n	relation	gold_candidate
-function	n	result	gold_candidate
-function	n	role	gold_candidate
-function	n	sequence	gold_candidate
-function	n	subroutine	gold_candidate
-function	n	task	gold_candidate
-function	n	transformation	gold_candidate
-function	n	working	gold_candidate
-fundamental	a	basic	gold_candidate
-fundamental	a	central	gold_candidate
-fundamental	a	elemental	gold_candidate
-fundamental	a	elementary	gold_candidate
-fundamental	a	essential	gold_candidate
-fundamental	a	foundational	gold_candidate
-fundamental	a	important	gold_candidate
-fundamental	a	intrinsic	gold_candidate
-fundamental	a	major	gold_candidate
-fundamental	a	necessary	gold_candidate
-fundamental	a	primary	gold_candidate
-fundamental	a	radical	gold_candidate
-fundamental	a	significant	gold_candidate
-fundamental	a	underlying	gold_candidate
-fundamental	a	vital	gold_candidate
-gall	n	audacity	gold_candidate
-gall	n	bile	gold_candidate
-gall	n	bile-producing	gold_candidate
-gall	n	blister	gold_candidate
-gall	n	cheek	gold_candidate
-gall	n	effrontery	gold_candidate
-gall	n	grub	gold_candidate
-gall	n	impudence	gold_candidate
-gall	n	nerve	gold_candidate
-gall	n	pn	gold_candidate
-gall	n	poison	gold_candidate
-gall	n	pustule	gold_candidate
-gall	n	rancor	gold_candidate
-gall	n	temerity	gold_candidate
-get	v	achieve	gold_candidate
-get	v	acquire	gold_candidate
-get	v	be	gold_candidate
-get	v	become	gold_candidate
-get	v	bring	gold_candidate
-get	v	buy	gold_candidate
-get	v	convince	gold_candidate
-get	v	fetch	gold_candidate
-get	v	gain	gold_candidate
-get	v	give	gold_candidate
-get	v	go	gold_candidate
-get	v	have	gold_candidate
-get	v	obtain	gold_candidate
-get	v	persuade	gold_candidate
-get	v	procure	gold_candidate
-get	v	reach	gold_candidate
-get	v	receive	gold_candidate
-get	v	travel	gold_candidate
-girl	n	child	gold_candidate
-girl	n	female	gold_candidate
-girl	n	gal	gold_candidate
-girl	n	lass	gold_candidate
-girl	n	miss	gold_candidate
-girl	n	she	gold_candidate
-girl	n	woman	gold_candidate
-go	v	aim	gold_candidate
-go	v	approach	gold_candidate
-go	v	attack	gold_candidate
-go	v	attempt	gold_candidate
-go	v	be	gold_candidate
-go	v	endure	gold_candidate
-go	v	free	gold_candidate
-go	v	journey	gold_candidate
-go	v	leave	gold_candidate
-go	v	loose	gold_candidate
-go	v	move	gold_candidate
-go	v	operate	gold_candidate
-go	v	pass	gold_candidate
-go	v	proceed	gold_candidate
-go	v	reach	gold_candidate
-go	v	relax	gold_candidate
-go	v	release	gold_candidate
-go	v	rest	gold_candidate
-go	v	run	gold_candidate
-go	v	running	gold_candidate
-go	v	start	gold_candidate
-go	v	take	gold_candidate
-go	v	travel	gold_candidate
-go	v	try	gold_candidate
-go	v	undertake	gold_candidate
-go	v	walk	gold_candidate
-go	v	work	gold_candidate
-good	a	amiable	gold_candidate
-good	a	beneficial	gold_candidate
-good	a	character	gold_candidate
-good	a	comfortable	gold_candidate
-good	a	commendable	gold_candidate
-good	a	competent	gold_candidate
-good	a	considerable	gold_candidate
-good	a	cordiality	gold_candidate
-good	a	decent	gold_candidate
-good	a	easy	gold_candidate
-good	a	effective	gold_candidate
-good	a	enjoyable	gold_candidate
-good	a	esteem	gold_candidate
-good	a	excellent	gold_candidate
-good	a	favourable	gold_candidate
-good	a	friendliness	gold_candidate
-good	a	full	gold_candidate
-good	a	fun	gold_candidate
-good	a	happiness	gold_candidate
-good	a	happy	gold_candidate
-good	a	healthy	gold_candidate
-good	a	large	gold_candidate
-good	a	minimum	gold_candidate
-good	a	nice	gold_candidate
-good	a	pleasant	gold_candidate
-good	a	reasonable	gold_candidate
-good	a	reputation	gold_candidate
-good	a	respectable	gold_candidate
-good	a	satisfactory	gold_candidate
-good	a	significant	gold_candidate
-good	a	standing	gold_candidate
-good	a	substantial	gold_candidate
-good	a	thorough	gold_candidate
-grim	a	appalling	gold_candidate
-grim	a	awful	gold_candidate
-grim	a	bleak	gold_candidate
-grim	a	dark	gold_candidate
-grim	a	depressing	gold_candidate
-grim	a	difficult	gold_candidate
-grim	a	dire	gold_candidate
-grim	a	dismal	gold_candidate
-grim	a	doomy	gold_candidate
-grim	a	forbidding	gold_candidate
-grim	a	ghastly	gold_candidate
-grim	a	gloomy	gold_candidate
-grim	a	gruesome	gold_candidate
-grim	a	harrowing	gold_candidate
-grim	a	harsh	gold_candidate
-grim	a	horrible	gold_candidate
-grim	a	horrid	gold_candidate
-grim	a	horrific	gold_candidate
-grim	a	morbid	gold_candidate
-grim	a	negative	gold_candidate
-grim	a	serious	gold_candidate
-grim	a	severe	gold_candidate
-grim	a	sinister	gold_candidate
-grim	a	stern	gold_candidate
-grim	a	terrible	gold_candidate
-grim	a	unpleasant	gold_candidate
-grim	a	unpromising	gold_candidate
-grim	a	unrelenting	gold_candidate
-hard	r	aggressive	gold_candidate
-hard	r	arduously	gold_candidate
-hard	r	badly	gold_candidate
-hard	r	carefully	gold_candidate
-hard	r	closely	gold_candidate
-hard	r	determinedly	gold_candidate
-hard	r	diligently	gold_candidate
-hard	r	earnestly	gold_candidate
-hard	r	fiercely	gold_candidate
-hard	r	firmly	gold_candidate
-hard	r	forcefully	gold_candidate
-hard	r	harshly	gold_candidate
-hard	r	heavily	gold_candidate
-hard	r	intensely	gold_candidate
-hard	r	intensively	gold_candidate
-hard	r	intently	gold_candidate
-hard	r	keenly	gold_candidate
-hard	r	persistently	gold_candidate
-hard	r	seriously	gold_candidate
-hard	r	severely	gold_candidate
-hard	r	strenuously	gold_candidate
-hard	r	strongly	gold_candidate
-hard	r	sufficiently	gold_candidate
-hard	r	tightly	gold_candidate
-hard	r	violently	gold_candidate
-heap	n	assortment	gold_candidate
-heap	n	bin	gold_candidate
-heap	n	bundle	gold_candidate
-heap	n	category	gold_candidate
-heap	n	collection	gold_candidate
-heap	n	loads	gold_candidate
-heap	n	lots	gold_candidate
-heap	n	lump	gold_candidate
-heap	n	mess	gold_candidate
-heap	n	mound	gold_candidate
-heap	n	pile	gold_candidate
-heap	n	state	gold_candidate
-heap	n	tons	gold_candidate
-heap	n	wreck	gold_candidate
-heavy	a	abundant	gold_candidate
-heavy	a	ample	gold_candidate
-heavy	a	big	gold_candidate
-heavy	a	considerable	gold_candidate
-heavy	a	constant	gold_candidate
-heavy	a	costly	gold_candidate
-heavy	a	dark	gold_candidate
-heavy	a	difficult	gold_candidate
-heavy	a	excessive	gold_candidate
-heavy	a	extensive	gold_candidate
-heavy	a	fat	gold_candidate
-heavy	a	frequent	gold_candidate
-heavy	a	hard	gold_candidate
-heavy	a	harsh	gold_candidate
-heavy	a	laboured	gold_candidate
-heavy	a	massive	gold_candidate
-heavy	a	onerous	gold_candidate
-heavy	a	overweight	gold_candidate
-heavy	a	profuse	gold_candidate
-heavy	a	regular	gold_candidate
-heavy	a	serious	gold_candidate
-heavy	a	severe	gold_candidate
-heavy	a	stout	gold_candidate
-heavy	a	strong	gold_candidate
-heavy	a	strongest	gold_candidate
-heavy	a	substantial	gold_candidate
-heavy	a	tedious	gold_candidate
-heavy	a	tough	gold_candidate
-heavy	a	weighty	gold_candidate
-heavy	a	wieldy	gold_candidate
-heavy	a	wild	gold_candidate
-heavy	a	worst	gold_candidate
-hold	v	adhere	gold_candidate
-hold	v	believe	gold_candidate
-hold	v	cache	gold_candidate
-hold	v	call	gold_candidate
-hold	v	carry	gold_candidate
-hold	v	clasp	gold_candidate
-hold	v	clutch	gold_candidate
-hold	v	conduct	gold_candidate
-hold	v	contain	gold_candidate
-hold	v	convene	gold_candidate
-hold	v	grasp	gold_candidate
-hold	v	grip	gold_candidate
-hold	v	handle	gold_candidate
-hold	v	have	gold_candidate
-hold	v	host	gold_candidate
-hold	v	keep	gold_candidate
-hold	v	lift	gold_candidate
-hold	v	maintain	gold_candidate
-hold	v	occupy	gold_candidate
-hold	v	organise	gold_candidate
-hold	v	own	gold_candidate
-hold	v	place	gold_candidate
-hold	v	position	gold_candidate
-hold	v	possess	gold_candidate
-hold	v	put	gold_candidate
-hold	v	retain	gold_candidate
-hold	v	stand	gold_candidate
-hold	v	store	gold_candidate
-hold	v	support	gold_candidate
-hold	v	take	gold_candidate
-informal	a	approximate	gold_candidate
-informal	a	casual	gold_candidate
-informal	a	easygoing	gold_candidate
-informal	a	everyday	gold_candidate
-informal	a	friendly	gold_candidate
-informal	a	imprecise	gold_candidate
-informal	a	ordinary	gold_candidate
-informal	a	relaxed	gold_candidate
-informal	a	spontaneous	gold_candidate
-informal	a	unofficial	gold_candidate
-informal	a	untrained	gold_candidate
-inner	a	central	gold_candidate
-inner	a	clique	gold_candidate
-inner	a	close	gold_candidate
-inner	a	enclosed	gold_candidate
-inner	a	focal	gold_candidate
-inner	a	inmost	gold_candidate
-inner	a	innermore	gold_candidate
-inner	a	inside	gold_candidate
-inner	a	interior	gold_candidate
-inner	a	internal	gold_candidate
-inner	a	inward	gold_candidate
-inner	a	mental	gold_candidate
-inner	a	original	gold_candidate
-inner	a	private	gold_candidate
-inner	a	spiritual	gold_candidate
-inner	a	under	gold_candidate
-instead	r	alternately	gold_candidate
-instead	r	alternatively	gold_candidate
-instead	r	but	gold_candidate
-instead	r	rather	gold_candidate
-investigator	n	detective	gold_candidate
-investigator	n	examiner	gold_candidate
-investigator	n	experimenter	gold_candidate
-investigator	n	inquirer	gold_candidate
-investigator	n	inspector	gold_candidate
-investigator	n	officer	gold_candidate
-investigator	n	official	gold_candidate
-investigator	n	researcher	gold_candidate
-jam	n	blockage	gold_candidate
-jam	n	congestion	gold_candidate
-jam	n	conserve	gold_candidate
-jam	n	gig	gold_candidate
-jam	n	improv	gold_candidate
-jam	n	jelly	gold_candidate
-jam	n	malfunction	gold_candidate
-jam	n	preserve	gold_candidate
-jam	n	queue	gold_candidate
-jam	n	riff	gold_candidate
-jam	n	seizure	gold_candidate
-jam	n	session	gold_candidate
-job	n	assignment	gold_candidate
-job	n	bit	gold_candidate
-job	n	business	gold_candidate
-job	n	career	gold_candidate
-job	n	contract	gold_candidate
-job	n	duty	gold_candidate
-job	n	employment	gold_candidate
-job	n	function	gold_candidate
-job	n	functional	gold_candidate
-job	n	matter	gold_candidate
-job	n	place	gold_candidate
-job	n	position	gold_candidate
-job	n	post	gold_candidate
-job	n	responsibility	gold_candidate
-job	n	role	gold_candidate
-job	n	task	gold_candidate
-job	n	work	gold_candidate
-late	r	behind	gold_candidate
-late	r	current	gold_candidate
-late	r	delayed	gold_candidate
-late	r	lately	gold_candidate
-late	r	latterly	gold_candidate
-late	r	older	gold_candidate
-late	r	overdue	gold_candidate
-late	r	recent	gold_candidate
-late	r	recently	gold_candidate
-late	r	tardy	gold_candidate
-lead	n	ahead	gold_candidate
-lead	n	cable	gold_candidate
-lead	n	clue	gold_candidate
-lead	n	conduct	gold_candidate
-lead	n	direction	gold_candidate
-lead	n	enticement	gold_candidate
-lead	n	example	gold_candidate
-lead	n	flex	gold_candidate
-lead	n	foray	gold_candidate
-lead	n	forefront	gold_candidate
-lead	n	guidance	gold_candidate
-lead	n	halter	gold_candidate
-lead	n	head	gold_candidate
-lead	n	hint	gold_candidate
-lead	n	influential	gold_candidate
-lead	n	initiative	gold_candidate
-lead	n	leader	gold_candidate
-lead	n	leash	gold_candidate
-lead	n	opportunity	gold_candidate
-lead	n	precedence	gold_candidate
-lead	n	prospect	gold_candidate
-lead	n	star	gold_candidate
-lead	n	story	gold_candidate
-lead	n	tip	gold_candidate
-lead	n	wire	gold_candidate
-let	v	advise	gold_candidate
-let	v	allow	gold_candidate
-let	v	authorise	gold_candidate
-let	v	diminish	gold_candidate
-let	v	expel	gold_candidate
-let	v	forgive	gold_candidate
-let	v	free	gold_candidate
-let	v	give	gold_candidate
-let	v	have	gold_candidate
-let	v	hire	gold_candidate
-let	v	inform	gold_candidate
-let	v	lease	gold_candidate
-let	v	lessen	gold_candidate
-let	v	permit	gold_candidate
-let	v	reduce	gold_candidate
-let	v	release	gold_candidate
-let	v	rent	gold_candidate
-let	v	slacken	gold_candidate
-let	v	tell	gold_candidate
-letter	n	alphabet	gold_candidate
-letter	n	character	gold_candidate
-letter	n	communication	gold_candidate
-letter	n	correspondence	gold_candidate
-letter	n	dispatch	gold_candidate
-letter	n	document	gold_candidate
-letter	n	epistle	gold_candidate
-letter	n	glyph	gold_candidate
-letter	n	mail	gold_candidate
-letter	n	memo	gold_candidate
-letter	n	message	gold_candidate
-letter	n	missive	gold_candidate
-letter	n	note	gold_candidate
-liberal	a	abundant	gold_candidate
-liberal	a	ample	gold_candidate
-liberal	a	free	gold_candidate
-liberal	a	generous	gold_candidate
-liberal	a	humanitarian	gold_candidate
-liberal	a	lenient	gold_candidate
-liberal	a	liberated	gold_candidate
-liberal	a	noninterventionist	gold_candidate
-liberal	a	open	gold_candidate
-liberal	a	openhanded	gold_candidate
-liberal	a	plentiful	gold_candidate
-liberal	a	progressive	gold_candidate
-liberal	a	social	gold_candidate
-liberal	a	tolerant	gold_candidate
-lie	v	arrange	gold_candidate
-lie	v	be	gold_candidate
-lie	v	deceive	gold_candidate
-lie	v	extend	gold_candidate
-lie	v	falsehoods	gold_candidate
-lie	v	falsify	gold_candidate
-lie	v	fib	gold_candidate
-lie	v	fibbing	gold_candidate
-lie	v	get	gold_candidate
-lie	v	hide	gold_candidate
-lie	v	lay	gold_candidate
-lie	v	leave	gold_candidate
-lie	v	place	gold_candidate
-lie	v	position	gold_candidate
-lie	v	put	gold_candidate
-lie	v	recline	gold_candidate
-lie	v	remain	gold_candidate
-lie	v	rest	gold_candidate
-lie	v	resting	gold_candidate
-lie	v	sit	gold_candidate
-lie	v	situate	gold_candidate
-lie	v	stay	gold_candidate
-lie	v	untruths	gold_candidate
-lie	v	wait	gold_candidate
-light	a	bright	gold_candidate
-light	a	casual	gold_candidate
-light	a	cheerful	gold_candidate
-light	a	easy	gold_candidate
-light	a	entertaining	gold_candidate
-light	a	ethereal	gold_candidate
-light	a	facile	gold_candidate
-light	a	faint	gold_candidate
-light	a	fair	gold_candidate
-light	a	frothy	gold_candidate
-light	a	gentle	gold_candidate
-light	a	inconsiderable	gold_candidate
-light	a	lightweight	gold_candidate
-light	a	luminous	gold_candidate
-light	a	mild	gold_candidate
-light	a	minor	gold_candidate
-light	a	pale	gold_candidate
-light	a	portable	gold_candidate
-light	a	restricted	gold_candidate
-light	a	simple	gold_candidate
-light	a	slight	gold_candidate
-light	a	small	gold_candidate
-light	a	soft	gold_candidate
-light	a	trivial	gold_candidate
-light	a	undemanding	gold_candidate
-light	a	unheavy	gold_candidate
-light	a	unsubstantial	gold_candidate
-light	a	upbeat	gold_candidate
-likewise	r	additionally	gold_candidate
-likewise	r	also	gold_candidate
-likewise	r	correspondingly	gold_candidate
-likewise	r	equally	gold_candidate
-likewise	r	similarly	gold_candidate
-live	a	active	gold_candidate
-live	a	animate	gold_candidate
-live	a	breathing	gold_candidate
-live	a	charged	gold_candidate
-live	a	circulated	gold_candidate
-live	a	connected	gold_candidate
-live	a	direct	gold_candidate
-live	a	existent	gold_candidate
-live	a	functioning	gold_candidate
-live	a	living	gold_candidate
-live	a	online	gold_candidate
-live	a	operative	gold_candidate
-live	a	performed	gold_candidate
-live	a	performing	gold_candidate
-live	a	powered	gold_candidate
-live	a	real	gold_candidate
-live	a	realtime	gold_candidate
-live	a	running	gold_candidate
-live	a	showing	gold_candidate
-live	a	sustainable	gold_candidate
-live	a	viewable	gold_candidate
-live	a	working	gold_candidate
-loud	a	amplified	gold_candidate
-loud	a	big	gold_candidate
-loud	a	blaring	gold_candidate
-loud	a	booming	gold_candidate
-loud	a	clear	gold_candidate
-loud	a	conspicuous	gold_candidate
-loud	a	deafening	gold_candidate
-loud	a	disturbing	gold_candidate
-loud	a	forceful	gold_candidate
-loud	a	heavy	gold_candidate
-loud	a	imposing	gold_candidate
-loud	a	noisy	gold_candidate
-loud	a	obtrusive	gold_candidate
-loud	a	powerful	gold_candidate
-loud	a	raucous	gold_candidate
-loud	a	resonant	gold_candidate
-loud	a	rowdy	gold_candidate
-loud	a	shrill	gold_candidate
-loud	a	strident	gold_candidate
-loud	a	strong	gold_candidate
-loud	a	thundering	gold_candidate
-loud	a	vociferous	gold_candidate
-mad	a	BSE	gold_candidate
-mad	a	angry	gold_candidate
-mad	a	annoyed	gold_candidate
-mad	a	crazy	gold_candidate
-mad	a	fast	gold_candidate
-mad	a	frantic	gold_candidate
-mad	a	frenetic	gold_candidate
-mad	a	frenzied	gold_candidate
-mad	a	furious	gold_candidate
-mad	a	hurried	gold_candidate
-mad	a	insane	gold_candidate
-mad	a	pn	gold_candidate
-mad	a	rabid	gold_candidate
-mad	a	rapid	gold_candidate
-mad	a	uncontrolled	gold_candidate
-mad	a	wild	gold_candidate
-make	v	affect	gold_candidate
-make	v	cause	gold_candidate
-make	v	change	gold_candidate
-make	v	commit	gold_candidate
-make	v	compel	gold_candidate
-make	v	complete	gold_candidate
-make	v	construct	gold_candidate
-make	v	create	gold_candidate
-make	v	do	gold_candidate
-make	v	form	gold_candidate
-make	v	generate	gold_candidate
-make	v	have	gold_candidate
-make	v	help	gold_candidate
-make	v	initiate	gold_candidate
-make	v	perform	gold_candidate
-make	v	produce	gold_candidate
-make	v	reach	gold_candidate
-make	v	succeed	gold_candidate
-make	v	take	gold_candidate
-make	v	turn	gold_candidate
-make	v	write	gold_candidate
-manage	v	administer	gold_candidate
-manage	v	conduct	gold_candidate
-manage	v	contrive	gold_candidate
-manage	v	control	gold_candidate
-manage	v	coordinate	gold_candidate
-manage	v	direct	gold_candidate
-manage	v	endeavour	gold_candidate
-manage	v	govern	gold_candidate
-manage	v	handle	gold_candidate
-manage	v	organise	gold_candidate
-manage	v	oversee	gold_candidate
-manage	v	run	gold_candidate
-manage	v	succeed	gold_candidate
-manage	v	success	gold_candidate
-manage	v	undertake	gold_candidate
-mass	n	accumulation	gold_candidate
-mass	n	aggregate	gold_candidate
-mass	n	body	gold_candidate
-mass	n	bulk	gold_candidate
-mass	n	climax	gold_candidate
-mass	n	conglomeration	gold_candidate
-mass	n	crowd	gold_candidate
-mass	n	density	gold_candidate
-mass	n	expanse	gold_candidate
-mass	n	extent	gold_candidate
-mass	n	host	gold_candidate
-mass	n	magnitude	gold_candidate
-mass	n	majority	gold_candidate
-mass	n	means	gold_candidate
-mass	n	multitude	gold_candidate
-mass	n	people	gold_candidate
-mass	n	populace	gold_candidate
-mass	n	proletariat	gold_candidate
-mass	n	public	gold_candidate
-mass	n	quantity	gold_candidate
-mass	n	shock	gold_candidate
-mass	n	splash	gold_candidate
-mass	n	throng	gold_candidate
-mass	n	volume	gold_candidate
-mass	n	weight	gold_candidate
-match	n	association	gold_candidate
-match	n	bout	gold_candidate
-match	n	choice	gold_candidate
-match	n	competition	gold_candidate
-match	n	competitor	gold_candidate
-match	n	contest	gold_candidate
-match	n	correlation	gold_candidate
-match	n	correspondence	gold_candidate
-match	n	counterpart	gold_candidate
-match	n	couple	gold_candidate
-match	n	equal	gold_candidate
-match	n	equivalent	gold_candidate
-match	n	event	gold_candidate
-match	n	fit	gold_candidate
-match	n	game	gold_candidate
-match	n	hit	gold_candidate
-match	n	link	gold_candidate
-match	n	marriage	gold_candidate
-match	n	matchstick	gold_candidate
-match	n	pairing	gold_candidate
-match	n	partnership	gold_candidate
-match	n	rival	gold_candidate
-mission	n	aim	gold_candidate
-mission	n	arrival	gold_candidate
-mission	n	assignment	gold_candidate
-mission	n	calling	gold_candidate
-mission	n	charity	gold_candidate
-mission	n	church	gold_candidate
-mission	n	delegation	gold_candidate
-mission	n	duty	gold_candidate
-mission	n	evangelical	gold_candidate
-mission	n	legation	gold_candidate
-mission	n	ministering	gold_candidate
-mission	n	negotiation	gold_candidate
-mission	n	objective	gold_candidate
-mission	n	office	gold_candidate
-mission	n	operation	gold_candidate
-mission	n	oratory	gold_candidate
-mission	n	outreach	gold_candidate
-mission	n	preaching	gold_candidate
-mission	n	project	gold_candidate
-mission	n	purpose	gold_candidate
-mission	n	quest	gold_candidate
-mission	n	task	gold_candidate
-mission	n	vocation	gold_candidate
-mission	n	work	gold_candidate
-mood	n	ambience	gold_candidate
-mood	n	atmosphere	gold_candidate
-mood	n	attitude	gold_candidate
-mood	n	demeanour	gold_candidate
-mood	n	disposition	gold_candidate
-mood	n	feeling	gold_candidate
-mood	n	form	gold_candidate
-mood	n	humour	gold_candidate
-mood	n	manner	gold_candidate
-mood	n	mindset	gold_candidate
-mood	n	modality	gold_candidate
-mood	n	mode	gold_candidate
-mood	n	outlook	gold_candidate
-mood	n	temper	gold_candidate
-mood	n	temperament	gold_candidate
-mood	n	timbre	gold_candidate
-mood	n	tone	gold_candidate
-mood	n	vibe	gold_candidate
-nasty	a	annoying	gold_candidate
-nasty	a	bad	gold_candidate
-nasty	a	bitter	gold_candidate
-nasty	a	dangerous	gold_candidate
-nasty	a	dirty	gold_candidate
-nasty	a	disagreeable	gold_candidate
-nasty	a	formidable	gold_candidate
-nasty	a	foul	gold_candidate
-nasty	a	horrible	gold_candidate
-nasty	a	inhospitable	gold_candidate
-nasty	a	malicious	gold_candidate
-nasty	a	mean	gold_candidate
-nasty	a	objectionable	gold_candidate
-nasty	a	offensive	gold_candidate
-nasty	a	painful	gold_candidate
-nasty	a	spiteful	gold_candidate
-nasty	a	unpalatable	gold_candidate
-nasty	a	unpleasant	gold_candidate
-nasty	a	vicioous	gold_candidate
-nasty	a	vicious	gold_candidate
-nasty	a	vindictive	gold_candidate
-near	r	about	gold_candidate
-near	r	adjoining	gold_candidate
-near	r	almost	gold_candidate
-near	r	alongside	gold_candidate
-near	r	approaching	gold_candidate
-near	r	approximately	gold_candidate
-near	r	close	gold_candidate
-near	r	closely	gold_candidate
-near	r	nearly	gold_candidate
-near	r	neighbouring	gold_candidate
-near	r	practically	gold_candidate
-near	r	virtually	gold_candidate
-nearly	r	almost	gold_candidate
-nearly	r	anyway	gold_candidate
-nearly	r	approximately	gold_candidate
-nearly	r	half	gold_candidate
-nearly	r	practically	gold_candidate
-nearly	r	quite	gold_candidate
-nearly	r	remotely	gold_candidate
-neat	a	clever	gold_candidate
-neat	a	compact	gold_candidate
-neat	a	cool	gold_candidate
-neat	a	good	gold_candidate
-neat	a	great	gold_candidate
-neat	a	nice	gold_candidate
-neat	a	order	gold_candidate
-neat	a	ordered	gold_candidate
-neat	a	orderly	gold_candidate
-neat	a	pleasing	gold_candidate
-neat	a	simple	gold_candidate
-neat	a	smart	gold_candidate
-neat	a	terrific	gold_candidate
-neat	a	tidy	gold_candidate
-neat	a	trim	gold_candidate
-neat	a	uniform	gold_candidate
-neat	a	well-formulated	gold_candidate
-new	a	additional	gold_candidate
-new	a	another	gold_candidate
-new	a	current	gold_candidate
-new	a	different	gold_candidate
-new	a	distinct	gold_candidate
-new	a	extra	gold_candidate
-new	a	fresh	gold_candidate
-new	a	further	gold_candidate
-new	a	latest	gold_candidate
-new	a	modern	gold_candidate
-new	a	novel	gold_candidate
-new	a	original	gold_candidate
-new	a	other	gold_candidate
-new	a	recent	gold_candidate
-new	a	succeeding	gold_candidate
-new	a	younger	gold_candidate
-now	r	consequently	gold_candidate
-now	r	currently	gold_candidate
-now	r	immediately	gold_candidate
-now	r	instantly	gold_candidate
-now	r	just	gold_candidate
-now	r	lately	gold_candidate
-now	r	next	gold_candidate
-now	r	nowadays	gold_candidate
-now	r	perhaps	gold_candidate
-now	r	presently	gold_candidate
-now	r	recently	gold_candidate
-now	r	since	gold_candidate
-now	r	so	gold_candidate
-now	r	today	gold_candidate
-now	r	well	gold_candidate
-often	r	commonly	gold_candidate
-often	r	frequently	gold_candidate
-often	r	generally	gold_candidate
-often	r	habitually	gold_candidate
-often	r	much	gold_candidate
-often	r	occasionally	gold_candidate
-often	r	recurrently	gold_candidate
-often	r	regularly	gold_candidate
-often	r	sometimes	gold_candidate
-often	r	usually	gold_candidate
-only	r	barely	gold_candidate
-only	r	exclusively	gold_candidate
-only	r	hardly	gold_candidate
-only	r	just	gold_candidate
-only	r	merely	gold_candidate
-only	r	purely	gold_candidate
-only	r	recently	gold_candidate
-only	r	singularly	gold_candidate
-only	r	solely	gold_candidate
-only	r	uniquely	gold_candidate
-open	a	accessible	gold_candidate
-open	a	ajar	gold_candidate
-open	a	alert	gold_candidate
-open	a	approachable	gold_candidate
-open	a	available	gold_candidate
-open	a	aware	gold_candidate
-open	a	clear	gold_candidate
-open	a	empty	gold_candidate
-open	a	exposed	gold_candidate
-open	a	free	gold_candidate
-open	a	gaping	gold_candidate
-open	a	green	gold_candidate
-open	a	peeled	gold_candidate
-open	a	peep	gold_candidate
-open	a	receptive	gold_candidate
-open	a	sandal	gold_candidate
-open	a	susceptible	gold_candidate
-open	a	unclosed	gold_candidate
-open	a	unfastened	gold_candidate
-open	a	unlidded	gold_candidate
-open	a	unlocked	gold_candidate
-open	a	unobstructed	gold_candidate
-open	a	unpoliced	gold_candidate
-open	a	unrestricted	gold_candidate
-open	a	unshut	gold_candidate
-open	a	wide	gold_candidate
-open	a	working	gold_candidate
-order	v	arrange	gold_candidate
-order	v	buy	gold_candidate
-order	v	command	gold_candidate
-order	v	direct	gold_candidate
-order	v	grade	gold_candidate
-order	v	instruct	gold_candidate
-order	v	manage	gold_candidate
-order	v	mandate	gold_candidate
-order	v	organise	gold_candidate
-order	v	plan	gold_candidate
-order	v	purchase	gold_candidate
-order	v	rank	gold_candidate
-order	v	request	gold_candidate
-order	v	reserve	gold_candidate
-order	v	send	gold_candidate
-order	v	sort	gold_candidate
-order	v	tell	gold_candidate
-outdoor	a	alfresco	gold_candidate
-outdoor	a	all-weather	gold_candidate
-outdoor	a	external	gold_candidate
-outdoor	a	open-air	gold_candidate
-outdoor	a	outside	gold_candidate
-outdoor	a	outward-bound	gold_candidate
-outdoor	a	roadside	gold_candidate
-outdoor	a	uncovered	gold_candidate
-paper	n	article	gold_candidate
-paper	n	document	gold_candidate
-paper	n	essay	gold_candidate
-paper	n	journal	gold_candidate
-paper	n	manuscript	gold_candidate
-paper	n	newspaper	gold_candidate
-paper	n	papyrus	gold_candidate
-paper	n	presentation	gold_candidate
-paper	n	publication	gold_candidate
-paper	n	report	gold_candidate
-paper	n	roll	gold_candidate
-paper	n	stationery	gold_candidate
-paper	n	study	gold_candidate
-paper	n	thesis	gold_candidate
-paper	n	treatise	gold_candidate
-pass	v	adopt	gold_candidate
-pass	v	approach	gold_candidate
-pass	v	approve	gold_candidate
-pass	v	authorise	gold_candidate
-pass	v	deliver	gold_candidate
-pass	v	disappear	gold_candidate
-pass	v	elapse	gold_candidate
-pass	v	experience	gold_candidate
-pass	v	expire	gold_candidate
-pass	v	finish	gold_candidate
-pass	v	flow	gold_candidate
-pass	v	give	gold_candidate
-pass	v	go	gold_candidate
-pass	v	hand	gold_candidate
-pass	v	leak	gold_candidate
-pass	v	navigate	gold_candidate
-pass	v	occur	gold_candidate
-pass	v	proceed	gold_candidate
-pass	v	ratify	gold_candidate
-pass	v	satisfy	gold_candidate
-pass	v	see	gold_candidate
-pass	v	send	gold_candidate
-pass	v	skirt	gold_candidate
-pass	v	succeed	gold_candidate
-pass	v	transfer	gold_candidate
-pass	v	transpire	gold_candidate
-pass	v	traverse	gold_candidate
-phone	n	allophone	gold_candidate
-phone	n	cellular	gold_candidate
-phone	n	handset	gold_candidate
-phone	n	mobile	gold_candidate
-phone	n	phoneme	gold_candidate
-phone	n	sonant	gold_candidate
-phone	n	sound	gold_candidate
-phone	n	speech	gold_candidate
-phone	n	telecom	gold_candidate
-phone	n	telecommunication	gold_candidate
-phone	n	telephone	gold_candidate
-poor	a	bad	gold_candidate
-poor	a	deficient	gold_candidate
-poor	a	deprived	gold_candidate
-poor	a	destitute	gold_candidate
-poor	a	developing	gold_candidate
-poor	a	hapless	gold_candidate
-poor	a	impoverished	gold_candidate
-poor	a	inadequate	gold_candidate
-poor	a	incompetent	gold_candidate
-poor	a	indigent	gold_candidate
-poor	a	inferior	gold_candidate
-poor	a	infertile	gold_candidate
-poor	a	low	gold_candidate
-poor	a	mediocre	gold_candidate
-poor	a	miserable	gold_candidate
-poor	a	needy	gold_candidate
-poor	a	pitiable	gold_candidate
-poor	a	sorry	gold_candidate
-poor	a	substandard	gold_candidate
-poor	a	underprivileged	gold_candidate
-poor	a	unfortunate	gold_candidate
-poor	a	unhappy	gold_candidate
-poor	a	unlucky	gold_candidate
-poor	a	unsatisfactory	gold_candidate
-poor	a	weak	gold_candidate
-poor	a	wretched	gold_candidate
-possibly	r	believably	gold_candidate
-possibly	r	conceivably	gold_candidate
-possibly	r	ever	gold_candidate
-possibly	r	feasibly	gold_candidate
-possibly	r	maybe	gold_candidate
-possibly	r	necessarily	gold_candidate
-possibly	r	perhaps	gold_candidate
-possibly	r	plausibly	gold_candidate
-possibly	r	potentially	gold_candidate
-possibly	r	reasonably	gold_candidate
-post	n	announcement	gold_candidate
-post	n	appointment	gold_candidate
-post	n	boundary	gold_candidate
-post	n	crossing	gold_candidate
-post	n	date	gold_candidate
-post	n	employment	gold_candidate
-post	n	fence	gold_candidate
-post	n	job	gold_candidate
-post	n	lookout	gold_candidate
-post	n	mail	gold_candidate
-post	n	marker	gold_candidate
-post	n	message	gold_candidate
-post	n	pole	gold_candidate
-post	n	position	gold_candidate
-post	n	role	gold_candidate
-post	n	situation	gold_candidate
-post	n	stake	gold_candidate
-post	n	station	gold_candidate
-post	n	support	gold_candidate
-post	n	target	gold_candidate
-post	n	upright	gold_candidate
-pot	n	bowl	gold_candidate
-pot	n	canister	gold_candidate
-pot	n	cannabis	gold_candidate
-pot	n	casserole	gold_candidate
-pot	n	ceramic	gold_candidate
-pot	n	container	gold_candidate
-pot	n	dope	gold_candidate
-pot	n	marijuana	gold_candidate
-pot	n	pan	gold_candidate
-pot	n	pourer	gold_candidate
-pot	n	prize	gold_candidate
-pot	n	saucepan	gold_candidate
-pot	n	stake	gold_candidate
-pot	n	teapot	gold_candidate
-pot	n	tray	gold_candidate
-pot	n	tub	gold_candidate
-pot	n	vessel	gold_candidate
-pot	n	weed	gold_candidate
-pot	n	winning	gold_candidate
-pound	n	beat	gold_candidate
-pound	n	cage	gold_candidate
-pound	n	dollar	gold_candidate
-pound	n	enclosure	gold_candidate
-pound	n	hammer	gold_candidate
-pound	n	kennel	gold_candidate
-pound	n	kilo	gold_candidate
-pound	n	kilogram	gold_candidate
-pound	n	lb	gold_candidate
-pound	n	lot	gold_candidate
-pound	n	pn	gold_candidate
-pound	n	prison	gold_candidate
-pound	n	quid	gold_candidate
-pound	n	sterling	gold_candidate
-pound	n	store	gold_candidate
-pound	n	throb	gold_candidate
-pound	n	thump	gold_candidate
-pound	n	weight	gold_candidate
-profound	a	acute	gold_candidate
-profound	a	complex	gold_candidate
-profound	a	deep	gold_candidate
-profound	a	extensive	gold_candidate
-profound	a	great	gold_candidate
-profound	a	huge	gold_candidate
-profound	a	important	gold_candidate
-profound	a	insightful	gold_candidate
-profound	a	intellectual	gold_candidate
-profound	a	intense	gold_candidate
-profound	a	keen	gold_candidate
-profound	a	penetrating	gold_candidate
-profound	a	pronounced	gold_candidate
-profound	a	sagacious	gold_candidate
-profound	a	serious	gold_candidate
-profound	a	significant	gold_candidate
-profound	a	thorough	gold_candidate
-profound	a	thoughtful	gold_candidate
-profound	a	wise	gold_candidate
-prominent	a	conspicuous	gold_candidate
-prominent	a	eminent	gold_candidate
-prominent	a	famous	gold_candidate
-prominent	a	foremost	gold_candidate
-prominent	a	important	gold_candidate
-prominent	a	leading	gold_candidate
-prominent	a	major	gold_candidate
-prominent	a	notable	gold_candidate
-prominent	a	noticeable	gold_candidate
-prominent	a	obvious	gold_candidate
-prominent	a	prevalent	gold_candidate
-prominent	a	pronounced	gold_candidate
-prominent	a	renowned	gold_candidate
-prominent	a	salient	gold_candidate
-prominent	a	significant	gold_candidate
-prominent	a	visible	gold_candidate
-pull	v	attract	gold_candidate
-pull	v	drag	gold_candidate
-pull	v	draw	gold_candidate
-pull	v	extract	gold_candidate
-pull	v	haul	gold_candidate
-pull	v	heave	gold_candidate
-pull	v	lure	gold_candidate
-pull	v	manipulate	gold_candidate
-pull	v	move	gold_candidate
-pull	v	park	gold_candidate
-pull	v	pluck	gold_candidate
-pull	v	push	gold_candidate
-pull	v	read	gold_candidate
-pull	v	remove	gold_candidate
-pull	v	request	gold_candidate
-pull	v	rip	gold_candidate
-pull	v	shift	gold_candidate
-pull	v	squeeze	gold_candidate
-pull	v	stop	gold_candidate
-pull	v	stretch	gold_candidate
-pull	v	tow	gold_candidate
-pull	v	tug	gold_candidate
-pull	v	withdraw	gold_candidate
-pull	v	wrench	gold_candidate
-pull	v	yank	gold_candidate
-pulse	n	beat	gold_candidate
-pulse	n	beep	gold_candidate
-pulse	n	centre	gold_candidate
-pulse	n	emanation	gold_candidate
-pulse	n	energy	gold_candidate
-pulse	n	force	gold_candidate
-pulse	n	hearbeat	gold_candidate
-pulse	n	heart	gold_candidate
-pulse	n	heartbeat	gold_candidate
-pulse	n	heartrate	gold_candidate
-pulse	n	legume	gold_candidate
-pulse	n	lifeblood	gold_candidate
-pulse	n	reflex	gold_candidate
-pulse	n	rhythm	gold_candidate
-pulse	n	sound	gold_candidate
-pulse	n	stimulus	gold_candidate
-pulse	n	throb	gold_candidate
-pulse	n	throbbing	gold_candidate
-pulse	n	vibration	gold_candidate
-pulse	n	wave	gold_candidate
-put	v	advance	gold_candidate
-put	v	allay	gold_candidate
-put	v	allow	gold_candidate
-put	v	assemble	gold_candidate
-put	v	collate	gold_candidate
-put	v	collect	gold_candidate
-put	v	dismiss	gold_candidate
-put	v	express	gold_candidate
-put	v	fasten	gold_candidate
-put	v	fix	gold_candidate
-put	v	gather	gold_candidate
-put	v	get	gold_candidate
-put	v	give	gold_candidate
-put	v	join	gold_candidate
-put	v	lay	gold_candidate
-put	v	leave	gold_candidate
-put	v	make	gold_candidate
-put	v	nullify	gold_candidate
-put	v	phrase	gold_candidate
-put	v	place	gold_candidate
-put	v	position	gold_candidate
-put	v	present	gold_candidate
-put	v	propose	gold_candidate
-put	v	propound	gold_candidate
-put	v	provide	gold_candidate
-put	v	remove	gold_candidate
-put	v	send	gold_candidate
-put	v	set	gold_candidate
-put	v	settle	gold_candidate
-put	v	state	gold_candidate
-put	v	stick	gold_candidate
-quick	a	brief	gold_candidate
-quick	a	concise	gold_candidate
-quick	a	cursory	gold_candidate
-quick	a	expeditious	gold_candidate
-quick	a	express	gold_candidate
-quick	a	fast	gold_candidate
-quick	a	hasty	gold_candidate
-quick	a	hurried	gold_candidate
-quick	a	immediate	gold_candidate
-quick	a	keen	gold_candidate
-quick	a	prompt	gold_candidate
-quick	a	rapid	gold_candidate
-quick	a	short	gold_candidate
-quick	a	speedy	gold_candidate
-quick	a	swift	gold_candidate
-range	n	access	gold_candidate
-range	n	area	gold_candidate
-range	n	array	gold_candidate
-range	n	assortment	gold_candidate
-range	n	breadth	gold_candidate
-range	n	choice	gold_candidate
-range	n	collection	gold_candidate
-range	n	coverage	gold_candidate
-range	n	distance	gold_candidate
-range	n	extent	gold_candidate
-range	n	gallery	gold_candidate
-range	n	limit	gold_candidate
-range	n	roaming	gold_candidate
-range	n	run	gold_candidate
-range	n	scope	gold_candidate
-range	n	selection	gold_candidate
-range	n	series	gold_candidate
-range	n	span	gold_candidate
-range	n	spread	gold_candidate
-range	n	variety	gold_candidate
-rather	r	fairly	gold_candidate
-rather	r	instead	gold_candidate
-rather	r	moderately	gold_candidate
-rather	r	more	gold_candidate
-rather	r	preferably	gold_candidate
-rather	r	quite	gold_candidate
-rather	r	significantly	gold_candidate
-rather	r	slightly	gold_candidate
-rather	r	somewhat	gold_candidate
-rather	r	sooner	gold_candidate
-rather	r	very	gold_candidate
-raw	a	austere	gold_candidate
-raw	a	bad	gold_candidate
-raw	a	basic	gold_candidate
-raw	a	bloody	gold_candidate
-raw	a	crude	gold_candidate
-raw	a	excoriated	gold_candidate
-raw	a	exposed	gold_candidate
-raw	a	genuine	gold_candidate
-raw	a	harsh	gold_candidate
-raw	a	immature	gold_candidate
-raw	a	inexperienced	gold_candidate
-raw	a	naked	gold_candidate
-raw	a	natural	gold_candidate
-raw	a	open	gold_candidate
-raw	a	refreshing	gold_candidate
-raw	a	rough	gold_candidate
-raw	a	rudimentary	gold_candidate
-raw	a	uncompressed	gold_candidate
-raw	a	uncooked	gold_candidate
-raw	a	undressed	gold_candidate
-raw	a	unfair	gold_candidate
-raw	a	unprocessed	gold_candidate
-raw	a	unrefined	gold_candidate
-raw	a	unsophisticated	gold_candidate
-raw	a	unspoilt	gold_candidate
-raw	a	unspun	gold_candidate
-raw	a	untaught	gold_candidate
-raw	a	untreated	gold_candidate
-really	r	absolutely	gold_candidate
-really	r	actually	gold_candidate
-really	r	completely	gold_candidate
-really	r	definitely	gold_candidate
-really	r	effectively	gold_candidate
-really	r	exceptionally	gold_candidate
-really	r	extremely	gold_candidate
-really	r	genuinely	gold_candidate
-really	r	honestly	gold_candidate
-really	r	indeed	gold_candidate
-really	r	properly	gold_candidate
-really	r	totally	gold_candidate
-really	r	truly	gold_candidate
-really	r	unquestionably	gold_candidate
-really	r	unreservedly	gold_candidate
-really	r	very	gold_candidate
-reasonable	a	acceptable	gold_candidate
-reasonable	a	adequate	gold_candidate
-reasonable	a	affordable	gold_candidate
-reasonable	a	appropriate	gold_candidate
-reasonable	a	credible	gold_candidate
-reasonable	a	enough	gold_candidate
-reasonable	a	equitable	gold_candidate
-reasonable	a	fair	gold_candidate
-reasonable	a	good	gold_candidate
-reasonable	a	inexpensive	gold_candidate
-reasonable	a	just	gold_candidate
-reasonable	a	justifiable	gold_candidate
-reasonable	a	likely	gold_candidate
-reasonable	a	manageable	gold_candidate
-reasonable	a	measured	gold_candidate
-reasonable	a	moderate	gold_candidate
-reasonable	a	rational	gold_candidate
-reasonable	a	reliable	gold_candidate
-reasonable	a	sensible	gold_candidate
-reasonable	a	sufficient	gold_candidate
-reasonable	a	tolerable	gold_candidate
-reasonable	a	well-judged	gold_candidate
-remainder	n	balance	gold_candidate
-remainder	n	leftover	gold_candidate
-remainder	n	residual	gold_candidate
-remainder	n	residue	gold_candidate
-remainder	n	rest	gold_candidate
-remainder	n	surplus	gold_candidate
-render	v	bestow	gold_candidate
-render	v	convert	gold_candidate
-render	v	create	gold_candidate
-render	v	deliver	gold_candidate
-render	v	display	gold_candidate
-render	v	encode	gold_candidate
-render	v	give	gold_candidate
-render	v	leave	gold_candidate
-render	v	make	gold_candidate
-render	v	portray	gold_candidate
-render	v	provide	gold_candidate
-render	v	represent	gold_candidate
-render	v	show	gold_candidate
-render	v	submit	gold_candidate
-render	v	use	gold_candidate
-rest	n	balance	gold_candidate
-rest	n	base	gold_candidate
-rest	n	break	gold_candidate
-rest	n	comfort	gold_candidate
-rest	n	convenience	gold_candidate
-rest	n	inactivity	gold_candidate
-rest	n	layby	gold_candidate
-rest	n	leisure	gold_candidate
-rest	n	prop	gold_candidate
-rest	n	quiet	gold_candidate
-rest	n	remainder	gold_candidate
-rest	n	remains	gold_candidate
-rest	n	repose	gold_candidate
-rest	n	respite	gold_candidate
-rest	n	service	gold_candidate
-rest	n	sleep	gold_candidate
-rest	n	stand	gold_candidate
-rest	n	stick	gold_candidate
-rest	n	support	gold_candidate
-return	v	earn	gold_candidate
-return	v	get	gold_candidate
-return	v	go	gold_candidate
-return	v	make	gold_candidate
-return	v	produce	gold_candidate
-return	v	realize	gold_candidate
-return	v	regress	gold_candidate
-return	v	repeat	gold_candidate
-return	v	resume	gold_candidate
-return	v	retrace	gold_candidate
-return	v	retrieve	gold_candidate
-return	v	revert	gold_candidate
-return	v	revisit	gold_candidate
-return	v	yield	gold_candidate
-rhythm	n	beat	gold_candidate
-rhythm	n	cadence	gold_candidate
-rhythm	n	clock	gold_candidate
-rhythm	n	cycle	gold_candidate
-rhythm	n	form	gold_candidate
-rhythm	n	harmony	gold_candidate
-rhythm	n	pattern	gold_candidate
-rhythm	n	pulse	gold_candidate
-rhythm	n	tempo	gold_candidate
-rich	a	abounding	gold_candidate
-rich	a	abundant	gold_candidate
-rich	a	ample	gold_candidate
-rich	a	detail	gold_candidate
-rich	a	detailed	gold_candidate
-rich	a	elaborate	gold_candidate
-rich	a	full	gold_candidate
-rich	a	high	gold_candidate
-rich	a	lavish	gold_candidate
-rich	a	lush	gold_candidate
-rich	a	rewarding	gold_candidate
-rich	a	significant	gold_candidate
-rich	a	valuable	gold_candidate
-rich	a	vibrant	gold_candidate
-rich	a	wealthy	gold_candidate
-rich	a	well-off	gold_candidate
-right	r	accurately	gold_candidate
-right	r	appropriate	gold_candidate
-right	r	correct	gold_candidate
-right	r	correctly	gold_candidate
-right	r	directly	gold_candidate
-right	r	exactly	gold_candidate
-right	r	immediately	gold_candidate
-right	r	just	gold_candidate
-right	r	properly	gold_candidate
-right	r	straight	gold_candidate
-right	r	straightaway	gold_candidate
-right	r	totally	gold_candidate
-right	r	well	gold_candidate
-ring	n	association	gold_candidate
-ring	n	band	gold_candidate
-ring	n	bell	gold_candidate
-ring	n	call	gold_candidate
-ring	n	chain	gold_candidate
-ring	n	chime	gold_candidate
-ring	n	circle	gold_candidate
-ring	n	circlet	gold_candidate
-ring	n	coil	gold_candidate
-ring	n	connotation	gold_candidate
-ring	n	feel	gold_candidate
-ring	n	fob	gold_candidate
-ring	n	group	gold_candidate
-ring	n	holder	gold_candidate
-ring	n	hoop	gold_candidate
-ring	n	level	gold_candidate
-ring	n	loop	gold_candidate
-ring	n	network	gold_candidate
-ring	n	orbit	gold_candidate
-ring	n	rim	gold_candidate
-ring	n	shadow	gold_candidate
-ring	n	sound	gold_candidate
-ring	n	syndicate	gold_candidate
-ring	n	tone	gold_candidate
-rough	a	approximate	gold_candidate
-rough	a	basic	gold_candidate
-rough	a	broad	gold_candidate
-rough	a	coarse	gold_candidate
-rough	a	crude	gold_candidate
-rough	a	dangerous	gold_candidate
-rough	a	demanding	gold_candidate
-rough	a	difficult	gold_candidate
-rough	a	disorderly	gold_candidate
-rough	a	general	gold_candidate
-rough	a	hard	gold_candidate
-rough	a	harsh	gold_candidate
-rough	a	imperfect	gold_candidate
-rough	a	inexact	gold_candidate
-rough	a	irregular	gold_candidate
-rough	a	jagged	gold_candidate
-rough	a	poor	gold_candidate
-rough	a	preliminary	gold_candidate
-rough	a	raucous	gold_candidate
-rough	a	rudimentary	gold_candidate
-rough	a	simple	gold_candidate
-rough	a	tough	gold_candidate
-rough	a	uncivil	gold_candidate
-rough	a	uncut	gold_candidate
-rough	a	uneven	gold_candidate
-rough	a	unfinished	gold_candidate
-rough	a	unpleasant	gold_candidate
-rough	a	unrefined	gold_candidate
-rough	a	vague	gold_candidate
-rough	a	violent	gold_candidate
-rough	a	wild	gold_candidate
-rude	a	abrupt	gold_candidate
-rude	a	abusive	gold_candidate
-rude	a	approximate	gold_candidate
-rude	a	awkward	gold_candidate
-rude	a	basic	gold_candidate
-rude	a	coarse	gold_candidate
-rude	a	crude	gold_candidate
-rude	a	disrespectful	gold_candidate
-rude	a	impolite	gold_candidate
-rude	a	inexact	gold_candidate
-rude	a	insulting	gold_candidate
-rude	a	lewd	gold_candidate
-rude	a	naughty	gold_candidate
-rude	a	offensive	gold_candidate
-rude	a	primitive	gold_candidate
-rude	a	raw	gold_candidate
-rude	a	rough	gold_candidate
-rude	a	rudimentary	gold_candidate
-rude	a	savage	gold_candidate
-rude	a	sudden	gold_candidate
-rude	a	surprise	gold_candidate
-rude	a	unfinished	gold_candidate
-rude	a	unkind	gold_candidate
-rude	a	unpleasant	gold_candidate
-rude	a	unrefined	gold_candidate
-rude	a	vulgar	gold_candidate
-rude	a	wild	gold_candidate
-run	v	appear	gold_candidate
-run	v	avoid	gold_candidate
-run	v	chair	gold_candidate
-run	v	complete	gold_candidate
-run	v	contradict	gold_candidate
-run	v	control	gold_candidate
-run	v	cover	gold_candidate
-run	v	execute	gold_candidate
-run	v	extend	gold_candidate
-run	v	fill	gold_candidate
-run	v	flee	gold_candidate
-run	v	flow	gold_candidate
-run	v	function	gold_candidate
-run	v	functioning	gold_candidate
-run	v	go	gold_candidate
-run	v	govern	gold_candidate
-run	v	handle	gold_candidate
-run	v	include	gold_candidate
-run	v	last	gold_candidate
-run	v	manage	gold_candidate
-run	v	operate	gold_candidate
-run	v	organise	gold_candidate
-run	v	proceed	gold_candidate
-run	v	rush	gold_candidate
-run	v	scurry	gold_candidate
-run	v	sprint	gold_candidate
-run	v	stretch	gold_candidate
-run	v	total	gold_candidate
-run	v	training	gold_candidate
-run	v	use	gold_candidate
-run	v	work	gold_candidate
-run	v	working	gold_candidate
-saint	n	angel	gold_candidate
-saint	n	blessed	gold_candidate
-saint	n	canonised	gold_candidate
-saint	n	disciple	gold_candidate
-saint	n	figure	gold_candidate
-saint	n	good	gold_candidate
-saint	n	goodman	gold_candidate
-saint	n	martyr	gold_candidate
-saint	n	paladin	gold_candidate
-saint	n	pn	gold_candidate
-saint	n	prophet	gold_candidate
-scene	n	act	gold_candidate
-scene	n	area	gold_candidate
-scene	n	arena	gold_candidate
-scene	n	backstage	gold_candidate
-scene	n	business	gold_candidate
-scene	n	community	gold_candidate
-scene	n	environment	gold_candidate
-scene	n	event	gold_candidate
-scene	n	field	gold_candidate
-scene	n	image	gold_candidate
-scene	n	incident	gold_candidate
-scene	n	landscape	gold_candidate
-scene	n	level	gold_candidate
-scene	n	location	gold_candidate
-scene	n	part	gold_candidate
-scene	n	picture	gold_candidate
-scene	n	place	gold_candidate
-scene	n	programme	gold_candidate
-scene	n	scale	gold_candidate
-scene	n	segment	gold_candidate
-scene	n	sequence	gold_candidate
-scene	n	setting	gold_candidate
-scene	n	sight	gold_candidate
-scene	n	site	gold_candidate
-scene	n	sphere	gold_candidate
-scene	n	stage	gold_candidate
-scrap	n	album	gold_candidate
-scrap	n	bit	gold_candidate
-scrap	n	clipping	gold_candidate
-scrap	n	collage	gold_candidate
-scrap	n	crumb	gold_candidate
-scrap	n	fragment	gold_candidate
-scrap	n	leftover	gold_candidate
-scrap	n	morsel	gold_candidate
-scrap	n	piece	gold_candidate
-scrap	n	recycling	gold_candidate
-scrap	n	remainder	gold_candidate
-scrap	n	rubbish	gold_candidate
-scrap	n	shred	gold_candidate
-scrap	n	waste	gold_candidate
-secret	a	clandestine	gold_candidate
-secret	a	classified	gold_candidate
-secret	a	closed	gold_candidate
-secret	a	coded	gold_candidate
-secret	a	concealed	gold_candidate
-secret	a	confidential	gold_candidate
-secret	a	hidden	gold_candidate
-secret	a	inner	gold_candidate
-secret	a	innermost	gold_candidate
-secret	a	intelligence	gold_candidate
-secret	a	private	gold_candidate
-secret	a	spying	gold_candidate
-secret	a	undercover	gold_candidate
-secret	a	undisclosed	gold_candidate
-secret	a	unknown	gold_candidate
-secret	a	unpublished	gold_candidate
-secret	a	unrevealed	gold_candidate
-secret	a	unseen	gold_candidate
-secret	a	unspoken	gold_candidate
-see	v	ascertain	gold_candidate
-see	v	behold	gold_candidate
-see	v	consider	gold_candidate
-see	v	detect	gold_candidate
-see	v	discover	gold_candidate
-see	v	distinguish	gold_candidate
-see	v	establish	gold_candidate
-see	v	experience	gold_candidate
-see	v	find	gold_candidate
-see	v	learn	gold_candidate
-see	v	note	gold_candidate
-see	v	notice	gold_candidate
-see	v	observe	gold_candidate
-see	v	perceive	gold_candidate
-see	v	undergo	gold_candidate
-see	v	understand	gold_candidate
-see	v	view	gold_candidate
-see	v	visit	gold_candidate
-see	v	watch	gold_candidate
-see	v	witness	gold_candidate
-serious	a	acute	gold_candidate
-serious	a	businesslike	gold_candidate
-serious	a	concerned	gold_candidate
-serious	a	considerable	gold_candidate
-serious	a	critical	gold_candidate
-serious	a	grave	gold_candidate
-serious	a	heavy	gold_candidate
-serious	a	important	gold_candidate
-serious	a	impressive	gold_candidate
-serious	a	major	gold_candidate
-serious	a	proper	gold_candidate
-serious	a	real	gold_candidate
-serious	a	resolute	gold_candidate
-serious	a	severe	gold_candidate
-serious	a	significant	gold_candidate
-serious	a	sincere	gold_candidate
-serious	a	substantial	gold_candidate
-serious	a	urgent	gold_candidate
-severely	r	badly	gold_candidate
-severely	r	critically	gold_candidate
-severely	r	devastatingly	gold_candidate
-severely	r	dramatically	gold_candidate
-severely	r	extremely	gold_candidate
-severely	r	gravely	gold_candidate
-severely	r	harshly	gold_candidate
-severely	r	heavily	gold_candidate
-severely	r	highly	gold_candidate
-severely	r	seriously	gold_candidate
-severely	r	sternly	gold_candidate
-shade	n	canopy	gold_candidate
-shade	n	colour	gold_candidate
-shade	n	cover	gold_candidate
-shade	n	degree	gold_candidate
-shade	n	depth	gold_candidate
-shade	n	echo	gold_candidate
-shade	n	gradation	gold_candidate
-shade	n	hint	gold_candidate
-shade	n	hue	gold_candidate
-shade	n	nuance	gold_candidate
-shade	n	screen	gold_candidate
-shade	n	shadow	gold_candidate
-shade	n	shelter	gold_candidate
-shade	n	suggestion	gold_candidate
-shade	n	sunglasses	gold_candidate
-shade	n	tinge	gold_candidate
-shade	n	tint	gold_candidate
-shade	n	tone	gold_candidate
-shade	n	trace	gold_candidate
-shed	v	discard	gold_candidate
-shed	v	discarding	gold_candidate
-shed	v	disperse	gold_candidate
-shed	v	drop	gold_candidate
-shed	v	emit	gold_candidate
-shed	v	give	gold_candidate
-shed	v	lose	gold_candidate
-shed	v	moult	gold_candidate
-shed	v	pass	gold_candidate
-shed	v	radiate	gold_candidate
-shed	v	relinquish	gold_candidate
-shed	v	reveal	gold_candidate
-shed	v	scatter	gold_candidate
-shed	v	shine	gold_candidate
-shed	v	spill	gold_candidate
-shed	v	spread	gold_candidate
-shed	v	throw	gold_candidate
-shed	v	transmit	gold_candidate
-shortly	r	abruptly	gold_candidate
-shortly	r	briefly	gold_candidate
-shortly	r	brusquely	gold_candidate
-shortly	r	curtly	gold_candidate
-shortly	r	immediately	gold_candidate
-shortly	r	just	gold_candidate
-shortly	r	little	gold_candidate
-shortly	r	presently	gold_candidate
-shortly	r	quickly	gold_candidate
-shortly	r	sharply	gold_candidate
-shortly	r	soon	gold_candidate
-shot	n	aim	gold_candidate
-shot	n	ammunition	gold_candidate
-shot	n	attempt	gold_candidate
-shot	n	blast	gold_candidate
-shot	n	bullet	gold_candidate
-shot	n	discharge	gold_candidate
-shot	n	drive	gold_candidate
-shot	n	firing	gold_candidate
-shot	n	hit	gold_candidate
-shot	n	injection	gold_candidate
-shot	n	inoculation	gold_candidate
-shot	n	jab	gold_candidate
-shot	n	manoeuvre	gold_candidate
-shot	n	move	gold_candidate
-shot	n	noise	gold_candidate
-shot	n	pellet	gold_candidate
-shot	n	photo	gold_candidate
-shot	n	photograph	gold_candidate
-shot	n	picture	gold_candidate
-shot	n	play	gold_candidate
-shot	n	portrait	gold_candidate
-shot	n	projectile	gold_candidate
-shot	n	round	gold_candidate
-shot	n	strike	gold_candidate
-shot	n	stroke	gold_candidate
-shot	n	vaccination	gold_candidate
-show	v	air	gold_candidate
-show	v	appear	gold_candidate
-show	v	come	gold_candidate
-show	v	depict	gold_candidate
-show	v	display	gold_candidate
-show	v	exhibit	gold_candidate
-show	v	give	gold_candidate
-show	v	guide	gold_candidate
-show	v	illustrate	gold_candidate
-show	v	indicate	gold_candidate
-show	v	instruct	gold_candidate
-show	v	offer	gold_candidate
-show	v	picture	gold_candidate
-show	v	play	gold_candidate
-show	v	present	gold_candidate
-show	v	reveal	gold_candidate
-side	n	against	gold_candidate
-side	n	ally	gold_candidate
-side	n	area	gold_candidate
-side	n	aspect	gold_candidate
-side	n	bank	gold_candidate
-side	n	boundary	gold_candidate
-side	n	contingent	gold_candidate
-side	n	conversely	gold_candidate
-side	n	divide	gold_candidate
-side	n	edge	gold_candidate
-side	n	facet	gold_candidate
-side	n	faction	gold_candidate
-side	n	flank	gold_candidate
-side	n	fringe	gold_candidate
-side	n	hand	gold_candidate
-side	n	instead	gold_candidate
-side	n	part	gold_candidate
-side	n	perspective	gold_candidate
-side	n	position	gold_candidate
-side	n	responsibility	gold_candidate
-side	n	shore	gold_candidate
-side	n	standpoint	gold_candidate
-side	n	surface	gold_candidate
-side	n	team	gold_candidate
-side	n	view	gold_candidate
-side	n	you	gold_candidate
-skip	v	avoid	gold_candidate
-skip	v	bounce	gold_candidate
-skip	v	bound	gold_candidate
-skip	v	bump	gold_candidate
-skip	v	disregard	gold_candidate
-skip	v	dodge	gold_candidate
-skip	v	eschew	gold_candidate
-skip	v	hop	gold_candidate
-skip	v	ignore	gold_candidate
-skip	v	jump	gold_candidate
-skip	v	leave	gold_candidate
-skip	v	miss	gold_candidate
-skip	v	neglect	gold_candidate
-skip	v	omit	gold_candidate
-skip	v	pass	gold_candidate
-skip	v	prance	gold_candidate
-skip	v	reject	gold_candidate
-skip	v	shift	gold_candidate
-skip	v	skim	gold_candidate
-skip	v	skitter	gold_candidate
-skip	v	spring	gold_candidate
-so	r	approximately	gold_candidate
-so	r	as	gold_candidate
-so	r	consequently	gold_candidate
-so	r	hence	gold_candidate
-so	r	likewise	gold_candidate
-so	r	that	gold_candidate
-so	r	thereabouts	gold_candidate
-so	r	therefore	gold_candidate
-so	r	this	gold_candidate
-so	r	thus	gold_candidate
-so	r	very	gold_candidate
-soft	a	comfortable	gold_candidate
-soft	a	comfy	gold_candidate
-soft	a	compassionate	gold_candidate
-soft	a	cushioned	gold_candidate
-soft	a	easy	gold_candidate
-soft	a	faint	gold_candidate
-soft	a	feeble	gold_candidate
-soft	a	flexible	gold_candidate
-soft	a	gentle	gold_candidate
-soft	a	imprecise	gold_candidate
-soft	a	lenient	gold_candidate
-soft	a	malleable	gold_candidate
-soft	a	nonalcoholic	gold_candidate
-soft	a	quiet	gold_candidate
-soft	a	restful	gold_candidate
-soft	a	smooth	gold_candidate
-soft	a	spongy	gold_candidate
-soft	a	squashy	gold_candidate
-soft	a	tender	gold_candidate
-soft	a	undemanding	gold_candidate
-soft	a	weak	gold_candidate
-soft	a	yielding	gold_candidate
-softly	r	carefully	gold_candidate
-softly	r	daintily	gold_candidate
-softly	r	delicately	gold_candidate
-softly	r	faintly	gold_candidate
-softly	r	finely	gold_candidate
-softly	r	gently	gold_candidate
-softly	r	indifferently	gold_candidate
-softly	r	lightly	gold_candidate
-softly	r	quietly	gold_candidate
-softly	r	slightly	gold_candidate
-softly	r	subtly	gold_candidate
-softly	r	tenderly	gold_candidate
-soil	n	compost	gold_candidate
-soil	n	dirt	gold_candidate
-soil	n	earth	gold_candidate
-soil	n	geological	gold_candidate
-soil	n	ground	gold_candidate
-soil	n	land	gold_candidate
-soil	n	layer	gold_candidate
-soil	n	pedological	gold_candidate
-soil	n	pn	gold_candidate
-soil	n	stain	gold_candidate
-soil	n	tarnish	gold_candidate
-soil	n	terrain	gold_candidate
-solid	a	accurate	gold_candidate
-solid	a	cemented	gold_candidate
-solid	a	concrete	gold_candidate
-solid	a	convincing	gold_candidate
-solid	a	dependable	gold_candidate
-solid	a	dry	gold_candidate
-solid	a	firm	gold_candidate
-solid	a	fixed	gold_candidate
-solid	a	genuine	gold_candidate
-solid	a	good	gold_candidate
-solid	a	hard	gold_candidate
-solid	a	reliable	gold_candidate
-solid	a	respectable	gold_candidate
-solid	a	rigid	gold_candidate
-solid	a	secure	gold_candidate
-solid	a	set	gold_candidate
-solid	a	solid	gold_candidate
-solid	a	sound	gold_candidate
-solid	a	stable	gold_candidate
-solid	a	strong	gold_candidate
-solid	a	sturdy	gold_candidate
-solid	a	substantial	gold_candidate
-solid	a	substantive	gold_candidate
-solid	a	valid	gold_candidate
-special	a	abnormal	gold_candidate
-special	a	additional	gold_candidate
-special	a	anomalous	gold_candidate
-special	a	atypical	gold_candidate
-special	a	distinguished	gold_candidate
-special	a	eminent	gold_candidate
-special	a	exceptional	gold_candidate
-special	a	exclusive	gold_candidate
-special	a	extra	gold_candidate
-special	a	extraordinary	gold_candidate
-special	a	important	gold_candidate
-special	a	kind	gold_candidate
-special	a	lovely	gold_candidate
-special	a	magical	gold_candidate
-special	a	memorable	gold_candidate
-special	a	outstanding	gold_candidate
-special	a	particular	gold_candidate
-special	a	peculiar	gold_candidate
-special	a	premium	gold_candidate
-special	a	quality	gold_candidate
-special	a	remarkable	gold_candidate
-special	a	selected	gold_candidate
-special	a	tailored	gold_candidate
-special	a	treasured	gold_candidate
-special	a	unique	gold_candidate
-special	a	valued	gold_candidate
-special	a	wonderful	gold_candidate
-stand	n	attitude	gold_candidate
-stand	n	base	gold_candidate
-stand	n	frame	gold_candidate
-stand	n	location	gold_candidate
-stand	n	place	gold_candidate
-stand	n	placement	gold_candidate
-stand	n	platform	gold_candidate
-stand	n	position	gold_candidate
-stand	n	stance	gold_candidate
-stand	n	structure	gold_candidate
-stand	n	support	gold_candidate
-stand	n	table	gold_candidate
-stand	n	upright	gold_candidate
-stand	n.v	abbreviate	gold_candidate
-stand	n.v	continue	gold_candidate
-stand	n.v	do-nothing	gold_candidate
-stand	n.v	endure	gold_candidate
-stand	n.v	prevail	gold_candidate
-stand	n.v	rely	gold_candidate
-stand	n.v	remain	gold_candidate
-stand	n.v	represent	gold_candidate
-stand	n.v	sit	gold_candidate
-stand	n.v	stay	gold_candidate
-stand	n.v	symbolize	gold_candidate
-stand	n.v	wait	gold_candidate
-stand	n.v	watch	gold_candidate
-steady	a	constant	gold_candidate
-steady	a	continuous	gold_candidate
-steady	a	firm	gold_candidate
-steady	a	fixed	gold_candidate
-steady	a	gradual	gold_candidate
-steady	a	persistent	gold_candidate
-steady	a	regular	gold_candidate
-steady	a	solid	gold_candidate
-steady	a	stable	gold_candidate
-steady	a	sure	gold_candidate
-steady	a	unbroken	gold_candidate
-steady	a	unchanging	gold_candidate
-steady	a	unfluctuating	gold_candidate
-steady	a	uninterrupted	gold_candidate
-steady	a	unremitting	gold_candidate
-steady	a	unshaking	gold_candidate
-steady	a	unvarying	gold_candidate
-steady	a	unwavering	gold_candidate
-stiff	a	aching	gold_candidate
-stiff	a	constrained	gold_candidate
-stiff	a	cricked	gold_candidate
-stiff	a	firm	gold_candidate
-stiff	a	formal	gold_candidate
-stiff	a	frozen	gold_candidate
-stiff	a	good	gold_candidate
-stiff	a	hard	gold_candidate
-stiff	a	harsh	gold_candidate
-stiff	a	heavy	gold_candidate
-stiff	a	inelastic	gold_candidate
-stiff	a	inflexible	gold_candidate
-stiff	a	intense	gold_candidate
-stiff	a	painful	gold_candidate
-stiff	a	powerful	gold_candidate
-stiff	a	rheumatic	gold_candidate
-stiff	a	rigid	gold_candidate
-stiff	a	severe	gold_candidate
-stiff	a	solid	gold_candidate
-stiff	a	sore	gold_candidate
-stiff	a	stern	gold_candidate
-stiff	a	strong	gold_candidate
-stiff	a	tough	gold_candidate
-stiff	a	unbending	gold_candidate
-stiff	a	unnatural	gold_candidate
-stiff	a	unrelaxed	gold_candidate
-stiff	a	unyielding	gold_candidate
-still	a	arranged	gold_candidate
-still	a	calm	gold_candidate
-still	a	fixed	gold_candidate
-still	a	hushed	gold_candidate
-still	a	motionless	gold_candidate
-still	a	nonmoving	gold_candidate
-still	a	peaceful	gold_candidate
-still	a	quiet	gold_candidate
-still	a	serene	gold_candidate
-still	a	smooth	gold_candidate
-still	a	static	gold_candidate
-still	a	stationary	gold_candidate
-still	a	tranquil	gold_candidate
-still	a	unmoving	gold_candidate
-still	a	unruffled	gold_candidate
-still	a	windless	gold_candidate
-straight	a	accurate	gold_candidate
-straight	a	candid	gold_candidate
-straight	a	clear	gold_candidate
-straight	a	consecutive	gold_candidate
-straight	a	continuous	gold_candidate
-straight	a	correct	gold_candidate
-straight	a	direct	gold_candidate
-straight	a	forthright	gold_candidate
-straight	a	genuine	gold_candidate
-straight	a	heterosexual	gold_candidate
-straight	a	honest	gold_candidate
-straight	a	level	gold_candidate
-straight	a	linear	gold_candidate
-straight	a	nondeviating	gold_candidate
-straight	a	orderly	gold_candidate
-straight	a	plain	gold_candidate
-straight	a	pure	gold_candidate
-straight	a	right	gold_candidate
-straight	a	smooth	gold_candidate
-straight	a	sorted	gold_candidate
-straight	a	standard	gold_candidate
-straight	a	successive	gold_candidate
-straight	a	true	gold_candidate
-straight	a	truthful	gold_candidate
-straight	a	unadulterated	gold_candidate
-straight	a	unbending	gold_candidate
-straight	a	unbent	gold_candidate
-straight	a	uncrooked	gold_candidate
-straight	a	uncurved	gold_candidate
-straight	a	uncurving	gold_candidate
-straight	a	undeviating	gold_candidate
-straight	a	undiluted	gold_candidate
-straight	a	undistorted	gold_candidate
-straight	a	uninterrupted	gold_candidate
-straight	a	unswerving	gold_candidate
-straight	a	vertical	gold_candidate
-strain	n	anxiety	gold_candidate
-strain	n	breed	gold_candidate
-strain	n	burden	gold_candidate
-strain	n	effort	gold_candidate
-strain	n	exertion	gold_candidate
-strain	n	extraction	gold_candidate
-strain	n	form	gold_candidate
-strain	n	group	gold_candidate
-strain	n	kind	gold_candidate
-strain	n	line	gold_candidate
-strain	n	load	gold_candidate
-strain	n	melody	gold_candidate
-strain	n	music	gold_candidate
-strain	n	pressure	gold_candidate
-strain	n	sort	gold_candidate
-strain	n	stock	gold_candidate
-strain	n	stress	gold_candidate
-strain	n	tension	gold_candidate
-strain	n	trace	gold_candidate
-strain	n	tune	gold_candidate
-strain	n	type	gold_candidate
-strain	n	variety	gold_candidate
-strain	n	worry	gold_candidate
-strange	a	abnormal	gold_candidate
-strange	a	alien	gold_candidate
-strange	a	bizarre	gold_candidate
-strange	a	different	gold_candidate
-strange	a	foreign	gold_candidate
-strange	a	odd	gold_candidate
-strange	a	peculiar	gold_candidate
-strange	a	surprising	gold_candidate
-strange	a	unexpected	gold_candidate
-strange	a	unfamiliar	gold_candidate
-strange	a	unknown	gold_candidate
-strange	a	unlikely	gold_candidate
-strange	a	unusual	gold_candidate
-strange	a	weird	gold_candidate
-strike	v	achieve	gold_candidate
-strike	v	affect	gold_candidate
-strike	v	bang	gold_candidate
-strike	v	bash	gold_candidate
-strike	v	begin	gold_candidate
-strike	v	bump	gold_candidate
-strike	v	carve	gold_candidate
-strike	v	cast	gold_candidate
-strike	v	fail	gold_candidate
-strike	v	find	gold_candidate
-strike	v	get	gold_candidate
-strike	v	hammer	gold_candidate
-strike	v	hit	gold_candidate
-strike	v	hitting	gold_candidate
-strike	v	impress	gold_candidate
-strike	v	knock	gold_candidate
-strike	v	make	gold_candidate
-strike	v	move	gold_candidate
-strike	v	occur	gold_candidate
-strike	v	pn	gold_candidate
-strike	v	start	gold_candidate
-strike	v	surprise	gold_candidate
-strike	v	take	gold_candidate
-strike	v	thrust	gold_candidate
-strong	a	bitter	gold_candidate
-strong	a	capable	gold_candidate
-strong	a	clear	gold_candidate
-strong	a	compelling	gold_candidate
-strong	a	concentrated	gold_candidate
-strong	a	convincing	gold_candidate
-strong	a	dark	gold_candidate
-strong	a	dependable	gold_candidate
-strong	a	distinct	gold_candidate
-strong	a	durable	gold_candidate
-strong	a	effective	gold_candidate
-strong	a	firm	gold_candidate
-strong	a	forceful	gold_candidate
-strong	a	good	gold_candidate
-strong	a	hardy	gold_candidate
-strong	a	healthy	gold_candidate
-strong	a	heavy	gold_candidate
-strong	a	high	gold_candidate
-strong	a	intense	gold_candidate
-strong	a	keen	gold_candidate
-strong	a	masterful	gold_candidate
-strong	a	persuasive	gold_candidate
-strong	a	potent	gold_candidate
-strong	a	powerful	gold_candidate
-strong	a	pronounced	gold_candidate
-strong	a	resilient	gold_candidate
-strong	a	resolute	gold_candidate
-strong	a	robust	gold_candidate
-strong	a	secure	gold_candidate
-strong	a	solid	gold_candidate
-strong	a	sound	gold_candidate
-strong	a	sturdy	gold_candidate
-strong	a	tough	gold_candidate
-strong	a	vigorous	gold_candidate
-suffer	v	accept	gold_candidate
-suffer	v	acquire	gold_candidate
-suffer	v	bear	gold_candidate
-suffer	v	encounter	gold_candidate
-suffer	v	endure	gold_candidate
-suffer	v	experience	gold_candidate
-suffer	v	feel	gold_candidate
-suffer	v	have	gold_candidate
-suffer	v	know	gold_candidate
-suffer	v	sustain	gold_candidate
-suffer	v	tolerate	gold_candidate
-suffer	v	undergo	gold_candidate
-suspect	v	assume	gold_candidate
-suspect	v	believe	gold_candidate
-suspect	v	consider	gold_candidate
-suspect	v	expect	gold_candidate
-suspect	v	feel	gold_candidate
-suspect	v	guess	gold_candidate
-suspect	v	imagine	gold_candidate
-suspect	v	mistrust	gold_candidate
-suspect	v	postulate	gold_candidate
-suspect	v	presume	gold_candidate
-suspect	v	question	gold_candidate
-suspect	v	reckon	gold_candidate
-suspect	v	surmise	gold_candidate
-suspect	v	suspicious	gold_candidate
-suspect	v	think	gold_candidate
-take	v	accept	gold_candidate
-take	v	assume	gold_candidate
-take	v	be	gold_candidate
-take	v	begin	gold_candidate
-take	v	collect	gold_candidate
-take	v	consider	gold_candidate
-take	v	gather	gold_candidate
-take	v	get	gold_candidate
-take	v	grasp	gold_candidate
-take	v	grow	gold_candidate
-take	v	happen	gold_candidate
-take	v	include	gold_candidate
-take	v	last	gold_candidate
-take	v	occupy	gold_candidate
-take	v	occur	gold_candidate
-take	v	risk	gold_candidate
-take	v	run	gold_candidate
-take	v	start	gold_candidate
-take	v	tolerate	gold_candidate
-take	v	undergo	gold_candidate
-tap	v	appoint	gold_candidate
-tap	v	approach	gold_candidate
-tap	v	ask	gold_candidate
-tap	v	beat	gold_candidate
-tap	v	choose	gold_candidate
-tap	v	commission	gold_candidate
-tap	v	contact	gold_candidate
-tap	v	draw	gold_candidate
-tap	v	drum	gold_candidate
-tap	v	establish	gold_candidate
-tap	v	exploit	gold_candidate
-tap	v	extract	gold_candidate
-tap	v	hit	gold_candidate
-tap	v	knock	gold_candidate
-tap	v	mark	gold_candidate
-tap	v	milk	gold_candidate
-tap	v	move	gold_candidate
-tap	v	pat	gold_candidate
-tap	v	rap	gold_candidate
-tap	v	recommend	gold_candidate
-tap	v	select	gold_candidate
-tap	v	strike	gold_candidate
-tap	v	syphon	gold_candidate
-tap	v	touch	gold_candidate
-tap	v	use	gold_candidate
-tap	v	utilise	gold_candidate
-tell	v	assure	gold_candidate
-tell	v	communicate	gold_candidate
-tell	v	describe	gold_candidate
-tell	v	explain	gold_candidate
-tell	v	impart	gold_candidate
-tell	v	inform	gold_candidate
-tell	v	instruct	gold_candidate
-tell	v	narrate	gold_candidate
-tell	v	notify	gold_candidate
-tell	v	order	gold_candidate
-tell	v	recount	gold_candidate
-tender	a	affectionate	gold_candidate
-tender	a	delicate	gold_candidate
-tender	a	early	gold_candidate
-tender	a	fond	gold_candidate
-tender	a	gentle	gold_candidate
-tender	a	great	gold_candidate
-tender	a	immature	gold_candidate
-tender	a	inexperienced	gold_candidate
-tender	a	kind	gold_candidate
-tender	a	loving	gold_candidate
-tender	a	painful	gold_candidate
-tender	a	sensitive	gold_candidate
-tender	a	soft	gold_candidate
-tender	a	sore	gold_candidate
-tender	a	sympathetic	gold_candidate
-tender	a	young	gold_candidate
-terrible	a	abhorrent	gold_candidate
-terrible	a	appalling	gold_candidate
-terrible	a	atrocious	gold_candidate
-terrible	a	awful	gold_candidate
-terrible	a	bad	gold_candidate
-terrible	a	deplorable	gold_candidate
-terrible	a	dreadful	gold_candidate
-terrible	a	fearsome	gold_candidate
-terrible	a	formidable	gold_candidate
-terrible	a	frightening	gold_candidate
-terrible	a	horrible	gold_candidate
-terrible	a	horrific	gold_candidate
-terrible	a	horrifying	gold_candidate
-terrible	a	negative	gold_candidate
-terrible	a	poignant	gold_candidate
-terrible	a	severe	gold_candidate
-terrible	a	shocking	gold_candidate
-terrible	a	terrifying	gold_candidate
-terrible	a	unpleasant	gold_candidate
-test	n	analysis	gold_candidate
-test	n	assessment	gold_candidate
-test	n	check	gold_candidate
-test	n	evaluation	gold_candidate
-test	n	exam	gold_candidate
-test	n	examination	gold_candidate
-test	n	scan	gold_candidate
-test	n	trial	gold_candidate
-therefore	r	accordingly	gold_candidate
-therefore	r	consequently	gold_candidate
-therefore	r	hence	gold_candidate
-therefore	r	so	gold_candidate
-therefore	r	thus	gold_candidate
-think	v	analyse	gold_candidate
-think	v	anticipate	gold_candidate
-think	v	assume	gold_candidate
-think	v	believe	gold_candidate
-think	v	consider	gold_candidate
-think	v	contemplate	gold_candidate
-think	v	expect	gold_candidate
-think	v	feel	gold_candidate
-think	v	guess	gold_candidate
-think	v	imagine	gold_candidate
-think	v	reason	gold_candidate
-think	v	reckon	gold_candidate
-think	v	recommend	gold_candidate
-think	v	suppose	gold_candidate
-think	v	suspect	gold_candidate
-throw	v	ask	gold_candidate
-throw	v	bring	gold_candidate
-throw	v	cast	gold_candidate
-throw	v	chuck	gold_candidate
-throw	v	deliver	gold_candidate
-throw	v	demand	gold_candidate
-throw	v	discard	gold_candidate
-throw	v	fire	gold_candidate
-throw	v	fling	gold_candidate
-throw	v	focus	gold_candidate
-throw	v	hurl	gold_candidate
-throw	v	pitch	gold_candidate
-throw	v	place	gold_candidate
-throw	v	project	gold_candidate
-throw	v	propel	gold_candidate
-throw	v	punch	gold_candidate
-throw	v	put	gold_candidate
-throw	v	shoot	gold_candidate
-throw	v	toss	gold_candidate
-thus	r	accordingly	gold_candidate
-thus	r	consequently	gold_candidate
-thus	r	hence	gold_candidate
-thus	r	so	gold_candidate
-thus	r	there	gold_candidate
-thus	r	therefore	gold_candidate
-thus	r	this	gold_candidate
-tight	r	close	gold_candidate
-tight	r	close-fitting	gold_candidate
-tight	r	closely	gold_candidate
-tight	r	compressed	gold_candidate
-tight	r	constricted	gold_candidate
-tight	r	constricting	gold_candidate
-tight	r	cramped	gold_candidate
-tight	r	firmly	gold_candidate
-tight	r	high-strung	gold_candidate
-tight	r	low	gold_candidate
-tight	r	near	gold_candidate
-tight	r	pressured	gold_candidate
-tight	r	pressurised	gold_candidate
-tight	r	restricted	gold_candidate
-tight	r	scarce	gold_candidate
-tight	r	secure	gold_candidate
-tight	r	securely	gold_candidate
-tight	r	small	gold_candidate
-tight	r	sparse	gold_candidate
-tight	r	stretched	gold_candidate
-tight	r	uncomfortable	gold_candidate
-time	n	age	gold_candidate
-time	n	allocation	gold_candidate
-time	n	allotment	gold_candidate
-time	n	chance	gold_candidate
-time	n	day	gold_candidate
-time	n	deadline	gold_candidate
-time	n	epoch	gold_candidate
-time	n	era	gold_candidate
-time	n	instance	gold_candidate
-time	n	instant	gold_candidate
-time	n	interval	gold_candidate
-time	n	juncture	gold_candidate
-time	n	moment	gold_candidate
-time	n	occasion	gold_candidate
-time	n	occasionally	gold_candidate
-time	n	opportunity	gold_candidate
-time	n	period	gold_candidate
-time	n	point	gold_candidate
-time	n	space	gold_candidate
-touch	v	accept	gold_candidate
-touch	v	affect	gold_candidate
-touch	v	alight	gold_candidate
-touch	v	brush	gold_candidate
-touch	v	consider	gold_candidate
-touch	v	contact	gold_candidate
-touch	v	do	gold_candidate
-touch	v	feel	gold_candidate
-touch	v	finger	gold_candidate
-touch	v	handle	gold_candidate
-touch	v	infect	gold_candidate
-touch	v	influence	gold_candidate
-touch	v	meet	gold_candidate
-touch	v	mention	gold_candidate
-touch	v	move	gold_candidate
-touch	v	on	gold_candidate
-touch	v	reach	gold_candidate
-touch	v	skim	gold_candidate
-touch	v	stir	gold_candidate
-touch	v	stroke	gold_candidate
-touch	v	study	gold_candidate
-touch	v	tinge	gold_candidate
-touch	v	undertake	gold_candidate
-tremendous	a	enormous	gold_candidate
-tremendous	a	extraordinary	gold_candidate
-tremendous	a	great	gold_candidate
-tremendous	a	huge	gold_candidate
-tremendous	a	marvellous	gold_candidate
-tremendous	a	terrible	gold_candidate
-tremendous	a	terrific	gold_candidate
-tremendous	a	vast	gold_candidate
-tremendous	a	wonderful	gold_candidate
-true	a	accurate	gold_candidate
-true	a	actual	gold_candidate
-true	a	correct	gold_candidate
-true	a	fact	gold_candidate
-true	a	factual	gold_candidate
-true	a	genuine	gold_candidate
-true	a	real	gold_candidate
-true	a	right	gold_candidate
-true	a	truth	gold_candidate
-true	a	unquestionable	gold_candidate
-true	a	verified	gold_candidate
-truly	r	absolutely	gold_candidate
-truly	r	actually	gold_candidate
-truly	r	definitely	gold_candidate
-truly	r	fully	gold_candidate
-truly	r	genuinely	gold_candidate
-truly	r	honestly	gold_candidate
-truly	r	perfectly	gold_candidate
-truly	r	really	gold_candidate
-truly	r	strictly	gold_candidate
-truly	r	truthfully	gold_candidate
-truly	r	undoubtedly	gold_candidate
-truly	r	unequivocally	gold_candidate
-truly	r	unquestionably	gold_candidate
-vital	a	critical	gold_candidate
-vital	a	crucial	gold_candidate
-vital	a	essential	gold_candidate
-vital	a	fundamental	gold_candidate
-vital	a	important	gold_candidate
-vital	a	indispensable	gold_candidate
-vital	a	integral	gold_candidate
-vital	a	necessary	gold_candidate
-vital	a	requisite	gold_candidate
-way	n	aspect	gold_candidate
-way	n	by	gold_candidate
-way	n	characteristic	gold_candidate
-way	n	direction	gold_candidate
-way	n	far	gold_candidate
-way	n	fashion	gold_candidate
-way	n	how	gold_candidate
-way	n	incidentally	gold_candidate
-way	n	journey	gold_candidate
-way	n	manner	gold_candidate
-way	n	means	gold_candidate
-way	n	method	gold_candidate
-way	n	passage	gold_candidate
-way	n	practice	gold_candidate
-way	n	respect	gold_candidate
-way	n	route	gold_candidate
-way	n	sense	gold_candidate
-way	n	so	gold_candidate
-way	n	some	gold_candidate
-way	n	technique	gold_candidate
-well	r	and	gold_candidate
-well	r	carefully	gold_candidate
-well	r	efficiently	gold_candidate
-well	r	excellently	gold_candidate
-well	r	goodbye	gold_candidate
-well	r	healthily	gold_candidate
-well	r	including	gold_candidate
-well	r	indeed	gold_candidate
-well	r	long	gold_candidate
-well	r	much	gold_candidate
-well	r	nice	gold_candidate
-well	r	properly	gold_candidate
-well	r	safely	gold_candidate
-well	r	satisfactorily	gold_candidate
-well	r	so	gold_candidate
-well	r	successfully	gold_candidate
-well	r	sufficient	gold_candidate
-well	r	then	gold_candidate
-well	r	with	gold_candidate
-wild	a	amazing	gold_candidate
-wild	a	animal	gold_candidate
-wild	a	chaotic	gold_candidate
-wild	a	coloured	gold_candidate
-wild	a	crazy	gold_candidate
-wild	a	dramatic	gold_candidate
-wild	a	extreme	gold_candidate
-wild	a	feral	gold_candidate
-wild	a	free	gold_candidate
-wild	a	garish	gold_candidate
-wild	a	huge	gold_candidate
-wild	a	incredible	gold_candidate
-wild	a	irregular	gold_candidate
-wild	a	natural	gold_candidate
-wild	a	non-captive	gold_candidate
-wild	a	non-domestic	gold_candidate
-wild	a	outside	gold_candidate
-wild	a	patterned	gold_candidate
-wild	a	reckless	gold_candidate
-wild	a	striking	gold_candidate
-wild	a	unbelievable	gold_candidate
-wild	a	undisciplined	gold_candidate
-wild	a	undomesticated	gold_candidate
-wild	a	unpredictable	gold_candidate
-wild	a	unrestrained	gold_candidate
-wild	a	untamed	gold_candidate
-wild	a.n	wilderness	gold_candidate
-wind	n	air	gold_candidate
-wind	n	blast	gold_candidate
-wind	n	breeze	gold_candidate
-wind	n	current	gold_candidate
-wind	n	fart	gold_candidate
-wind	n	flatulence	gold_candidate
-wind	n	gas	gold_candidate
-wind	n	gust	gold_candidate
-wind	n	vagary	gold_candidate
-wind	n	whirlwind	gold_candidate
-wind	v	bend	gold_candidate
-wind	v	choke	gold_candidate
-wind	v	coil	gold_candidate
-wind	v	end	gold_candidate
-wind	v	meander	gold_candidate
-wind	v	mislead	gold_candidate
-wind	v	navigate	gold_candidate
-wind	v	proceed	gold_candidate
-wind	v	progress	gold_candidate
-wind	v	snake	gold_candidate
-wind	v	tease	gold_candidate
-wind	v	tighten	gold_candidate
-wind	v	twist	gold_candidate
-wind	v	weave	gold_candidate
-wind	v	wend	gold_candidate
-wind	v	wrap	gold_candidate
-work	v	act	gold_candidate
-work	v	collaborate	gold_candidate
-work	v	cooperate	gold_candidate
-work	v	employ	gold_candidate
-work	v	engage	gold_candidate
-work	v	function	gold_candidate
-work	v	investigate	gold_candidate
-work	v	labour	gold_candidate
-work	v	move	gold_candidate
-work	v	operate	gold_candidate
-work	v	participate	gold_candidate
-work	v	research	gold_candidate
-work	v	task	gold_candidate
-work	v	toil	gold_candidate
-worldwide	a	global	gold_candidate
-worldwide	a	international	gold_candidate
-worldwide	a	total	gold_candidate
-worldwide	a	universal	gold_candidate
-worthy	a	acceptable	gold_candidate
-worthy	a	admirable	gold_candidate
-worthy	a	befitting	gold_candidate
-worthy	a	beneficial	gold_candidate
-worthy	a	charitable	gold_candidate
-worthy	a	commendable	gold_candidate
-worthy	a	creditable	gold_candidate
-worthy	a	deserved	gold_candidate
-worthy	a	deserving	gold_candidate
-worthy	a	excellent	gold_candidate
-worthy	a	fitting	gold_candidate
-worthy	a	good	gold_candidate
-worthy	a	honourable	gold_candidate
-worthy	a	laudable	gold_candidate
-worthy	a	reputable	gold_candidate
-worthy	a	respectable	gold_candidate
-worthy	a	righteous	gold_candidate
-worthy	a	satisfactory	gold_candidate
-worthy	a	suitable	gold_candidate
-worthy	a	trusted	gold_candidate
-worthy	a	worthwhile	gold_candidate
-yard	n	area	gold_candidate
-yard	n	courtyard	gold_candidate
-yard	n	depot	gold_candidate
-yard	n	enclosure	gold_candidate
-yard	n	garden	gold_candidate
-yard	n	ground	gold_candidate
-yard	n	lawn	gold_candidate
-yard	n	lot	gold_candidate
-yard	n	metre	gold_candidate
-yard	n	patio	gold_candidate
-yard	n	playground	gold_candidate
-yard	n	pn	gold_candidate
-yard	n	property	gold_candidate
-yard	n	terrace	gold_candidate
-yet	r	already	gold_candidate
-yet	r	although	gold_candidate
-yet	r	before	gold_candidate
-yet	r	but	gold_candidate
-yet	r	hitherto	gold_candidate
-yet	r	however	gold_candidate
-yet	r	lately	gold_candidate
-yet	r	nevertheless	gold_candidate
-yet	r	still	gold_candidate
+about	r	regarding
+about	r	discussed
+about	r	of
+about	r	approximately
+about	r	around
+about	r	concerning
+about	r	dealing with
+about	r	concerned with
+about	r	somewhat
+about	r	roughly
+about	r	more or less
+about	r	nearly
+about	r	arise
+about	r	happen
+about	r	round
+about	r	occur
+about	r	consider
+about	r	here and there
+about	r	cope with
+account	n	explanation
+account	n	description
+account	n	synopsis
+account	n	chronicle
+account	n	statement
+account	n	banking arrangement
+account	n	subscription
+account	n	facility
+account	n	consideration
+account	n	fund
+account	n	balance
+account	n	finance
+account	n	asset
+account	n	narrative
+account	n	report
+account	n	bank balance
+account	n	logon
+account	n	subscriber
+account	n	ledger
+account	n	access
+account	n	banking facility
+acquire	v	gain
+acquire	v	gather
+acquire	v	amass
+acquire	v	collect
+acquire	v	procure
+acquire	v	purchase
+acquire	v	buy
+acquire	v	obtain
+acquire	v	get
+acquire	v	receive
+acquire	v	achieve
+acquire	v	secure
+acquire	v	learn
+acquire	v	bring in
+acquire	v	find
+acute	a	severe
+acute	a	critical
+acute	a	sharp
+acute	a	grave
+acute	a	serious
+acute	a	sudden
+acute	a	urgent
+acute	a	sensitive
+acute	a	keen
+acute	a	emergency
+acute	a	pn
+acute	a	heightened
+acute	a	intense
+apparently	r	seemingly
+apparently	r	ostensibly
+apparently	r	looking
+apparently	r	supposedly
+apparently	r	plainly
+apparently	r	obviously
+apparently	r	evidently
+apparently	r	clearly
+apparently	r	palpably
+apparently	r	manifestly
+apparently	r	it seems
+around	r	about
+around	r	here
+around	r	there
+around	r	in the vicinity
+around	r	living
+around	r	alive
+around	r	surrounding
+around	r	over
+around	r	encircling
+around	r	round
+around	r	back on itself
+around	r	approximately
+around	r	roughly
+around	r	close to
+around	r	here and there
+around	r	everywhere
+around	r	through out the world
+around	r	all over
+away	r	off
+away	r	depart
+away	r	head off
+away	r	go
+away	r	leave
+away	r	stealing
+away	r	seizing
+away	r	removing
+away	r	confiscate
+away	r	and removing it
+away	r	repeatedly
+away	r	with impunity
+away	r	continuously
+away	r	along
+away	r	out
+away	r	repel
+away	r	distancing themselves
+away	r	rebuff
+away	r	apart
+away	r	afar
+away	r	aside
+away	r	absent
+away	r	gone
+away	r	elsewhere
+away	r	distant
+away	r	distance
+away	r	in the future
+away	r	hence
+away	r	ahead
+bar	n	marker
+bar	n	level
+bar	n	barrier
+bar	n	pole
+bar	n	obstruction
+bar	n	hurdle
+bar	n	handlebar
+bar	n	pub
+bar	n	drinking house
+bar	n	hostelry
+bar	n	saloon
+bar	n	restriction
+bar	n	ban
+bar	n	exclusion
+bar	n	prohibition
+bar	n	snack
+bar	n	biscuit
+bar	n	slab
+bar	n	block
+bar	n	banner
+bar	n	indicator
+bar	n	menu
+bar	n	apparatus
+bar	n	metal
+bar	n	crossbar
+bar	n	rod
+bar	n	lounge
+bar	n	drinking lounge
+below	r	underneath
+below	r	beneath
+below	r	lower down
+below	r	following
+below	r	later
+below	r	included
+below	r	attached
+blow	n	punch
+blow	n	thump
+blow	n	strike
+blow	n	clout
+blow	n	hit
+blow	n	knock
+blow	n	setback
+blow	n	criticism
+blow	n	reverse
+blow	n	shock
+blow	n	disaster
+blow	n	hair
+blow	n	wind
+blow	n	air
+blow	n	hot air
+blow	n	attack
+blow	n	knockback
+blow	n	rebuff
+blow	n	movement
+blow	n	thrust
+blue	a	sapphire
+blue	a	sad
+blue	a	depressed
+blue	a	down
+blue	a	unhappy
+blue	a	melancholy
+blue	a	pale grey
+blue	a	grey
+blue	a	azure
+blue	a	conservative
+blue	a	pn
+blue	a	speculative
+blue	a	indecent
+blue	a	cobalt
+blue	a	shady
+blue	a	pornographic
+blue	a	naughty
+blue	a	purple
+board	n	committee
+board	n	governing body
+board	n	administration
+board	n	panel
+board	n	management
+board	n	directorate
+board	n	executive
+board	n	blackboard
+board	n	screen
+board	n	wipeboard
+board	n	whiteboard
+board	n	table
+board	n	game
+board	n	playing surface
+board	n	forum
+board	n	display
+board	n	organisation
+board	n	message area
+board	n	site
+board	n	card
+board	n	motherboard
+board	n	group
+bright	a	intelligent
+bright	a	clever
+bright	a	smart
+bright	a	luminous
+bright	a	well-lit
+bright	a	clear
+bright	a	light
+bright	a	colourful
+bright	a	brilliant
+bright	a	gleam
+bright	a	most able
+bright	a	capable
+bright	a	promising
+bright	a	sharp
+bright	a	motivated
+bright	a	talented
+bright	a	up-and-coming
+bright	a	gifted
+bright	a	most talented
+bright	a	skilled
+bright	a	positive
+bright	a	good
+bright	a	optimisitc
+bright	a	hopeful
+bright	a	shining
+bright	a	deep
+bright	a	vivid
+bright	a	vibrant
+bright	a	alight
+bright	a	great
+bring	v	draw
+bring	v	attract
+bring	v	gather
+bring	v	call
+bring	v	move
+bring	v	convey
+bring	v	file
+bring	v	initiate
+bring	v	institute
+bring	v	instigate
+bring	v	take
+bring	v	start
+bring	v	put
+bring	v	present
+bring	v	make
+bring	v	make more similar
+bring	v	make more like
+bring	v	restore to
+bring	v	deliver
+bring	v	guide
+bring	v	return
+bring	v	get
+bring	v	create
+bring	v	produce
+bring	v	generate
+bring	v	introduce
+bring	v	shoot
+bring	v	depress
+bring	v	topple
+bring	v	ruin
+bring	v	bore
+bring	v	force
+bring	v	transport
+bring	v	carry
+bring	v	realise
+bring	v	contribute
+bring	v	incorporate
+bug	n	listening device
+bug	n	tap
+bug	n	surveillance
+bug	n	spying device
+bug	n	surveillance device
+bug	n	fault
+bug	n	gremlin
+bug	n	defect
+bug	n	code defect
+bug	n	germ
+bug	n	virus
+bug	n	infection
+bug	n	problem
+bug	n	coding error
+bug	n	insect
+bug	n	error
+bug	n	addiction
+bug	n	become obsessed with
+bug	n	obsession
+bug	n	fever
+bug	n	craze
+bull	n	male bovine
+bull	n	male cow
+bull	n	bovine animal
+bull	n	cow
+bull	n	rising
+bull	n	growing
+bull	n	booming
+bull	n	male
+bull	n	adult male
+bull	n	rubbish
+bull	n	nonsense
+bull	n	fearlessly tackled the problem
+bull	n	animal
+bull	n	grasped the nettle
+bull	n	act decisively
+bull	n	adult male cow
+bull	n	edict
+bull	n	warrant
+bull	n	document
+bull	n	target
+bull	n	be accurate
+bull	n	suitor
+bull	n	powerful male
+bull	n	stud
+bull	n	stag
+bull	n	centre
+bull	n	centre circle
+bull	n	bulls eye
+bull	n	crap
+bull	n	load of rubbish
+burst	v	erupt
+burst	v	explode
+burst	v	rush
+burst	v	barge
+burst	v	break
+burst	v	pop
+burst	v	rupture
+burst	v	end
+burst	v	deflate
+burst	v	bounce
+burst	v	leap
+burst	v	explode on to
+burst	v	arrive on
+burst	v	erupt on to
+burst	v	explode on
+burst	v	surprise
+burst	v	descend
+burst	v	erupt on
+burst	v	cover
+burst	v	burgeon
+burst	v	bristle
+burst	v	overflow
+burst	v	laden
+burst	v	run
+burst	v	fracture
+burst	v	enthusiastic
+burst	v	full to burst
+burst	v	split
+burst	v	bound
+burst	v	push
+burst	v	erupt with laughter
+call	v	name
+call	v	address
+call	v	designate
+call	v	refer to
+call	v	dub
+call	v	know as
+call	v	label
+call	v	describe
+call	v	telephone
+call	v	dial
+call	v	phone
+call	v	ring
+call	v	summon
+call	v	request
+call	v	contact
+call	v	describe as
+call	v	term
+call	v	refer to as
+call	v	entitle
+can	n	bin
+can	n	disposal
+can	n	container
+can	n	receptacle
+can	n	tin
+can	n	cannister
+cap	n	capital
+cap	n	limited tax
+cap	n	tip
+cap	n	nozzle
+cap	n	pn
+cap	n	lid
+cap	n	top
+cap	n	limit
+cap	n	restriction
+cap	n	ceiling
+cap	n	hat
+cap	n	pileus
+cap	n	headdress
+caravan	n	trailer
+caravan	n	roadshow
+caravan	n	trailer 
+caravan	n	cavalcade
+caravan	n	band
+caravan	n	vehicle
+caravan	n	company
+caravan	n	camper
+caravan	n	mobile home
+caravan	n	house trailer
+caravan	n	camp trailer
+caravan	n	camping
+caravan	n	convoy
+caravan	n	group
+caravan	n	train
+caravan	n	traveller
+caravan	n	party
+caravan	n	troop
+caravan	n	crocodile
+caravan	n	convey
+carry	v	convey
+carry	v	bear
+carry	v	send
+carry	v	bring
+carry	v	drag
+carry	v	take
+carry	v	transport
+carry	v	hold
+carry	v	transmit
+carry	v	contain
+carry	v	use
+carry	v	be fitted with
+carry	v	do
+carry	v	accomplish
+carry	v	execute
+carry	v	undertake
+carry	v	complete
+carry	v	deploy
+carry	v	perform
+carry	v	pack
+carry	v	have on them
+carry	v	fulfil
+carry	v	conclude
+carry	v	lug
+carry	v	clutch
+change	v	alter
+change	v	amend
+change	v	switch
+change	v	modify
+change	v	move
+change	v	shift
+change	v	vary
+change	v	evolve
+change	v	transform
+change	v	adjust
+change	v	become different
+change	v	update
+charge	n	command
+charge	n	control
+charge	n	power
+charge	n	authority
+charge	n	accusation
+charge	n	allegation
+charge	n	offence
+charge	n	indictment
+charge	n	criticism
+charge	n	issue
+charge	n	cost
+charge	n	expense
+charge	n	payment
+charge	n	fee
+charge	n	prosecution
+charge	n	tariff
+check	v	tick
+check	v	select
+check	v	mark
+check	v	examine
+check	v	verify
+check	v	confirm
+check	v	report
+check	v	make sure
+check	v	admit
+check	v	register
+check	v	submit
+check	v	put
+check	v	inspect
+check	v	search
+check	v	scrutinise
+check	v	note
+check	v	look at
+check	v	test
+check	v	survey
+check	v	take notice
+check	v	investigate
+check	v	hand in
+civil	a	ordinary private
+civil	a	noncriminal
+civil	a	private
+civil	a	civic
+civil	a	citizen
+civil	a	public
+civil	a	elected
+civil	a	state
+civil	a	polite
+civil	a	courteous
+civil	a	cordial
+civil	a	inoffensive
+civil	a	domestic
+civil	a	internal
+civil	a	people's
+civil	a	general
+civil	a	nongovernmental
+civil	a	well mannered
+civil	a	friendly
+civil	a	thoughtful
+civil	a	benevolent
+civil	a	community
+civil	a	citizens'
+civil	a	personal
+civil	a	individual
+civil	a	ordinary
+civil	a	cultured
+civil	a	social
+clean	v	tidy
+clean	v	clear
+clean	v	purge
+clean	v	empty
+clean	v	scrape
+clean	v	cleanse
+clean	v	correct
+clean	v	mend
+clean	v	rectify
+clean	v	wipe
+clean	v	remove
+clean	v	finish
+clean	v	restore
+clean	v	complete
+clean	v	wash
+clean	v	freshen up
+clean	v	wash up
+clean	v	spruce up
+clean	v	tidy up
+clean	v	win
+clean	v	profit greatly
+clean	v	prosper
+clean	v	accumulate
+clean	v	make a fortune
+clean	v	disinfect
+clean	v	purify
+clean	v	remedy
+clean	v	fix
+clean	v	repair
+clear	v	remove
+clear	v	sort
+clear	v	get rid of
+clear	v	dealt with
+clear	v	eliminate
+clear	v	process
+clear	v	improve
+clear	v	change
+clear	v	brighten
+clear	v	tidy
+clear	v	unblock
+clear	v	unobstruct
+clear	v	empty
+clear	v	open up
+clear	v	move away
+clear	v	cut down
+clear	v	above
+clear	v	get above
+clear	v	pass
+clear	v	over
+clear	v	skim
+clear	v	release
+clear	v	be authorised
+clear	v	cash
+clear	v	be freed
+clear	v	move
+clear	v	take away
+clear	v	exonerate
+clear	v	acquit
+clear	v	vindicate
+clear	v	authorise
+clear	v	pardon
+clear	v	absolve
+clear	v	take
+clear	v	free
+close	n	end
+close	n	conclusion
+close	n	finish
+close	n	finale
+close	n	free
+close	n	shutdown
+close	n	shut
+close	n	ending
+closely	r	carefully
+closely	r	in detail
+closely	r	intently
+closely	r	attentively
+closely	r	scrupulously
+closely	r	intimately
+closely	r	nearly
+closely	r	directly
+closely	r	strongly
+closely	r	jointly
+closely	r	collectively
+closely	r	in unison
+closely	r	together
+closely	r	in concert
+closely	r	neatly
+closely	r	narrowly
+closely	r	in tandem
+closely	r	alongside
+closely	r	approximately
+coach	n	carriage
+coach	n	trainer
+coach	n	counsellor
+coach	n	instructor
+coach	n	teacher
+coach	n	tutor
+coach	n	bus
+coach	n	travel bus
+coach	n	transport
+coach	n	car
+come	v	arrive
+come	v	appear
+come	v	turn up
+come	v	join
+come	v	unite
+come	v	rally
+come	v	gather
+come	v	combine
+come	v	considering
+come	v	be about
+come	v	be connected with
+come	v	we consider
+come	v	concern
+come	v	arrive at
+come	v	report
+come	v	emanate 
+come	v	proposed by
+come	v	originate
+come	v	reach
+come	v	get
+come	v	return
+come	v	occur
+come	v	happen
+come	v	be not organised
+come	v	take place
+come	v	spring
+come	v	occur to one
+come	v	spring to mind
+come	v	enter my
+come	v	arrive 
+come	v	fall
+come	v	lever
+come	v	fall off
+come	v	leave
+come	v	find
+come	v	notice
+come	v	encounter
+come	v	chance upon
+cross	n.a	angry
+cross	n.a	annoyed
+cross	n.a	irate
+cross	n.a	irritated
+cry	v	bawl
+cry	v	wail
+cry	v	weep
+cry	v	snivel
+cry	v	call
+cry	v	shout
+cry	v	shriek
+cry	v	demand
+cry	v	exclaim
+cry	v	yell
+cry	v	tear
+cry	v	sob
+cry	v	utter
+cry	v	complain
+dark	n	gloom
+dark	n	shadow
+dark	n	night
+dark	n	shade
+dark	n	darkness
+dark	n	lack of light
+dark	n	ignorance
+dark	n	oblivion
+dark	n	uninformed
+dark	n	ininformed
+dark	n	unsure
+dark	n	unclear
+dark	n	oblivious
+dark	n	uncertain
+dark	n	ignorant
+dark	n	unaware
+dark	n	unilluminated
+dark	n	away from light
+dark	n	secret
+dark	n	obscure situation
+dark	n	somewhere unilluminated
+dark	n	black
+dark	n	dimness
+dark	n	at night
+dark	n	nightfall
+dark	n	dusk
+dark	n	sunset
+dark	n	sombre
+dark	n	mystery
+dark	n	absence of light
+decline	v	reject
+decline	v	refuse
+decline	v	forgo 
+decline	v	fall
+decline	v	decrease
+decline	v	weaken
+decline	v	drop
+decline	v	lessen
+decline	v	deteriorate
+decline	v	get worse
+decline	v	reduce
+dismiss	v	sack
+dismiss	v	fire
+dismiss	v	lay off
+dismiss	v	discharge
+dismiss	v	reject
+dismiss	v	discard
+dismiss	v	ignore
+dismiss	v	see
+dismiss	v	deride
+dismiss	v	excuse
+dismiss	v	release
+dismiss	v	let out
+dismiss	v	remove
+dismiss	v	send away
+dismiss	v	banish
+dismiss	v	dispatch
+draw	v	attract
+draw	v	bring
+draw	v	summon
+draw	v	call
+draw	v	focus
+draw	v	take
+draw	v	acquire
+draw	v	pull
+draw	v	extract
+draw	v	obtain
+draw	v	use
+draw	v	consider
+draw	v	employ
+draw	v	exploit
+draw	v	make use of
+draw	v	take from
+draw	v	rely
+draw	v	consult
+draw	v	sketch
+draw	v	paint
+draw	v	depict
+draw	v	portray
+draw	v	receive
+draw	v	earn
+draw	v	get
+draw	v	claim
+draw	v	derive
+draw	v	lead to
+draw	v	gather
+draw	v	make
+draw	v	drag
+draw	v	haul
+draw	v	withdraw
+draw	v	remove
+draw	v	tie
+draw	v	play
+draw	v	pit
+draw	v	schedule
+draw	v	choose
+draw	v	select
+draw	v	set
+drop	v	left round
+drop	v	unload
+drop	v	set down
+drop	v	deliver
+drop	v	deliver 
+drop	v	leave
+drop	v	write
+drop	v	email
+drop	v	send a message
+drop	v	send
+drop	v	text
+drop	v	write a letter
+drop	v	send a letter
+drop	v	relinquish
+drop	v	let fall
+drop	v	throw
+drop	v	dump
+drop	v	release
+drop	v	let go of
+drop	v	leave out
+drop	v	abandon
+drop	v	omit
+drop	v	ditch
+drop	v	fall
+drop	v	decline
+drop	v	deselect
+drop	v	pause
+drop	v	stop
+drop	v	lower
+drop	v	put down
+drop	v	weigh
+drop	v	discontinue
+drop	v	terminate
+dry	a	arid
+dry	a	drought
+dry	a	parched
+dry	a	rainless
+dry	a	run out
+dry	a	evaporate
+dry	a	out
+dry	a	become empty
+dry	a	empty
+dry	a	waterless
+dry	a	wry
+dry	a	low key
+dry	a	facetious
+dry	a	impassive
+dry	a	understated
+dry	a	droll
+dry	a	boring
+dry	a	uninteresting
+dry	a	unsympathetic
+dry	a	dull
+dry	a	deadpan
+dry	a	tongue in cheek
+dry	a	soulless
+dry	a	flat
+dry	a	alcohol free
+dry	a	teetotal
+dry	a	unmoistened
+dry	a	desiccated
+dry	a	stodgy
+earlier	r	previously
+earlier	r	initially
+earlier	r	formerly
+earlier	r	before
+earlier	r	beforehand
+earlier	r	sooner
+earlier	r	prior to that
+earlier	r	by then
+earlier	r	in advance
+earlier	r	sooner than
+earlier	r	in advance of
+earlier	r	ahead of
+earlier	r	in previous times
+earlier	r	before this
+easy	a	simple
+easy	a	accessible
+easy	a	uncomplicated
+easy	a	carefree
+easy	a	undemanding
+easy	a	trouble free
+easy	a	more straightforward
+easy	a	convenient
+easy	a	more accessible
+easy	a	less difficult
+easy	a	straightforward
+easy	a	possible
+easy	a	less
+easy	a	not difficult
+easy	a	common
+education	n	learning
+education	n	tuition
+education	n	teaching
+education	n	schooling
+education	n	training
+education	n	study
+education	n	knowledge
+education	n	instruction
+education	n	erudition
+education	n	intellect
+education	n	educated
+education	n	place
+education	n	college
+education	n	bringing up
+endure	v	suffer
+endure	v	tolerate
+endure	v	bear
+endure	v	put up with
+endure	v	last
+endure	v	continue
+endure	v	undergo
+endure	v	have
+endure	v	experience
+endure	v	go through
+endure	v	submit to
+endure	v	persist
+entirely	r	completely
+entirely	r	altogether
+entirely	r	wholly
+entirely	r	fully
+entirely	r	totally
+entirely	r	exclusively
+entirely	r	continuously
+entirely	r	utterly
+examination	n	investigation
+examination	n	scrutiny
+examination	n	inspection
+examination	n	consultation
+examination	n	assesment
+examination	n	enquiry
+examination	n	analysis
+examination	n	study
+examination	n	assessment
+examination	n	test
+examination	n	exam
+execution	n	capital punishment
+execution	n	killing
+execution	n	death sentence
+execution	n	death
+execution	n	enforcement
+execution	n	implementation
+execution	n	carrying out
+execution	n	administration
+execution	n	fulfilment
+execution	n	production
+execution	n	transaction
+execution	n	completion
+execution	n	application
+execution	n	performance
+execution	n	operation 
+execution	n	running
+execution	n	actualisation
+execution	n	discharge
+execution	n	putting to death
+execution	n	the chair
+execution	n	the death penalty
+execution	n	method
+extended	a	wide
+extended	a	additional
+extended	a	expanded
+extended	a	broad
+extended	a	protracted
+extended	a	long
+extended	a	lengthened
+extended	a	prolonged
+extended	a	enlarged
+extended	a	elongated
+extended	a	increased
+extended	a	lengthy
+extended	a	drawn out
+extended	a	extensive
+extended	a	expansive
+extended	a	comprehensive
+extended	a	augmented
+external	a	outside
+external	a	outward
+external	a	outer
+external	a	nonlocal
+external	a	link
+external	a	exterior
+external	a	foreign
+fall	v	drop
+fall	v	come
+fall	v	fail
+fall	v	be unsuccessful
+fall	v	become
+fall	v	be taken
+fall	v	take
+fall	v	slip
+fall	v	do not meet
+fall	v	do not come up to
+fall	v	disappoint
+fall	v	fail to meet
+fall	v	undershoot
+fall	v	descend
+fall	v	land
+fall	v	come down
+fall	v	tumble
+fall	v	plunge
+fall	v	go to sleep
+fall	v	drop off
+fall	v	doze off
+fear	v	dread
+fear	v	be afraid of
+fear	v	be frightened of
+fear	v	be frightened by
+fear	v	be scared of
+fear	v	be alarmed by
+fear	v	expect
+fear	v	anticipate
+fear	v	suspect
+fear	v	afraid of
+fear	v	worry
+fear	v	be frightened
+fear	v	be afraid
+fear	v	dread entering
+fear	v	scare
+fear	v	be alarmed
+fear	v	be anxious
+fear	v	anxiously anticipated
+fear	v	worry about
+fear	v	be apprehensive
+fear	v	be concerned
+fear	v	be worried
+fear	v	scared of
+fear	v	frightened of
+fear	v	be sorry
+fear	v	believe
+fear	v	unfortunately
+field	n	area
+field	n	holder
+field	n	section
+field	n	data item
+field	n	box
+field	n	speciality
+field	n	activity
+field	n	discipline
+field	n	land
+field	n	resource
+field	n	ground
+field	n	licence
+field	n	acreage
+field	n	domain
+field	n	sphere
+field	n	region
+field	n	field of vision
+field	n	pitch
+field	n	on the streets
+field	n	community
+field	n	area of operation
+field	n	battleground
+field	n	province
+field	n	environment
+field	n	subject
+field	n	investigative
+field	n	geographical
+figure	n	entity
+figure	n	organisation
+figure	n	character
+figure	n	representative
+figure	n	individual
+figure	n	number
+figure	n	statistic
+figure	n	numeral
+figure	n	amount
+figure	n	diagram
+figure	n	picture
+figure	n	illustration
+figure	n	people
+figure	n	image
+figure	n	account
+figure	n	value
+figure	n	leader
+figure	n	person
+figure	n	person of authority
+figure	n	calculation
+figure	n	personage
+figure	n	data
+figure	n	total
+film	n	movie
+film	n	picture
+film	n	production
+film	n	documentary
+finally	r	eventually
+finally	r	ultimately
+finally	r	at last
+finally	r	lastly
+finally	r	in conclusion
+finally	r	at long last
+finally	r	to conclude
+finally	r	also
+finally	r	last of all
+find	v	discover
+find	v	evident
+find	v	present
+find	v	exist
+find	v	detect
+find	v	realise
+find	v	feel
+find	v	believe
+find	v	think
+find	v	felt
+find	v	look for
+find	v	locate
+find	v	seek
+find	v	show
+find	v	recognised as
+find	v	see
+find	v	get
+find	v	buy
+find	v	invent
+find	v	write
+find	v	obtain
+find	v	consider
+find	v	perceive as
+find	v	see as
+find	v	realise is
+find	v	determine
+find	v	ascertail
+find	v	calculate
+fire	v	shoot
+fire	v	launch
+fire	v	discharge
+fire	v	sack
+fire	v	dismiss
+fire	v	lay off
+fire	v	shoot at
+fix	v	cure
+fix	v	heal
+fix	v	mend
+fix	v	correct
+fix	v	compensate for
+fix	v	sort out
+fix	v	make up for
+fix	v	repair
+fix	v	resolve
+fix	v	solve
+fix	v	patch
+fix	v	put right
+fix	v	improve
+fix	v	do
+fix	v	set
+fix	v	intent
+fix	v	stick
+fix	v	determine
+flat	a	level
+flat	a	smooth
+flat	a	horizontal
+flat	a	straight
+flat	a	lifeless
+flat	a	flush
+flat	a	deflated
+flat	a	total
+flat	a	plain
+flat	a	absolute
+flat	a	outright
+flat	a	downright
+flat	a	categoric
+flat	a	plane
+flat	a	even
+flat	a	thin
+flat	a	even surface
+flat	a	uniform
+flat	a	invariable rate
+flat	a	fixed
+flat	a	fixed rate
+flat	a	gently
+flat	a	shallow
+forget	v	overlook
+forget	v	neglect
+forget	v	inadvertently omit
+forget	v	cease to be remembered
+forget	v	disregard
+forget	v	lose
+forget	v	ignore
+forget	v	fail
+forget	v	omit
+forget	v	let slip
+forget	v	cease to remember
+forget	v	overlook running
+forget	v	remember
+forget	v	fail to remember
+forget	v	put out of mind
+forget	v	not remember
+forget	v	omit to remember
+forget	v	not recall
+forth	r	on
+forth	r	and the like
+forth	r	to and fro
+forth	r	forwards
+forth	r	backwards and forwards
+forth	r	back and forth
+forth	r	forward
+forth	r	express
+forth	r	advance
+forth	r	put forward
+forth	r	phrase
+forth	r	across
+forth	r	out
+forth	r	into view
+forth	r	outward
+forth	r	onward
+forth	r	onwards
+forth	r	go out
+forth	r	depart
+forth	r	leave
+forth	r	etcetera
+forth	r	about
+forth	r	show
+forth	r	make known
+forth	r	extract
+forth	r	bring out
+forward	r	ahead
+forward	r	anticipate
+forward	r	excited about
+forward	r	look ahead to
+forward	r	onward
+forward	r	on
+forward	r	forth
+forward	r	along
+forward	r	frontward
+forward	r	to the front
+forward	r	wait for
+forward	r	expect
+forward	r	advance
+forward	r	move on
+forward	r	move ahead
+forward	r	out
+forward	r	over
+forward	r	move earlier
+forward	r	earlier
+forward	r	take ahead
+forward	r	future focused
+forward	r	look to the future
+forward	r	front
+forward	r	anticipative
+fresh	a	novel
+fresh	a	impertinent
+fresh	a	forward
+fresh	a	new
+fresh	a	raw
+fresh	a	pure
+fresh	a	airy
+fresh	a	refreshing
+fresh	a	uncontaminated
+fresh	a	recent
+fresh	a	vivid
+fresh	a	clear
+fresh	a	undimmed
+fresh	a	original
+fresh	a	relevant
+fresh	a	modern
+fresh	a	bright
+fresh	a	different
+fresh	a	clean
+fresh	a	another
+fresh	a	unprocessed
+fresh	a	nonfrozen
+fresh	a	uncanned
+full	a	complete
+full	a	total
+full	a	abundant
+full	a	filled with
+full	a	packed with
+full	a	replete with
+full	a	brimming with
+full	a	filled
+full	a	entire
+full	a	whole
+full	a	maximum
+full	a	top
+full	a	highest
+full	a	all out
+full	a	voluminous
+full	a	overflowing
+full	a	ample
+full	a	generous
+full	a	big
+full	a	gathered
+full	a	ruched
+full	a	loaded with
+full	a	crammed with
+full	a	covered with
+function	n	purpose
+function	n	role
+function	n	mapping
+function	n	calculation
+function	n	correspondence
+function	n	equation
+function	n	transformation
+function	n	feature
+function	n	sequence
+function	n	subroutine
+function	n	task
+function	n	operation
+function	n	activity
+function	n	job
+function	n	related to
+function	n	result
+function	n	working
+function	n	performance
+function	n	relation
+function	n	phenomenon
+fundamental	a	elemental
+fundamental	a	radical
+fundamental	a	basic
+fundamental	a	intrinsic
+fundamental	a	essential
+fundamental	a	primary
+fundamental	a	significant
+fundamental	a	elementary
+fundamental	a	foundational
+fundamental	a	major
+fundamental	a	central
+fundamental	a	important
+fundamental	a	vital
+fundamental	a	underlying
+fundamental	a	necessary
+gall	n	pn
+gall	n	secretion  producing
+gall	n	audacity
+gall	n	impudence
+gall	n	nerve
+gall	n	effrontery
+gall	n	temerity
+gall	n	cheek
+gall	n	bile-producing
+gall	n	grub
+gall	n	pustule
+gall	n	abnormal growth
+gall	n	bile
+gall	n	rancor
+gall	n	poison
+gall	n	bitter spirit
+gall	n	unknown person
+gall	n	blister
+get	v	persuade
+get	v	convince
+get	v	be
+get	v	become
+get	v	achieve
+get	v	acquire
+get	v	gain
+get	v	receive
+get	v	give
+get	v	travel
+get	v	reach
+get	v	travel to
+get	v	go
+get	v	arrive at
+get	v	obtain
+get	v	have
+get	v	buy
+get	v	wind up
+get	v	fetch
+get	v	procure
+get	v	bring
+girl	n	woman
+girl	n	female
+girl	n	gal
+girl	n	lass
+girl	n	female children
+girl	n	female child
+girl	n	child
+girl	n	miss
+girl	n	young woman
+girl	n	she
+girl	n	young female
+go	v	endure
+go	v	pass
+go	v	journey
+go	v	travel
+go	v	move
+go	v	be
+go	v	walk
+go	v	travel down
+go	v	proceed
+go	v	take
+go	v	set off
+go	v	leave
+go	v	start
+go	v	run
+go	v	operate
+go	v	work
+go	v	running
+go	v	aim
+go	v	reach
+go	v	try
+go	v	engage in
+go	v	attempt
+go	v	undertake
+go	v	attack
+go	v	approach
+go	v	release
+go	v	rest
+go	v	free
+go	v	relax
+go	v	loose
+good	a	at least
+good	a	minimum
+good	a	reasonable
+good	a	substantial
+good	a	full
+good	a	comfortable
+good	a	friendliness
+good	a	pleasant
+good	a	cordiality
+good	a	amiable
+good	a	happiness
+good	a	large
+good	a	significant
+good	a	satisfactory
+good	a	effective
+good	a	easy
+good	a	favourable
+good	a	excellent
+good	a	happy
+good	a	fun
+good	a	enjoyable
+good	a	nice
+good	a	well behaved
+good	a	considerable
+good	a	healthy
+good	a	respectable
+good	a	decent
+good	a	thorough
+good	a	commendable
+good	a	beneficial
+good	a	competent
+good	a	esteem
+good	a	standing
+good	a	reputation
+good	a	character
+good	a	well regarded
+grim	a	bleak
+grim	a	severe
+grim	a	horrific
+grim	a	dire
+grim	a	doom laden
+grim	a	doomy
+grim	a	negative
+grim	a	horrible
+grim	a	unrelenting
+grim	a	unpleasant
+grim	a	gruesome
+grim	a	terrible
+grim	a	morbid
+grim	a	dismal
+grim	a	depressing
+grim	a	gloomy
+grim	a	harsh
+grim	a	horrid
+grim	a	ghastly
+grim	a	sinister
+grim	a	dark
+grim	a	awful
+grim	a	harrowing
+grim	a	difficult
+grim	a	forbidding
+grim	a	stern
+grim	a	serious
+grim	a	appalling
+grim	a	unpromising
+hard	r	closely
+hard	r	intently
+hard	r	carefully
+hard	r	persistently
+hard	r	forcefully
+hard	r	strenuously
+hard	r	firmly
+hard	r	strongly
+hard	r	aggressive
+hard	r	diligently
+hard	r	arduously
+hard	r	intensely
+hard	r	intensively
+hard	r	determinedly
+hard	r	keenly
+hard	r	sufficiently
+hard	r	badly
+hard	r	harshly
+hard	r	severely
+hard	r	seriously
+hard	r	earnestly
+hard	r	tightly
+hard	r	violently
+hard	r	fiercely
+hard	r	heavily
+heap	n	pile
+heap	n	mound
+heap	n	loads
+heap	n	tons
+heap	n	lots
+heap	n	a lot
+heap	n	collection
+heap	n	category
+heap	n	mess
+heap	n	bundle
+heap	n	wreck
+heap	n	state
+heap	n	assortment
+heap	n	untidy pile
+heap	n	lump
+heap	n	bin
+heavy	a	weighty
+heavy	a	massive
+heavy	a	excessive
+heavy	a	regular
+heavy	a	severe
+heavy	a	constant
+heavy	a	profuse
+heavy	a	extensive
+heavy	a	serious
+heavy	a	frequent
+heavy	a	harsh
+heavy	a	big
+heavy	a	tough
+heavy	a	onerous
+heavy	a	considerable
+heavy	a	costly
+heavy	a	wieldy
+heavy	a	strong
+heavy	a	wide ranging
+heavy	a	substantial
+heavy	a	worst
+heavy	a	most abundant
+heavy	a	strongest
+heavy	a	wild
+heavy	a	most intense
+heavy	a	fat
+heavy	a	stout
+heavy	a	ample
+heavy	a	overweight
+heavy	a	tedious
+heavy	a	dark
+heavy	a	difficult
+heavy	a	laboured
+heavy	a	abundant
+heavy	a	hard
+hold	v	maintain
+hold	v	have
+hold	v	believe
+hold	v	adhere
+hold	v	stand
+hold	v	support
+hold	v	stand up
+hold	v	lift
+hold	v	place
+hold	v	position
+hold	v	put
+hold	v	grasp
+hold	v	take
+hold	v	clasp
+hold	v	occupy
+hold	v	retain
+hold	v	contain
+hold	v	store
+hold	v	cache
+hold	v	convene
+hold	v	organise
+hold	v	conduct
+hold	v	call
+hold	v	host
+hold	v	possess
+hold	v	keep
+hold	v	own
+hold	v	carry
+hold	v	grip
+hold	v	handle
+hold	v	clutch
+informal	a	casual
+informal	a	unofficial
+informal	a	relaxed
+informal	a	everyday
+informal	a	ordinary
+informal	a	approximate
+informal	a	not rigorous
+informal	a	imprecise
+informal	a	lacking rigour
+informal	a	friendly
+informal	a	spontaneous
+informal	a	not prescribed
+informal	a	commonly used
+informal	a	untrained
+informal	a	easygoing
+inner	a	internal
+inner	a	spiritual
+inner	a	inmost
+inner	a	inward
+inner	a	inside
+inner	a	enclosed
+inner	a	interior
+inner	a	innermore
+inner	a	mental
+inner	a	private
+inner	a	clique
+inner	a	close
+inner	a	original
+inner	a	trusted group
+inner	a	central
+inner	a	under
+inner	a	focal
+instead	r	alternatively
+instead	r	as an alternative
+instead	r	rather
+instead	r	in preference
+instead	r	in place
+instead	r	rather than
+instead	r	in preference to
+instead	r	in its place
+instead	r	in lieu
+instead	r	but
+instead	r	alternately
+instead	r	in place of this
+investigator	n	researcher
+investigator	n	experimenter
+investigator	n	inquirer
+investigator	n	examiner
+investigator	n	detective
+investigator	n	officer
+investigator	n	official
+investigator	n	inspector
+jam	n	conserve
+jam	n	jelly
+jam	n	preserve
+jam	n	impromptu music
+jam	n	improv
+jam	n	improvised music
+jam	n	informal music
+jam	n	music session
+jam	n	informal music session
+jam	n	gig
+jam	n	impromptu music session
+jam	n	blockage
+jam	n	seizure
+jam	n	malfunction
+jam	n	congestion
+jam	n	traffic block
+jam	n	heavy traffic
+jam	n	queue
+jam	n	traffic congestion
+jam	n	session
+jam	n	riff
+jam	n	music sessions
+job	n	duty
+job	n	task
+job	n	role
+job	n	work
+job	n	employment
+job	n	post
+job	n	function
+job	n	bit
+job	n	responsibility
+job	n	business
+job	n	piece of work
+job	n	assignment
+job	n	matter
+job	n	functional
+job	n	position
+job	n	career
+job	n	contract
+job	n	place
+late	r	well into
+late	r	at a later hour
+late	r	recently
+late	r	lately
+late	r	current
+late	r	recent
+late	r	tardy
+late	r	behind time
+late	r	behind schedule
+late	r	after normal time
+late	r	overdue
+late	r	after the usual time
+late	r	delayed
+late	r	behind
+late	r	far on
+late	r	near end
+late	r	near the end of
+late	r	latterly
+late	r	last minute
+late	r	end of the
+late	r	at the end of the
+late	r	end of
+late	r	latter part of
+late	r	not on time
+late	r	At the end of the
+late	r	after the usual
+late	r	older
+late	r	older than the norm
+late	r	after the normal time
+late	r	at a later stage
+lead	n	prospect
+lead	n	head
+lead	n	leader
+lead	n	star
+lead	n	number one
+lead	n	leash
+lead	n	guide rope
+lead	n	halter
+lead	n	example
+lead	n	enticement
+lead	n	foray
+lead	n	conduct
+lead	n	direction
+lead	n	guidance
+lead	n	cable
+lead	n	flex
+lead	n	wire
+lead	n	tip
+lead	n	story
+lead	n	hint
+lead	n	opportunity
+lead	n	clue
+lead	n	ahead
+lead	n	influential
+lead	n	to the fore
+lead	n	forefront
+lead	n	in front
+lead	n	most prominent
+lead	n	main role
+lead	n	precedence
+lead	n	front rank
+lead	n	initiative
+lead	n	prominent position
+lead	n	command of
+let	v	allow
+let	v	forgive
+let	v	permit
+let	v	agree to
+let	v	authorise
+let	v	have
+let	v	rent
+let	v	hire
+let	v	lease
+let	v	lessen
+let	v	give
+let	v	release
+let	v	diminish
+let	v	slacken
+let	v	reduce
+let	v	free
+let	v	expel
+let	v	tell
+let	v	inform people
+let	v	advise
+let	v	tell people
+let	v	inform
+let	v	give 
+letter	n	dispatch
+letter	n	missive
+letter	n	correspondence
+letter	n	memo
+letter	n	message
+letter	n	communication
+letter	n	epistle
+letter	n	correspondence 
+letter	n	character
+letter	n	alphabetic character
+letter	n	alphabet
+letter	n	glyph
+letter	n	document
+letter	n	mail
+letter	n	note
+liberal	a	free thinking
+liberal	a	progressive
+liberal	a	free market
+liberal	a	humanitarian
+liberal	a	openhanded
+liberal	a	noninterventionist
+liberal	a	open minded
+liberal	a	liberated
+liberal	a	broad minded
+liberal	a	generous
+liberal	a	abundant
+liberal	a	ample
+liberal	a	free
+liberal	a	plentiful
+liberal	a	open
+liberal	a	social
+liberal	a	tolerant
+liberal	a	left wing
+liberal	a	lenient
+lie	v	fib
+lie	v	say untruthfully
+lie	v	say falsely
+lie	v	wait
+lie	v	remain
+lie	v	untruths
+lie	v	be
+lie	v	falsehoods
+lie	v	stretch out
+lie	v	rest
+lie	v	recline horizontally
+lie	v	get
+lie	v	recline
+lie	v	put
+lie	v	extend
+lie	v	place
+lie	v	had direction
+lie	v	can be found
+lie	v	hide
+lie	v	be located
+lie	v	be bury
+lie	v	stay
+lie	v	reclined horizontally
+lie	v	resting
+lie	v	sit
+lie	v	that was
+lie	v	position
+lie	v	fibbing
+lie	v	falsify
+lie	v	telling untruths
+lie	v	telling falsehoods
+lie	v	deceive
+lie	v	arrange
+lie	v	lay
+lie	v	situate
+lie	v	leave
+light	a	easy
+light	a	simple
+light	a	gentle
+light	a	easily digested
+light	a	undemanding
+light	a	pale
+light	a	fair
+light	a	pale 
+light	a	unheavy
+light	a	portable
+light	a	not heavy
+light	a	soft
+light	a	slight
+light	a	faint
+light	a	small amounts of
+light	a	minor
+light	a	unsubstantial
+light	a	inconsiderable
+light	a	mild
+light	a	casual
+light	a	restricted
+light	a	frothy
+light	a	trivial
+light	a	facile
+light	a	bright
+light	a	luminous
+light	a	upbeat
+light	a	less serious
+light	a	cheerful
+light	a	entertaining
+light	a	small
+light	a	of little weight
+light	a	lightweight
+light	a	ethereal
+likewise	r	similarly
+likewise	r	equally 
+likewise	r	correspondingly
+likewise	r	equally
+likewise	r	also
+likewise	r	additionally
+likewise	r	the same
+live	a	living
+live	a	animate
+live	a	breathing
+live	a	real
+live	a	performing
+live	a	performed
+live	a	in real time
+live	a	as it happened
+live	a	direct
+live	a	existent
+live	a	functioning
+live	a	operative
+live	a	active
+live	a	working
+live	a	sustainable
+live	a	realtime
+live	a	charged
+live	a	connected
+live	a	powered
+live	a	on the spot
+live	a	as it happens
+live	a	viewable
+live	a	circulated
+live	a	running
+live	a	showing
+live	a	online
+loud	a	noisy
+loud	a	big
+loud	a	vociferous
+loud	a	conspicuous
+loud	a	strident
+loud	a	booming
+loud	a	thundering
+loud	a	strong
+loud	a	resonant
+loud	a	deafening
+loud	a	shrill
+loud	a	blaring
+loud	a	heavy
+loud	a	disturbing
+loud	a	imposing
+loud	a	clear
+loud	a	obtrusive
+loud	a	rowdy
+loud	a	forceful
+loud	a	amplified
+loud	a	powerful
+loud	a	raucous
+mad	a	wild
+mad	a	hurried
+mad	a	crazy
+mad	a	frantic
+mad	a	rapid
+mad	a	insane
+mad	a	angry
+mad	a	wildly excited
+mad	a	annoyed
+mad	a	furious
+mad	a	BSE
+mad	a	pn
+mad	a	very rapidly
+mad	a	very fast
+mad	a	very quickly
+mad	a	fast
+mad	a	rabid
+mad	a	frenzied
+mad	a	frenetic
+mad	a	uncontrolled
+make	v	create
+make	v	construct
+make	v	succeed
+make	v	complete
+make	v	help
+make	v	enable to
+make	v	cause to
+make	v	compel
+make	v	cause
+make	v	cause 
+make	v	take
+make	v	reach
+make	v	form
+make	v	arrive at
+make	v	produce
+make	v	initiate
+make	v	do
+make	v	affect
+make	v	get to
+make	v	cause your outer work to be more
+make	v	give rise to
+make	v	turn
+make	v	cause to become
+make	v	cause to be
+make	v	generate
+make	v	commit
+make	v	perform
+make	v	write
+make	v	cause a great burden to be
+make	v	change
+make	v	induce to be
+make	v	have
+make	v	induce to
+make	v	compel me to
+manage	v	succeed
+manage	v	be able
+manage	v	endeavour
+manage	v	direct
+manage	v	handle
+manage	v	organise
+manage	v	oversee
+manage	v	control
+manage	v	take care of
+manage	v	look after
+manage	v	govern
+manage	v	conduct
+manage	v	coordinate
+manage	v	deal with
+manage	v	success
+manage	v	undertake
+manage	v	succeed in
+manage	v	administer
+manage	v	contrive
+manage	v	run
+mass	n	public
+mass	n	crowd
+mass	n	people
+mass	n	majority
+mass	n	populace
+mass	n	volume
+mass	n	climax
+mass	n	means
+mass	n	crucial level
+mass	n	critical level
+mass	n	critical point
+mass	n	quantity
+mass	n	shock
+mass	n	splash
+mass	n	conglomeration
+mass	n	accumulation
+mass	n	host
+mass	n	bulk
+mass	n	throng
+mass	n	weight
+mass	n	magnitude
+mass	n	expanse
+mass	n	extent
+mass	n	proletariat
+mass	n	main population
+mass	n	multitude
+mass	n	common people
+mass	n	ordinary people
+mass	n	body
+mass	n	aggregate
+mass	n	density
+mass	n	the service
+mass	n	the Eucharist
+mass	n	the celebration of the Eucharist
+match	n	game
+match	n	correspondence
+match	n	correlation
+match	n	hit
+match	n	association
+match	n	equivalent
+match	n	counterpart
+match	n	matchstick
+match	n	competition
+match	n	event
+match	n	link
+match	n	fit
+match	n	pairing
+match	n	choice
+match	n	equal
+match	n	contest
+match	n	rival
+match	n	competitor
+match	n	bout
+match	n	marriage
+match	n	couple
+match	n	partnership
+mission	n	negotiation
+mission	n	office
+mission	n	legation
+mission	n	assignment
+mission	n	charity
+mission	n	delegation
+mission	n	operation
+mission	n	task
+mission	n	aim
+mission	n	purpose
+mission	n	objective
+mission	n	outreach
+mission	n	evangelical
+mission	n	ministering
+mission	n	work
+mission	n	calling
+mission	n	quest
+mission	n	arrival
+mission	n	religious preaching
+mission	n	church
+mission	n	oratory
+mission	n	preaching
+mission	n	duty
+mission	n	vocation
+mission	n	project
+mood	n	state of mind
+mood	n	disposition
+mood	n	demeanour
+mood	n	humour
+mood	n	temper
+mood	n	atmosphere
+mood	n	feeling
+mood	n	temperament
+mood	n	vibe
+mood	n	outlook
+mood	n	mode
+mood	n	form
+mood	n	mindset
+mood	n	manner
+mood	n	frame of mind
+mood	n	feel like writing
+mood	n	ambience
+mood	n	tone
+mood	n	timbre
+mood	n	attitude
+mood	n	modality
+nasty	a	unpleasant
+nasty	a	vicious
+nasty	a	spiteful
+nasty	a	horrible
+nasty	a	mean
+nasty	a	malicious
+nasty	a	disagreeable
+nasty	a	inhospitable
+nasty	a	unpalatable
+nasty	a	vindictive
+nasty	a	painful
+nasty	a	vicioous
+nasty	a	foul
+nasty	a	bad
+nasty	a	bitter
+nasty	a	dirty
+nasty	a	formidable
+nasty	a	dangerous
+nasty	a	annoying
+nasty	a	objectionable
+nasty	a	offensive
+near	r	almost
+near	r	about
+near	r	close to
+near	r	approximately
+near	r	close
+near	r	close by
+near	r	just about
+near	r	practically
+near	r	virtually
+near	r	approaching
+near	r	all but
+near	r	neighbouring
+near	r	close at hand
+near	r	adjoining
+near	r	alongside
+near	r	closely
+near	r	not remotely
+near	r	not closely
+near	r	nearly
+nearly	r	almost
+nearly	r	practically
+nearly	r	approximately
+nearly	r	anyway
+nearly	r	anywhere near
+nearly	r	remotely
+nearly	r	even approximately
+nearly	r	half
+nearly	r	anything like
+nearly	r	quite
+neat	a	clever
+neat	a	good
+neat	a	well-formulated
+neat	a	orderly
+neat	a	smart
+neat	a	tidy
+neat	a	simple
+neat	a	order
+neat	a	compact
+neat	a	trim
+neat	a	great
+neat	a	cool
+neat	a	pleasing
+neat	a	nice
+neat	a	uniform
+neat	a	ordered
+neat	a	terrific
+new	a	original
+new	a	recent
+new	a	novel
+new	a	different
+new	a	additional
+new	a	further
+new	a	fresh
+new	a	another
+new	a	distinct
+new	a	younger
+new	a	extra
+new	a	modern
+new	a	current
+new	a	latest
+new	a	recently acquired
+new	a	succeeding
+new	a	recently started
+new	a	other
+now	r	presently
+now	r	currently
+now	r	recently
+now	r	lately
+now	r	nowadays
+now	r	of late
+now	r	immediately
+now	r	so
+now	r	next
+now	r	instantly
+now	r	as a result
+now	r	consequently
+now	r	at present
+now	r	well
+now	r	perhaps
+now	r	at this time
+now	r	at this point
+now	r	today
+now	r	just
+now	r	at this stage
+now	r	these days
+now	r	the present
+now	r	this moment
+now	r	this point
+now	r	this time
+now	r	since
+often	r	frequently
+often	r	regularly
+often	r	recurrently
+often	r	generally
+often	r	commonly
+often	r	sometimes
+often	r	at times
+often	r	occasionally
+often	r	usually
+often	r	habitually
+often	r	much
+only	r	just
+only	r	merely
+only	r	no more than
+only	r	barely
+only	r	simply to
+only	r	solely
+only	r	exclusively
+only	r	purely
+only	r	uniquely
+only	r	recently
+only	r	hardly
+only	r	just now
+only	r	nothing but
+only	r	singularly
+open	a	available
+open	a	ready for business
+open	a	accepting business
+open	a	unshut
+open	a	unfastened
+open	a	switched on
+open	a	ajar
+open	a	unclosed
+open	a	accessible
+open	a	receptive
+open	a	aware
+open	a	exposed
+open	a	susceptible
+open	a	unrestricted
+open	a	unpoliced
+open	a	free
+open	a	alert
+open	a	unlidded
+open	a	peeled
+open	a	wide
+open	a	gaping
+open	a	sandal
+open	a	peep
+open	a	working
+open	a	unlocked
+open	a	green
+open	a	unobstructed
+open	a	clear
+open	a	empty
+open	a	approachable
+order	v	arrange
+order	v	sort
+order	v	grade
+order	v	put in order
+order	v	rank
+order	v	request
+order	v	buy
+order	v	reserve
+order	v	purchase
+order	v	apply for
+order	v	instruct
+order	v	tell
+order	v	command
+order	v	organise
+order	v	direct
+order	v	send
+order	v	plan
+order	v	manage
+order	v	mandate
+outdoor	a	open-air
+outdoor	a	outside
+outdoor	a	outward-bound
+outdoor	a	external
+outdoor	a	uncovered
+outdoor	a	all-weather
+outdoor	a	roadside
+outdoor	a	alfresco
+paper	n	document
+paper	n	report
+paper	n	newspaper
+paper	n	publication
+paper	n	essay
+paper	n	treatise
+paper	n	article
+paper	n	study
+paper	n	roll
+paper	n	bathroom tissue
+paper	n	toilet tissue
+paper	n	stationery
+paper	n	papyrus
+paper	n	journal
+paper	n	presentation
+paper	n	manuscript
+paper	n	thesis
+pass	v	approve
+pass	v	ratify
+pass	v	authorise
+pass	v	adopt
+pass	v	get through
+pass	v	succeed in
+pass	v	satisfy
+pass	v	succeed
+pass	v	successfully complete
+pass	v	succeed at
+pass	v	go by
+pass	v	navigate
+pass	v	skirt
+pass	v	go past
+pass	v	approach
+pass	v	see
+pass	v	send
+pass	v	hand over
+pass	v	transfer
+pass	v	hand
+pass	v	deliver
+pass	v	give
+pass	v	go
+pass	v	ebb away
+pass	v	flow
+pass	v	expire
+pass	v	leak
+pass	v	disappear
+pass	v	go away
+pass	v	transpire
+pass	v	finish
+pass	v	occur
+pass	v	elapse
+pass	v	meet approval
+pass	v	be accepted by
+pass	v	measure up to a certain standard
+pass	v	get approval from
+pass	v	go 
+pass	v	proceed
+pass	v	experience
+pass	v	move through
+pass	v	traverse
+phone	n	telephone
+phone	n	cellular
+phone	n	handset
+phone	n	mobile
+phone	n	phonetic unit
+phone	n	speech
+phone	n	sonant
+phone	n	allophone
+phone	n	phoneme
+phone	n	sound
+phone	n	sound unit
+phone	n	mobile phone
+phone	n	mobile telephone
+phone	n	telecommunication
+phone	n	telecom
+poor	a	bad
+poor	a	weak
+poor	a	incompetent
+poor	a	mediocre
+poor	a	inferior
+poor	a	unfortunate
+poor	a	hapless
+poor	a	sorry
+poor	a	miserable
+poor	a	unlucky
+poor	a	unsatisfactory
+poor	a	inadequate
+poor	a	deficient
+poor	a	low
+poor	a	substandard
+poor	a	infertile
+poor	a	impoverished
+poor	a	poverty stricken
+poor	a	destitute
+poor	a	needy
+poor	a	deprived
+poor	a	developing
+poor	a	underprivileged
+poor	a	less well off
+poor	a	indigent
+poor	a	low income
+poor	a	pitiable
+poor	a	wretched
+poor	a	unhappy
+possibly	r	perhaps
+possibly	r	maybe
+possibly	r	reasonably
+possibly	r	conceivably
+possibly	r	plausibly
+possibly	r	feasibly
+possibly	r	potentially
+possibly	r	believably
+possibly	r	necessarily
+possibly	r	at all
+possibly	r	ever
+post	n	position
+post	n	job
+post	n	role
+post	n	mail
+post	n	postal service
+post	n	date
+post	n	post office
+post	n	pole
+post	n	support
+post	n	stake
+post	n	upright
+post	n	mail carrier
+post	n	message
+post	n	electronic mail
+post	n	announcement
+post	n	electronic bulletin
+post	n	the job
+post	n	employment
+post	n	marker
+post	n	target
+post	n	boundary
+post	n	appointment
+post	n	situation
+post	n	crossing
+post	n	station
+post	n	lookout
+post	n	fence
+pot	n	cannabis
+pot	n	marijuana
+pot	n	dope
+pot	n	weed
+pot	n	container
+pot	n	tub
+pot	n	vessel
+pot	n	bowl
+pot	n	tray
+pot	n	pan
+pot	n	casserole
+pot	n	teapot
+pot	n	ceramic
+pot	n	canister
+pot	n	pourer
+pot	n	stake
+pot	n	prize
+pot	n	winning
+pot	n	saucepan
+pound	n	sixteen ounces
+pound	n	16 ounces
+pound	n	lb
+pound	n	kilo
+pound	n	kilogram
+pound	n	weight
+pound	n	enclosure
+pound	n	lot
+pound	n	store
+pound	n	sterling
+pound	n	pn
+pound	n	11.27 kilograms
+pound	n	per ounces
+pound	n	dollar
+pound	n	kennel
+pound	n	prison
+pound	n	cage
+pound	n	twelve shillings
+pound	n	quid
+pound	n	beat
+pound	n	thump
+pound	n	hammer
+pound	n	throb
+profound	a	deep
+profound	a	thought provoking
+profound	a	sagacious
+profound	a	insightful
+profound	a	wise
+profound	a	discerning 
+profound	a	significant
+profound	a	important
+profound	a	far reaching
+profound	a	extensive
+profound	a	great
+profound	a	huge
+profound	a	intense
+profound	a	acute
+profound	a	thoughtful
+profound	a	intellectual
+profound	a	complex
+profound	a	thorough
+profound	a	keen
+profound	a	deep seated
+profound	a	serious
+profound	a	penetrating
+profound	a	pronounced
+profound	a	in depth
+prominent	a	well known
+prominent	a	important
+prominent	a	leading
+prominent	a	high profile
+prominent	a	eminent
+prominent	a	renowned
+prominent	a	significant
+prominent	a	conspicuous
+prominent	a	foremost
+prominent	a	widely known
+prominent	a	famous
+prominent	a	notable
+prominent	a	major
+prominent	a	visible
+prominent	a	obvious
+prominent	a	noticeable
+prominent	a	salient
+prominent	a	pronounced
+prominent	a	prevalent
+pull	v	remove
+pull	v	tug
+pull	v	pluck
+pull	v	rip
+pull	v	yank
+pull	v	wrench
+pull	v	stretch
+pull	v	manipulate
+pull	v	stop
+pull	v	stop the car
+pull	v	draw 
+pull	v	stop at the side of the road
+pull	v	park
+pull	v	attract
+pull	v	draw
+pull	v	lure
+pull	v	move
+pull	v	haul
+pull	v	heave
+pull	v	drag
+pull	v	tow
+pull	v	shift
+pull	v	try everything
+pull	v	go to any length
+pull	v	stop at nothing
+pull	v	do everything it takes
+pull	v	squeeze
+pull	v	push
+pull	v	get hold of
+pull	v	request
+pull	v	look at
+pull	v	withdraw
+pull	v	extract
+pull	v	read
+pulse	n	beat
+pulse	n	emanation
+pulse	n	beep
+pulse	n	sound
+pulse	n	heart
+pulse	n	lifeblood
+pulse	n	energy
+pulse	n	stimulus
+pulse	n	centre
+pulse	n	force
+pulse	n	heartbeat
+pulse	n	heartrate
+pulse	n	heartbeat rate
+pulse	n	rhythm
+pulse	n	throb
+pulse	n	throbbing
+pulse	n	reflex
+pulse	n	edible seed
+pulse	n	legume
+pulse	n	wave
+pulse	n	vibration
+pulse	n	hearbeat
+put	v	gather
+put	v	assemble
+put	v	collate
+put	v	collect
+put	v	join
+put	v	lay down
+put	v	send
+put	v	settle
+put	v	place
+put	v	allow
+put	v	leave
+put	v	position
+put	v	give
+put	v	give to
+put	v	propound
+put	v	provide
+put	v	present
+put	v	advance
+put	v	propose
+put	v	express
+put	v	phrase
+put	v	state
+put	v	make
+put	v	remove
+put	v	dismiss
+put	v	stick
+put	v	fix
+put	v	fasten
+put	v	get
+put	v	set
+put	v	lay
+put	v	allay
+put	v	put an end to
+put	v	nullify
+quick	a	fast
+quick	a	rapid
+quick	a	short
+quick	a	brief
+quick	a	swift
+quick	a	concise
+quick	a	cursory
+quick	a	speedy
+quick	a	immediate
+quick	a	express
+quick	a	expeditious
+quick	a	prompt
+quick	a	waste no time in
+quick	a	hasty
+quick	a	hurried
+quick	a	keen
+range	n	series
+range	n	spread
+range	n	variety
+range	n	collection
+range	n	selection
+range	n	choice
+range	n	gallery
+range	n	practice area
+range	n	shooting centre
+range	n	shooting area
+range	n	distance
+range	n	extent
+range	n	coverage
+range	n	limit
+range	n	assortment
+range	n	array
+range	n	span
+range	n	breadth
+range	n	roaming
+range	n	run
+range	n	complete gamut
+range	n	access
+range	n	total freedom
+range	n	free run
+range	n	scope
+range	n	area
+rather	r	more
+rather	r	instead of
+rather	r	more accurately
+rather	r	in preference to
+rather	r	sooner
+rather	r	instead
+rather	r	preferably
+rather	r	quite
+rather	r	fairly
+rather	r	very
+rather	r	moderately
+rather	r	somewhat
+rather	r	slightly
+rather	r	significantly
+raw	a	untreated
+raw	a	unprocessed
+raw	a	unspun
+raw	a	natural
+raw	a	basic
+raw	a	rudimentary
+raw	a	uncompressed
+raw	a	uncooked
+raw	a	bad
+raw	a	unfair deal
+raw	a	poor treatment
+raw	a	harsh
+raw	a	harsh deal
+raw	a	unfair
+raw	a	unspoilt
+raw	a	unsophisticated
+raw	a	rough
+raw	a	austere
+raw	a	refreshing
+raw	a	naked
+raw	a	genuine
+raw	a	bloody
+raw	a	open
+raw	a	excoriated
+raw	a	undressed
+raw	a	exposed
+raw	a	crude
+raw	a	immature
+raw	a	untaught
+raw	a	inexperienced
+raw	a	unrefined
+really	r	truly
+really	r	genuinely
+really	r	very
+really	r	absolutely
+really	r	definitely
+really	r	unquestionably
+really	r	extremely
+really	r	exceptionally
+really	r	actually
+really	r	in fact
+really	r	properly
+really	r	effectively
+really	r	honestly
+really	r	indeed
+really	r	totally
+really	r	completely
+really	r	unreservedly
+reasonable	a	fair
+reasonable	a	sensible
+reasonable	a	good value
+reasonable	a	good
+reasonable	a	reliable
+reasonable	a	measured
+reasonable	a	rational
+reasonable	a	well-judged
+reasonable	a	moderate
+reasonable	a	acceptable
+reasonable	a	inexpensive
+reasonable	a	affordable
+reasonable	a	equitable
+reasonable	a	justifiable
+reasonable	a	manageable
+reasonable	a	appropriate
+reasonable	a	just
+reasonable	a	tolerable
+reasonable	a	adequate
+reasonable	a	credible
+reasonable	a	sufficient
+reasonable	a	enough
+reasonable	a	likely
+reasonable	a	high enough
+remainder	n	leftover
+remainder	n	residual
+remainder	n	rest
+remainder	n	residue
+remainder	n	balance
+remainder	n	cut price
+remainder	n	second hand
+remainder	n	surplus
+remainder	n	leftover part
+render	v	make
+render	v	portray
+render	v	cause to be
+render	v	leave
+render	v	provide
+render	v	deliver
+render	v	create
+render	v	bestow
+render	v	give 
+render	v	give
+render	v	convert
+render	v	display
+render	v	show
+render	v	use
+render	v	represent
+render	v	encode
+render	v	submit
+render	v	lay out
+rest	n	remainder
+rest	n	remains
+rest	n	balance
+rest	n	respite
+rest	n	repose
+rest	n	quiet
+rest	n	leisure
+rest	n	inactivity
+rest	n	sleep
+rest	n	support
+rest	n	stand
+rest	n	prop
+rest	n	base
+rest	n	stick
+rest	n	break area
+rest	n	service station
+rest	n	convenience
+rest	n	service
+rest	n	layby
+rest	n	comfort
+rest	n	break
+return	v	bring back
+return	v	take back
+return	v	send back
+return	v	give back
+return	v	come back
+return	v	revert
+return	v	revisit
+return	v	go
+return	v	reply to
+return	v	respond to
+return	v	go back
+return	v	retrace
+return	v	get back
+return	v	retrieve
+return	v	get
+return	v	go back to
+return	v	resume
+return	v	regress
+return	v	repeat
+return	v	earn
+return	v	yield
+return	v	make
+return	v	produce
+return	v	realize
+rhythm	n	beat
+rhythm	n	regular beat
+rhythm	n	tempo
+rhythm	n	pattern
+rhythm	n	cycle
+rhythm	n	clock
+rhythm	n	pulse
+rhythm	n	cadence
+rhythm	n	regular pattern
+rhythm	n	time signature
+rhythm	n	harmony
+rhythm	n	form
+rich	a	rewarding
+rich	a	full
+rich	a	detail
+rich	a	significant
+rich	a	wealthy
+rich	a	packed with
+rich	a	high
+rich	a	abounding
+rich	a	abundant
+rich	a	full of
+rich	a	lavish
+rich	a	elaborate
+rich	a	vibrant
+rich	a	ample
+rich	a	detailed
+rich	a	lush
+rich	a	valuable
+rich	a	well-off
+right	r	correct
+right	r	straight
+right	r	appropriate
+right	r	immediately
+right	r	straightaway
+right	r	exactly
+right	r	correctly
+right	r	well
+right	r	properly
+right	r	accurately
+right	r	all the way
+right	r	totally
+right	r	directly
+right	r	just
+ring	n	hoop
+ring	n	circle
+ring	n	band
+ring	n	rim
+ring	n	circlet
+ring	n	fob
+ring	n	chain
+ring	n	holder
+ring	n	shadow
+ring	n	group
+ring	n	tone
+ring	n	syndicate
+ring	n	association
+ring	n	call
+ring	n	telephone call
+ring	n	bell
+ring	n	sound
+ring	n	feel
+ring	n	connotation
+ring	n	chime
+ring	n	coil
+ring	n	network
+ring	n	loop
+ring	n	level
+ring	n	orbit
+rough	a	approximate
+rough	a	general
+rough	a	broad
+rough	a	vague
+rough	a	preliminary
+rough	a	uncut
+rough	a	uneven
+rough	a	coarse
+rough	a	wild
+rough	a	unfinished
+rough	a	jagged
+rough	a	rudimentary
+rough	a	inexact
+rough	a	simple
+rough	a	harsh
+rough	a	tough
+rough	a	demanding
+rough	a	hard time
+rough	a	difficult
+rough	a	hard
+rough	a	basic
+rough	a	crude
+rough	a	irregular
+rough	a	not smooth
+rough	a	violent
+rough	a	disorderly
+rough	a	unrefined
+rough	a	poor
+rough	a	raucous
+rough	a	uncivil
+rough	a	dangerous
+rough	a	unpleasant
+rough	a	imperfect
+rude	a	rough
+rude	a	basic
+rude	a	primitive
+rude	a	approximate
+rude	a	crude
+rude	a	inexact
+rude	a	impolite
+rude	a	disrespectful
+rude	a	unpleasant
+rude	a	ill mannered
+rude	a	unkind
+rude	a	abusive
+rude	a	abrupt
+rude	a	awkward
+rude	a	surprise
+rude	a	savage
+rude	a	vulgar
+rude	a	lewd
+rude	a	coarse
+rude	a	naughty
+rude	a	wild
+rude	a	insulting
+rude	a	offensive
+rude	a	rudimentary
+rude	a	raw
+rude	a	unrefined
+rude	a	unfinished
+rude	a	sudden
+run	v	govern
+run	v	manage
+run	v	organise
+run	v	control
+run	v	operate
+run	v	sprint
+run	v	working
+run	v	training
+run	v	functioning
+run	v	cover
+run	v	fill
+run	v	extend
+run	v	stretch
+run	v	last
+run	v	continue for
+run	v	total
+run	v	appear
+run	v	appear in sequence
+run	v	be serialised
+run	v	be published
+run	v	chair
+run	v	go
+run	v	function
+run	v	work
+run	v	handle
+run	v	complete
+run	v	contradict
+run	v	proceed
+run	v	flow
+run	v	go against
+run	v	use
+run	v	execute
+run	v	include
+run	v	flee
+run	v	scurry
+run	v	avoid
+run	v	rush
+run	v	try to escape
+saint	n	canonised person
+saint	n	figure
+saint	n	angel
+saint	n	good
+saint	n	holy person
+saint	n	blessed
+saint	n	paladin
+saint	n	holy man
+saint	n	canonised
+saint	n	pn
+saint	n	goodman
+saint	n	disciple
+saint	n	martyr
+saint	n	holy woman
+saint	n	prophet
+scene	n	backstage
+scene	n	stage
+scene	n	setting
+scene	n	programme
+scene	n	site
+scene	n	location
+scene	n	sight
+scene	n	image
+scene	n	sequence
+scene	n	incident
+scene	n	place
+scene	n	event
+scene	n	part
+scene	n	act
+scene	n	sphere
+scene	n	environment
+scene	n	community
+scene	n	business
+scene	n	field
+scene	n	area
+scene	n	picture
+scene	n	segment
+scene	n	arena
+scene	n	landscape
+scene	n	level
+scene	n	scale
+scrap	n	waste
+scrap	n	remainder
+scrap	n	piece
+scrap	n	odds and ends
+scrap	n	rubbish
+scrap	n	shred
+scrap	n	fragment
+scrap	n	bit
+scrap	n	morsel
+scrap	n	leftover
+scrap	n	recycling
+scrap	n	waste metal
+scrap	n	trade in
+scrap	n	discarded item
+scrap	n	crumb
+scrap	n	clipping
+scrap	n	album
+scrap	n	collage
+secret	a	undisclosed
+secret	a	hidden
+secret	a	unpublished
+secret	a	clandestine
+secret	a	private
+secret	a	undercover
+secret	a	concealed
+secret	a	unknown
+secret	a	unrevealed
+secret	a	classified
+secret	a	coded
+secret	a	confidential
+secret	a	innermost
+secret	a	unspoken
+secret	a	inner
+secret	a	closed
+secret	a	unseen
+secret	a	spying
+secret	a	intelligence
+secret	a	intelligence agency
+see	v	observe
+see	v	notice
+see	v	find
+see	v	perceive
+see	v	look at
+see	v	watch
+see	v	visit
+see	v	view
+see	v	distinguish
+see	v	understand
+see	v	discover
+see	v	establish
+see	v	ascertain
+see	v	find out
+see	v	consider
+see	v	learn
+see	v	note
+see	v	detect
+see	v	behold
+see	v	witness
+see	v	undergo
+see	v	experience
+serious	a	significant
+serious	a	considerable
+serious	a	impressive
+serious	a	substantial
+serious	a	real
+serious	a	concerned
+serious	a	businesslike
+serious	a	resolute
+serious	a	sincere
+serious	a	take action
+serious	a	heavy
+serious	a	severe
+serious	a	critical
+serious	a	major
+serious	a	acute
+serious	a	important
+serious	a	grave
+serious	a	urgent
+serious	a	proper
+severely	r	harshly
+severely	r	gravely
+severely	r	seriously
+severely	r	badly
+severely	r	extremely
+severely	r	critically
+severely	r	highly
+severely	r	sternly
+severely	r	dramatically
+severely	r	devastatingly
+severely	r	heavily
+shade	n	shadow
+shade	n	cover
+shade	n	shelter
+shade	n	hue
+shade	n	gradation
+shade	n	nuance
+shade	n	degree
+shade	n	tone
+shade	n	tint
+shade	n	under the cover
+shade	n	trace
+shade	n	colour
+shade	n	based on
+shade	n	hint
+shade	n	suggestion
+shade	n	echo
+shade	n	screen
+shade	n	canopy
+shade	n	shadow 
+shade	n	tinge
+shade	n	depth
+shade	n	sunglasses
+shed	v	moult
+shed	v	discard
+shed	v	drop
+shed	v	cast off
+shed	v	lose
+shed	v	relinquish
+shed	v	throw
+shed	v	reveal
+shed	v	shine
+shed	v	give
+shed	v	spread
+shed	v	radiate
+shed	v	scatter
+shed	v	emit
+shed	v	get rid of
+shed	v	discarding
+shed	v	pass
+shed	v	transmit
+shed	v	disperse
+shed	v	spill
+shed	v	give off
+shortly	r	soon
+shortly	r	just
+shortly	r	immediately
+shortly	r	briefly
+shortly	r	quickly
+shortly	r	not long
+shortly	r	almost immediately
+shortly	r	presently
+shortly	r	before long
+shortly	r	abruptly
+shortly	r	curtly
+shortly	r	brusquely
+shortly	r	little
+shortly	r	a little
+shortly	r	sharply
+shot	n	projectile
+shot	n	drive
+shot	n	firing
+shot	n	stroke
+shot	n	play
+shot	n	ammunition
+shot	n	pellet
+shot	n	bullet
+shot	n	round
+shot	n	blast
+shot	n	attempt
+shot	n	strike
+shot	n	aim
+shot	n	discharge
+shot	n	noise
+shot	n	move
+shot	n	manoeuvre
+shot	n	hit
+shot	n	photo
+shot	n	portrait
+shot	n	photograph
+shot	n	picture
+shot	n	injection
+shot	n	jab
+shot	n	vaccination
+shot	n	inoculation
+show	v	indicate to
+show	v	instruct
+show	v	guide
+show	v	demonstrate to
+show	v	display
+show	v	reveal
+show	v	indicate
+show	v	do not appear
+show	v	present
+show	v	play
+show	v	display 
+show	v	put on
+show	v	air
+show	v	exhibit
+show	v	illustrate
+show	v	be displayed
+show	v	be seen
+show	v	appear
+show	v	be revealed
+show	v	come
+show	v	depict
+show	v	offer
+show	v	present with
+show	v	give
+show	v	picture
+side	n	team
+side	n	for us
+side	n	ally
+side	n	part
+side	n	responsibility
+side	n	position
+side	n	standpoint
+side	n	perspective
+side	n	view
+side	n	aspect
+side	n	contingent
+side	n	you
+side	n	from you
+side	n	faction
+side	n	against
+side	n	flank
+side	n	dividing line
+side	n	hand
+side	n	other hand
+side	n	surface
+side	n	conversely
+side	n	instead
+side	n	bank
+side	n	divide
+side	n	shore
+side	n	edge
+side	n	area
+side	n	facet
+side	n	boundary
+side	n	fringe
+skip	v	miss
+skip	v	avoid
+skip	v	dodge
+skip	v	neglect
+skip	v	skim
+skip	v	bounce
+skip	v	hop
+skip	v	jump
+skip	v	bump
+skip	v	spring
+skip	v	bound
+skip	v	prance
+skip	v	omit
+skip	v	miss out
+skip	v	disregard
+skip	v	jump over
+skip	v	ignore
+skip	v	leave
+skip	v	pass over
+skip	v	eschew
+skip	v	reject
+skip	v	fail once
+skip	v	pass
+skip	v	skitter
+skip	v	shift
+so	r	that
+so	r	very
+so	r	as
+so	r	this
+so	r	one might say
+so	r	in a way
+so	r	as it were
+so	r	as we
+so	r	therefore
+so	r	consequently
+so	r	thus
+so	r	hence
+so	r	likewise
+so	r	thereabouts
+so	r	approximately
+so	r	or more
+so	r	about 
+soft	a	easy
+soft	a	weak
+soft	a	gentle
+soft	a	imprecise
+soft	a	quiet
+soft	a	feeble
+soft	a	faint
+soft	a	tender
+soft	a	flexible
+soft	a	compassionate
+soft	a	malleable
+soft	a	spongy
+soft	a	yielding
+soft	a	smooth
+soft	a	cushioned
+soft	a	comfortable
+soft	a	not rough
+soft	a	restful
+soft	a	nonalcoholic drinks
+soft	a	nonalcoholic
+soft	a	undemanding
+soft	a	lenient
+soft	a	comfy
+soft	a	squashy
+softly	r	quietly
+softly	r	gently
+softly	r	faintly
+softly	r	delicately
+softly	r	lightly
+softly	r	finely
+softly	r	daintily
+softly	r	slightly
+softly	r	subtly
+softly	r	tenderly
+softly	r	carefully
+softly	r	indifferently
+soil	n	earth
+soil	n	layer of earth
+soil	n	dirt
+soil	n	terrain
+soil	n	compost
+soil	n	geological
+soil	n	pedological
+soil	n	pn
+soil	n	the ground
+soil	n	layer
+soil	n	ground
+soil	n	land
+soil	n	tarnish
+soil	n	stain
+solid	a	hard
+solid	a	solid
+solid	a	firm
+solid	a	concrete
+solid	a	set
+solid	a	dependable
+solid	a	strong
+solid	a	cemented
+solid	a	genuine
+solid	a	stable
+solid	a	reliable
+solid	a	rigid
+solid	a	fixed
+solid	a	secure
+solid	a	sturdy
+solid	a	substantial
+solid	a	dry
+solid	a	sound
+solid	a	respectable
+solid	a	accurate
+solid	a	substantive
+solid	a	valid
+solid	a	good
+solid	a	convincing
+special	a	unique
+special	a	particular
+special	a	specifically designed
+special	a	peculiar
+special	a	tailored
+special	a	atypical
+special	a	exceptional
+special	a	anomalous
+special	a	abnormal
+special	a	extraordinary
+special	a	wonderful
+special	a	memorable
+special	a	magical
+special	a	selected
+special	a	important
+special	a	distinguished
+special	a	eminent
+special	a	outstanding
+special	a	additional
+special	a	extra
+special	a	valued
+special	a	premium
+special	a	treasured
+special	a	quality
+special	a	exclusive
+special	a	kind
+special	a	remarkable
+special	a	lovely
+stand	n.v	wait
+stand	n.v	remain immobile
+stand	n.v	look on
+stand	n.v	watch
+stand	n.v	do-nothing
+stand	n.v	remain aloof
+stand	n.v	remain inactive
+stand	n.v	remain
+stand	n.v	sit
+stand	n.v	stay
+stand	n.v	endure
+stand	n.v	be resolute
+stand	n.v	continue
+stand	n.v	prevail
+stand	n.v	remain upright
+stand	n.v	represent
+stand	n.v	symbolize
+stand	n.v	abbreviate
+stand	n.v	rely
+steady	a	continuous
+steady	a	constant
+steady	a	constant 
+steady	a	persistent
+steady	a	firm
+steady	a	stable
+steady	a	solid
+steady	a	unwavering
+steady	a	unshaking
+steady	a	unvarying
+steady	a	fixed
+steady	a	unchanging
+steady	a	unfluctuating
+steady	a	unbroken
+steady	a	regular
+steady	a	gradual
+steady	a	unremitting
+steady	a	uninterrupted
+steady	a	sure
+stiff	a	rigid
+stiff	a	inelastic
+stiff	a	firm
+stiff	a	inflexible
+stiff	a	unyielding
+stiff	a	strong
+stiff	a	good
+stiff	a	solid
+stiff	a	hard
+stiff	a	tough
+stiff	a	intense
+stiff	a	aching
+stiff	a	frozen
+stiff	a	rheumatic
+stiff	a	cricked
+stiff	a	painful
+stiff	a	sore
+stiff	a	stern
+stiff	a	formal
+stiff	a	unrelaxed
+stiff	a	constrained
+stiff	a	unnatural
+stiff	a	unbending
+stiff	a	harsh
+stiff	a	heavy
+stiff	a	severe
+stiff	a	powerful
+still	a	calm
+still	a	not windy
+still	a	windless
+still	a	unmoving
+still	a	motionless
+still	a	stationary
+still	a	static
+still	a	quiet
+still	a	hushed
+still	a	tranquil
+still	a	unruffled
+still	a	smooth
+still	a	fixed
+still	a	peaceful
+still	a	serene
+still	a	arranged
+still	a	nonmoving
+straight	a	honest
+straight	a	forthright
+straight	a	direct
+straight	a	candid
+straight	a	accurate
+straight	a	pure
+straight	a	standard
+straight	a	plain
+straight	a	undiluted
+straight	a	genuine
+straight	a	true
+straight	a	unadulterated
+straight	a	heterosexual
+straight	a	uncurving
+straight	a	undeviating
+straight	a	level
+straight	a	vertical
+straight	a	undistorted
+straight	a	nondeviating
+straight	a	unbent
+straight	a	sorted
+straight	a	clear
+straight	a	correct
+straight	a	right
+straight	a	orderly
+straight	a	in order
+straight	a	linear
+straight	a	unswerving
+straight	a	uncrooked
+straight	a	unbending
+straight	a	consecutive
+straight	a	in a row
+straight	a	uninterrupted
+straight	a	successive
+straight	a	truthful
+straight	a	smooth
+straight	a	continuous
+straight	a	uncurved
+strain	n	variety
+strain	n	type
+strain	n	breed
+strain	n	sort
+strain	n	extraction
+strain	n	stress
+strain	n	burden
+strain	n	effort
+strain	n	pressure
+strain	n	anxiety
+strain	n	worry
+strain	n	group
+strain	n	stock
+strain	n	tune
+strain	n	melody
+strain	n	music
+strain	n	trace
+strain	n	form
+strain	n	line
+strain	n	tension
+strain	n	exertion
+strain	n	load
+strain	n	kind
+strange	a	odd
+strange	a	unusual
+strange	a	weird
+strange	a	bizarre
+strange	a	alien
+strange	a	foreign
+strange	a	different
+strange	a	peculiar
+strange	a	abnormal
+strange	a	unfamiliar
+strange	a	unknown
+strange	a	unexpected
+strange	a	surprising
+strange	a	unlikely
+strike	v	hit
+strike	v	bang
+strike	v	bash
+strike	v	knock
+strike	v	impress
+strike	v	surprise
+strike	v	move
+strike	v	affect
+strike	v	take
+strike	v	hitting
+strike	v	fail
+strike	v	pn
+strike	v	achieve
+strike	v	make
+strike	v	get
+strike	v	find
+strike	v	arrive at
+strike	v	carve
+strike	v	hammer
+strike	v	cast
+strike	v	thrust
+strike	v	bump
+strike	v	occur to
+strike	v	occur
+strike	v	appear to
+strike	v	seem to
+strike	v	start
+strike	v	begin
+strike	v	collide with
+strong	a	healthy
+strong	a	resilient
+strong	a	robust
+strong	a	sturdy
+strong	a	vigorous
+strong	a	hardy
+strong	a	solid
+strong	a	powerful
+strong	a	durable
+strong	a	secure
+strong	a	high
+strong	a	forceful
+strong	a	heavy
+strong	a	firm
+strong	a	convincing
+strong	a	persuasive
+strong	a	compelling
+strong	a	good
+strong	a	well stocked
+strong	a	effective
+strong	a	sound
+strong	a	clear
+strong	a	intense
+strong	a	pronounced
+strong	a	potent
+strong	a	distinct
+strong	a	keen
+strong	a	masterful
+strong	a	concentrated
+strong	a	dark
+strong	a	highly flavoured
+strong	a	bitter
+strong	a	full bodied
+strong	a	dependable
+strong	a	resolute
+strong	a	tough
+strong	a	capable
+suffer	v	have
+suffer	v	acquire
+suffer	v	undergo
+suffer	v	endure
+suffer	v	sustain
+suffer	v	experience
+suffer	v	know
+suffer	v	tolerate
+suffer	v	bear
+suffer	v	put up with
+suffer	v	accept
+suffer	v	be subjected to
+suffer	v	encounter
+suffer	v	feel
+suspect	v	believe
+suspect	v	consider
+suspect	v	guess
+suspect	v	assume
+suspect	v	think
+suspect	v	surmise
+suspect	v	expect
+suspect	v	imagine
+suspect	v	postulate
+suspect	v	question
+suspect	v	presume
+suspect	v	suspicious
+suspect	v	think probable
+suspect	v	feel
+suspect	v	reckon
+suspect	v	consider potentially guilty
+suspect	v	think guilty
+suspect	v	mistrust
+suspect	v	believe guilty
+suspect	v	think of
+suspect	v	wonder about
+take	v	happen
+take	v	occur
+take	v	experiment in their roles
+take	v	risk
+take	v	last
+take	v	be
+take	v	engage for
+take	v	occupy
+take	v	consider
+take	v	accept
+take	v	include
+take	v	think about
+take	v	tolerate
+take	v	run
+take	v	undergo
+take	v	pick up
+take	v	gather
+take	v	collect
+take	v	get
+take	v	grasp
+take	v	grow
+take	v	establish itself
+take	v	assume
+take	v	begin
+take	v	start
+tap	v	drum
+tap	v	rap
+tap	v	move
+tap	v	knock
+tap	v	exploit
+tap	v	draw
+tap	v	use
+tap	v	appeal to
+tap	v	syphon
+tap	v	utilise
+tap	v	take advantage of
+tap	v	pat
+tap	v	beat
+tap	v	hit
+tap	v	draw on
+tap	v	milk
+tap	v	mark
+tap	v	establish
+tap	v	appoint
+tap	v	recommend
+tap	v	approach
+tap	v	commission
+tap	v	choose
+tap	v	contact
+tap	v	ask
+tap	v	select
+tap	v	draw upon
+tap	v	extract
+tap	v	strike
+tap	v	touch
+tell	v	said to
+tell	v	inform
+tell	v	explain to
+tell	v	notify
+tell	v	say to
+tell	v	assure
+tell	v	order
+tell	v	instruct
+tell	v	convey to
+tell	v	inform me of
+tell	v	let me know
+tell	v	communicate
+tell	v	explain
+tell	v	recount
+tell	v	describe
+tell	v	impart
+tell	v	narrate
+tender	a	delicate
+tender	a	soft
+tender	a	sore
+tender	a	sensitive
+tender	a	painful
+tender	a	gentle
+tender	a	sympathetic
+tender	a	kind
+tender	a	loving
+tender	a	fond
+tender	a	great
+tender	a	affectionate
+tender	a	young
+tender	a	early
+tender	a	immature
+tender	a	inexperienced
+terrible	a	awful
+terrible	a	severe
+terrible	a	horrible
+terrible	a	bad
+terrible	a	appalling
+terrible	a	dreadful
+terrible	a	very bad
+terrible	a	negative
+terrible	a	formidable
+terrible	a	poignant
+terrible	a	shocking
+terrible	a	horrific
+terrible	a	unpleasant
+terrible	a	atrocious
+terrible	a	fearsome
+terrible	a	frightening
+terrible	a	horrifying
+terrible	a	terrifying
+terrible	a	deplorable
+terrible	a	abhorrent
+test	n	examination
+test	n	assessment
+test	n	exam
+test	n	evaluation
+test	n	trial
+test	n	analysis
+test	n	scan
+test	n	check
+therefore	r	consequently
+therefore	r	accordingly
+therefore	r	thus
+therefore	r	as a result
+therefore	r	hence
+therefore	r	so
+think	v	believe
+think	v	be of the opinion
+think	v	recommend
+think	v	feel
+think	v	assume
+think	v	suspect
+think	v	reckon
+think	v	consider
+think	v	reason
+think	v	expect
+think	v	contemplate
+think	v	analyse
+think	v	guess
+think	v	suppose
+think	v	imagine
+think	v	anticipate
+throw	v	fling
+throw	v	chuck
+throw	v	fire
+throw	v	expose to
+throw	v	hurl
+throw	v	put
+throw	v	toss
+throw	v	pitch
+throw	v	ask of
+throw	v	direct at
+throw	v	demand
+throw	v	ask
+throw	v	project
+throw	v	bring
+throw	v	place
+throw	v	focus
+throw	v	shoot
+throw	v	punch
+throw	v	deliver
+throw	v	propel
+throw	v	discard
+throw	v	cast
+thus	r	so
+thus	r	this
+thus	r	therefore
+thus	r	accordingly
+thus	r	consequently
+thus	r	hence
+thus	r	in this manner
+thus	r	in this way
+thus	r	there
+tight	r	constricting
+tight	r	small
+tight	r	too small
+tight	r	uncomfortable
+tight	r	constricted
+tight	r	close-fitting
+tight	r	high-strung
+tight	r	low
+tight	r	pressurised
+tight	r	scarce
+tight	r	sparse
+tight	r	not easily available
+tight	r	close
+tight	r	restricted
+tight	r	cramped
+tight	r	closely
+tight	r	firmly
+tight	r	compressed
+tight	r	stretched
+tight	r	secure
+tight	r	securely
+tight	r	close to
+tight	r	on top of
+tight	r	close by
+tight	r	near
+tight	r	pressured
+time	n	period
+time	n	point
+time	n	instant
+time	n	occasion
+time	n	moment
+time	n	deadline
+time	n	juncture
+time	n	era
+time	n	the Victorian period
+time	n	day
+time	n	age
+time	n	occasionally
+time	n	interval
+time	n	instance
+time	n	epoch
+time	n	chance
+time	n	a chance
+time	n	space
+time	n	allocation
+time	n	allotment
+time	n	opportunity
+touch	v	feel
+touch	v	finger
+touch	v	stroke
+touch	v	skim over
+touch	v	refer to
+touch	v	address slightly
+touch	v	brush
+touch	v	deal with
+touch	v	skim
+touch	v	study
+touch	v	affect
+touch	v	move
+touch	v	stir
+touch	v	influence
+touch	v	consider
+touch	v	get involved with
+touch	v	undertake
+touch	v	handle
+touch	v	accept
+touch	v	do
+touch	v	take on
+touch	v	mention
+touch	v	talk about
+touch	v	alight
+touch	v	speak about
+touch	v	infect
+touch	v	get to
+touch	v	reach
+touch	v	come into contact with
+touch	v	in contact with
+touch	v	on
+touch	v	come together with
+touch	v	lean against
+touch	v	contact
+touch	v	come together
+touch	v	meet
+touch	v	come in contact with
+touch	v	make contact with
+touch	v	tinge
+touch	v	affected by
+touch	v	influenced by
+tremendous	a	wonderful
+tremendous	a	great
+tremendous	a	marvellous
+tremendous	a	extraordinary
+tremendous	a	terrific
+tremendous	a	enormous
+tremendous	a	huge
+tremendous	a	terrible
+tremendous	a	vast
+true	a	factual
+true	a	correct
+true	a	genuine
+true	a	verified
+true	a	unquestionable
+true	a	accurate
+true	a	real
+true	a	right
+true	a	truth
+true	a	fact
+true	a	actual
+truly	r	genuinely
+truly	r	strictly
+truly	r	unequivocally
+truly	r	actually
+truly	r	perfectly
+truly	r	absolutely
+truly	r	unquestionably
+truly	r	definitely
+truly	r	really
+truly	r	undoubtedly
+truly	r	fully
+truly	r	honestly
+truly	r	truthfully
+truly	r	in truth
+vital	a	essential
+vital	a	crucial
+vital	a	critical
+vital	a	indispensable
+vital	a	requisite
+vital	a	fundamental
+vital	a	integral
+vital	a	necessary
+vital	a	important
+way	n	manner
+way	n	fashion
+way	n	respect
+way	n	aspect
+way	n	sense
+way	n	means
+way	n	method
+way	n	practice
+way	n	characteristic
+way	n	incidentally
+way	n	by
+way	n	while on the subject
+way	n	direction
+way	n	what the result would be
+way	n	how
+way	n	route
+way	n	journey
+way	n	passage
+way	n	technique
+way	n	far
+way	n	so
+way	n	some
+well	r	in addition to
+well	r	along with
+well	r	and
+well	r	with
+well	r	sufficient
+well	r	in plenty of time
+well	r	long
+well	r	much
+well	r	properly
+well	r	satisfactorily
+well	r	nice
+well	r	including
+well	r	good luck
+well	r	in good health
+well	r	bon voyage
+well	r	goodbye
+well	r	excellently
+well	r	successfully
+well	r	healthily
+well	r	safely
+well	r	carefully
+well	r	efficiently
+well	r	indeed
+well	r	then
+well	r	so
+wild	a.n	uninhabited land
+wild	a.n	out of captivity
+wild	a.n	wilderness
+wild	a.n	uncultivated land
+wild	a.n	its natural environment
+wind	n	breeze
+wind	n	air current
+wind	n	air flow
+wind	n	wind power
+wind	n	natural air movement
+wind	n	gust
+wind	n	air
+wind	n	blast
+wind	n	fart
+wind	n	flatulence
+wind	n	gas
+wind	n	vagary
+wind	n	whirlwind
+wind	n	current
+work	v	engage
+work	v	look at
+work	v	research
+work	v	employ
+work	v	investigate
+work	v	look into
+work	v	labour
+work	v	be employed
+work	v	collaborate
+work	v	be occupied
+work	v	undertake employment
+work	v	toil
+work	v	task
+work	v	cooperate
+work	v	operate
+work	v	act
+work	v	function
+work	v	move
+work	v	participate
+worldwide	a	global
+worldwide	a	international
+worldwide	a	universal
+worldwide	a	total
+worthy	a	deserved
+worthy	a	laudable
+worthy	a	commendable
+worthy	a	deserving
+worthy	a	reputable
+worthy	a	trusted
+worthy	a	excellent
+worthy	a	admirable
+worthy	a	respectable
+worthy	a	creditable
+worthy	a	righteous
+worthy	a	charitable
+worthy	a	satisfactory
+worthy	a	acceptable
+worthy	a	fitting
+worthy	a	worthwhile
+worthy	a	good
+worthy	a	honourable
+worthy	a	beneficial
+worthy	a	befitting
+worthy	a	suitable
+yard	n	garden
+yard	n	lot
+yard	n	garden 
+yard	n	property
+yard	n	area
+yard	n	patio
+yard	n	terrace
+yard	n	metre
+yard	n	sixty feet
+yard	n	pn
+yard	n	several feet
+yard	n	enclosure
+yard	n	lawn
+yard	n	work area
+yard	n	cul de sac
+yard	n	depot
+yard	n	courtyard
+yard	n	playground
+yard	n	ground
+yet	r	still
+yet	r	not arrived
+yet	r	nevertheless
+yet	r	however
+yet	r	despite this
+yet	r	but
+yet	r	are still to happen
+yet	r	before
+yet	r	thus far
+yet	r	until now
+yet	r	up to now
+yet	r	so far
+yet	r	hitherto
+yet	r	already
+yet	r	although
+yet	r	to date
+yet	r	in spite of that
+yet	r	lately
