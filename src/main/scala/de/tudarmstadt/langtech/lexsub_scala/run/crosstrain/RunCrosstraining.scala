@@ -31,6 +31,7 @@ object RunCrosstraining extends App {
   val cvFolds = 10
   val model: Model = RankLibModel(LambdaMart(NDCG(10), 500, 16)) // new ClearTKModel("MaxEnt")
   val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
+  val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
   
@@ -45,7 +46,7 @@ object RunCrosstraining extends App {
   
   // crossfold, and featurize all training sets for all folds
   val crossfoldData = languages.map { lang => LexsubUtil.createCVFolds(lang.allData, cvFolds) }
-  val heldoutData = crossfoldData.map { cvData => cvData.map(_._1) }
+  val cvHeldoutData = crossfoldData.map { cvData => cvData.map(_._1) }
   val cvTrainingData = crossfoldData.map { cvData => cvData.map(_._2) }
   val cvFeaturized = languages.zip(cvTrainingData).map { case (language, foldData) =>
     val candidates = trainingCandidateSelector(language)
@@ -59,6 +60,8 @@ object RunCrosstraining extends App {
   
   val languagesWithAllTrainingData = languages.zip(featuresAll)
   val languagesWithTrainingFolds = languages.zip(cvFeaturized)
+  val languagesWithHeldoutFolds = languages.zip(cvHeldoutData)
+  val cvHeldoutLookup = languagesWithHeldoutFolds.toMap
   
   // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
   val training1tmp = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
@@ -105,15 +108,14 @@ object RunCrosstraining extends App {
   println("Training on all languages combined..")
   val allLanguagesFolder = "trainingAllLanguages"
   val training4 = model.train(featuresAll.flatten, allLanguagesFolder)
-
-  
   
   // Wait for training to complete
-  println("Waiting for all training to complete..")
+  val allFutures = training1 ++ training2 ++ training3 ++ Seq(training4)
+  println(s"Waiting for all training to complete (${allFutures.length} jobs)..")
   implicit val ec = scala.concurrent.ExecutionContext.global
-  val allTraining = Future.sequence(training1 ++ training2 ++ training3)
+  val allTraining = Future.sequence(allFutures)
   val exitCodes = Await.result(allTraining, Duration.Inf)
-  println("Completed all training jobs with return values " + exitCodes)
+  println("Completed all training jobs with exit codes " + exitCodes.mkString(", "))
   if(exitCodes.exists(_ != 0))
     throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
   
@@ -132,8 +134,17 @@ object RunCrosstraining extends App {
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-" + trainLanguage
       val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + " trained on " + trainLanguage + ": " + SemEvalScorer.singleLine(eval))
+    }
+    
+    // cross-CV for identity
+    {
+      val outFolder = "crosstrainingResults/" + evaluationLanguge + "-cv"
+      val heldoutFolds = cvHeldoutLookup(evaluationLanguge)
+      val subsystems = heldoutFolds.indices.map { foldIdx => mkLexsub(evaluationLanguge, evaluationLanguge.trainingOnlyFold(foldIdx))}
+      val outcomes = LexsubUtil.mergeCVFolds(subsystems, heldoutFolds)
       
-      // TODO: cross-CV for identity
+      val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
+      println("> " + evaluationLanguge + s" trained on self with $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
     }
     
     // evaluate on all other languages
@@ -167,6 +178,6 @@ object RunCrosstraining extends App {
   }
 
   def mkLexsub(targetLanguage: LanguageData, modelFolder: String): LexSub = 
-    LexSubExpander(targetLanguage.goldCandidates, targetLanguage.features, model.getScorer(modelFolder))
+    LexSubExpander(systemCandidateSelector(targetLanguage), targetLanguage.features, model.getScorer(modelFolder))
 
 }

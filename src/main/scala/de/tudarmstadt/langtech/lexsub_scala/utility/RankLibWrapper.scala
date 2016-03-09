@@ -28,7 +28,8 @@ object RankLib {
   }
   
   trait Metric
-  case object GAP extends Metric { override def toString = "GAP" }
+  case object MAP extends Metric { override def toString = "MAP" }
+  case object GAP extends Metric { override def toString = "GAP" } // does not exist
   case class NDCG(n: Int) extends Metric { override def toString = "NDCG@" + n }
   case class ERR(n: Int) extends Metric { override def toString = "ERR@" + n }
   
