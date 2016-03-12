@@ -35,14 +35,15 @@ object RunCrosstraining extends App {
   val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
-  
-  
+  implicit val ec = scala.concurrent.ExecutionContext.global
+   
   // featurize all data no folds
-  val featuresAll = languages map { language =>
-    val candidates = trainingCandidateSelector(language)
-    println(s"Featurizing $language (all data) with candiates from $candidates..")
-    io.lazySerialized("cache/" + language.toString + "-all-featurized.ser" ){
-      featurize(language, language.allData, candidates)
+  val featuresAllFutures = languages map { language => Future {
+      val candidates = trainingCandidateSelector(language)
+      println(s"Featurizing $language (all data) with candiates from $candidates..")
+      io.lazySerialized("cache/" + language.toString + "-all-featurized.ser" ){
+        featurize(language, language.allData, candidates)
+      }
     }
   }
   
@@ -50,15 +51,20 @@ object RunCrosstraining extends App {
   val crossfoldData = languages.map { lang => LexsubUtil.createCVFolds(lang.allData, cvFolds) }
   val cvHeldoutData = crossfoldData.map { cvData => cvData.map(_._1) }
   val cvTrainingData = crossfoldData.map { cvData => cvData.map(_._2) }
-  val cvFeaturized = languages.zip(cvTrainingData).map { case (language, foldData) =>
-    val candidates = trainingCandidateSelector(language)
-    for ((foldTrainingData, foldIdx) <- foldData.zipWithIndex) yield {
-          println(s"Featurizing $language fold $foldIdx (${foldTrainingData.length} instances)")
-          io.lazySerialized("cache/" + language.toString + "-fold-" + foldIdx + "featurized.ser" ){
-            featurize(language, foldTrainingData, candidates)
-          }
+  val cvFeaturizedFutures = languages.zip(cvTrainingData).map { case (language, foldData) => Future {
+      val candidates = trainingCandidateSelector(language)
+      for ((foldTrainingData, foldIdx) <- foldData.zipWithIndex) yield {
+            println(s"Featurizing $language fold $foldIdx (${foldTrainingData.length} instances)")
+            io.lazySerialized("cache/" + language.toString + "-fold-" + foldIdx + "featurized.ser" ){
+              featurize(language, foldTrainingData, candidates)
+            }
+      }
     }
   }
+  
+  println("Awaiting featurization..")
+  val featuresAll = Await.result(Future.sequence(featuresAllFutures), Duration.Inf)
+  val cvFeaturized =  Await.result(Future.sequence(cvFeaturizedFutures), Duration.Inf)
   
   // some helper zippings
   val languagesWithAllTrainingData = languages.zip(featuresAll)
@@ -66,8 +72,8 @@ object RunCrosstraining extends App {
   val languagesWithHeldoutFolds = languages.zip(cvHeldoutData)
   val cvHeldoutLookup = languagesWithHeldoutFolds.toMap
   
-  
   if(!skipTraining){
+    println("Begin training..")
     
     // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
     val training1tmp = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
@@ -119,7 +125,7 @@ object RunCrosstraining extends App {
     val nJobs = allFutures.length
     var nCompleted = 0 // race-conditions aren't a tragedy here
     
-    implicit val ec = scala.concurrent.ExecutionContext.global
+    
     allFutures.foreach { f => f.onSuccess 
     { 
       case 0 => nCompleted += 1; println(s"Completed $nCompleted / $nJobs jobs")
