@@ -18,6 +18,8 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.lexsub_scala.LexSub
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
 import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalGold
+import de.tudarmstadt.langtech.lexsub_scala.reader.GoldItem
 
 object LexsubUtil {
   
@@ -55,6 +57,21 @@ object LexsubUtil {
       (word, candidates)
     }
     new FixedCandidateList(result)
+  }
+  
+  
+  def removeMWEfromGold(goldfile: String, targetFile: String) = {
+    def accept(substitution: String) = !(substitution.contains(" ") || substitution.contains("-"))
+    val items = new SemEvalGold(goldfile).items
+    val filtered = items.map { case GoldItem(id, target, substitutions) =>
+      GoldItem(id, target, substitutions.filter(s => accept(s._1)))
+    }
+    val lines = filtered.collect { case GoldItem(id, LexItem(word, pos), substitutions) if substitutions.nonEmpty =>
+      s"$word.$pos $id :: " + substitutions.map { case (w, s) => w + " " + s}.mkString("", ";", ";")
+    }
+    val data = lines.mkString("\n")
+    io.write(targetFile, data)
+    println(s"Removed MWE from $goldfile, wrote to $targetFile")
   }
   
   

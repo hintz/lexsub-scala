@@ -33,6 +33,7 @@ trait LanguageData {
   def trainingData: Seq[LexSubInstance]
   def testData: Seq[LexSubInstance]
   def allData: Seq[LexSubInstance] = trainingData ++ testData
+  def trainGoldfile: String
   def testGoldfile: String
   def cvGoldfile: String
   
