@@ -19,8 +19,11 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.MaltProcessing
 import opennlp.tools.tokenize.TokenizerModel
 import de.tudarmstadt.langtech.lexsub_scala.utility.MateProcessing
 import de.tudarmstadt.langtech.lexsub_scala.features.SyntacticEmbeddingCombinator._
+import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
+import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 
 object Settings extends YamlSettings("crosstraining-paths.yaml") {
+ 
   
   // we can use the same scorer script for all semeval tasks. GermEval supplies the most recent
   val scorerFolder = path("Tasks", "germevalFolder") + "/germeval2015-scorer"
@@ -28,6 +31,16 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
   // model location for all language data
   val allLanguagesFolder = "trainingAllLanguages"
   
+  // should MWEs be excluded from gold?
+  val filterMWEsInGold = false
+  
+  // should MWEs be excluded from system candidate list?
+  //val filterMWEsInList = false
+  
+  // how to filter multiword expressions
+  val mweFilter = (c: Candidate) => !Seq(" ", "-", "_").exists(space => c.replacement.contains(space))
+  val filterMWEs = (cl: CandidateList) => cl.filter(mweFilter)
+
   object German extends LanguageData {
 
     implicit lazy val preprocessing: LexSubProcessing = MateProcessing(
@@ -40,7 +53,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
 
     lazy val ngrams = Web1TLookup(path("NGrams", "German", "web1t"), 5)
     lazy val candidates = new CandidateFile(path("Candidates", "German", "GermEval2015", "masterlist"), true).filter(!_.replacement.contains("_"))
-    lazy val goldCandidates = new CandidateFile(path("Candidates", "German", "GermEval2015", "gold"))
+    lazy val goldCandidateFile = new CandidateFile(path("Candidates", "German", "GermEval2015", "gold"))
+    lazy val goldCandidates = if(filterMWEsInGold) filterMWEs(goldCandidateFile) else goldCandidateFile
     val conjunctions = Seq("und", "oder", ",")
     
     lazy val dtFirstOrder = DTLookup("DT1st", new WordSimilarityFile(path("DT", "German", "firstOrder"), identity), 
@@ -56,9 +70,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     
     lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "train-dataset")
     lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "test-dataset")
-    val testGoldfile = path("Tasks", "germevalFolder") + "/test-dataset.gold"
-    val trainGoldfile = path("Tasks", "germevalFolder") + "/train-dataset.gold"
-    val cvGoldfile = path("Tasks", "germevalFolder") + "/cv.gold"
+    val testGoldfile = path("Tasks", "germevalFolder") + "/test-dataset.gold" + (if(filterMWEsInGold) ".nomwe" else "")
+    val trainGoldfile = path("Tasks", "germevalFolder") + "/train-dataset.gold" + (if(filterMWEsInGold) ".nomwe" else "")
+    val cvGoldfile = path("Tasks", "germevalFolder") + "/cv.gold" + (if(filterMWEsInGold) ".nomwe" else "")
     
     val trainingFolder = "trainingGerman"
     
@@ -88,14 +102,15 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     
     lazy val semevalTrial = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "trial/lexsub_trial.xml", "trial/gold.trial")
     lazy val semevalTest = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "test/lexsub_test.xml", "test/gold.gold")
-    val testGoldfile = path("Tasks", "semevalFolder") + "/trial/gold.trial"
-    val trainGoldfile = path("Tasks", "semevalFolder") + "/test/gold.gold"
-    val cvGoldfile = path("Tasks", "semevalFolder") + "/cv.gold"
+    val testGoldfile = path("Tasks", "semevalFolder") + "/trial/gold.trial" + (if(filterMWEsInGold) ".nomwe" else "")
+    val trainGoldfile = path("Tasks", "semevalFolder") + "/test/gold.gold" + (if(filterMWEsInGold) ".nomwe" else "")
+    val cvGoldfile = path("Tasks", "semevalFolder") + "/cv.gold" + (if(filterMWEsInGold) ".nomwe" else "")
     def trainingData = semevalTest
     def testData = semevalTrial
 
     lazy val candidates = new CandidateFile(path("Candidates", "English", "SemEval2007", "wordnet"), true).filter(!_.replacement.contains("_"))
-    lazy val goldCandidates = new CandidateFile(path("Candidates", "English", "SemEval2007", "gold"), true)
+    lazy val goldCandidateFile = new CandidateFile(path("Candidates", "English", "SemEval2007", "gold"), true)
+    lazy val goldCandidates = if(filterMWEsInGold) filterMWEs(goldCandidateFile) else goldCandidateFile
     lazy val ngrams = Web1TLookup(path("NGrams", "English", "web1t"), 5)
     val conjunctions = Seq("and", "or", ",")
     
@@ -132,12 +147,13 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     // load the evalita data (from cache, if available)
     lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "evalitaFolder"), "test/lexsub_test.xml", "test/gold.test")
     lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "evalitaFolder"), "trial/lexsub_trial.xml", "trial/gold.trial")
-    val testGoldfile = path("Tasks", "evalitaFolder") + "/trial/gold.trial"
-    val trainGoldfile = path("Tasks", "evalitaFolder") + "/test/gold.test"
-    val cvGoldfile = path("Tasks", "evalitaFolder") + "/cv.gold"
+    val testGoldfile = path("Tasks", "evalitaFolder") + "/trial/gold.trial" + (if(filterMWEsInGold) ".nomwe" else "")
+    val trainGoldfile = path("Tasks", "evalitaFolder") + "/test/gold.test" + (if(filterMWEsInGold) ".nomwe" else "")
+    val cvGoldfile = path("Tasks", "evalitaFolder") + "/cv.gold" + (if(filterMWEsInGold) ".nomwe" else "")
 
     lazy val candidates = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "multiwordnet"), true).filter(!_.replacement.contains("_"))
-    lazy val goldCandidates = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "gold"), true)
+    lazy val goldCandidateFile = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "gold"), true)
+    lazy val goldCandidates = if(filterMWEsInGold) filterMWEs(goldCandidateFile) else goldCandidateFile
     lazy val ngrams = Web1TLookup(path("NGrams", "Italian", "web1t"), 5)
     val conjunctions = Seq("e", "ed", "o", "od", ",")
     
