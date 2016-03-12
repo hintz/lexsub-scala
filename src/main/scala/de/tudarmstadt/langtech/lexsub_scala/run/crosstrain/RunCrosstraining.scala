@@ -1,28 +1,24 @@
 package de.tudarmstadt.langtech.lexsub_scala.run.crosstrain
 
-import de.tudarmstadt.langtech.scala_utilities.io
-import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
-import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
-import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
-import de.tudarmstadt.langtech.lexsub_scala.LexSub
-import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateFile
-import de.tudarmstadt.langtech.lexsub_scala.Scorer
-import de.tudarmstadt.langtech.lexsub_scala.run.crosstrain.Settings.{ English, German, Italian}
-import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
-import org.cleartk.classifier.Instance
-import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
-import de.tudarmstadt.langtech.lexsub_scala.training.ctk.DeprecatedTraining
-import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
-import de.tudarmstadt.langtech.lexsub_scala.training.Model
-import de.tudarmstadt.langtech.lexsub_scala.training.Model
-import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
-import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
-import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib._
-import scala.concurrent.Future
 import scala.concurrent.Await
+import scala.concurrent.Future
 import scala.concurrent.duration.Duration
-import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
+
+import de.tudarmstadt.langtech.lexsub_scala.LexSub
+import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
+import de.tudarmstadt.langtech.lexsub_scala.run.crosstrain.Settings.English
+import de.tudarmstadt.langtech.lexsub_scala.run.crosstrain.Settings.German
+import de.tudarmstadt.langtech.lexsub_scala.run.crosstrain.Settings.Italian
+import de.tudarmstadt.langtech.lexsub_scala.training.Featurizer
+import de.tudarmstadt.langtech.lexsub_scala.training.Model
+import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
+import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
+import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib.LambdaMart
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib.MAP
+import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
+import de.tudarmstadt.langtech.scala_utilities.io
 
 object RunCrosstraining extends App {
   
@@ -145,7 +141,7 @@ object RunCrosstraining extends App {
   /// --- Training complete. Start eval ---
   
   // evaluate all languages
-  for(evaluationLanguge <- languages){
+  val results = for(evaluationLanguge <- languages) yield Future {
     println("Evaluating on " + evaluationLanguge + "..")
     val evalData = evaluationLanguge.testData
     val goldFile = evaluationLanguge.testGoldfile
@@ -197,6 +193,7 @@ object RunCrosstraining extends App {
 
   }
   
+  Await.result(Future.sequence(results), Duration.Inf)
   println("Done.")
   
   def featurize(language: LanguageData, data: Seq[LexSubInstance], candidates: CandidateList) = {

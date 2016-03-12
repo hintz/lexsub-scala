@@ -1,25 +1,24 @@
 package de.tudarmstadt.langtech.lexsub_scala.utility
 
-import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
-import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
-import de.tudarmstadt.langtech.scala_utilities.io
-import de.tudarmstadt.langtech.scala_utilities.collections
-import scala.util.Try
-import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
-import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
-import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
+import scala.concurrent.Await
+import scala.concurrent.Future
+import scala.concurrent.duration.Duration
+import de.tudarmstadt.langtech.lexsub_scala.LexSub
 import de.tudarmstadt.langtech.lexsub_scala.LexSubProcessing
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
-import de.tudarmstadt.langtech.lexsub_scala.reader.LexItem
-import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
 import de.tudarmstadt.langtech.lexsub_scala.candidates.FixedCandidateList
-import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
-import de.tudarmstadt.langtech.lexsub_scala.types.Token
-import de.tudarmstadt.langtech.lexsub_scala.LexSub
-import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
-import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
-import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalGold
 import de.tudarmstadt.langtech.lexsub_scala.reader.GoldItem
+import de.tudarmstadt.langtech.lexsub_scala.reader.LexItem
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalGold
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalItem
+import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalReader
+import de.tudarmstadt.langtech.lexsub_scala.types.Candidate
+import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
+import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
+import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
+import de.tudarmstadt.langtech.scala_utilities.collections
+import de.tudarmstadt.langtech.scala_utilities.io
+import scala.concurrent.ExecutionContext
 
 object LexsubUtil {
   
@@ -87,9 +86,10 @@ object LexsubUtil {
   }
   
   /** Applies a set of LexSub subsystems (stemming from CV-training folds, and applies it to a list of eval folds */
-  def mergeCVFolds(subsystems: Seq[LexSub], evalFolds: Seq[Seq[LexSubInstance]]): Iterable[Outcome] = {
-    val outcomes = subsystems.zip(evalFolds).flatMap { case (lexsub, evalData) => lexsub(evalData) }
-    Outcomes.collect(evalFolds.flatten, outcomes)
+  def mergeCVFolds(subsystems: Seq[LexSub], evalFolds: Seq[Seq[LexSubInstance]])(implicit ec: ExecutionContext): Iterable[Outcome] = {
+    val futures = subsystems.zip(evalFolds).map { case (lexsub, evalData) => Future { lexsub(evalData) } }
+    val results = Await.result(Future.sequence(futures), Duration.Inf)
+    Outcomes.collect(evalFolds.flatten, results.flatten)
   }
   
 }
