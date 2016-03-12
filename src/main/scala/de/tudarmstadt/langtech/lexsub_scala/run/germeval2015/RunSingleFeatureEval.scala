@@ -14,13 +14,6 @@ object RunSingleFeatureEval extends App {
   for(feature <- Settings.features.extractors){
     println("Crossvalidating feature " + feature + " ..")
     
-    DeprecatedTraining.crossvalidate(
-      Settings.germevalTraining,
-      Settings.candidates.trainingList,
-      Settings.candidates.systemList,
-      new Features(feature),
-      Settings.trainingDir + "/" + feature, 
-      "./evalFeatures/" + feature + "/instances.out",
-      folds = 10)
+    // TODO
   }
 }
