@@ -54,12 +54,8 @@ object RunCrosstraining extends App {
   val cvTrainingData = crossfoldData.map { cvData => cvData.map(_._2) }
   // featurize crossfold data by looking it up in featuresAll
   val cvFeaturized = cvTrainingData.zip(featuresAll).map { case (trainingFolds, featurized) => 
-    def featurizedForInstance(instance: LexSubInstance) = {
-      val matching = featurized.filter { case (Substitutions(`instance`, _), _) => true }
-      assert(matching.size == 1)
-      matching.head
-    }
-    val featurizedPerFold = trainingFolds.map { foldInstances => foldInstances.map(featurizedForInstance) }
+    val lookupMap = featurized.map { case item@(Substitutions(instance, _), _)  => (instance, item) }.toMap
+    val featurizedPerFold = trainingFolds.map { foldInstances => foldInstances.map(lookupMap) }
     featurizedPerFold
   }
 
