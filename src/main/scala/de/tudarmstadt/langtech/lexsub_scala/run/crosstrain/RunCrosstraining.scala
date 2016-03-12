@@ -28,8 +28,8 @@ object RunCrosstraining extends App {
   val skipTraining = false
   val cvFolds = 10
   val model: Model = RankLibModel(LambdaMart(MAP, 500, 10)) // new ClearTKModel("MaxEnt")
-  val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
-  val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
+  val trainingCandidateSelector: LanguageData => CandidateList = _.candidates
+  val systemCandidateSelector: LanguageData => CandidateList = _.candidates
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
   implicit val ec = scala.concurrent.ExecutionContext.global
@@ -165,6 +165,9 @@ object RunCrosstraining extends App {
       
       val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + s" trained on self with $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
+      
+      val eval2 = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, evaluationLanguge.testGoldfile, outFolder + "testOnly")
+      println(">> " + evaluationLanguge + s" trained on self with $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
     }
     
     // evaluate on all other languages

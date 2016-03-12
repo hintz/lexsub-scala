@@ -24,7 +24,6 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
 
 object Settings extends YamlSettings("crosstraining-paths.yaml") {
  
-  
   // we can use the same scorer script for all semeval tasks. GermEval supplies the most recent
   val scorerFolder = path("Tasks", "germevalFolder") + "/germeval2015-scorer"
   
@@ -35,7 +34,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
   val filterMWEsInGold = false
   
   // should MWEs be excluded from system candidate list?
-  //val filterMWEsInList = false
+  val filterMWEsInList = false
   
   // how to filter multiword expressions
   val mweFilter = (c: Candidate) => !Seq(" ", "-", "_").exists(space => c.replacement.contains(space))
@@ -52,7 +51,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       )
 
     lazy val ngrams = Web1TLookup(path("NGrams", "German", "web1t"), 5)
-    lazy val candidates = new CandidateFile(path("Candidates", "German", "GermEval2015", "masterlist"), true).filter(!_.replacement.contains("_"))
+    lazy val candidateFile = new CandidateFile(path("Candidates", "German", "GermEval2015", "masterlist"), true).filter(!_.replacement.contains("_"))
+    lazy val candidates = if(filterMWEsInList) filterMWEs(candidateFile) else candidateFile
     lazy val goldCandidateFile = new CandidateFile(path("Candidates", "German", "GermEval2015", "gold"))
     lazy val goldCandidates = if(filterMWEsInGold) filterMWEs(goldCandidateFile) else goldCandidateFile
     val conjunctions = Seq("und", "oder", ",")
@@ -108,7 +108,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     def trainingData = semevalTest
     def testData = semevalTrial
 
-    lazy val candidates = new CandidateFile(path("Candidates", "English", "SemEval2007", "wordnet"), true).filter(!_.replacement.contains("_"))
+    lazy val candidateFile = new CandidateFile(path("Candidates", "English", "SemEval2007", "wordnet"), true).filter(!_.replacement.contains("_"))
+    lazy val candidates = if(filterMWEsInList) filterMWEs(candidateFile) else candidateFile
     lazy val goldCandidateFile = new CandidateFile(path("Candidates", "English", "SemEval2007", "gold"), true)
     lazy val goldCandidates = if(filterMWEsInGold) filterMWEs(goldCandidateFile) else goldCandidateFile
     lazy val ngrams = Web1TLookup(path("NGrams", "English", "web1t"), 5)
@@ -151,7 +152,8 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     val trainGoldfile = path("Tasks", "evalitaFolder") + "/test/gold.test" + (if(filterMWEsInGold) ".nomwe" else "")
     val cvGoldfile = path("Tasks", "evalitaFolder") + "/cv.gold" + (if(filterMWEsInGold) ".nomwe" else "")
 
-    lazy val candidates = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "multiwordnet"), true).filter(!_.replacement.contains("_"))
+    lazy val candidateFile = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "multiwordnet"), true).filter(!_.replacement.contains("_"))
+    lazy val candidates = if(filterMWEsInList) filterMWEs(candidateFile) else candidateFile
     lazy val goldCandidateFile = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "gold"), true)
     lazy val goldCandidates = if(filterMWEsInGold) filterMWEs(goldCandidateFile) else goldCandidateFile
     lazy val ngrams = Web1TLookup(path("NGrams", "Italian", "web1t"), 5)
