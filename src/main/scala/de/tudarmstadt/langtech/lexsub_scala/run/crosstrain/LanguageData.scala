@@ -34,6 +34,7 @@ trait LanguageData {
   def testData: Seq[LexSubInstance]
   def allData: Seq[LexSubInstance] = trainingData ++ testData
   def testGoldfile: String
+  def cvGoldfile: String
   
   // folder where this language's model will be stored
   def trainingFolder: String

@@ -25,6 +25,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
   // we can use the same scorer script for all semeval tasks. GermEval supplies the most recent
   val scorerFolder = path("Tasks", "germevalFolder") + "/germeval2015-scorer"
   
+  // model location for all language data
+  val allLanguagesFolder = "trainingAllLanguages"
+  
   object German extends LanguageData {
 
     implicit lazy val preprocessing: LexSubProcessing = MateProcessing(
@@ -54,6 +57,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "train-dataset")
     lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "germevalFolder"), "test-dataset")
     val testGoldfile = path("Tasks", "germevalFolder") + "/test-dataset.gold"
+    val cvGoldfile = testGoldfile
     
     val trainingFolder = "trainingGerman"
     
@@ -84,6 +88,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     lazy val semevalTrial = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "trial/lexsub_trial.xml", "trial/gold.trial")
     lazy val semevalTest = LexsubUtil.preprocessSemEval(path("Tasks", "semevalFolder"), "test/lexsub_test.xml", "test/gold.gold")
     val testGoldfile = path("Tasks", "semevalFolder") + "/trial/gold.trial"
+    val cvGoldfile = testGoldfile
     def trainingData = semevalTest
     def testData = semevalTrial
 
@@ -126,6 +131,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     lazy val trainingData = LexsubUtil.preprocessSemEval(path("Tasks", "evalitaFolder"), "test/lexsub_test.xml", "test/gold.test")
     lazy val testData = LexsubUtil.preprocessSemEval(path("Tasks", "evalitaFolder"), "trial/lexsub_trial.xml", "trial/gold.trial")
     val testGoldfile = path("Tasks", "evalitaFolder") + "/trial/gold.trial"
+    val cvGoldfile = testGoldfile
 
     lazy val candidates = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "multiwordnet"), true).filter(!_.replacement.contains("_"))
     lazy val goldCandidates = new CandidateFile(path("Candidates", "Italian", "Evalita2009", "gold"), true)
@@ -150,7 +156,7 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
     lazy val features = mkFeatures(this)
   }
   
-
+  
   def mkFeatures(lang: LanguageData): Features = {
     new Features(
         

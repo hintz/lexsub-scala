@@ -28,12 +28,14 @@ object RunCrosstraining extends App {
   
   val languages: List[LanguageData] = List(English, German, Italian)
   
+  val skipTraining = false
   val cvFolds = 10
-  val model: Model = RankLibModel(LambdaMart(NDCG(10), 500, 16)) // new ClearTKModel("MaxEnt")
+  val model: Model = RankLibModel(LambdaMart(MAP, 500, 10)) // new ClearTKModel("MaxEnt")
   val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
   val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
+  
   
   // featurize all data no folds
   val featuresAll = languages map { language =>
@@ -58,66 +60,81 @@ object RunCrosstraining extends App {
     }
   }
   
+  // some helper zippings
   val languagesWithAllTrainingData = languages.zip(featuresAll)
   val languagesWithTrainingFolds = languages.zip(cvFeaturized)
   val languagesWithHeldoutFolds = languages.zip(cvHeldoutData)
   val cvHeldoutLookup = languagesWithHeldoutFolds.toMap
   
-  // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
-  val training1tmp = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
-    // train only-within-language CV data
-    val modelFolder = language.trainingOnlyFold(foldIdx)
-    println(s"Training $language fold $foldIdx (only self): " + modelFolder)
-    val train1 = model.train(fold, modelFolder)
+  
+  if(!skipTraining){
     
-    // train merged-with-all CV data
-    val otherData = languagesWithAllTrainingData.flatMap { 
-      case (otherLang, data) if otherLang != language => data 
-      case (`language`, _) => List.empty
-    } 
-    val mergedData = otherData ++ fold
-    val mergedFolder = language.trainingAllFold(foldIdx)
-    println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
-    val train2 = model.train(mergedData, mergedFolder)
+    // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
+    val training1tmp = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
+      // train only-within-language CV data
+      val modelFolder = language.trainingOnlyFold(foldIdx)
+      println(s"Training $language fold $foldIdx (only self): " + modelFolder)
+      val train1 = model.train(fold, modelFolder)
+      
+      // train merged-with-all CV data
+      val otherData = languagesWithAllTrainingData.flatMap { 
+        case (otherLang, data) if otherLang != language => data 
+        case (`language`, _) => List.empty
+      } 
+      val mergedData = otherData ++ fold
+      val mergedFolder = language.trainingAllFold(foldIdx)
+      println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
+      val train2 = model.train(mergedData, mergedFolder)
+      
+      Seq(train1, train2)
+    }
+    val training1 = training1tmp.flatten
+  
+    // train on other languages
+    println("Training on combined other languages..")
+    val training2 = for(i <- languages.indices) yield {
+      val lang = languages(i)
+      val otherData = languages.indices.diff(Seq(i)).map(languagesWithAllTrainingData)
+      val (otherLangs, otherInstances) = otherData.unzip
+      val combinedInstances = otherInstances.flatten
+      val combinedFolder = lang.trainingFolderOther
+      println("Training on combined set " + otherLangs.mkString("-") + " writing to " + combinedFolder)
+      model.train(combinedInstances, combinedFolder)
+    }
     
-    Seq(train1, train2)
-  }
-  val training1 = training1tmp.flatten
-
-  // train on other languages
-  println("Training on combined other languages..")
-  val training2 = for(i <- languages.indices) yield {
-    val lang = languages(i)
-    val otherData = languages.indices.diff(Seq(i)).map(languagesWithAllTrainingData)
-    val (otherLangs, otherInstances) = otherData.unzip
-    val combinedInstances = otherInstances.flatten
-    val combinedFolder = lang.trainingFolderOther
-    println("Training on combined set " + otherLangs.mkString("-") + " writing to " + combinedFolder)
-    model.train(combinedInstances, combinedFolder)
-  }
   
-
-  // train all languages on their full data
-  val training3 = for((language, featurized) <- languagesWithAllTrainingData) yield {
-    println("Training " + language + "..")
-    model.train(featurized, language.trainingFolder)
+    // train all languages on their full data
+    val training3 = for((language, featurized) <- languagesWithAllTrainingData) yield {
+      println("Training " + language + "..")
+      model.train(featurized, language.trainingFolder)
+    }
+    
+  
+    // train on all data
+    println("Training on all languages combined..")
+    val training4 = model.train(featuresAll.flatten, Settings.allLanguagesFolder)
+    
+    // Wait for training to complete
+    val allFutures = training1 ++ training2 ++ training3 ++ Seq(training4)
+    val nJobs = allFutures.length
+    var nCompleted = 0 // race-conditions aren't a tragedy here
+    
+    implicit val ec = scala.concurrent.ExecutionContext.global
+    allFutures.foreach { f => f.onSuccess 
+    { 
+      case 0 => nCompleted += 1; println(s"Completed $nCompleted / $nJobs jobs")
+      case _ => throw new RuntimeException("At least one job retured failure")
+    }}
+    
+    println(s"Waiting for all training to complete ($nJobs jobs)..")
+    val allTraining = Future.sequence(allFutures)
+    val exitCodes = Await.result(allTraining, Duration.Inf)
+    if(exitCodes.exists(_ != 0))
+      throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
+    println("Completed all training.")
+  
   }
-  
-
-  // train on all data
-  println("Training on all languages combined..")
-  val allLanguagesFolder = "trainingAllLanguages"
-  val training4 = model.train(featuresAll.flatten, allLanguagesFolder)
-  
-  // Wait for training to complete
-  val allFutures = training1 ++ training2 ++ training3 ++ Seq(training4)
-  println(s"Waiting for all training to complete (${allFutures.length} jobs)..")
-  implicit val ec = scala.concurrent.ExecutionContext.global
-  val allTraining = Future.sequence(allFutures)
-  val exitCodes = Await.result(allTraining, Duration.Inf)
-  println("Completed all training jobs with exit codes " + exitCodes.mkString(", "))
-  if(exitCodes.exists(_ != 0))
-    throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
+  else System.err.println("WARNING: Skipped training!!!")
   
   /// --- Training complete. Start eval ---
   
@@ -140,10 +157,14 @@ object RunCrosstraining extends App {
     {
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-cv"
       val heldoutFolds = cvHeldoutLookup(evaluationLanguge)
+
       val subsystems = heldoutFolds.indices.map { foldIdx => mkLexsub(evaluationLanguge, evaluationLanguge.trainingOnlyFold(foldIdx))}
       val outcomes = LexsubUtil.mergeCVFolds(subsystems, heldoutFolds)
       
-      val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
+      // important shadowing!
+      val goldFile = evaluationLanguge.cvGoldfile
+      
+      val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + s" trained on self with $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
     }
     
@@ -160,7 +181,7 @@ object RunCrosstraining extends App {
 
     // evaluate on all languages
     {
-      val lexsub = mkLexsub(evaluationLanguge, allLanguagesFolder)
+      val lexsub = mkLexsub(evaluationLanguge, Settings.allLanguagesFolder)
       val outcomes = lexsub(evalData)
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-all"
      

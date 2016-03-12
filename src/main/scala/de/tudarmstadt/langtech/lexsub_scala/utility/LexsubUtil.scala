@@ -16,6 +16,8 @@ import de.tudarmstadt.langtech.lexsub_scala.candidates.FixedCandidateList
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
 import de.tudarmstadt.langtech.lexsub_scala.LexSub
+import de.tudarmstadt.langtech.lexsub_scala.types.Outcomes
+import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
 
 object LexsubUtil {
   
@@ -68,9 +70,9 @@ object LexsubUtil {
   }
   
   /** Applies a set of LexSub subsystems (stemming from CV-training folds, and applies it to a list of eval folds */
-  def mergeCVFolds(subsystems: Seq[LexSub], evalFolds: Seq[Seq[LexSubInstance]]): Iterable[Seq[(String, Double)]] = {
+  def mergeCVFolds(subsystems: Seq[LexSub], evalFolds: Seq[Seq[LexSubInstance]]): Iterable[Outcome] = {
     val outcomes = subsystems.zip(evalFolds).flatMap { case (lexsub, evalData) => lexsub(evalData) }
-    outcomes
+    Outcomes.collect(evalFolds.flatten, outcomes)
   }
   
 }
