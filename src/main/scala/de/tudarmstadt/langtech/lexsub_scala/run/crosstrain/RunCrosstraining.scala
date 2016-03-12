@@ -3,7 +3,6 @@ package de.tudarmstadt.langtech.lexsub_scala.run.crosstrain
 import scala.concurrent.Await
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
-
 import de.tudarmstadt.langtech.lexsub_scala.LexSub
 import de.tudarmstadt.langtech.lexsub_scala.LexSubExpander
 import de.tudarmstadt.langtech.lexsub_scala.candidates.CandidateList
@@ -19,6 +18,8 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib.LambdaMart
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib.MAP
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import de.tudarmstadt.langtech.scala_utilities.io
+import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
+import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 
 object RunCrosstraining extends App {
   
@@ -43,25 +44,25 @@ object RunCrosstraining extends App {
     }
   }
   
+  println("Awaiting featurization for all languages..")
+  val featuresAll = Await.result(Future.sequence(featuresAllFutures), Duration.Inf)
+  
   // crossfold, and featurize all training sets for all folds
+  println("Creating CV folds..")
   val crossfoldData = languages.map { lang => LexsubUtil.createCVFolds(lang.allData, cvFolds) }
   val cvHeldoutData = crossfoldData.map { cvData => cvData.map(_._1) }
   val cvTrainingData = crossfoldData.map { cvData => cvData.map(_._2) }
-  val cvFeaturizedFutures = languages.zip(cvTrainingData).map { case (language, foldData) => Future {
-      val candidates = trainingCandidateSelector(language)
-      for ((foldTrainingData, foldIdx) <- foldData.zipWithIndex) yield {
-            println(s"Featurizing $language fold $foldIdx (${foldTrainingData.length} instances)")
-            io.lazySerialized("cache/" + language.toString + "-fold-" + foldIdx + "featurized.ser" ){
-              featurize(language, foldTrainingData, candidates)
-            }
-      }
+  // featurize crossfold data by looking it up in featuresAll
+  val cvFeaturized = cvTrainingData.zip(featuresAll).map { case (trainingFolds, featurized) => 
+    def featurizedForInstance(instance: LexSubInstance) = {
+      val matching = featurized.filter { case (Substitutions(`instance`, _), _) => true }
+      assert(matching.size == 1)
+      matching.head
     }
+    val featurizedPerFold = trainingFolds.map { foldInstances => foldInstances.map(featurizedForInstance) }
+    featurizedPerFold
   }
-  
-  println("Awaiting featurization..")
-  val featuresAll = Await.result(Future.sequence(featuresAllFutures), Duration.Inf)
-  val cvFeaturized =  Await.result(Future.sequence(cvFeaturizedFutures), Duration.Inf)
-  
+
   // some helper zippings
   val languagesWithAllTrainingData = languages.zip(featuresAll)
   val languagesWithTrainingFolds = languages.zip(cvFeaturized)
