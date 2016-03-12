@@ -59,10 +59,10 @@ object LexsubUtil {
   /** Creates folds for n-fold crossvalidation, by splitting on lexical items. Yields tuples of (heldOutData, restOfData)  */
   def createCVFolds(data: Seq[LexSubInstance], nFolds: Int): Seq[(Seq[LexSubInstance], Seq[LexSubInstance])] = {
     // first create CV splits by lexemes
-    val lexicalItems = data.map(_.head)
+    val lexicalItems = data.map(_.head.lemma).distinct
     val cvSplit = collections.crossfold(lexicalItems, nFolds).toSeq
     // now map back to training data
-    def extractSubset(lexicalItems: Seq[Token]): Seq[LexSubInstance] = data.filter(instance => lexicalItems.contains(instance.head))
+    def extractSubset(lexicalItems: Seq[String]): Seq[LexSubInstance] = data.filter(instance => lexicalItems.contains(instance.head.lemma))
     val result = for ((heldOutLex, restOfLex) <- cvSplit) yield (extractSubset(heldOutLex), extractSubset(restOfLex))
     result
   }
