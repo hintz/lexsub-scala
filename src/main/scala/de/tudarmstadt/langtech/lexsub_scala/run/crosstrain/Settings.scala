@@ -31,10 +31,10 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
   val allLanguagesFolder = "trainingAllLanguages"
   
   // should MWEs be excluded from gold?
-  val filterMWEsInGold = false
+  val filterMWEsInGold = true
   
   // should MWEs be excluded from system candidate list?
-  val filterMWEsInList = false
+  val filterMWEsInList = true
   
   // how to filter multiword expressions
   val mweFilter = (c: Candidate) => !Seq(" ", "-", "_").exists(space => c.replacement.contains(space))
