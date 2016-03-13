@@ -19,7 +19,7 @@ class RankLibScorer(val modelFolder: String) extends Scorer {
   lazy val ranker: Ranker = (new RankerFactory).loadRanker(RankLibModel.getModelFile(modelFolder))
   //lazy val ranklibWrapper = new RankLibWrapper(RankLibModel.getModelFile(modelFolder))
   
-  def apply(featureVector: Vector[Seq[Feature]]): Vector[Double] = {
+  def apply(featureVector: Vector[Seq[Feature]]): Vector[Double] = RankLibWrapper synchronized {
     if(featureVector.isEmpty) return Vector.empty
     DataPoint.MAX_FEATURE = featureMapping.maxIndex // RankLib is SO ugly, this hack is needed
     
