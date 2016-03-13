@@ -20,6 +20,8 @@ import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
+import scala.concurrent.ExecutionContext
+import java.util.concurrent.Executors
 
 object RunCrosstraining extends App {
   
@@ -32,7 +34,7 @@ object RunCrosstraining extends App {
   val systemCandidateSelector: LanguageData => CandidateList = _.candidates
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
-  implicit val ec = scala.concurrent.ExecutionContext.global
+  implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(100))
    
   // featurize all data no folds
   val featuresAllFutures = languages map { language => Future {

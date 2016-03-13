@@ -13,6 +13,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 import scala.sys.process.ProcessLogger
 import scala.sys.process.FileProcessLogger
+import java.util.concurrent.Executors
 
 /***
  *  This is a minimal command-line wrapper for RankLib
@@ -83,7 +84,7 @@ class NullLogger extends ProcessLogger {
 
 object RankLibWrapper {
   
-  implicit val ec = ExecutionContext.global
+  implicit val ranklibThreadpool = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(100))
 
   /** Runs RankLib as a seperate java process. Yields the return value of RankLib as Future[Int]
    *  @param logfile if Some(path) writes stdout to path
