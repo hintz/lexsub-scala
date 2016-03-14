@@ -28,10 +28,10 @@ object RunCrosstraining extends App {
   val languages: List[LanguageData] = List(English, German, Italian)
   
   val skipTraining = false
-  val cvFolds = 10
+  val cvFolds = 2
   val model: Model = RankLibModel(LambdaMart(MAP, 500, 10)) // new ClearTKModel("MaxEnt")
-  val trainingCandidateSelector: LanguageData => CandidateList = _.candidates
-  val systemCandidateSelector: LanguageData => CandidateList = _.candidates
+  val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
+  val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
   implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(100))
