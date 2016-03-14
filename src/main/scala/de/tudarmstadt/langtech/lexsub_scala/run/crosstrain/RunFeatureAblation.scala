@@ -25,13 +25,14 @@ import java.util.concurrent.Executors
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.features.SyntacticEmbeddingCombinator._
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib.NDCG
 
 object RunFeatureAblation extends App {
   
   val languages: List[LanguageData] = List(English, German, Italian)
   
   val cvFolds = 5
-  val model: Model = RankLibModel(LambdaMart(MAP, 500, 10))
+  val model: Model = RankLibModel(LambdaMart(NDCG(10), 1000, 10))
   val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
   val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
   
@@ -93,106 +94,105 @@ object RunFeatureAblation extends App {
   implicit val ec = ExecutionContext.fromExecutor(threadpool)
   
   
-  //for(ablationGroup <- ablationGroups){
-  //  println("Evaluating ablation group " + ablationGroup)
-  //  
-  //  
-  //}
-  val ablationGroup = "embeddingFeatures"
+  for(ablationGroup <- ablationGroups){
+    println("Evaluating ablation group " + ablationGroup)  
   
-  
-  // featurize all data no folds
-  val featuresAllFutures = languages map { language => Future {
-      val candidates = trainingCandidateSelector(language)
-      println(s"Featurizing $language (all data) with candiates from $candidates..")
-      io.lazySerialized("cache/" + language.toString + "-all-featurized-" + ablationGroup + "-ablated.ser" ){
-          featurize(language, language.allData, candidates, ablationGroup)
-        }
+    // featurize all data no folds
+    val featuresAllFutures = languages map { language => Future {
+        val candidates = trainingCandidateSelector(language)
+        println(s"Featurizing $language (all data) with candiates from $candidates..")
+        io.lazySerialized("cache/" + language.toString + "-all-featurized-" + ablationGroup + "-ablated.ser" ){
+            featurize(language, language.allData, candidates, ablationGroup)
+          }
+      }
     }
-  }
-  
-  
-  println("Awaiting featurization for all languages..")
-  val featuresAll = Await.result(Future.sequence(featuresAllFutures), Duration.Inf)
-  
-  // crossfold, and featurize all training sets for all folds
-  println("Creating CV folds..")
-  val crossfoldData = languages.map { lang => LexsubUtil.createCVFolds(lang.allData, cvFolds) }
-  val cvHeldoutData = crossfoldData.map { cvData => cvData.map(_._1) }
-  val cvTrainingData = crossfoldData.map { cvData => cvData.map(_._2) }
-  // featurize crossfold data by looking it up in featuresAll
-  val cvFeaturized = cvTrainingData.zip(featuresAll).map { case (trainingFolds, featurized) => 
-    val lookupMap = featurized.map { case item@(Substitutions(instance, _), _)  => (instance, item) }.toMap
-    val featurizedPerFold = trainingFolds.map { foldInstances => foldInstances.map(lookupMap) }
-    featurizedPerFold
-  }
-
-  // some helper zippings
-  val languagesWithAllTrainingData = languages.zip(featuresAll)
-  val languagesWithTrainingFolds = languages.zip(cvFeaturized)
-  val languagesWithHeldoutFolds = languages.zip(cvHeldoutData)
-  val cvHeldoutLookup = languagesWithHeldoutFolds.toMap
-
-  println("Begin training..")
-  
-  // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
-  val training = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
-
-    // train merged-with-all CV data
-    val otherData = languagesWithAllTrainingData.flatMap { 
-      case (otherLang, data) if otherLang != language => data 
-      case (`language`, _) => List.empty
-    } 
-    val mergedData = otherData ++ fold
-    val mergedFolder = modelDir(language, foldIdx, ablationGroup)
-    println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
-    model.train(mergedData, mergedFolder)
-
-  }
-  
-  // Wait for training to complete
-  val allFutures = training
-  val nJobs = allFutures.length
-  var nCompleted = 0 // race-conditions aren't a tragedy here
-  allFutures.foreach { f => f.onSuccess 
-  { 
-    case 0 => nCompleted += 1; println(s"Completed $nCompleted / $nJobs jobs")
-    case _ => throw new RuntimeException("At least one job retured failure")
-  }}
-  println(s"Waiting for all training to complete ($nJobs jobs)..")
-  val allTraining = Future.sequence(allFutures)
-  val exitCodes = Await.result(allTraining, Duration.Inf)
-  if(exitCodes.exists(_ != 0))
-    throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
-  println("Completed all training.")
-
-  
-  /// --- Training complete. Start eval ---
-  
-  // evaluate all languages
-  val results = for(evaluationLanguge <- languages) yield Future {
-    println("Evaluating on " + evaluationLanguge + "..")
-    val evalData = evaluationLanguge.testData
-    val goldFile = evaluationLanguge.testGoldfile
     
-    // cross-CV for all
-    {
-      val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-all-cv-ablated-" + ablationGroup
-      val heldoutFolds = cvHeldoutLookup(evaluationLanguge)
-      
-      val subsystems = heldoutFolds.indices.map { foldIdx => mkLexsub(evaluationLanguge, modelDir(evaluationLanguge, foldIdx, ablationGroup))}
-      val outcomes = LexsubUtil.mergeCVFolds(subsystems, heldoutFolds)
-      
-      // important shadowing!
-      val goldFile = evaluationLanguge.cvGoldfile
-      
-      val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, goldFile, outFolder)
-      println("> " + evaluationLanguge + s" ABLATION -$ablationGroup all-$cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
+    
+    println("Awaiting featurization for all languages..")
+    val featuresAll = Await.result(Future.sequence(featuresAllFutures), Duration.Inf)
+    
+    // crossfold, and featurize all training sets for all folds
+    println("Creating CV folds..")
+    val crossfoldData = languages.map { lang => LexsubUtil.createCVFolds(lang.allData, cvFolds) }
+    val cvHeldoutData = crossfoldData.map { cvData => cvData.map(_._1) }
+    val cvTrainingData = crossfoldData.map { cvData => cvData.map(_._2) }
+    // featurize crossfold data by looking it up in featuresAll
+    val cvFeaturized = cvTrainingData.zip(featuresAll).map { case (trainingFolds, featurized) => 
+      val lookupMap = featurized.map { case item@(Substitutions(instance, _), _)  => (instance, item) }.toMap
+      val featurizedPerFold = trainingFolds.map { foldInstances => foldInstances.map(lookupMap) }
+      featurizedPerFold
     }
-
+  
+    // some helper zippings
+    val languagesWithAllTrainingData = languages.zip(featuresAll)
+    val languagesWithTrainingFolds = languages.zip(cvFeaturized)
+    val languagesWithHeldoutFolds = languages.zip(cvHeldoutData)
+    val cvHeldoutLookup = languagesWithHeldoutFolds.toMap
+  
+    println("Begin training..")
+    
+    // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
+    val training = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
+  
+      // train merged-with-all CV data
+      val otherData = languagesWithAllTrainingData.flatMap { 
+        case (otherLang, data) if otherLang != language => data 
+        case (`language`, _) => List.empty
+      } 
+      val mergedData = otherData ++ fold
+      val mergedFolder = modelDir(language, foldIdx, ablationGroup)
+      println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
+      model.train(mergedData, mergedFolder)
+  
+    }
+    
+    // Wait for training to complete
+    val allFutures = training
+    val nJobs = allFutures.length
+    var nCompleted = 0 // race-conditions aren't a tragedy here
+    allFutures.foreach { f => f.onSuccess 
+    { 
+      case 0 => nCompleted += 1; println(s"Completed $nCompleted / $nJobs jobs")
+      case _ => throw new RuntimeException("At least one job retured failure")
+    }}
+    println(s"Waiting for all training to complete ($nJobs jobs)..")
+    val allTraining = Future.sequence(allFutures)
+    val exitCodes = Await.result(allTraining, Duration.Inf)
+    if(exitCodes.exists(_ != 0))
+      throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
+    println("Completed all training.")
+  
+    
+    /// --- Training complete. Start eval ---
+    
+    // evaluate all languages
+    val results = for(evaluationLanguge <- languages) yield Future {
+      println("Evaluating on " + evaluationLanguge + "..")
+      val evalData = evaluationLanguge.testData
+      val goldFile = evaluationLanguge.testGoldfile
+      
+      // cross-CV for all
+      {
+        val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-all-cv-ablated-" + ablationGroup
+        val heldoutFolds = cvHeldoutLookup(evaluationLanguge)
+        
+        val subsystems = heldoutFolds.indices.map { foldIdx => mkLexsub(evaluationLanguge, modelDir(evaluationLanguge, foldIdx, ablationGroup))}
+        val outcomes = LexsubUtil.mergeCVFolds(subsystems, heldoutFolds)
+        
+        // important shadowing!
+        val goldFile = evaluationLanguge.cvGoldfile
+        
+        val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, goldFile, outFolder)
+        println("> " + evaluationLanguge + s" ABLATION -$ablationGroup all-$cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
+      }
+  
+    }
+    
+    Await.result(Future.sequence(results), Duration.Inf)
+    println("Done with " + ablationGroup)
+    
   }
   
-  Await.result(Future.sequence(results), Duration.Inf)
   threadpool.shutdown
   RankLibWrapper.threadpool.shutdown
   println("Done.")
@@ -200,7 +200,7 @@ object RunFeatureAblation extends App {
   def modelDir(language: LanguageData, foldIdx: Int, ablationGroup: String): String = language.trainingAllFold(foldIdx) + "-" + ablationGroup
   
   def mkFeatureset(language: LanguageData, ablationGroup: String): Features = {
-    val features = featureGroups.collect { case (other, creator) if other != ablationGroup => creator(language) }.flatten
+    val features = featureGroups.collect { case (groupname, creator) if groupname != ablationGroup => creator(language) }.flatten
     new Features(features :_*)
   }
   
