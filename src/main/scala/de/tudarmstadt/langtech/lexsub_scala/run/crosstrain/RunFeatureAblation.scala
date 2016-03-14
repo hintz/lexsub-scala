@@ -24,6 +24,7 @@ import scala.concurrent.ExecutionContext
 import java.util.concurrent.Executors
 import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.features.SyntacticEmbeddingCombinator._
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
 
 object RunFeatureAblation extends App {
   
@@ -88,7 +89,8 @@ object RunFeatureAblation extends App {
   val ablationGroups = featureGroups.map(_._1)
 
   println("Performing feature ablation experiments with " + languages.mkString(", "))
-  implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(100))
+  val threadpool = Executors.newFixedThreadPool(100)
+  implicit val ec = ExecutionContext.fromExecutor(threadpool)
   
   
   //for(ablationGroup <- ablationGroups){
@@ -191,6 +193,8 @@ object RunFeatureAblation extends App {
   }
   
   Await.result(Future.sequence(results), Duration.Inf)
+  threadpool.shutdown
+  RankLibWrapper.threadpool.shutdown
   println("Done.")
   
   def modelDir(language: LanguageData, foldIdx: Int, ablationGroup: String): String = language.trainingAllFold(foldIdx) + "-" + ablationGroup

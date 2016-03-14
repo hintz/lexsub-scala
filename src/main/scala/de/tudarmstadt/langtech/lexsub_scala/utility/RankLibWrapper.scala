@@ -84,7 +84,8 @@ class NullLogger extends ProcessLogger {
 
 object RankLibWrapper {
   
-  implicit val ranklibThreadpool = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(100))
+  val threadpool = Executors.newFixedThreadPool(100)
+  implicit val ec = ExecutionContext.fromExecutor(threadpool)
 
   /** Runs RankLib as a seperate java process. Yields the return value of RankLib as Future[Int]
    *  @param logfile if Some(path) writes stdout to path
@@ -123,7 +124,7 @@ object RankLibWrapper {
 		  procFuture
   }
   
-  def rank(modelFile: String, dataFile: String, outFile: String, metric: String = "ERR@10") {
+  def rank(modelFile: String, dataFile: String, outFile: String) {
     val f = RankLibWrapper.runJava(Seq(
         "-load", modelFile, 
         "-rank", dataFile, 

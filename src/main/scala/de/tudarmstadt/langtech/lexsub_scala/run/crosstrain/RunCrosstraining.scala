@@ -22,6 +22,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import scala.concurrent.ExecutionContext
 import java.util.concurrent.Executors
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
 
 object RunCrosstraining extends App {
   
@@ -34,7 +35,8 @@ object RunCrosstraining extends App {
   val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
-  implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(100))
+  val threadpool = Executors.newFixedThreadPool(100)
+  implicit val ec = ExecutionContext.fromExecutor(threadpool)
    
   // featurize all data no folds
   val featuresAllFutures = languages map { language => Future {
@@ -208,6 +210,8 @@ object RunCrosstraining extends App {
   }
   
   Await.result(Future.sequence(results), Duration.Inf)
+  threadpool.shutdown
+  RankLibWrapper.threadpool.shutdown
   println("Done.")
   
   def featurize(language: LanguageData, data: Seq[LexSubInstance], candidates: CandidateList) = {
