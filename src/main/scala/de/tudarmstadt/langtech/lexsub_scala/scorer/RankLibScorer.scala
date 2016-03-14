@@ -21,11 +21,19 @@ class RankLibScorer(val modelFolder: String) extends Scorer {
   
   def apply(featureVector: Vector[Seq[Feature]]): Vector[Double] = RankLibWrapper synchronized {
     if(featureVector.isEmpty) return Vector.empty
-    DataPoint.MAX_FEATURE = featureMapping.maxIndex // RankLib is SO ugly, this hack is needed
     
-    val datapoints = featureVector.map(toDataPoint)
-    val result = datapoints.map(ranker.eval)
-    result
+    try {
+      DataPoint.MAX_FEATURE = featureMapping.maxIndex // RankLib is SO ugly, this hack is needed
+      
+      val datapoints = featureVector.map(toDataPoint)
+      val result = datapoints.map(ranker.eval)
+      result
+    }
+    catch {
+      case e: Exception =>
+        System.err.println("ERROR: RankLib failed: "  + e)
+        featureVector.map(_ => 0d)
+    }
     
     /* Old version using system call:
 
