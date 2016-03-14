@@ -28,10 +28,10 @@ object RunCrosstraining extends App {
   val languages: List[LanguageData] = List(English, German, Italian)
   
   val skipTraining = false
-  val cvFolds = 2
+  val cvFolds = 10
   val model: Model = RankLibModel(LambdaMart(MAP, 500, 10)) // new ClearTKModel("MaxEnt")
-  val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
-  val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
+  val trainingCandidateSelector: LanguageData => CandidateList = _.candidates
+  val systemCandidateSelector: LanguageData => CandidateList = _.candidates
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
   implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(100))
@@ -167,9 +167,6 @@ object RunCrosstraining extends App {
       
       val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + s" trained on self with $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
-      
-      val eval2 = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, evaluationLanguge.testGoldfile, outFolder + "testOnly")
-      println(">> " + evaluationLanguge + s" trained on self with $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
     }
     
     // evaluate on all other languages
@@ -191,6 +188,21 @@ object RunCrosstraining extends App {
      
       val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + " trained on all: "  + SemEvalScorer.singleLine(eval))
+    }
+    
+    // cross-CV for all
+    {
+      val outFolder = "crosstrainingResults/" + evaluationLanguge + "on-all-cv"
+      val heldoutFolds = cvHeldoutLookup(evaluationLanguge)
+
+      val subsystems = heldoutFolds.indices.map { foldIdx => mkLexsub(evaluationLanguge, evaluationLanguge.trainingAllFold(foldIdx))}
+      val outcomes = LexsubUtil.mergeCVFolds(subsystems, heldoutFolds)
+      
+      // important shadowing!
+      val goldFile = evaluationLanguge.cvGoldfile
+      
+      val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, goldFile, outFolder)
+      println("> " + evaluationLanguge + s" trained on self all $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
     }
 
   }
