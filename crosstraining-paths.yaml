@@ -22,6 +22,7 @@ Candidates:
     German:
         GermEval2015:
             masterlist: "resources/germeval2015/candidates/germeval_masterlist.tsv"
+            germanet: "resources/germeval2015/candidates/germeval_germanet90.tsv"
             gold: "resources/germeval2015/candidates/gold.tsv"
     English:
         wordnet-hy-ho: "resources/wordnet-hy-ho"
