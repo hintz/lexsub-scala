@@ -29,9 +29,9 @@ object RunCrosstraining extends App {
   
   val skipTraining = false
   val cvFolds = 10
-  val model: Model = RankLibModel(LambdaMart(MAP, 500, 10)) // new ClearTKModel("MaxEnt")
-  val trainingCandidateSelector: LanguageData => CandidateList = _.candidates
-  val systemCandidateSelector: LanguageData => CandidateList = _.candidates
+  val model: Model = RankLibModel(LambdaMart(MAP, 2000, 10)) // new ClearTKModel("MaxEnt")
+  val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
+  val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
 
   println("Performing crosstraining experiments with " + languages.mkString(", "))
   implicit val ec = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(100))
@@ -192,7 +192,7 @@ object RunCrosstraining extends App {
     
     // cross-CV for all
     {
-      val outFolder = "crosstrainingResults/" + evaluationLanguge + "on-all-cv"
+      val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-all-cv"
       val heldoutFolds = cvHeldoutLookup(evaluationLanguge)
 
       val subsystems = heldoutFolds.indices.map { foldIdx => mkLexsub(evaluationLanguge, evaluationLanguge.trainingAllFold(foldIdx))}
