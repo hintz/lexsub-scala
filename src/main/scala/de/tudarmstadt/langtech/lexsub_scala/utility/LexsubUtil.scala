@@ -86,8 +86,9 @@ object LexsubUtil {
   }
   
   /** Applies a set of LexSub subsystems (stemming from CV-training folds, and applies it to a list of eval folds */
-  def mergeCVFolds(subsystems: Seq[LexSub], evalFolds: Seq[Seq[LexSubInstance]]): Iterable[Outcome] = {
-    val results = subsystems.zip(evalFolds).map { case (lexsub, evalData) => lexsub(evalData) }
+  def mergeCVFolds(subsystems: Seq[LexSub], evalFolds: Seq[Seq[LexSubInstance]])(implicit ec: ExecutionContext): Iterable[Outcome] = {
+    val futures = subsystems.zip(evalFolds).map { case (lexsub, evalData) => Future { lexsub(evalData) } }
+    val results = Await.result(Future.sequence(futures), Duration.Inf)
     Outcomes.collect(evalFolds.flatten, results.flatten)
   }
   
