@@ -83,7 +83,7 @@ class RankLibMapper(featureMapping: Map[String, Int], val maxIndex: Int) extends
 object RankLibMapper {
   def build(featurizedData: Iterable[(Substitutions, Vector[Seq[Feature]])]): RankLibMapper = {
     val allFeatures = featurizedData.flatMap(_._2.flatten)
-    val uniqueFeatureNames = allFeatures.map(_.name).toSet
+    val uniqueFeatureNames = allFeatures.map(_.asNumeric.name).toSet
     val maxFeatureId = uniqueFeatureNames.size
     val mapping = uniqueFeatureNames.zipWithIndex.map { case (fName, i) => (fName, i + 1) }
     new RankLibMapper(mapping.toMap, maxFeatureId)
