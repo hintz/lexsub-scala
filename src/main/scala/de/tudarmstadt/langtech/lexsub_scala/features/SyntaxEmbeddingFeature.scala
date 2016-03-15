@@ -5,6 +5,7 @@ import de.tudarmstadt.langtech.scala_utilities._
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.types.DepEdge
 import de.tudarmstadt.langtech.lexsub_scala.types.Token
+import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 
 
 trait SyntacticEmbeddingCombinator {
@@ -99,22 +100,33 @@ extends SmartFeature[SyntacticEmbedding] {
     SyntacticEmbedding(lemmaEmbedding, syntaxEmbeddings)
   }
   
-  def extract(item: SubstitutionItem, global: SyntacticEmbedding): Seq[Feature] = {
-
-    val substituteEmbedding = wordEmbeddings(item.substitution).getOrElse {
-      return Seq.empty // if the substitute is not present in embedding space, this feature won't work!
-    }
-    
+  /*
+  def extract(item: Substitutions): Vector[Seq[Feature]] = {
+    val g = global(item.lexSubInstance)
     if(combinator == SyntacticEmbeddingCombinator.NPIC){
-      if(global.targetEmbedding.isEmpty || global.contextSyntaxEmbeddings.isEmpty) 
-        return Seq.empty
+      if(g.targetEmbedding.isEmpty || g.contextSyntaxEmbeddings.isEmpty) 
+        return Vector.fill(item.candidates.length)(Feature.nothing)
+        item.asItems.map { case substItem => 
+          
+        }
+        
        
        val st = substituteEmbedding.dot(global.targetEmbedding.get)
        val sctxs = global.contextSyntaxEmbeddings.map { ctxEmb => substituteEmbedding.dot(ctxEmb) }.sum
        val result = math.exp(st) * math.exp(sctxs)
        return Seq(NumericFeature("SyntaxEmb" + combinator.name, result))
     }
-    
+    else {
+      item.asItems.map(extract(_, g))
+    }
+  }*/
+  
+  def extract(item: SubstitutionItem, global: SyntacticEmbedding): Seq[Feature] = {
+
+    val substituteEmbedding = wordEmbeddings(item.substitution).getOrElse {
+      return Seq.empty // if the substitute is not present in embedding space, this feature won't work!
+    }
+        
     // cos-sim between word and target in embedding space
     val wordCossim = global.targetEmbedding.map { targetEmb => 
       LinAlgFunctions.cossim(substituteEmbedding, targetEmb)

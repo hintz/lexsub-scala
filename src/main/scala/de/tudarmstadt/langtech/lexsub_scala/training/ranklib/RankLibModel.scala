@@ -43,6 +43,7 @@ object RankLibModel {
 }
 
 /** Utility class for mapping sparse features to RankLib-internal dense reperesentation */
+@SerialVersionUID(8493312058044473597l)
 class RankLibMapper(featureMapping: Map[String, Int], val maxIndex: Int) extends Serializable {
 
   def toDenseFeatureVector(features: Seq[Feature]): List[(Int, Double)] = {
@@ -77,7 +78,8 @@ class RankLibMapper(featureMapping: Map[String, Int], val maxIndex: Int) extends
         data
     }
   }
-
+  
+  override def toString = s"${getClass.getSimpleName}(${featureMapping.toString})"
 }
 
 object RankLibMapper {
