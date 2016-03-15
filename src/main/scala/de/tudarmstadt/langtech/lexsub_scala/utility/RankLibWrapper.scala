@@ -84,7 +84,7 @@ class NullLogger extends ProcessLogger {
 
 object RankLibWrapper {
   
-  val threadpool = Executors.newFixedThreadPool(100)
+  val threadpool = Executors.newFixedThreadPool(5)
   implicit val ec = ExecutionContext.fromExecutor(threadpool)
 
   /** Runs RankLib as a seperate java process. Yields the return value of RankLib as Future[Int]
@@ -93,7 +93,7 @@ object RankLibWrapper {
 	def runJava(params: Seq[String], logfile: Option[String] = None): Future[Int] = {
 			val mainClassName =  "ciir.umass.edu.eval.Evaluator"
 			val currentJar = System.getProperty("java.class.path")
-			val command: ProcessBuilder = Seq("java", /*"-Xmx6g",*/ "-cp", currentJar, mainClassName) ++ params
+			val command: ProcessBuilder = Seq("java", "-Xmx6g", "-cp", currentJar, mainClassName) ++ params
       val filelogger = logfile.map(file => new FileProcessLogger(new File(file)))
       val logger = filelogger.getOrElse(new NullLogger)
 			val procFuture: Future[Int] = Future {  command.run(logger).exitValue }

@@ -26,19 +26,27 @@ import de.tudarmstadt.langtech.lexsub_scala.features._
 import de.tudarmstadt.langtech.lexsub_scala.features.SyntacticEmbeddingCombinator._
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib.NDCG
+import de.tudarmstadt.langtech.lexsub_scala.features.NumLexSemRelations
 
 object RunFeatureAblation extends App {
   
   val languages: List[LanguageData] = List(English, German, Italian)
   
   val cvFolds = 5
-  val model: Model = RankLibModel(LambdaMart(NDCG(10), 1000, 10))
+  val model: Model = RankLibModel(LambdaMart(MAP, 1000, 10))
   val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
   val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
   
   
   val featureGroups: List[(String, LanguageData => Seq[FeatureExtractor])] = List(
-      ("semanticRelations", { lang: LanguageData => Seq(       
+     ("embeddingFeatures", { lang: LanguageData => Seq(
+      // embedding n-grams
+      WordEmbeddingDistanceVectorsSet(lang.w2vEmbeddings, 0 to 2, 0 to 2, 5),
+      // Melamud's features
+      SyntaxEmbeddingFeatures(lang.wordEmbeddings, lang.contextEmbeddings, Add, Mult, BalAdd, BalMult)
+     ) }),
+      
+     ("semanticRelations", { lang: LanguageData => Seq(       
         NumLexSemRelations(lang.candidates),
         LexSemRelation(lang.candidates, simplifyLabels = true))}),
         
@@ -46,13 +54,6 @@ object RunFeatureAblation extends App {
       PairFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       SetFreqRatios(lang.ngrams, 0 to 2, 0 to 2, 5),
       ConjunctionFreqRatio(lang.ngrams, lang.conjunctions, 0, 0, false)
-     ) }),
-     
-     ("embeddingFeatures", { lang: LanguageData => Seq(
-      // embedding n-grams
-      WordEmbeddingDistanceVectorsSet(lang.w2vEmbeddings, 0 to 2, 0 to 2, 5),
-      // Melamud's features
-      SyntaxEmbeddingFeatures(lang.wordEmbeddings, lang.contextEmbeddings, Add, Mult, BalAdd, BalMult)
      ) }),
      
      ("distributionalFeatures", { lang: LanguageData => Seq(
@@ -82,7 +83,8 @@ object RunFeatureAblation extends App {
         ConstantFeature("SourceLanguage", lang.toString),
         
         // syntactic features
-        PosContextWindows(0 to 1, 0 to 1, 3)
+        PosContextWindow(0, 0),
+        PosContextWindow(1, 1)
      )})
     )
     
@@ -90,7 +92,7 @@ object RunFeatureAblation extends App {
   val ablationGroups = featureGroups.map(_._1)
 
   println("Performing feature ablation experiments with " + languages.mkString(", "))
-  val threadpool = Executors.newFixedThreadPool(100)
+  val threadpool = Executors.newFixedThreadPool(10)
   implicit val ec = ExecutionContext.fromExecutor(threadpool)
   
   
