@@ -184,8 +184,9 @@ object Settings extends YamlSettings("crosstraining-paths.yaml") {
       // supply source language as constant feature
       ConstantFeature("SourceLanguage", lang.toString),
       
-      // syntactic features
-      PosContextWindows(0 to 1, 0 to 1, 3),
+      // syntactic features, reduced to target POS and one context window
+      PosContextWindow(0, 0),
+      PosContextWindow(1, 1),
 
       // to what extend the context characterizes the subst
       SalientDTFeatures(lang.dtFirstOrder),
