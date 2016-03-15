@@ -34,11 +34,21 @@ object RunFeatureAblation extends App {
   
   val cvFolds = 5
   val model: Model = RankLibModel(LambdaMart(MAP, 1000, 10))
-  val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
-  val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
+  val trainingCandidateSelector: LanguageData => CandidateList = _.candidates
+  val systemCandidateSelector: LanguageData => CandidateList = _.candidates
   
   
   val featureGroups: List[(String, LanguageData => Seq[FeatureExtractor])] = List(
+     ("syntacticFeatures", { lang: LanguageData => Seq(
+        // supply source language as constant feature
+        ConstantFeature("SourceLanguage", lang.toString),
+        
+        // syntactic features
+        PosContextWindow(0, 0),
+        PosContextWindow(0, 1),
+        PosContextWindow(1, 0)
+     )}),
+     
      ("embeddingFeatures", { lang: LanguageData => Seq(
       // embedding n-grams
       WordEmbeddingDistanceVectorsSet(lang.w2vEmbeddings, 0 to 2, 0 to 2, 5),
@@ -76,16 +86,7 @@ object RunFeatureAblation extends App {
       
       // co-occurence features
       Cooc(lang.coocs)
-     ) }),
-     
-     ("syntacticFeatures", { lang: LanguageData => Seq(
-        // supply source language as constant feature
-        ConstantFeature("SourceLanguage", lang.toString),
-        
-        // syntactic features
-        PosContextWindow(0, 0),
-        PosContextWindow(1, 1)
-     )})
+     ) })
     )
     
     

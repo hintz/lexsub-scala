@@ -15,7 +15,7 @@ import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
 import de.tudarmstadt.langtech.lexsub_scala.utility.LexsubUtil
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib.LambdaMart
-import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib.MAP
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib._
 import de.tudarmstadt.langtech.lexsub_scala.utility.SemEvalScorer
 import de.tudarmstadt.langtech.scala_utilities.io
 import de.tudarmstadt.langtech.lexsub_scala.types.LexSubInstance
@@ -23,6 +23,7 @@ import de.tudarmstadt.langtech.lexsub_scala.types.Substitutions
 import scala.concurrent.ExecutionContext
 import java.util.concurrent.Executors
 import de.tudarmstadt.langtech.lexsub_scala.utility.RankLibWrapper
+import de.tudarmstadt.langtech.lexsub_scala.types.Outcome
 
 object RunCrosstraining extends App {
   
@@ -30,7 +31,7 @@ object RunCrosstraining extends App {
   
   val skipTraining = false
   val cvFolds = 10
-  val model: Model = RankLibModel(LambdaMart(MAP, 2000, 10)) // new ClearTKModel("MaxEnt")
+  val model: Model = RankLibModel(LambdaMart(NDCG(10), 1000, 10)) // new ClearTKModel("MaxEnt")
   val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
   val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
 
@@ -206,13 +207,24 @@ object RunCrosstraining extends App {
       val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, goldFile, outFolder)
       println("> " + evaluationLanguge + s" trained on self all $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
     }
-
   }
   
   Await.result(Future.sequence(results), Duration.Inf)
   threadpool.shutdown
   RankLibWrapper.threadpool.shutdown
   println("Done.")
+  
+  /*
+  def eval(text: String, outcomes: Iterable[Outcome], goldFile: String, outFolder: String){
+      val result = SemEvalScorer.saveAndEvaluate(text, outcomes, Settings.scorerFolder, goldFile, outFolder)
+      println("> " + text + SemEvalScorer.singleLine(result))
+      val noMWEextension = ".nomwe"
+      if(goldFile.endsWith(noMWEextension)){
+        val goldFile2n = goldFile.dropRight(noMWEextension.length)
+        val result = SemEvalScorer.saveAndEvaluate(text, outcomes, Settings.scorerFolder, goldFile2n, outFolder)
+        println(">> " + text + SemEvalScorer.singleLine(result))
+      }
+  }*/
   
   def featurize(language: LanguageData, data: Seq[LexSubInstance], candidates: CandidateList) = {
     val instances = Model.createTrainingData(data, candidates)
