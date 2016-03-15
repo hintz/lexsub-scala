@@ -54,3 +54,5 @@ training
 training*
 output*
 cache
+local-repo
+Scratchpad.scala
