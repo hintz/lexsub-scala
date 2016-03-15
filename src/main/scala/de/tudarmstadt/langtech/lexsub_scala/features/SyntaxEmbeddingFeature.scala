@@ -52,7 +52,11 @@ object SyntacticEmbeddingCombinator {
       val right = contextCossims.map(pcos).product
       Math.pow(left * right, 1d / (2 * c))
     }
-  }
+   }
+    
+    case object NPIC extends SyntacticEmbeddingCombinator {
+      def apply(a: Option[Double], b: List[Double]): Double = throw new RuntimeException("unused")
+    }
 }
 
 /** For each instance, we retrieve the embedding of the target word and all its syntax elements */
@@ -101,6 +105,16 @@ extends SmartFeature[SyntacticEmbedding] {
       return Seq.empty // if the substitute is not present in embedding space, this feature won't work!
     }
     
+    if(combinator == SyntacticEmbeddingCombinator.NPIC){
+      if(global.targetEmbedding.isEmpty || global.contextSyntaxEmbeddings.isEmpty) 
+        return Seq.empty
+       
+       val st = substituteEmbedding.dot(global.targetEmbedding.get)
+       val sctxs = global.contextSyntaxEmbeddings.map { ctxEmb => substituteEmbedding.dot(ctxEmb) }.sum
+       val result = math.exp(st) * math.exp(sctxs)
+       return Seq(NumericFeature("SyntaxEmb" + combinator.name, result))
+    }
+    
     // cos-sim between word and target in embedding space
     val wordCossim = global.targetEmbedding.map { targetEmb => 
       LinAlgFunctions.cossim(substituteEmbedding, targetEmb)
@@ -110,6 +124,7 @@ extends SmartFeature[SyntacticEmbedding] {
     val contextCossims = global.contextSyntaxEmbeddings.map { syntaxEmb =>
       LinAlgFunctions.cossim(substituteEmbedding, syntaxEmb)
     }
+    
     
     val result = combinator(wordCossim, contextCossims)
     //println(item.targetLemma + " -> " + item.substitution + ": wordsim=" + wordCossim + " ctxsims=" + contextCossims.mkString(", ") +" ==> " + combinator + " = " + result)
