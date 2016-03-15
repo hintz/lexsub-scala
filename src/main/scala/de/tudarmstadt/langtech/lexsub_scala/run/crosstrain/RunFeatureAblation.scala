@@ -175,7 +175,7 @@ object RunFeatureAblation extends App {
       
       // cross-CV for all
       {
-        val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-all-cv-ablated-" + ablationGroup
+        val outFolder = "ablationResults/" + evaluationLanguge + "-on-all-cv-ablated-" + ablationGroup
         val heldoutFolds = cvHeldoutLookup(evaluationLanguge)
         
         val subsystems = heldoutFolds.indices.map { foldIdx => mkLexsub(evaluationLanguge, modelDir(evaluationLanguge, foldIdx, ablationGroup))}
