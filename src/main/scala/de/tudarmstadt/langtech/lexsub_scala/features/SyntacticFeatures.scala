@@ -14,11 +14,19 @@ case class PosContextWindow(left: Int, right: Int) extends GlobalFeatureExtracto
   implicit val name = "POS_" + left + "_" + right
   val slicer = collections.context[String](left, right) _
   
+  val PosMapping = Map("N" -> "N", "V" -> "V", "A" -> "A", "R" -> "R", "J" -> "J")
+  def mapPos(originalPos: Option[String]): String = {
+    val pos = for(pos <- originalPos;
+        val firstLetter = pos.substring(0, 1).toUpperCase;
+        translated <- PosMapping.get(firstLetter)) yield translated
+    pos.getOrElse("x")
+  }
+  
   def extract(item: LexSubInstance): Seq[Feature] = {
     val sentence = item.sentence
     val posTokens = sentence.tokens.map(_.pos)
     val posWindow = slicer(posTokens, item.headIndex)
-    val posWindow2 = posWindow.map { case Some(pos) => pos.substring(0, 1).toUpperCase; case None => "x"}
+    val posWindow2 = posWindow.map(mapPos)
     val value = posWindow2.mkString
     value
   }
