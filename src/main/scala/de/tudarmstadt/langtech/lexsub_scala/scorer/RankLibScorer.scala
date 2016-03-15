@@ -23,7 +23,7 @@ class RankLibScorer(val modelFolder: String) extends Scorer {
     if(featureVector.isEmpty) return Vector.empty
     
     try {
-      DataPoint.MAX_FEATURE = featureMapping.maxIndex // RankLib is SO ugly, this hack is needed
+      DataPoint.MAX_FEATURE = featureMapping.maxIndex + 1 // RankLib is SO ugly, this hack is needed
       
       val datapoints = featureVector.map(toDataPoint)
       val result = datapoints.map(ranker.eval)
