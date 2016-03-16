@@ -59,6 +59,9 @@ object Settings extends YamlSettings("semeval2007-paths.yaml") {
   lazy val semevalTrial = io.lazySerialized("cache/semeval_trial.ser"){ preprocessing.parseSemEval(trialReader.items) }
   lazy val semevalTest = io.lazySerialized("cache/semeval_test.ser"){ preprocessing.parseSemEval(testReader.items) }
   
+  lazy val allData = semevalTrial ++ semevalTest
+  lazy val cvGoldFile = semevalFolder + "/cv.gold"
+  
   // Candidate lists
   object candidates {
     lazy val wordnet = new CandidateFile(path("Candidates", "wordnet"), true)

@@ -19,39 +19,46 @@ import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
  */
 object RunMelamud extends App {
   
-  val model = new ClearTKModel("MaxEnt")
-  val modelFolder = "trainingMelamud"
-  val trainingData = Settings.semevalTest
-  val (evaluationData, evalGoldfile) = (Settings.semevalTrial, Settings.trialReader.gold.file)
+  val candidates = Settings.candidates.gold
   
-  // define feature
-  val allFeatures = new Features(SyntaxEmbeddingFeatures(
-    Settings.embeddings.levyWords, 
-    Settings.embeddings.levyContexts,
-    Add, Mult, BalAdd, BalMult))
-  
-  val singleFeature = new Features(SyntaxEmbeddingFeature(
-    Settings.embeddings.levyWords, 
-    Settings.embeddings.levyContexts,
-    BalMult))
-  
-  val trainedLexsub = model.train(trainingData, Settings.candidates.wordnet, allFeatures, modelFolder)
-
-  val untrainedLexsub = LexSubExpander(
-    Settings.candidates.wordnet,
-    singleFeature,
-    SingleFeatureScorer())
-    
   // eval untrained single feature:
-  {
-    val outcomes = untrainedLexsub(evaluationData)
-    val results = Outcomes.collect(evaluationData, outcomes)
-    val eval = SemEvalScorer.saveAndEvaluate(trainedLexsub.toString, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputMelamud")
-    print("Untrained mode:\n" + eval)
+  for(metric <- List(Add, Mult, BalAdd, BalMult)){
+    
+      val singleFeature = new Features(SyntaxEmbeddingFeature(
+      Settings.embeddings.levyWords, 
+      Settings.embeddings.levyContexts, metric))
+     val untrainedLexsub = LexSubExpander(
+      candidates,
+      singleFeature,
+      SingleFeatureScorer())
+
+      println("Evaluating pure Melamud: " + metric)
+      //val (evaluationData, evalGoldfile) = (Settings.allData, Settings.cvGoldFile + ".nomwe")
+      val (evaluationData, evalGoldfile) = (Settings.semevalTest, Settings.testReader.gold.file + ".nomwe")
+      val outcomes = untrainedLexsub(evaluationData)
+      val results = Outcomes.collect(evaluationData, outcomes)
+      val eval = SemEvalScorer.saveAndEvaluate(untrainedLexsub.toString, results, Settings.scorerFolder, evalGoldfile, "outputMelamud")
+      print("Untrained mode:\n" + eval)
+
   }
     
   // eval trained pipeline
   {
+    
+    val model = new ClearTKModel("MaxEnt")
+    val modelFolder = "trainingMelamud"
+    
+    val allFeatures = new Features(SyntaxEmbeddingFeatures(
+      Settings.embeddings.levyWords, 
+      Settings.embeddings.levyContexts,
+      Add, Mult, BalAdd, BalMult))
+      
+    val trainingData = Settings.semevalTest
+    val (evaluationData, evalGoldfile) = (Settings.semevalTest, Settings.testReader.gold.file + ".nomwe")
+    
+    println("Training supervised system..")
+    val trainedLexsub = model.train(trainingData, candidates, allFeatures, modelFolder)
+    
     val outcomes = trainedLexsub(evaluationData)
     val results = Outcomes.collect(evaluationData, outcomes)
     val eval = SemEvalScorer.saveAndEvaluate(trainedLexsub.toString, evaluationData, outcomes, Settings.scorerFolder, evalGoldfile, "outputMelamud")
