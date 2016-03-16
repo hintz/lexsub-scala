@@ -119,7 +119,7 @@ object RankLibWrapper {
 				  procFuture.onSuccess { case exitCode =>
             if(exitCode == 0)
 				      println(s"Completed training RankLib on $trainingFile, wrote to $modelFile")
-            else throw new RuntimeException(s"Error calling RankLib on $trainingFile, exit code = $exitCode")
+            else System.err.println(s"ERROR: calling RankLib on $trainingFile yielded exit code = $exitCode")
 		      }
 		  procFuture
   }
