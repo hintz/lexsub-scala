@@ -31,7 +31,8 @@ class RankLibScorer(val modelFolder: String) extends Scorer {
     }
     catch {
       case e: Exception =>
-        System.err.println("ERROR: RankLib failed: "  + e)
+        System.err.println(s"ERROR: RankLib model $modelFolder failed with $e: ")
+        e.printStackTrace
         featureVector.map(_ => 0d)
     }
     
