@@ -30,13 +30,15 @@ import de.tudarmstadt.langtech.lexsub_scala.features.NumLexSemRelations
 
 object RunFeatureAblation extends App {
   
+  val Array(ablationGroup) = args
+  println("Evaluating ablation group " + ablationGroup)  
+  
   val languages: List[LanguageData] = List(English, German, Italian)
   
   val cvFolds = 5
   val model: Model = RankLibModel(LambdaMart(MAP, 1000, 10))
-  val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
-  val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
-  
+  val trainingCandidateSelector: LanguageData => CandidateList = _.candidates
+  val systemCandidateSelector: LanguageData => CandidateList = _.candidates
   
   val featureGroups: List[(String, LanguageData => Seq[FeatureExtractor])] = List(
      ("embeddingFeatures", { lang: LanguageData => Seq(
@@ -94,10 +96,9 @@ object RunFeatureAblation extends App {
   println("Performing feature ablation experiments with " + languages.mkString(", "))
   val threadpool = Executors.newFixedThreadPool(10)
   implicit val ec = ExecutionContext.fromExecutor(threadpool)
-  
-  
-  for(ablationGroup <- ablationGroups){
-    println("Evaluating ablation group " + ablationGroup)  
+ 
+  //for(ablationGroup <- ablationGroups){
+    //println("Evaluating ablation group " + ablationGroup)  
   
     // featurize all data no folds
     val featuresAllFutures = languages map { language => Future {
@@ -193,7 +194,7 @@ object RunFeatureAblation extends App {
     Await.result(Future.sequence(results), Duration.Inf)
     println("Done with " + ablationGroup)
     
-  }
+  //}
   
   threadpool.shutdown
   RankLibWrapper.threadpool.shutdown
