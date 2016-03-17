@@ -94,6 +94,7 @@ object RunFeatureAblation extends App {
     
     
   val ablationGroups = featureGroups.map(_._1)
+  assert(ablationGroups.contains(ablationGroup))
 
   println("Performing feature ablation experiments with " + languages.mkString(", "))
   val threadpool = Executors.newFixedThreadPool(10)
