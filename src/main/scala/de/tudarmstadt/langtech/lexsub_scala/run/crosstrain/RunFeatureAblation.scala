@@ -32,6 +32,7 @@ object RunFeatureAblation extends App {
   
   val ablationGroup = args.head
   val skipTraining = args.contains("-skipTraining")
+  val onDemand = args.contains("-onDemand")
   println(s"Evaluating ablation group $ablationGroup (skip training = $skipTraining)")
   
   val languages: List[LanguageData] = List(English, German, Italian)
@@ -147,9 +148,14 @@ object RunFeatureAblation extends App {
         } 
         val mergedData = otherData ++ fold
         val mergedFolder = modelDir(language, foldIdx, ablationGroup)
-        println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
-        model.train(mergedData, mergedFolder)
-    
+        if(onDemand && new java.io.File(RankLibModel.getModelFile(mergedFolder)).exists()){
+          println(s"Skipping $mergedFolder as it already exists..")
+          Future.successful(0)
+        }
+        else {
+          println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
+          model.train(mergedData, mergedFolder)
+        }
       }
       
       // Wait for training to complete
