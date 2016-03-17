@@ -84,7 +84,7 @@ class NullLogger extends ProcessLogger {
 
 object RankLibWrapper {
   
-  val threadpool = Executors.newFixedThreadPool(5)
+  val threadpool = Executors.newFixedThreadPool(15)
   implicit val ec = ExecutionContext.fromExecutor(threadpool)
 
   /** Runs RankLib as a seperate java process. Yields the return value of RankLib as Future[Int]

@@ -30,6 +30,11 @@ import de.tudarmstadt.langtech.lexsub_scala.features.NumLexSemRelations
 
 object RunFeatureAblation extends App {
   
+  val ablationGroup = args.head
+  val skipTraining = args.contains("-skipTraining")
+  val onDemand = args.contains("-onDemand")
+  println(s"Evaluating ablation group $ablationGroup (skip training = $skipTraining)")
+  
   val languages: List[LanguageData] = List(English, German, Italian)
   
   val cvFolds = 5
@@ -37,18 +42,7 @@ object RunFeatureAblation extends App {
   val trainingCandidateSelector: LanguageData => CandidateList = _.candidates
   val systemCandidateSelector: LanguageData => CandidateList = _.candidates
   
-  
   val featureGroups: List[(String, LanguageData => Seq[FeatureExtractor])] = List(
-     ("syntacticFeatures", { lang: LanguageData => Seq(
-        // supply source language as constant feature
-        ConstantFeature("SourceLanguage", lang.toString),
-        
-        // syntactic features
-        PosContextWindow(0, 0),
-        PosContextWindow(0, 1),
-        PosContextWindow(1, 0)
-     )}),
-     
      ("embeddingFeatures", { lang: LanguageData => Seq(
       // embedding n-grams
       WordEmbeddingDistanceVectorsSet(lang.w2vEmbeddings, 0 to 2, 0 to 2, 5),
@@ -86,7 +80,16 @@ object RunFeatureAblation extends App {
       
       // co-occurence features
       Cooc(lang.coocs)
-     ) })
+     ) }),
+     
+     ("syntacticFeatures", { lang: LanguageData => Seq(
+        // supply source language as constant feature
+        ConstantFeature("SourceLanguage", lang.toString),
+        
+        // syntactic features
+        PosContextWindow(0, 0),
+        PosContextWindow(1, 1)
+     )})
     )
     
     
@@ -95,10 +98,9 @@ object RunFeatureAblation extends App {
   println("Performing feature ablation experiments with " + languages.mkString(", "))
   val threadpool = Executors.newFixedThreadPool(10)
   implicit val ec = ExecutionContext.fromExecutor(threadpool)
-  
-  
-  for(ablationGroup <- ablationGroups){
-    println("Evaluating ablation group " + ablationGroup)  
+ 
+  //for(ablationGroup <- ablationGroups){
+    //println("Evaluating ablation group " + ablationGroup)  
   
     // featurize all data no folds
     val featuresAllFutures = languages map { language => Future {
@@ -132,38 +134,46 @@ object RunFeatureAblation extends App {
     val languagesWithHeldoutFolds = languages.zip(cvHeldoutData)
     val cvHeldoutLookup = languagesWithHeldoutFolds.toMap
   
-    println("Begin training..")
     
-    // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
-    val training = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
-  
-      // train merged-with-all CV data
-      val otherData = languagesWithAllTrainingData.flatMap { 
-        case (otherLang, data) if otherLang != language => data 
-        case (`language`, _) => List.empty
-      } 
-      val mergedData = otherData ++ fold
-      val mergedFolder = modelDir(language, foldIdx, ablationGroup)
-      println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
-      model.train(mergedData, mergedFolder)
-  
+    if(!skipTraining){
+      println("Begin training..")
+      
+      // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
+      val training = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
+    
+        // train merged-with-all CV data
+        val otherData = languagesWithAllTrainingData.flatMap { 
+          case (otherLang, data) if otherLang != language => data 
+          case (`language`, _) => List.empty
+        } 
+        val mergedData = otherData ++ fold
+        val mergedFolder = modelDir(language, foldIdx, ablationGroup)
+        if(onDemand && new java.io.File(RankLibModel.getModelFile(mergedFolder)).exists()){
+          println(s"Skipping $mergedFolder as it already exists..")
+          Future.successful(0)
+        }
+        else {
+          println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
+          model.train(mergedData, mergedFolder)
+        }
+      }
+      
+      // Wait for training to complete
+      val allFutures = training
+      val nJobs = allFutures.length
+      var nCompleted = 0 // race-conditions aren't a tragedy here
+      allFutures.foreach { f => f.onSuccess 
+      { 
+        case 0 => nCompleted += 1; println(s"Completed $nCompleted / $nJobs jobs")
+        case _ => throw new RuntimeException("At least one job retured failure")
+      }}
+      println(s"Waiting for all training to complete ($nJobs jobs)..")
+      val allTraining = Future.sequence(allFutures)
+      val exitCodes = Await.result(allTraining, Duration.Inf)
+      if(exitCodes.exists(_ != 0))
+        throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
+      println("Completed all training.")
     }
-    
-    // Wait for training to complete
-    val allFutures = training
-    val nJobs = allFutures.length
-    var nCompleted = 0 // race-conditions aren't a tragedy here
-    allFutures.foreach { f => f.onSuccess 
-    { 
-      case 0 => nCompleted += 1; println(s"Completed $nCompleted / $nJobs jobs")
-      case _ => throw new RuntimeException("At least one job retured failure")
-    }}
-    println(s"Waiting for all training to complete ($nJobs jobs)..")
-    val allTraining = Future.sequence(allFutures)
-    val exitCodes = Await.result(allTraining, Duration.Inf)
-    if(exitCodes.exists(_ != 0))
-      throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
-    println("Completed all training.")
   
     
     /// --- Training complete. Start eval ---
@@ -194,7 +204,7 @@ object RunFeatureAblation extends App {
     Await.result(Future.sequence(results), Duration.Inf)
     println("Done with " + ablationGroup)
     
-  }
+  //}
   
   threadpool.shutdown
   RankLibWrapper.threadpool.shutdown

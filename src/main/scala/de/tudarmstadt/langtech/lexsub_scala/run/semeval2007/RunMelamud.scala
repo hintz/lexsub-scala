@@ -12,6 +12,9 @@ import de.tudarmstadt.langtech.lexsub_scala.SingleFeatureScorer
 import de.tudarmstadt.langtech.lexsub_scala.features.Features
 import de.tudarmstadt.langtech.lexsub_scala.scorer.CTKScorer
 import de.tudarmstadt.langtech.lexsub_scala.training.ctk.ClearTKModel
+import de.tudarmstadt.langtech.lexsub_scala.training.Model
+import de.tudarmstadt.langtech.lexsub_scala.training.ranklib.RankLibModel
+import de.tudarmstadt.langtech.lexsub_scala.utility.RankLib._
 
 /**
  * Runs an implementation of 
@@ -45,7 +48,7 @@ object RunMelamud extends App {
   // eval trained pipeline
   {
     
-    val model = new ClearTKModel("MaxEnt")
+    val model: Model = RankLibModel(LambdaMart(NDCG(10), 1000, 10)) // new ClearTKModel("MaxEnt")
     val modelFolder = "trainingMelamud"
     
     val allFeatures = new Features(SyntaxEmbeddingFeatures(
