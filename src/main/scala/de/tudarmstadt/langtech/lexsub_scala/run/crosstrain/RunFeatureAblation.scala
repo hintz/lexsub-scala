@@ -30,8 +30,9 @@ import de.tudarmstadt.langtech.lexsub_scala.features.NumLexSemRelations
 
 object RunFeatureAblation extends App {
   
-  val Array(ablationGroup) = args
-  println("Evaluating ablation group " + ablationGroup)  
+  val ablationGroup = args.head
+  val skipTraining = args.contains("-skipTraining")
+  println(s"Evaluating ablation group $ablationGroup (skip training = $skipTraining)")
   
   val languages: List[LanguageData] = List(English, German, Italian)
   
@@ -132,38 +133,41 @@ object RunFeatureAblation extends App {
     val languagesWithHeldoutFolds = languages.zip(cvHeldoutData)
     val cvHeldoutLookup = languagesWithHeldoutFolds.toMap
   
-    println("Begin training..")
     
-    // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
-    val training = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
-  
-      // train merged-with-all CV data
-      val otherData = languagesWithAllTrainingData.flatMap { 
-        case (otherLang, data) if otherLang != language => data 
-        case (`language`, _) => List.empty
-      } 
-      val mergedData = otherData ++ fold
-      val mergedFolder = modelDir(language, foldIdx, ablationGroup)
-      println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
-      model.train(mergedData, mergedFolder)
-  
+    if(!skipTraining){
+      println("Begin training..")
+      
+      // train crossfold models for identity entries (languages on their own data), and all data (minus the current fold)
+      val training = for((language, trainingFolds) <- languagesWithTrainingFolds; (fold, foldIdx) <- trainingFolds.zipWithIndex) yield {
+    
+        // train merged-with-all CV data
+        val otherData = languagesWithAllTrainingData.flatMap { 
+          case (otherLang, data) if otherLang != language => data 
+          case (`language`, _) => List.empty
+        } 
+        val mergedData = otherData ++ fold
+        val mergedFolder = modelDir(language, foldIdx, ablationGroup)
+        println(s"Training $language fold $foldIdx (with all other data): " + mergedFolder)
+        model.train(mergedData, mergedFolder)
+    
+      }
+      
+      // Wait for training to complete
+      val allFutures = training
+      val nJobs = allFutures.length
+      var nCompleted = 0 // race-conditions aren't a tragedy here
+      allFutures.foreach { f => f.onSuccess 
+      { 
+        case 0 => nCompleted += 1; println(s"Completed $nCompleted / $nJobs jobs")
+        case _ => throw new RuntimeException("At least one job retured failure")
+      }}
+      println(s"Waiting for all training to complete ($nJobs jobs)..")
+      val allTraining = Future.sequence(allFutures)
+      val exitCodes = Await.result(allTraining, Duration.Inf)
+      if(exitCodes.exists(_ != 0))
+        throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
+      println("Completed all training.")
     }
-    
-    // Wait for training to complete
-    val allFutures = training
-    val nJobs = allFutures.length
-    var nCompleted = 0 // race-conditions aren't a tragedy here
-    allFutures.foreach { f => f.onSuccess 
-    { 
-      case 0 => nCompleted += 1; println(s"Completed $nCompleted / $nJobs jobs")
-      case _ => throw new RuntimeException("At least one job retured failure")
-    }}
-    println(s"Waiting for all training to complete ($nJobs jobs)..")
-    val allTraining = Future.sequence(allFutures)
-    val exitCodes = Await.result(allTraining, Duration.Inf)
-    if(exitCodes.exists(_ != 0))
-      throw new RuntimeException("Training yielded failure exit code: " + exitCodes)
-    println("Completed all training.")
   
     
     /// --- Training complete. Start eval ---
