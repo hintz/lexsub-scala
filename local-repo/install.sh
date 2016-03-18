@@ -5,4 +5,5 @@ mvn deploy:deploy-file -Durl=file://$(dirname $0) -Dfile=jmwn-1.2.jar -DgroupId=
 
 # ranklib
 mvn deploy:deploy-file -Durl=file://$(dirname $0) -Dfile=RankLib-2.1.jar -DgroupId=ciir.umass.edu -DartifactId=ciir.umass.edu.RankLib -Dpackaging=jar -Dversion=2.1.0
+mvn deploy:deploy-file -Durl=file://$(dirname $0) -Dfile=RankLib-2.6.jar -DgroupId=ciir.umass.edu -DartifactId=ciir.umass.edu.RankLib -Dpackaging=jar -Dversion=2.6.0
 
