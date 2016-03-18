@@ -190,7 +190,7 @@ object RunCrosstraining extends App {
       val outFolder = "crosstrainingResults/" + evaluationLanguge + "-on-all"
      
       val eval = SemEvalScorer.saveAndEvaluate(lexsub.toString, evalData, outcomes, Settings.scorerFolder, goldFile, outFolder)
-      println("> " + evaluationLanguge + " trained on all: "  + SemEvalScorer.singleLine(eval))
+      println("> " + evaluationLanguge + " trained on all (no heldout): "  + SemEvalScorer.singleLine(eval))
     }
     
     // cross-CV for all
@@ -205,7 +205,7 @@ object RunCrosstraining extends App {
       val goldFile = evaluationLanguge.cvGoldfile
       
       val eval = SemEvalScorer.saveAndEvaluate(subsystems.head.toString, outcomes, Settings.scorerFolder, goldFile, outFolder)
-      println("> " + evaluationLanguge + s" trained on self all $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
+      println("> " + evaluationLanguge + s" trained on all $cvFolds-fold CV:" + SemEvalScorer.singleLine(eval))
     }
   }
   
