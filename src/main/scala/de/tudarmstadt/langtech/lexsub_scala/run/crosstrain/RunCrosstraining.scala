@@ -29,7 +29,7 @@ object RunCrosstraining extends App {
   
   val languages: List[LanguageData] = List(English, German, Italian)
   
-  val skipTraining = false
+  val skipTraining = args.contains("-skipTraining")
   val cvFolds = 10
   val model: Model = RankLibModel(LambdaMart(NDCG(10), 1000, 10)) // new ClearTKModel("MaxEnt")
   val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
