@@ -16,7 +16,7 @@ import ciir.umass.edu.learning.RankList
 class RankLibScorer(val modelFolder: String) extends Scorer {
   
   lazy val featureMapping = io.deserialize[RankLibMapper](RankLibModel.getFeatureMappingFile(modelFolder))
-  lazy val ranker: Ranker = (new RankerFactory).loadRanker(RankLibModel.getModelFile(modelFolder))
+  lazy val ranker: Ranker = (new RankerFactory).loadRankerFromFile(RankLibModel.getModelFile(modelFolder)) 
   //lazy val ranklibWrapper = new RankLibWrapper(RankLibModel.getModelFile(modelFolder))
   
   def apply(featureVector: Vector[Seq[Feature]]): Vector[Double] = RankLibWrapper synchronized {
