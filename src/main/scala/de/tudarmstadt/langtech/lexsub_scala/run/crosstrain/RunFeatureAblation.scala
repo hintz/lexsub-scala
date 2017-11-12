@@ -39,8 +39,8 @@ object RunFeatureAblation extends App {
   
   val cvFolds = 5
   val model: Model = RankLibModel(LambdaMart(MAP, 1000, 10))
-  val trainingCandidateSelector: LanguageData => CandidateList = _.candidates
-  val systemCandidateSelector: LanguageData => CandidateList = _.candidates
+  val trainingCandidateSelector: LanguageData => CandidateList = _.goldCandidates
+  val systemCandidateSelector: LanguageData => CandidateList = _.goldCandidates
   
   val featureGroups: List[(String, LanguageData => Seq[FeatureExtractor])] = List(
      ("embeddingFeatures", { lang: LanguageData => Seq(
