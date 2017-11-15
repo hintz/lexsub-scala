@@ -6,8 +6,8 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.SemEvalGold
 import de.tudarmstadt.langtech.lexsub_scala.utility.GermaNetUtils
 
 object InspectRelations extends App {
-	val gn = new GermaNet("AIPHES_Data/GermaNet/GN_V90/GN_V90_XML")
-  //val gn = new GermaNet("AIPHES_Data/GermaNet/GN_V80/GN_V80_XML")
+	val gn = new GermaNet("GermaNet/GN_V90/GN_V90_XML")
+  //val gn = new GermaNet("GermaNet/GN_V80/GN_V80_XML")
   val utils = new GermaNetUtils(gn)
   import utils._
   
@@ -18,7 +18,7 @@ object InspectRelations extends App {
   getSemanticRelations("essen")
   getSemanticRelations("Ackerwalze")
   
-  val gold = new SemEvalGold("AIPHES_Data/GermEval2015/train-dataset.gold")
+  val gold = new SemEvalGold("Tasks/GermEval2015/train-dataset.gold")
   
   for(item <- gold.items){
     val target = item.targetWord

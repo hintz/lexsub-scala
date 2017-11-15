@@ -6,7 +6,7 @@
 trainingFolder: "twsi_training"
 outputFile: "instances.out"
 
-twsiFolder: "../Tasks/TWSI2_complete/lexsub_task"
+twsiFolder: "Tasks/TWSI2_complete/lexsub_task"
 resourcesFolder: "resources/twsi"
 
 Preprocessing:

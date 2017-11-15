@@ -8,8 +8,8 @@ from operator import itemgetter
 VocabFile = 'vocab.txt'
 OutputFile = 'resources/coocs/output_coocs.txt'
 
-WordFile = "../AIPHES_Data/coocs/deu_news_10M/deu_news_2010_10M-words.txt" # "words.txt"
-CoocsFile = "../AIPHES_Data/coocs/deu_news_10M/deu_news_2010_10M-co_s.txt" # "coocs.txt" 
+WordFile = "resources/coocs/deu_news_10M/deu_news_2010_10M-words.txt" # "words.txt"
+CoocsFile = "resources/coocs/deu_news_10M/deu_news_2010_10M-co_s.txt" # "coocs.txt" 
 
 LowerCaseEverything = False
 lower = lambda x: x.lower() if LowerCaseEverything else x

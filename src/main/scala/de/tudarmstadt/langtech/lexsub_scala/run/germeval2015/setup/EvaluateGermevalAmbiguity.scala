@@ -9,7 +9,7 @@ import de.tudarmstadt.langtech.lexsub_scala.reader.GoldItem
 
 object EvaluateGermevalAmbiguity extends App {
   val gold = new SemEvalReader(Settings.germevalFolder, "train-dataset").gold.items
-  val gold2 = new SemEvalGold("../AIPHES_Data/SemEval2007/trial/gold.trial").items
+  val gold2 = new SemEvalGold("Tasks/SemEval2007/trial/gold.trial").items
   
   println(meanDiceByPos(gold))
   println(meanDice(gold))

@@ -6,7 +6,7 @@
 trainingFolder: "germeval_training"
 outputFile: "instances.out"
 
-germEvalFolder: "../Tasks/GermEval2015"
+germEvalFolder: "Tasks/GermEval2015"
 resourcesFolder: "resources/germeval2015"
 
 SemanticResources:

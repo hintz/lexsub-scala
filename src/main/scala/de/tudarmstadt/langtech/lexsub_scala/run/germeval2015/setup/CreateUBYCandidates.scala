@@ -9,7 +9,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon
 object CreateUBYCandidates extends App {
 
   val targets = io.lines("resources/germeval2015/targets-pos.txt").map(strings.splitAssign('\t')).toList
-  val ubyDatabase = "../AIPHES_Data/UBY/ubyGermeval060"
+  val ubyDatabase = "UBY/ubyGermeval060"
 
   val uby = new Uby(new DBConfig(
     "jdbc:h2:file:" + ubyDatabase,

@@ -4,7 +4,7 @@ import scala.collection.JavaConverters._
 import de.tuebingen.uni.sfs.germanet.api.ConRel
 
 object InspectGermaNet {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; def main(args: Array[String])=$execute{;$skip(251); 
-  val gn = new GermaNet("/Volumes/AIPHES_HDD/AIPHES_Data/GermaNet/GN_V80/GN_V80_XML");System.out.println("""gn  : de.tuebingen.uni.sfs.germanet.api.GermaNet = """ + $show(gn ));$skip(42); 
+  val gn = new GermaNet("GermaNet/GN_V80/GN_V80_XML");System.out.println("""gn  : de.tuebingen.uni.sfs.germanet.api.GermaNet = """ + $show(gn ));$skip(42); 
   val ss = gn.getSynsets("Erleichterung");System.out.println("""ss  : java.util.List[de.tuebingen.uni.sfs.germanet.api.Synset] = """ + $show(ss ));$skip(31); 
   val sample = ss.asScala.head;System.out.println("""sample  : de.tuebingen.uni.sfs.germanet.api.Synset = """ + $show(sample ));$skip(50); 
   

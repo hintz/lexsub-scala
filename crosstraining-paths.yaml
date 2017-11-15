@@ -5,10 +5,10 @@
 
 
 Tasks:
-    twsiFolder: "../Tasks/TWSI2_complete/lexsub_task"
-    semevalFolder: "../Tasks/SemEval2007"
-    germevalFolder: "../Tasks/GermEval2015"
-    evalitaFolder: "../Tasks/Evalita2009"
+    twsiFolder: "Tasks/TWSI2_complete/lexsub_task"
+    semevalFolder: "Tasks/SemEval2007"
+    germevalFolder: "Tasks/GermEval2015"
+    evalitaFolder: "Tasks/Evalita2009"
 
 Preprocessing:
     English:

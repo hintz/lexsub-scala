@@ -5,8 +5,8 @@
 
 trainingFolder: "semeval_training"
 resourcesFolder: "resources/semeval2007"
-semevalFolder: "../Tasks/SemEval2007"
-scorerFolder: "../Tasks/SemEval2007/scoring" # use fixed scorer from GermEval
+semevalFolder: "Tasks/SemEval2007"
+scorerFolder: "Tasks/SemEval2007/scoring" # use fixed scorer from GermEval
 
 Preprocessing:
     opennlpPOSModel: "resources/models/opennlp/en-pos-perceptron.bin"

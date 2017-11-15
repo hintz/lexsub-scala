@@ -100,8 +100,8 @@ class CandidateFile(val filename: String, val semanticRelationColumn: Boolean = 
 }
 
 object TestCandidateFileReader extends App {
-	val c = new CandidateFile("../lexsub-gpl/AIPHES_Data/LexSub/candidates/germeval_duden.tsv", semanticRelationColumn = true)
-  val d = new CandidateFile("../lexsub-gpl/AIPHES_Data/LexSub/candidates/germeval_wortschatz.tsv", semanticRelationColumn = true)
+	val c = new CandidateFile("LexSub/candidates/germeval_duden.tsv", semanticRelationColumn = true)
+  val d = new CandidateFile("LexSub/candidates/germeval_wortschatz.tsv", semanticRelationColumn = true)
   val joined = new JoinedCandidates(c, d)
   val subset = d.filterByRelation("Wortschatz_is_synonym_of")
   subset.formatLines foreach println

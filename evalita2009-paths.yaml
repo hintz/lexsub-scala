@@ -6,8 +6,8 @@
 trainingFolder: "trainingEvalita"
 outputFolder: "outputEvalita"
 resourcesFolder: "resources/evalita2009"
-evalitaFolder: "../Tasks/Evalita2009"
-scorerFolder: "../Tasks/GermEval2015/germeval2015-scorer"
+evalitaFolder: "Tasks/Evalita2009"
+scorerFolder: "Tasks/GermEval2015/germeval2015-scorer"
 
 Candidates:
     multiwordnet: "resources/evalita2009/candidates/mwn.tsv"
